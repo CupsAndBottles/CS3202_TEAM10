@@ -1,0 +1,26 @@
+﻿Build started 10/16/2014 4:01:23 AM.
+     1>Project "C:\Users\Darren\Desktop\AutomaticProjectTesting\EmptyGeneralTesting\SPA\SPA.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "C:\Users\Darren\Desktop\AutomaticProjectTesting\EmptyGeneralTesting\Release\".
+       InitializeBuildStatus:
+         Creating "Release\SPA.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\source\DesignExtractor.cpp ..\source\Parser.cpp ..\source\PKB.cpp ..\source\TNode.cpp
+         DesignExtractor.cpp
+         Parser.cpp
+         PKB.cpp
+         TNode.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Users\Darren\Desktop\AutomaticProjectTesting\EmptyGeneralTesting\Release\SPA.lib" /NOLOGO /LTCG Release\DesignExtractor.obj
+         Release\Parser.obj
+         Release\PKB.obj
+         Release\TNode.obj
+         SPA.vcxproj -> C:\Users\Darren\Desktop\AutomaticProjectTesting\EmptyGeneralTesting\Release\SPA.lib
+       FinalizeBuildStatus:
+         Deleting file "Release\SPA.unsuccessfulbuild".
+         Touching "Release\SPA.lastbuildstate".
+     1>Done Building Project "C:\Users\Darren\Desktop\AutomaticProjectTesting\EmptyGeneralTesting\SPA\SPA.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.53

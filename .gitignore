@@ -1,0 +1,4 @@
+# to be ignored according to 'Crash Course in using SVN.pdf'
+*.exe
+*.dll
+*.user

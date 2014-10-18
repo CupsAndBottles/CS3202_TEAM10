@@ -1,0 +1,14 @@
+﻿Build started 18/10/2014 4:27:52 PM.
+     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\AutoTester\AutoTester.vcxproj" on node 4 (Build target(s)).
+     1>Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\AutoTester.exe" /INCREMENTAL /NOLOGO "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\lib\AutoTester_debug.lib" "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\SPA.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\AutoTester.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\AutoTester.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\AutoTester.lib" /MACHINE:X86 Debug\AutoTester.exe.embed.manifest.res
+         Debug\TestWrapper.obj
+       Manifest:
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\AutoTester.exe.embed.manifest" /manifest Debug\AutoTester.exe.intermediate.manifest
+       LinkEmbedManifest:
+         AutoTester.vcxproj -> D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\AutoTester.exe
+     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\AutoTester\AutoTester.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.10

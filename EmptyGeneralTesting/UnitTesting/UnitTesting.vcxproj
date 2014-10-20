@@ -75,6 +75,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\UnitTest.cpp" />
+    <ClCompile Include="ParserTest.cpp" />
+    <ClCompile Include="TokenizerTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ParserTest.h" />
+    <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

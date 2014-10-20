@@ -17,12 +17,16 @@
     <ClCompile Include="..\source\TNode.cpp" />
     <ClCompile Include="..\UnitTesting\TestVarTable.cpp" />
     <ClCompile Include="..\UnitTesting\TestVarTableMain.cpp" />
+    <ClCompile Include="Token.cpp" />
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\TNode.h" />
     <ClInclude Include="..\UnitTesting\TestVarTable.h" />
+    <ClInclude Include="Tokenizer.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Token.h" />
     <ClInclude Include="VarTable.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

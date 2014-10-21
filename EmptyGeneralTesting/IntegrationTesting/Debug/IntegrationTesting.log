@@ -1,6 +1,10 @@
-﻿Build started 18/10/2014 4:28:50 PM.
-     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\IntegrationTesting\IntegrationTesting.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+﻿Build started 21/10/2014 2:23:48 PM.
+     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\IntegrationTesting\IntegrationTesting.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\IntegrationTesting.unsuccessfulbuild".
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\IntegrationTesting.exe" /NOLOGO "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\lib\cppunit_debug.lib" "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\SPA.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\IntegrationTesting.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\IntegrationTesting.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\IntegrationTesting.lib" /MACHINE:X86 Debug\IntegrationTest.obj
      1>SPA.lib(TestVarTable.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1800' doesn't match value '1600' in IntegrationTest.obj
      1>SPA.lib(VarTable.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1800' doesn't match value '1600' in IntegrationTest.obj
@@ -13,8 +17,8 @@
      1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "char const * __cdecl std::_Winerror_map(int)" (?_Winerror_map@std@@YAPBDH@Z) referenced in function "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall std::_System_error_category::message(int)const " (?message@_System_error_category@std@@UBE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@H@Z)
      1>SPA.lib(VarTable.obj) : error LNK2001: unresolved external symbol "char const * __cdecl std::_Winerror_map(int)" (?_Winerror_map@std@@YAPBDH@Z)
      1>D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\IntegrationTesting.exe : fatal error LNK1120: 5 unresolved externals
-     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\IntegrationTesting\IntegrationTesting.vcxproj" (Build target(s)) -- FAILED.
+     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\IntegrationTesting\IntegrationTesting.vcxproj" (build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:00.28
+Time Elapsed 00:00:00.18

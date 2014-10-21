@@ -18,18 +18,18 @@
     <ClCompile Include="source\UnitTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ParserTest.cpp">
+    <ClCompile Include="TokenizerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TokenizerTest.cpp">
+    <ClCompile Include="TestParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParserTest.h">
+    <ClInclude Include="TokenizerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TokenizerTest.h">
+    <ClInclude Include="TestParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,5 +5,10 @@
 
 using namespace std;
 
-class Token {
-};
+Token::Type Token::GetType() {
+	return Identifier;
+}
+
+string Token::GetContent() {
+	return "emptyString";
+}

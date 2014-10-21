@@ -1,9 +1,25 @@
-﻿Build started 18/10/2014 4:28:50 PM.
-     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\SPA\SPA.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
+﻿Build started 21/10/2014 2:27:48 PM.
+     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\SPA\SPA.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\SPA.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\SPA" /I"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\UnitTesting\TestVarTable.cpp
+         TestVarTable.cpp
+       Lib:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\SPA.lib" /NOLOGO Debug\DesignExtractor.obj
+         Debug\Parser.obj
+         Debug\PKB.obj
+         Debug\TNode.obj
+         Debug\TestVarTable.obj
+         Debug\TestVarTableMain.obj
+         Debug\Token.obj
+         Debug\VarTable.obj
          SPA.vcxproj -> D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\SPA.lib
-     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\SPA\SPA.vcxproj" (Build target(s)).
+       FinalizeBuildStatus:
+         Deleting file "Debug\SPA.unsuccessfulbuild".
+         Touching "Debug\SPA.lastbuildstate".
+     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\SPA\SPA.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.05
+Time Elapsed 00:00:01.09

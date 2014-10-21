@@ -1,21 +1,47 @@
-﻿Build started 18/10/2014 4:29:17 PM.
-     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+﻿Build started 21/10/2014 2:27:49 PM.
+     1>Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\UnitTesting.unsuccessfulbuild".
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.exe" /INCREMENTAL:NO /NOLOGO "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\lib\cppunit_debug.lib" "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\SPA.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\UnitTesting.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.lib" /MACHINE:X86 Debug\UnitTest.obj
+         Debug\TestParser.obj
+         Debug\TokenizerTest.obj
      1>UnitTest.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-     1>SPA.lib(TestVarTable.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1800' doesn't match value '1600' in UnitTest.obj
-     1>SPA.lib(VarTable.obj) : error LNK2038: mismatch detected for '_MSC_VER': value '1800' doesn't match value '1600' in UnitTest.obj
-     1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "void __cdecl std::_Xbad_alloc(void)" (?_Xbad_alloc@std@@YAXXZ) referenced in function "char * __cdecl std::_Allocate<char>(unsigned int,char *)" (??$_Allocate@D@std@@YAPADIPAD@Z)
-     1>SPA.lib(VarTable.obj) : error LNK2001: unresolved external symbol "void __cdecl std::_Xbad_alloc(void)" (?_Xbad_alloc@std@@YAXXZ)
-     1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "void __cdecl std::_Facet_Register(class std::_Facet_base *)" (?_Facet_Register@std@@YAXPAV_Facet_base@1@@Z) referenced in function "class std::ctype<char> const & __cdecl std::use_facet<class std::ctype<char> >(class std::locale const &)" (??$use_facet@V?$ctype@D@std@@@std@@YAABV?$ctype@D@0@ABVlocale@0@@Z)
-     1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "private: static class std::locale::_Locimp * __cdecl std::locale::_Init(bool)" (?_Init@locale@std@@CAPAV_Locimp@12@_N@Z) referenced in function "public: __thiscall std::locale::locale(void)" (??0locale@std@@QAE@XZ)
-     1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "char const * __cdecl std::_Syserror_map(int)" (?_Syserror_map@std@@YAPBDH@Z) referenced in function "public: virtual class std::error_condition __thiscall std::_System_error_category::default_error_condition(int)const " (?default_error_condition@_System_error_category@std@@UBE?AVerror_condition@2@H@Z)
-     1>SPA.lib(VarTable.obj) : error LNK2001: unresolved external symbol "char const * __cdecl std::_Syserror_map(int)" (?_Syserror_map@std@@YAPBDH@Z)
-     1>SPA.lib(TestVarTable.obj) : error LNK2019: unresolved external symbol "char const * __cdecl std::_Winerror_map(int)" (?_Winerror_map@std@@YAPBDH@Z) referenced in function "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall std::_System_error_category::message(int)const " (?message@_System_error_category@std@@UBE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@H@Z)
-     1>SPA.lib(VarTable.obj) : error LNK2001: unresolved external symbol "char const * __cdecl std::_Winerror_map(int)" (?_Winerror_map@std@@YAPBDH@Z)
-     1>D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.exe : fatal error LNK1120: 5 unresolved externals
-     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" (Build target(s)) -- FAILED.
+     1>cppunit_debug.lib(TestResultCollector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestResultCollector.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestSuccessListener.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestSuccessListener.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TextTestProgressListener.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextTestProgressListener.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TextTestRunner.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextTestRunner.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TextOutputter.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextOutputter.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(Exception.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Exception.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(Message.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Message.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(SourceLine.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(SourceLine.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(SynchronizedObject.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(SynchronizedObject.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(Test.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Test.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestCase.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestCase.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestComposite.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestComposite.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestFailure.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestFailure.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestLeaf.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestLeaf.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestPath.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestPath.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestResult.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestResult.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestRunner.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestRunner.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestSuite.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestSuite.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestFactoryRegistry.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestFactoryRegistry.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestNamer.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestNamer.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TestSuiteBuilderContext.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestSuiteBuilderContext.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(TypeInfoHelper.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TypeInfoHelper.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(DefaultProtector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(DefaultProtector.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(Protector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Protector.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(ProtectorChain.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(ProtectorChain.obj)' or at 'D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+         UnitTesting.vcxproj -> D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.exe
+       Manifest:
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\Debug\UnitTesting.exe;#1" /manifest Debug\UnitTesting.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\UnitTesting.unsuccessfulbuild".
+         Touching "Debug\UnitTesting.lastbuildstate".
+     1>Done Building Project "D:\2014 - 2015 Sem1\CS3201\CAP\CS3201\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" (build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.16
+Time Elapsed 00:00:00.46

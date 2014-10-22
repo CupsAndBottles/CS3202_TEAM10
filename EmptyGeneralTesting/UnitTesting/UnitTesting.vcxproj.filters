@@ -27,6 +27,9 @@
     <ClCompile Include="QueryDataTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QueryPreprocessorTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TokenizerTest.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryDataTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryPreprocessorTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

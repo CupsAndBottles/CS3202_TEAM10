@@ -16,9 +16,6 @@ private:
 	static std::vector<WithClause> withClauses;
 
 public:
-	QueryData(void);
-	~QueryData(void);
-
 	void InsertDeclaration(std::string, std::string);
 	void InsertSelect(std::string, std::string);
 	void InsertPattern(std::string, std::string, std::string);
@@ -33,4 +30,5 @@ public:
 
 	static bool IsSynonymExist(std::string, std::string);
 	static bool IsSynonymExist(std::string, std::string *);
+	static bool IsSynonymExist(std::string, std::vector<std::string>);
 };

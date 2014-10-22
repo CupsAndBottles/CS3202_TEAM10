@@ -1,19 +1,22 @@
-﻿Build started 10/22/2014 5:41:30 PM.
-     1>Project "C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" on node 3 (build target(s)).
+﻿Build started 10/23/2014 3:22:08 AM.
+     1>Project "C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\UnitTesting\UnitTesting.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Creating "Debug\UnitTesting.unsuccessfulbuild" because "AlwaysCreate" was specified.
+         Touching "Debug\UnitTesting.unsuccessfulbuild".
        ClCompile:
-         All outputs are up-to-date.
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\source /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\SPA /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt QueryDataTest.cpp
+         QueryDataTest.cpp
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.exe" /INCREMENTAL:NO /NOLOGO C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\lib\cppunit_debug.lib C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\SPA.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\UnitTesting.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.lib" /MACHINE:X86 Debug\UnitTest.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.exe" /INCREMENTAL:NO /NOLOGO C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\lib\cppunit_debug.lib C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\SPA.lib C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\lib\cppunit.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\UnitTesting.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.lib" /MACHINE:X86 Debug\QueryDataTest.obj
+         Debug\UnitTest.obj
          Debug\TestParser.obj
          Debug\TokenizerTest.obj
-     1>UnitTest.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+     1>QueryDataTest.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
      1>cppunit_debug.lib(TestResultCollector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestResultCollector.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(TestSuccessListener.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TestSuccessListener.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(TextTestProgressListener.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextTestProgressListener.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(TextTestRunner.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextTestRunner.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(TextOutputter.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(TextOutputter.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunit_debug.lib(Asserter.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Asserter.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(Exception.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Exception.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(Message.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(Message.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
      1>cppunit_debug.lib(SourceLine.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunit_debug.lib(SourceLine.obj)' or at 'C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\vc100.pdb'; linking object as if no debug info
@@ -37,6 +40,16 @@
          UnitTesting.vcxproj -> C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.exe
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.exe;#1" /manifest Debug\UnitTesting.exe.intermediate.manifest
+       PostBuildEvent:
+         Description: Unit Test
+         C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\UnitTesting.exe
+         :VCEnd
+         .
+         
+         
+         OK (1 tests)
+         
+         
        FinalizeBuildStatus:
          Deleting file "Debug\UnitTesting.unsuccessfulbuild".
          Touching "Debug\UnitTesting.lastbuildstate".
@@ -44,4 +57,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.39
+Time Elapsed 00:00:01.65

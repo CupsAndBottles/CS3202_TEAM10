@@ -24,12 +24,18 @@
     <ClCompile Include="TestParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QueryDataTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TokenizerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryDataTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

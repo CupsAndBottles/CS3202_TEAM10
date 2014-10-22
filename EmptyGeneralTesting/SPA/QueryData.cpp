@@ -1,9 +1,10 @@
 #include "QueryData.h"
 
-
-QueryData::QueryData(void)
-{
-}
+std::vector<Declaration> QueryData::declarations;
+std::vector<SelectClause> QueryData::selectClauses;	
+std::vector<SuchThatClause> QueryData::suchThatClauses;
+std::vector<PatternClause>QueryData::patternClauses;
+std::vector<WithClause>QueryData::withClauses;
 
 void QueryData::InsertDeclaration(std::string type, std::string synonym)
 {
@@ -73,6 +74,22 @@ bool QueryData::IsSynonymExist(std::string synonym, std::string *type)
 		if((*it).synonym == synonym) {
 			*type = (*it).type;
 			return true;
+		}
+	}
+
+	return false;
+}
+
+bool QueryData::IsSynonymExist(std::string synonym, std::vector<std::string> typeList)
+{
+	for(std::vector<Declaration>::iterator i = declarations.begin(); i != declarations.end(); ++i)
+	{
+		if((*i).synonym == synonym) {
+			for(std::vector<std::string>::iterator j = typeList.begin(); j != typeList.end(); ++j)
+			{
+				if((*i).type == (*j))
+					return true;
+			}
 		}
 	}
 

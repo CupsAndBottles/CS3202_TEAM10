@@ -33,8 +33,18 @@ public:
 	bool ValidatePattern(std::string, std::string, std::string, std::string);
 	bool ValidateWith(std::string, std::string);
 	bool ValidateSelect(std::string, std::string&);
+	bool ValidateRelationship(std::string, std::string, std::string);
+
+	bool ValidateModifies(std::string, std::string);
+	bool ValidateUses(std::string, std::string);
+	bool ValidateCalls(std::string, std::string);
+	bool ValidateParent(std::string, std::string);
+	bool ValidateFollows(std::string, std::string);
+	bool ValidateNext(std::string, std::string);
+	bool ValidateAffects(std::string, std::string);
 	
 	bool IsInteger(const std::string&);
 	bool IsString(const std::string&);
+	bool IsBoolean(std::string);
 };
 

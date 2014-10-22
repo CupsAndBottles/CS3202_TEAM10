@@ -48,7 +48,7 @@ vector declarations
 	declaration
 	{
 		type: assign
-		synonym: a2}
+		synonym: a2
 	},
 	declaration
 	{

@@ -1,18 +1,17 @@
-﻿Build started 10/22/2014 5:41:29 PM.
+﻿Build started 10/23/2014 3:18:40 AM.
      1>Project "C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\SPA\SPA.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Touching "Debug\SPA.unsuccessfulbuild".
+         Creating "Debug\SPA.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\SPA /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt QueryValidator.cpp
-         QueryValidator.cpp
-     1>c:\users\darren\desktop\cs3201_team03\emptygeneraltesting\spa\queryvalidator.cpp(395): warning C4715: 'QueryValidator::ValidateWith' : not all control paths return a value
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\SPA /IC:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt QueryData.cpp
+         QueryData.cpp
        Lib:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\Debug\SPA.lib" /NOLOGO Debug\DesignExtractor.obj
          Debug\Parser.obj
          Debug\PKB.obj
          Debug\TNode.obj
          Debug\TestVarTable.obj
-         Debug\TestVarTableMain.obj
+         Debug\TestMain.obj
          Debug\QueryData.obj
          Debug\QueryEvaluator.obj
          Debug\QueryProcessor.obj
@@ -27,4 +26,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.95
+Time Elapsed 00:00:01.24

@@ -16,7 +16,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 {
 	std::vector<std::string> tokenList;
 	std::string token;
-	std::string delim = " ,<>()";
+	std::string delim = " ,<>()=";
 
 	//tokenize query
 	Tokenize(query,tokenList,delim);
@@ -35,6 +35,10 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		//get the synonym
 		while(!IsSemiColon(token))
 		{
+			//check no duplicate
+			if(QueryData::IsSynonymExist(token,type))
+				return false;
+
 			queryData.InsertDeclaration(type,token);
 
 			if(++it == tokenList.end())	return false;
@@ -76,9 +80,12 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		else 
 		{
 			std::string type;
-			if(!ValidateSelect(token,type))	return false;
+
+			if(IsBoolean(token)) {}
+
+			else if(!ValidateSelect(token,type))	return false;
 			
-			queryData.InsertSelect(type, token);
+			else queryData.InsertSelect(type, token);
 		}
 	}
 
@@ -189,13 +196,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		if(endOfQuery)	return true;
 	}
 
-	return true;
+	return true         ;
 }
-
-
-//all synonym must be declared
-
-
 
 void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens, std::string delim)
 {
@@ -273,9 +275,6 @@ bool QueryValidator::ValidatePattern(std::string synonym, std::string arg1, std:
 	else return false;
 }
 
-/*
-
-*/
 bool QueryValidator::ValidateWith(std::string arg1, std::string arg2)
 {
 	//if arg1 = __.__, e.g. p.procname, tokenize it, else it must be prog_line synonym
@@ -396,6 +395,131 @@ bool QueryValidator::ValidateWith(std::string arg1, std::string arg2)
 	else return false;
 }
 	
+bool QueryValidator::ValidateRelationship(std::string rel, std::string arg1, std::string arg2)
+{
+	//switch relationship and call function respectively
+	if(rel == "Modifies")
+		return ValidateModifies(arg1,arg2);
+
+	else if(rel == "Uses")
+		return ValidateModifies(arg1,arg2);
+
+	else if(rel == "Calls")
+		return ValidateCalls(arg1,arg2);
+
+	else if(rel == "Parent" || rel == "Parent*")
+		return ValidateParent(arg1,arg2);
+
+	else if(rel == "Follows" || rel == "Follows*")
+		return ValidateFollows(arg1,arg2);
+
+	else if(rel == "Next" || rel == "Next*")
+		return ValidateNext(arg1,arg2);
+
+	else if(rel == "Affects" || rel == "Affects*")
+		return ValidateAffects(arg1,arg2);
+
+	else return false;
+}
+
+bool QueryValidator::ValidateModifies(std::string arg1, std::string arg2)
+{
+	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
+ 
+	std::vector<std::string> typeList(list, list + sizeof(list));
+
+	if(QueryData::IsSynonymExist(arg1,typeList) || IsInteger(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg1,"variable") ||arg1 == "_" || IsString(arg1)) {}
+	else return false;
+
+	return true;
+}
+
+bool QueryValidator::ValidateUses(std::string arg1, std::string arg2)
+{
+	//same as validatemodifies, just use that?
+	
+	return true;
+
+}
+bool QueryValidator::ValidateCalls(std::string arg1, std::string arg2)
+{
+	if(QueryData::IsSynonymExist(arg1,"procedure") || arg1 == "_" || IsString(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg2,"procedure") || arg2 == "_" || IsString(arg2)) {}
+	else return false;
+
+	return true;
+
+}
+bool QueryValidator::ValidateParent(std::string arg1, std::string arg2)
+{ 
+	const std::string list1[] = {"while","if","prog_line","stmt"};
+	const std::string list2[] = {"while","if","prog_line","call","stmt","assign"};
+
+	std::vector<std::string> typeList1(list1, list1 + sizeof(list1));
+	std::vector<std::string> typeList2(list2, list2 + sizeof(list2));
+
+	if(QueryData::IsSynonymExist(arg1,typeList1) || IsInteger(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg2,typeList2) || IsInteger(arg2)) {}
+	else return false;
+
+	//if _ , check declaration has more than one valid DE?
+
+	return true;
+
+}
+bool QueryValidator::ValidateFollows(std::string arg1, std::string arg2)
+{
+	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
+
+	std::vector<std::string> typeList(list, list + sizeof(list));
+
+	if(QueryData::IsSynonymExist(arg1,typeList) || IsInteger(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg2,typeList) || IsInteger(arg2)) {}
+	else return false;
+
+	//if _ , check declaration has more than one valid DE?
+
+	return true;
+
+}
+bool QueryValidator::ValidateNext(std::string arg1, std::string arg2)
+{
+	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
+
+	std::vector<std::string> typeList(list, list + sizeof(list));
+
+	if(QueryData::IsSynonymExist(arg1,typeList) || arg1 == "_" || IsInteger(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg2,typeList) || arg2 == "_" || IsInteger(arg2)) {}
+	else return false;
+
+	return true;
+
+}
+bool QueryValidator::ValidateAffects(std::string arg1, std::string arg2)
+{
+	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};	//not sure
+
+	std::vector<std::string> typeList(list, list + sizeof(list));
+
+	if(QueryData::IsSynonymExist(arg1,"assign") || arg1 == "_" || IsInteger(arg1)) {}
+	else return false;
+
+	if(QueryData::IsSynonymExist(arg2,typeList) || arg2 == "_" || IsInteger(arg2)) {}
+	else return false;
+
+	return true;
+}
 
 bool QueryValidator::IsInteger(const std::string& s)
 {
@@ -404,9 +528,9 @@ bool QueryValidator::IsInteger(const std::string& s)
     return !s.empty() && it == s.end();
 }
 
-bool QueryValidator::IsString(const std::string& s)
+bool IsString(const std::string& s)
 {
-	if(s.front() == char("\"") && s.back() == char("\""))
+	if(s.at(0) == '\"' && s.at(s.length() - 1) == '\"')
 		return true;
 
 	return false;
@@ -473,5 +597,11 @@ bool QueryValidator::IsRelationship(std::string str)
 	if (std::find(Relationship.begin(), Relationship.end(), str) != Relationship.end())
 		return true;
 
+	return false;
+}
+
+bool QueryValidator::IsBoolean(std::string str)
+{
+	if(str == "BOOLEAN")	return true;
 	return false;
 }

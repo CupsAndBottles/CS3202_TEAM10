@@ -49,6 +49,8 @@ public:
 		Nontoken
 	};
 
+	Token& operator=(const Token& element);
+
 	Token(string content, Type type);
 
 	Type GetType();
@@ -58,6 +60,6 @@ private:
 	const Type type;
 	const string content;
 
-	Token() {};
+	Token();
 
 };

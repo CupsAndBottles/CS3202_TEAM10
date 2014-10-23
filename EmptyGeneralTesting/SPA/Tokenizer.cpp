@@ -2,8 +2,10 @@
 
 #include "Tokenizer.h"
 #include "Token.h"
+
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -13,7 +15,7 @@ using namespace std;
 vector<Token> Tokenizer::tokenize(string source) {
 	vector<Token> tokens;
 
-	for (int pos = 0; pos < source.length; pos++) { // loop through string
+	for (int pos = 0; pos < source.length(); pos++) { // loop through string
 		char currentChar = source[pos];
 		static string integer = "";
 		static string alphaString = "";

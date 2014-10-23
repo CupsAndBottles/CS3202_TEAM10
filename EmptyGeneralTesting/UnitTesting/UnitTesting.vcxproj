@@ -43,13 +43,19 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include;$(SolutionDir)source;$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Unit Test</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -74,12 +80,20 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="QueryDataTest.cpp" />
+    <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="source\UnitTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="ParserTest.h" />
+=======
+    <ClInclude Include="QueryDataTest.h" />
+    <ClInclude Include="QueryPreprocessorTest.h" />
+    <ClInclude Include="TestParser.h" />
+>>>>>>> d6020403b4f31040a6805de49b1f04fd3c8f4154
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

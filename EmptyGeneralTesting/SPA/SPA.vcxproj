@@ -18,6 +18,7 @@
     <ClCompile Include="..\UnitTesting\TestVarTable.cpp" />
     <ClCompile Include="..\UnitTesting\TestVarTableMain.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>

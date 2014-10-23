@@ -43,12 +43,21 @@ public:
 		Then,
 		Else,
 		Procedure,
-		WinNewline,
-		UnixNewline,
+		Newline,
 		Number,
-		Identifier
+		Identifier,
+		Nontoken
 	};
+
+	Token(string content, Type type);
 
 	Type GetType();
 	string GetContent();
+
+private:
+	const Type type;
+	const string content;
+
+	Token() {};
+
 };

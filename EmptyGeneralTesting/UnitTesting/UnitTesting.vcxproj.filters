@@ -21,7 +21,7 @@
     <ClCompile Include="TokenizerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestParser.cpp">
+    <ClCompile Include="ParserTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="TokenizerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestParser.h">
+    <ClInclude Include="ParserTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

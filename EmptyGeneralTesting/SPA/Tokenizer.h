@@ -9,4 +9,6 @@ using namespace std;
 class Tokenizer {
 public:
 	static vector<Token> tokenize(string);
+private:
+	static Token::Type stringToToken(string);
 };

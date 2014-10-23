@@ -87,13 +87,10 @@
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClInclude Include="ParserTest.h" />
-=======
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="TestParser.h" />
->>>>>>> d6020403b4f31040a6805de49b1f04fd3c8f4154
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -28,6 +28,14 @@ const string Token::NEWLINE_UNIX		= "\n";
 
 Token::Token(string content, Type type) : content(content), type(type) {}
 
+Token::Token(const Token& element) : content(content), type(type) {
+
+}
+
+Token& Token::operator=(const Token& element) {
+	return *this;
+}
+
 Token::Type Token::GetType() {
 	return type;
 }

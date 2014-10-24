@@ -65,9 +65,6 @@
     <ClInclude Include="VarTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\UnitTesting\TestVarTable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>

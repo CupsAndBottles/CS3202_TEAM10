@@ -37,14 +37,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\2014 - 2015 Sem1\CS3201\Tools Lab\cppunit-1.12.1\include;$(SolutionDir)source;$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\2014 - 2015 Sem1\CS3201\Tools Lab\cppunit-1.12.1\include;$(SolutionDir)source;$(SolutionDir)SPA;$(SolutionDir)include;C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -80,10 +81,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
-    <ClCompile Include="source\UnitTest.cpp" />
-    <ClCompile Include="ParserTest.cpp" />
+    <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="TestParser.h" />
+    <ClInclude Include="TestVarTable.h" />
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

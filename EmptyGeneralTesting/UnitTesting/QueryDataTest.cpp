@@ -1,9 +1,10 @@
 #pragma once
 
-#include "QueryDataTest.h"
+#include <cppunit/config/SourcePrefix.h>
 
-#include "cppunit/config/SourcePrefix.h"
+#include "QueryDataTest.h"
 #include "QueryData.h"
+
 #include <vector>
 
 using namespace std;

@@ -49,9 +49,9 @@ public:
 		Nontoken
 	};
 
-	Token(string content, Type type);
-	Token(const Token& element);
 	Token& operator=(const Token& element);
+
+	Token(string content, Type type);
 
 	Type GetType();
 	string GetContent();

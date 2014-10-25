@@ -1,5 +1,5 @@
 #include "QueryPreprocessorTest.h"
-#include "QueryValidator.h"
+#include "QueryProcessor/QueryValidator.h"
 
 void QueryPreprocessorTest::setUp() {
 	

@@ -13,6 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\PKB">
+      <UniqueIdentifier>{b98a7aa6-4c3c-4cd2-835b-a395a4c1b6a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPAFrontEnd">
+      <UniqueIdentifier>{5b669470-4dc0-4583-9c26-02389018b038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\QueryProcessor">
+      <UniqueIdentifier>{e54187e0-0fb2-4425-87d8-3130e15dcd98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPAFrontEnd\DesignExtractor">
+      <UniqueIdentifier>{54956221-7e0b-4877-b7e0-44b527016904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPAFrontEnd\Parser">
+      <UniqueIdentifier>{391de580-d9a1-45dd-855e-1a92b82c3f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\QueryProcessor\QueryEvaluator">
+      <UniqueIdentifier>{f81ef34b-2d80-40df-847e-3930d6496d52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\QueryProcessor\QueryPreprocessor">
+      <UniqueIdentifier>{ee28d6c9-35f5-4d3d-899d-3640e911c295}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -28,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VarTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\UnitTesting\TestVarTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Token.cpp">
@@ -49,6 +67,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QueryProcessor\QueryValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Follows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryProcessor\QueryValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Follows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

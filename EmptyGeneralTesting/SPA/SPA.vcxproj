@@ -15,7 +15,8 @@
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
-    <ClCompile Include="..\UnitTesting\TestVarTable.cpp" />
+    <ClCompile Include="Follows.cpp" />
+    <ClCompile Include="Parent.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
@@ -27,6 +28,8 @@
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\TNode.h" />
+    <ClInclude Include="Follows.h" />
+    <ClInclude Include="Parent.h" />
     <ClInclude Include="QueryProcessor\Grammar.h" />
     <ClInclude Include="QueryProcessor\QueryData.h" />
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />

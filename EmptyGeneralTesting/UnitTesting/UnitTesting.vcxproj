@@ -44,12 +44,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\2014 - 2015 Sem1\CS3201\Tools Lab\cppunit-1.12.1\include;$(SolutionDir)source;$(SolutionDir)SPA;$(SolutionDir)include;C:\Users\Darren\Desktop\CS3201_TEAM03\EmptyGeneralTesting\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)source;$(SolutionDir)SPA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;D:\2014 - 2015 Sem1\CS3201\Tools Lab\cppunit-1.12.1\lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>$(TargetPath)</Command>

@@ -13,7 +13,7 @@ void TokenizerTest::setUp() {};
 void TokenizerTest::tearDown() {};
 
 //CPPUNIT_TEST_SUITE_REGISTRATION(TokenizerTest);
-
+/*
 void TokenizerTest::TestSymbolTokens() {
 	Token result("test", Token::Identifier);
 
@@ -146,3 +146,4 @@ void TokenizerTest::TestMixedTokens() {
 };
 
 
+*/

@@ -16,7 +16,6 @@
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
     <ClCompile Include="..\UnitTesting\TestVarTable.cpp" />
-    <ClCompile Include="..\UnitTesting\TestMain.cpp" />
     <ClCompile Include="QueryData.cpp" />
     <ClCompile Include="QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor.cpp" />

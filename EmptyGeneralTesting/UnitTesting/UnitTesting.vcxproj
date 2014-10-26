@@ -85,14 +85,14 @@
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
+    <ClCompile Include="VarTableTest.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="TestParser.h" />
-    <ClInclude Include="TestVarTable.h" />
+    <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,5 @@
-#include <algorithm>
 #include "VarTable.h"
+#include <algorithm>
 
 // Default constructor
 VarTable::VarTable() {

@@ -2,7 +2,7 @@
 
 #define TestVarTable_h
 
-#include<cppunit\extensions\HelperMacros.h>
+#include <cppunit\extensions\HelperMacros.h>
 
 class VarTableTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(VarTableTest);

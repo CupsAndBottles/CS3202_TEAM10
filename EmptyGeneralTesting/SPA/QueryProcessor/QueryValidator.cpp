@@ -6,13 +6,9 @@
 const std::string QueryValidator::de[] = {"procedure", "stmt", "stmtLst", "assign", "call", "while", "if", "variable", "prog_line", "constant"};
 const std::string QueryValidator::rel[] = { "Modifies", "Uses", "Calls", "Calls*", "Parent", "Parent*", "Follows", "Follows*", "Next", "Next*", "Affects", "Affects*" };
  
-QueryValidator::QueryValidator(void)
-{
-	DesignEntity.assign(de, de + sizeof(de));
-	Relationship.assign(rel, rel + sizeof(rel));
-}
+QueryValidator::QueryValidator(void) {}
 
-bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
+bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 {
 	std::vector<std::string> tokenList;
 	std::string token;
@@ -35,11 +31,14 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		//get the synonym
 		while(!IsSemiColon(token))
 		{
-			//check no duplicate
-			if(QueryData::IsSynonymExist(token,type))
-				return false;
+			Synonym synonym;
+			synonym.synonym = token;
 
-			queryData.InsertDeclaration(type,token);
+			//validate declaration
+			if(!ValidateDeclaration(synonym, type))	return false;
+
+			//save declaration
+			queryData.InsertDeclaration(synonym);
 
 			if(++it == tokenList.end())	return false;
 			token = *it;
@@ -48,10 +47,14 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		if(++it == tokenList.end())	return false;
 		token = *it;
 	}
-	//check declaration empty?
+	
+	//check if declaration is empty
+	if(queryData.GetDeclarations().empty()) {
+		std::cout << "Invalid Query: No declaration.\n";
+		return false;
+	}
 
-
-	//validate select
+	//check if next token is select, and validate select
 	if(IsSelect(token))
 	{
 		if(++it == tokenList.end())	return false;
@@ -62,12 +65,17 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 			if(++it == tokenList.end())	return false;
 			token = *it;
 
+			//if <> without synonym in it
+			if(IsCloseBracket(token))	return false;
+
 			while(!IsCloseBracket(token)) //>
 			{
-				std::string type;
-				if(!ValidateSelect(token,type))	return false;
+				Synonym synonym;
+				synonym.synonym = token;
+
+				if(!ValidateSelect(synonym,"true"))	return false;
 				
-				queryData.InsertSelect(type,token);
+				queryData.InsertSelect(synonym);
 
 				if(++it == tokenList.end())	return false;
 				token = *it;
@@ -79,16 +87,16 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 
 		else 
 		{
-			std::string type;
+			Synonym synonym;
+			synonym.synonym = token;
 
-			if(IsBoolean(token)) {}
-
-			else if(!ValidateSelect(token,type))	return false;
+			if(!ValidateSelect(synonym,"false"))	return false;
 			
-			else queryData.InsertSelect(type, token);
+			else queryData.InsertSelect(synonym);
 		}
 	}
 
+	//no select
 	else return false;
 
 	//validate such that, pattern, with
@@ -107,20 +115,24 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 			if(++it == tokenList.end())	return false;	//get relationship
 			token = *it;
 
+			Argument arg1, arg2;
+
 			if(IsRelationship(token)) //uses, modifies, parents, etc.
 			{
 				std::string relationship = token;			
 
 				if(++it == tokenList.end())	return false;	//get arg1
 				token = *it;
-				std::string arg1 = token;
+				arg1.value = token;
 
 				if(++it == tokenList.end())	return false;	//get arg2
 				token = *it;
-				std::string arg2 = token;
+				arg2.value = token;
 
-				//if(!ValidateRelationship(token,arg1,arg2))	return false;
-				queryData.InsertSuchThat(relationship,arg1,arg2);
+				Relationship rel_enum;
+
+				if(!ValidateRelationship(relationship, rel_enum, arg1, arg2))	return false;
+				queryData.InsertSuchThat(rel_enum, arg1, arg2);
 			}
 
 			else return false;
@@ -137,31 +149,39 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 
 		while(IsPattern(token) || IsAnd(token))	//pattern or and
 		{			
+
+				Argument arg1, arg2, arg3;
+				Synonym synonym;
+
 				if(++it == tokenList.end())	return false;	//get type
 				token = *it;
-				std::string type = token;
+				synonym.synonym = token;
 
 				if(++it == tokenList.end())	return false;	//get arg1
 				token = *it;
-				std::string arg1 = token;
+				arg1.value = token;
 
 				if(++it == tokenList.end())	return false;	//get arg2
 				token = *it;
-				std::string arg2 = token;
+				arg2.value = token;
 
-				std::string arg3 = "";
-
-				if(!QueryData::IsSynonymExist(type, "if"))		//if is pattern if(var,_,_), get arg3
+				if(QueryData::IsSynonymExist(synonym.synonym, synonym.type))		
 				{
-					if(++it == tokenList.end())	return false;	//get arg3
-					token = *it;
-					std::string arg3 = token;
+					if(synonym.type == IF)	//if pattern if(var,_,_), get arg3
+					{
+						if(++it == tokenList.end())	return false;	//get arg3
+						token = *it;
+						arg3.value = token;
+					}
+
+					if(!ValidatePattern(synonym, arg1, arg2, arg3))	
+						return false;
+
+					queryData.InsertPattern(synonym, arg1, arg2);
 				}
 
-				if(!ValidatePattern(type, arg1, arg2, arg3))	return false;
+				else return false;
 
-				queryData.InsertPattern(type,arg1,arg2);
-				
 				if(++it == tokenList.end())
 				{
 					endOfQuery = true;
@@ -171,7 +191,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 		}
 
 		if(endOfQuery)	return true;
-
+		/*
 		while(IsWith(token) || IsAnd(token))	//with or and
 		{			
 			if(++it == tokenList.end())	return false;	//get arg1
@@ -193,10 +213,10 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData queryData)
 			token = *it;
 		}
 
-		if(endOfQuery)	return true;
+		if(endOfQuery)	return true;*/
 	}
 
-	return true         ;
+	return true;
 }
 
 void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens, std::string delim)
@@ -218,54 +238,133 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 	}
 }
 
-bool QueryValidator::ValidateSelect(std::string synonym, std::string &type)
+/*
+- Check if there is any duplicated synonym in declaration. E.g. assign a1; while a1;
+- Design entities allowed in declaration are stmt, assign, while, if, variable, constant, procedure, prog_line, call
+  (Although assignnment 4 only have stmt, assign, while, variable, constant, prog_line)
+*/
+bool QueryValidator::ValidateDeclaration(Synonym &synonym, std::string type)
 {
-	if(QueryData::IsSynonymExist(synonym, type))
+	//check duplicated declaration
+	if(QueryData::IsSynonymExist(synonym.synonym, synonym.type))
+		return false;
+
+	//convert type(string) to enum
+	if(!GetSynonymType(type,synonym.type)) {
+		std::cout << "Invalid Query: No matched design entity type for declaration.\n";
+		return false;
+	}
+
+	//Design entity must be one of the following
+	const SynonymType list[] = {ASSIGN, STMT, WHILE, IF, VARIABLE, CONSTANT, PROCEDURE, PROG_LINE, CALL};
+	std::vector<SynonymType> list_vec(list, list + sizeof(list));
+
+	if(std::find(list_vec.begin(), list_vec.end(), synonym.type) != list_vec.end())
 		return true;
 
 	return false;
 }
 
 /*
-pattern a( synonym | _ | "string" , _ | "string" | _"string"_ )
-pattern if( synonym | _ | "string" , _ )
-pattern while( synonym | _ | "string" , _ )
+- Check if select BOOLEAN, if yes return synonym=type="BOOLEAN"
+- Otherwise, check if synonym is declared in declaration, if yes get the type and return type
 */
-bool QueryValidator::ValidatePattern(std::string synonym, std::string arg1, std::string arg2, std::string arg3)
+bool QueryValidator::ValidateSelect(Synonym &synonym, bool hasBracket)
 {
-	if(QueryData::IsSynonymExist(synonym,"assign"))
+	//can have attrRef
+
+	//cannot have BOOLEAN inside <>
+	if(hasBracket && IsBoolean(synonym.synonym))
+		return false;
+
+	else if(IsBoolean(synonym.synonym)) {
+		synonym.type = BOOLEAN;
+		return true;
+	}
+
+	//pass reference twice, not sure will work or not
+	else if(QueryData::IsSynonymExist(synonym.synonym, &synonym.type))
+		return true;
+
+	else return false;
+}
+
+/*
+pattern a	 ( Synonym | _ | "Ident" , _ | "Expression" | _"Expression"_ )
+pattern if	 ( Synonym | _ | "Ident" , _ )
+pattern while( Synonym | _ | "Ident" , _ )
+*/
+bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &arg2, Argument &arg3)
+{
+	if(synonym.type == ASSIGN)
 	{
-		if(arg1 == "_" || QueryData::IsSynonymExist(arg1, "variable") || IsString(arg1)) {}
+		if(arg1.value == "_") arg1.type = UNDERSCORE;
+		
+		else if(QueryData::IsSynonymExist(arg1.value, VARIABLE))	//must be variable
+		{
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, VARIABLE);
+		}
+			
+		else if(IsIdent(arg1.value)) arg1.type = IDENT;
 
 		else return false;
 
-		if(arg2 == "_" || IsString(arg2) || arg2.substr(0,2) == "_\"" && arg2.substr(arg2.length()-2,2) == "\"_") {}
+		if(arg2.value == "_") arg2.type = UNDERSCORE;
+		
+		else if(QueryData::IsSynonymExist(arg2.value, VARIABLE)) 
+		{
+			arg2.type = SYNONYM;
+			arg2.syn = Synonym(arg2.value, VARIABLE);
+		}
+
+		else if(IsExpression(arg2.value)) arg2.type = EXPRESSION;
 
 		else return false;
 
 		return true;
 	}
 
-	else if(QueryData::IsSynonymExist(synonym,"if"))
+	else if(synonym.type == IF)
 	{
-		if(arg1 == "_" || QueryData::IsSynonymExist(arg1, "variable") || IsString(arg1)) {}
+		if(arg1.value == "_") arg1.type = UNDERSCORE;
+		
+		else if(QueryData::IsSynonymExist(arg1.value, VARIABLE))	//must be variable
+		{
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, VARIABLE);
+		}
+			
+		else if(IsIdent(arg1.value)) arg1.type = IDENT;
 
 		else return false;
 
-		if(arg2 == "_" && arg3 == "_") {}
+		if(arg2.value == "_" && arg3.value == "_") 
+		{
+			arg2.type = UNDERSCORE;
+			arg3.type = UNDERSCORE;
+		}
 
 		else return false;
 
 		return true;
 	}
 
-	else if(QueryData::IsSynonymExist(synonym,"while"))
+	else if(synonym.type == WHILE)
 	{		
-		if(arg1 == "_" || QueryData::IsSynonymExist(arg1, "variable") || IsString(arg1)) {}
+		if(arg1.value == "_") arg1.type = UNDERSCORE;
+		
+		else if(QueryData::IsSynonymExist(arg1.value, VARIABLE))	//must be variable
+		{
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, VARIABLE);
+		}
+			
+		else if(IsIdent(arg1.value)) arg1.type = IDENT;
 
 		else return false;
 
-		if(arg2 == "_") {}
+		if(arg2.value == "_") arg2.type = UNDERSCORE;
 
 		else return false;
 
@@ -276,7 +375,7 @@ bool QueryValidator::ValidatePattern(std::string synonym, std::string arg1, std:
 }
 
 bool QueryValidator::ValidateWith(std::string arg1, std::string arg2)
-{
+{/*
 	//if arg1 = __.__, e.g. p.procname, tokenize it, else it must be prog_line synonym
 	if(arg1.find(".") != std::string::npos)
 	{
@@ -392,152 +491,199 @@ bool QueryValidator::ValidateWith(std::string arg1, std::string arg2)
 		else return false;
 	}
 	
-	else return false;
+	else return false;*/
+
+	return false; //delete this line after uncomment
 }
 	
-bool QueryValidator::ValidateRelationship(std::string rel, std::string arg1, std::string arg2)
+bool QueryValidator::ValidateRelationship(std::string rel, Relationship &rel_enum, Argument &arg1, Argument &arg2)
 {
 	//switch relationship and call function respectively
-	if(rel == "Modifies")
+	if(rel == "Modifies") {
+		rel_enum = MODIFIES;
 		return ValidateModifies(arg1,arg2);
+	}
 
-	else if(rel == "Uses")
+	else if(rel == "Uses") {
+		rel_enum = USES;
 		return ValidateModifies(arg1,arg2);
+	}
 
-	else if(rel == "Calls")
-		return ValidateCalls(arg1,arg2);
-
-	else if(rel == "Parent" || rel == "Parent*")
+	else if(rel == "Parent") {
+		rel_enum = PARENT;
 		return ValidateParent(arg1,arg2);
+	}
 
-	else if(rel == "Follows" || rel == "Follows*")
+	else if(rel == "Parent*") {
+		rel_enum = PARENTT;
+		return ValidateParent(arg1,arg2);
+	}
+
+	else if(rel == "Follows") {
+		rel_enum = FOLLOWS;
 		return ValidateFollows(arg1,arg2);
+	}
 
-	else if(rel == "Next" || rel == "Next*")
-		return ValidateNext(arg1,arg2);
-
-	else if(rel == "Affects" || rel == "Affects*")
-		return ValidateAffects(arg1,arg2);
+	else if(rel == "Follows*") {
+		rel_enum = FOLLOWST;
+		return ValidateFollows(arg1,arg2);
+	}
 
 	else return false;
 }
 
-bool QueryValidator::ValidateModifies(std::string arg1, std::string arg2)
+/*
+Modifies(Synonym | Integer | "Ident" , Synonym | _ | "Ident")
+Uses	(Synonym | Integer | "Ident" , Synonym | _ | "Ident")
+Argument 1 synonym - stmt, assign, while, if, prog_line, call, procedure
+Argument 2 synonym - variable
+*/
+bool QueryValidator::ValidateModifies(Argument &arg1, Argument &arg2)
 {
-	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
+	const SynonymType list[] = {STMT, ASSIGN, WHILE, IF, PROG_LINE, CALL, PROCEDURE};
  
-	std::vector<std::string> typeList(list, list + sizeof(list));
+	std::vector<SynonymType> typeList(list, list + sizeof(list));
 
-	if(QueryData::IsSynonymExist(arg1,typeList) || IsInteger(arg1)) {}
+	SynonymType temp;
+
+	//validate argument 1
+	if(QueryData::IsSynonymExist(arg1.value, &temp)) {
+		if(std::find(typeList.begin(), typeList.end(), temp) != typeList.end()) {
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, temp);
+		}
+
+		else return false;
+	}
+		
+	else if(IsInteger(arg1.value)) arg1.type = INTEGER;
+
+	else if(IsIdent(arg1.value)) arg1.type = IDENT;
+
 	else return false;
 
-	if(QueryData::IsSynonymExist(arg1,"variable") ||arg1 == "_" || IsString(arg1)) {}
+	//validate argument 2
+	if(arg2.value == "_") arg2.type = UNDERSCORE;
+		
+	else if(QueryData::IsSynonymExist(arg2.value, VARIABLE))	//must be variable
+	{
+		arg2.type = SYNONYM;
+		arg2.syn = Synonym(arg2.value, VARIABLE);
+	}
+			
+	else if(IsIdent(arg2.value)) arg2.type = IDENT;
+
 	else return false;
 
 	return true;
 }
 
-bool QueryValidator::ValidateUses(std::string arg1, std::string arg2)
-{
-	//same as validatemodifies, just use that?
-	
-	return true;
-
-}
-bool QueryValidator::ValidateCalls(std::string arg1, std::string arg2)
-{
-	if(QueryData::IsSynonymExist(arg1,"procedure") || arg1 == "_" || IsString(arg1)) {}
-	else return false;
-
-	if(QueryData::IsSynonymExist(arg2,"procedure") || arg2 == "_" || IsString(arg2)) {}
-	else return false;
-
-	return true;
-
-}
-bool QueryValidator::ValidateParent(std::string arg1, std::string arg2)
+/*
+Parent (Synonym | _ | Integer , Synonym | _ | Integer)
+Parent*(Synonym | _ | Integer , Synonym | _ | Integer)
+Argument 1 synonym - stmt, while, if, prog_line
+Argument 2 synonym - stmt, assign, while, if, prog_line, call
+*/
+bool QueryValidator::ValidateParent(Argument &arg1, Argument &arg2)
 { 
-	const std::string list1[] = {"while","if","prog_line","stmt"};
-	const std::string list2[] = {"while","if","prog_line","call","stmt","assign"};
+	const SynonymType list1[] = {STMT, WHILE, IF, PROG_LINE};
+	const SynonymType list2[] = {STMT, ASSIGN, WHILE, IF, PROG_LINE, CALL};
 
-	std::vector<std::string> typeList1(list1, list1 + sizeof(list1));
-	std::vector<std::string> typeList2(list2, list2 + sizeof(list2));
+	std::vector<SynonymType> typeList1(list1, list1 + sizeof(list1));
+	std::vector<SynonymType> typeList2(list2, list2 + sizeof(list2));
 
-	if(QueryData::IsSynonymExist(arg1,typeList1) || IsInteger(arg1)) {}
+	SynonymType temp;
+
+	//validate argument 1
+	if(QueryData::IsSynonymExist(arg1.value, &temp)) {
+		if(std::find(typeList1.begin(), typeList1.end(), temp) != typeList1.end()) {
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, temp);
+		}
+
+		else return false;
+	}
+		
+	else if(IsInteger(arg1.value)) arg1.type = INTEGER;
+
+	else if(arg1.value == "_") arg1.type = UNDERSCORE;
+
 	else return false;
 
-	if(QueryData::IsSynonymExist(arg2,typeList2) || IsInteger(arg2)) {}
-	else return false;
+	//validate argument 2
+	if(QueryData::IsSynonymExist(arg2.value, &temp))	
+	{
+		if(std::find(typeList2.begin(), typeList2.end(), temp) != typeList2.end()) {
+			arg2.type = SYNONYM;
+			arg2.syn = Synonym(arg2.value, temp);
+		}
 
-	//if _ , check declaration has more than one valid DE?
+		else return false;
+	}
 
-	return true;
+	else if(IsInteger(arg2.value)) arg2.type = INTEGER;
 
-}
-bool QueryValidator::ValidateFollows(std::string arg1, std::string arg2)
-{
-	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
+	else if(arg2.value == "_") arg2.type = UNDERSCORE;
 
-	std::vector<std::string> typeList(list, list + sizeof(list));
-
-	if(QueryData::IsSynonymExist(arg1,typeList) || IsInteger(arg1)) {}
-	else return false;
-
-	if(QueryData::IsSynonymExist(arg2,typeList) || IsInteger(arg2)) {}
-	else return false;
-
-	//if _ , check declaration has more than one valid DE?
-
-	return true;
-
-}
-bool QueryValidator::ValidateNext(std::string arg1, std::string arg2)
-{
-	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};
-
-	std::vector<std::string> typeList(list, list + sizeof(list));
-
-	if(QueryData::IsSynonymExist(arg1,typeList) || arg1 == "_" || IsInteger(arg1)) {}
-	else return false;
-
-	if(QueryData::IsSynonymExist(arg2,typeList) || arg2 == "_" || IsInteger(arg2)) {}
-	else return false;
-
-	return true;
-
-}
-bool QueryValidator::ValidateAffects(std::string arg1, std::string arg2)
-{
-	const std::string list[] = {"while","if","prog_line","call","stmt","assign"};	//not sure
-
-	std::vector<std::string> typeList(list, list + sizeof(list));
-
-	if(QueryData::IsSynonymExist(arg1,"assign") || arg1 == "_" || IsInteger(arg1)) {}
-	else return false;
-
-	if(QueryData::IsSynonymExist(arg2,typeList) || arg2 == "_" || IsInteger(arg2)) {}
 	else return false;
 
 	return true;
 }
 
-bool QueryValidator::IsInteger(const std::string& s)
+/*
+Follows (Synonym | _ | Integer , Synonym | _ | Integer)
+Follows*(Synonym | _ | Integer , Synonym | _ | Integer)
+Argument 1 synonym - stmt, assign, while, if, prog_line, call
+Argument 2 synonym - stmt, assign, while, if, prog_line, call
+*/
+bool QueryValidator::ValidateFollows(Argument &arg1, Argument &arg2)
 {
-    std::string::const_iterator it = s.begin();
-    while (it != s.end() && isdigit(*it)) ++it;
-    return !s.empty() && it == s.end();
-}
+	const SynonymType list[] = {STMT, ASSIGN, WHILE, IF, PROG_LINE, CALL};
 
-bool IsString(const std::string& s)
-{
-	if(s.at(0) == '\"' && s.at(s.length() - 1) == '\"')
-		return true;
+	std::vector<SynonymType> typeList(list, list + sizeof(list));
 
-	return false;
+	SynonymType temp;
+
+	//validate argument 1
+	if(QueryData::IsSynonymExist(arg1.value, &temp)) {
+		if(std::find(typeList.begin(), typeList.end(), temp) != typeList.end()) {
+			arg1.type = SYNONYM;
+			arg1.syn = Synonym(arg1.value, temp);
+		}
+
+		else return false;
+	}
+		
+	else if(IsInteger(arg1.value)) arg1.type = INTEGER;
+
+	else if(arg1.value == "_") arg1.type = UNDERSCORE;
+
+	else return false;
+
+	//validate argument 2
+	if(QueryData::IsSynonymExist(arg2.value, &temp))	
+	{
+		if(std::find(typeList.begin(), typeList.end(), temp) != typeList.end()) {
+			arg2.type = SYNONYM;
+			arg2.syn = Synonym(arg2.value, temp);
+		}
+
+		else return false;
+	}
+
+	else if(IsInteger(arg2.value)) arg2.type = INTEGER;
+
+	else if(arg2.value == "_") arg2.type = UNDERSCORE;
+
+	else return false;
+
+	return true;
 }
 
 bool QueryValidator::IsDeclaration(std::string str)
 {
+	std::vector<std::string> DesignEntity(de, de + sizeof(de));
+
 	if (std::find(DesignEntity.begin(), DesignEntity.end(), str) != DesignEntity.end())
 		return true;
 
@@ -592,8 +738,16 @@ bool QueryValidator::IsCloseBracket(std::string str)
 	return false;
 }
 
+bool QueryValidator::IsUnderScore(std::string str)
+{
+	if(str == "_")	return true;
+	return false;
+}
+
 bool QueryValidator::IsRelationship(std::string str)
 {
+	std::vector<std::string> Relationship(rel, rel + sizeof(rel));
+
 	if (std::find(Relationship.begin(), Relationship.end(), str) != Relationship.end())
 		return true;
 
@@ -604,4 +758,126 @@ bool QueryValidator::IsBoolean(std::string str)
 {
 	if(str == "BOOLEAN")	return true;
 	return false;
+}
+
+bool QueryValidator::IsExpression(std::string str)
+{
+	/*
+	"x", "x+y" , _"x+y"_ , _"x"_ , _ , "6" , "6+6", "x+6", "6+x"
+	*/
+	//remove white spaces
+	str.erase(std::remove_if(str.begin(), str.end(), [](char x){return isspace(x);}), str.end());
+	
+	//eliminates " " or _" "_ and get the content
+	if(str.at(0) == '\"' && str.at(str.length()-1) == '\"')		//"..."
+		str = str.substr(1, str.length()-2);
+
+	else if (str.at(0) == '_' && str.at(str.length()-1) == '_')	//_..._
+	{
+		if(str.at(1) == '\"' && str.at(str.length()-2) == '\"')	//_"..."_
+		{
+			int length = (str.length()-2)-2;
+			str = str.substr(2, length);
+		}
+
+		else return false;
+	}
+
+	else return false;
+
+	std::vector<std::string> tokenList;
+	std::string token;
+	std::string delim = "+*";	//might include () in the future
+
+	//tokenize
+	Tokenize(str,tokenList,delim);
+	
+	//for each factor, check if it is NAME or INTEGER
+	for(std::vector<std::string>::iterator it = tokenList.begin(); it != tokenList.end(); ++it)
+	{
+		token = *it;
+
+		if(!(IsName(*it) || IsInteger(*it)))
+			return false;
+	}
+	
+	return true;
+}
+
+bool QueryValidator::IsIdent(std::string str)
+{
+	/*
+	alphabet followed by alpanumeric or #
+	"x" , "x2", "xy" , "x123", "x#"
+	*/
+
+	//remove white spaces
+	str.erase(std::remove_if(str.begin(), str.end(), [](char x){return isspace(x);}), str.end());
+	
+	//eliminates " " and get the content
+	if(str.at(0) == '\"' && str.at(str.length()-1) == '\"')		//"..."
+		str = str.substr(1, str.length()-2);
+
+	else return false;
+
+	std::string::iterator it = str.begin();
+	
+	//first character must be alphabet
+	if(it != str.end() && isalpha(*it))	++it;
+	else return false;
+
+	//subsequent character must be alphanumeric or "#"
+	while (it != str.end() && (isalnum(*it) || (*it) == '#')) ++it;
+    return !str.empty() && it == str.end();
+
+	return false;
+}
+
+bool QueryValidator::IsName(std::string s)
+{
+	/*
+	alphabet followed by alpanumeric
+	x , x2, xy , x123
+	no ""
+	*/
+	std::string::iterator it = s.begin();
+
+	//first character must be alphabet
+	if(it != s.end() && isalpha(*it))	++it;
+	else return false;
+
+	//subsequent character must be alphanumeric
+	while (it != s.end() && (isalnum(*it))) ++it;
+    return !s.empty() && it == s.end();
+
+	return false;
+}
+
+bool QueryValidator::IsInteger(const std::string& s)
+{
+    std::string::const_iterator it = s.begin();
+
+    while (it != s.end() && isdigit(*it)) ++it;
+
+    return !s.empty() && it == s.end();
+}
+
+/*
+Convert synonym type string to enum
+*/
+bool QueryValidator::GetSynonymType(std::string type, SynonymType &enumType) 
+{
+	if(type == "assign")			enumType = ASSIGN;
+	else if(type == "stmt")			enumType = STMT;
+	else if(type == "while")		enumType = WHILE;
+	else if(type == "if")			enumType = IF;
+	else if(type == "variable")		enumType = VARIABLE;
+	else if(type == "constant")		enumType = CONSTANT;
+	else if(type == "procedure")	enumType = PROCEDURE;
+	else if(type == "prog_line")	enumType = PROG_LINE;
+	else if(type == "call")			enumType = CALL;
+	else if(type == "BOOLEAN")		enumType = BOOLEAN;
+	else return false;
+
+	return true;
 }

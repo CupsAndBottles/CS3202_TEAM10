@@ -1,5 +1,6 @@
+//#include<stdio.h>
 #include<string>
-#include<vector>
+#include<set>
 
 using namespace std;
 
@@ -9,16 +10,13 @@ public:
 	VarTable();
 
 	// Methods
-	int InsertVar(string varName);
-	int GetIndexOf(string varName); 
-	string GetVarName(int varIndex);
-	int GetSize();
+	int insertVar(string varName);
+	int getIndexOf(string varName); 
+	string getVarName(int varIndex);
+	int getSize();
 
 private:
-	vector<string>  varNames;	// List of variable strings, and their indexes
+	set<string>  varNames;	// List of variable strings
 	// insert subsequent columns of the VarTable here
-	
-	vector<string>::iterator SearchFor(string varName);
-	// other private methods
 
 };

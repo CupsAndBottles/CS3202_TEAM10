@@ -11,7 +11,7 @@ void Follows::SetFollows(int stmtBefore, int stmtAfter) {
 }
 
 bool Follows::IsFollows (int stmtBefore, int stmtAfter) {
-	return -123;
+	return false;
 }
 
 int Follows::GetFollowsBefore(int stmtAfter) {

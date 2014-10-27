@@ -6,24 +6,24 @@ std::vector<SuchThatClause> QueryData::suchThatClauses;
 std::vector<PatternClause>QueryData::patternClauses;
 std::vector<WithClause>QueryData::withClauses;
 
-void QueryData::InsertDeclaration(std::string type, std::string synonym)
+void QueryData::InsertDeclaration(Synonym synonym)
 {
-	declarations.push_back(Declaration(type, synonym));
+	declarations.push_back(Declaration(synonym));
 }
 
-void QueryData::InsertSelect(std::string type, std::string synonym)
+void QueryData::InsertSelect(Synonym synonym)
 {
-	selectClauses.push_back(SelectClause(type, synonym));;
+	selectClauses.push_back(SelectClause(synonym));
 }
 
-void QueryData::InsertPattern(std::string type, std::string arg1, std::string arg2)
+void QueryData::InsertPattern(Synonym synonym, Argument arg1, Argument arg2)
 {
-	patternClauses.push_back(PatternClause(type, arg1, arg2));
+	patternClauses.push_back(PatternClause(synonym, arg1, arg2));
 }
 
-void QueryData::InsertSuchThat(std::string condition, std::string arg1, std::string arg2)
+void QueryData::InsertSuchThat(Relationship relationship, Argument arg1, Argument arg2)
 {
-	suchThatClauses.push_back(SuchThatClause(condition, arg1, arg2));
+	suchThatClauses.push_back(SuchThatClause(relationship, arg1, arg2));
 }
 
 void QueryData::InsertWith(std::string arg1, std::string arg2)
@@ -56,23 +56,23 @@ std::vector<WithClause> QueryData::GetWiths()
 	return withClauses;
 }
 
-bool QueryData::IsSynonymExist(std::string synonym, std::string type)
+bool QueryData::IsSynonymExist(std::string synonym, SynonymType type)
 {
 	for(std::vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it)
 	{
-		if((*it).synonym == synonym && (*it).type == type)
+		if((*it).synonym.synonym == synonym && (*it).synonym.type == type)
 				return true;
 	}
 
 	return false;
 }
 
-bool QueryData::IsSynonymExist(std::string synonym, std::string *type)
+bool QueryData::IsSynonymExist(std::string synonym, SynonymType *type)
 {
 	for(std::vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it)
 	{
-		if((*it).synonym == synonym) {
-			*type = (*it).type;
+		if((*it).synonym.synonym == synonym) {
+			*type = (*it).synonym.type;
 			return true;
 		}
 	}
@@ -80,14 +80,14 @@ bool QueryData::IsSynonymExist(std::string synonym, std::string *type)
 	return false;
 }
 
-bool QueryData::IsSynonymExist(std::string synonym, std::vector<std::string> typeList)
+bool QueryData::IsSynonymExist(std::string synonym, std::vector<SynonymType> typeList)
 {
 	for(std::vector<Declaration>::iterator i = declarations.begin(); i != declarations.end(); ++i)
 	{
-		if((*i).synonym == synonym) {
-			for(std::vector<std::string>::iterator j = typeList.begin(); j != typeList.end(); ++j)
+		if((*i).synonym.synonym == synonym) {
+			for(std::vector<SynonymType>::iterator j = typeList.begin(); j != typeList.end(); ++j)
 			{
-				if((*i).type == (*j))
+				if((*i).synonym.type == (*j))
 					return true;
 			}
 		}

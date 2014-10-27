@@ -16,19 +16,19 @@ private:
 	static std::vector<WithClause> withClauses;
 
 public:
-	void InsertDeclaration(std::string, std::string);
-	void InsertSelect(std::string, std::string);
-	void InsertPattern(std::string, std::string, std::string);
-	void InsertSuchThat(std::string, std::string, std::string);
+	void InsertDeclaration(Synonym);
+	void InsertSelect(Synonym);
+	void InsertPattern(Synonym, Argument, Argument);
+	void InsertSuchThat(Relationship, Argument, Argument);
 	void InsertWith(std::string, std::string);
 
 	std::vector<Declaration> GetDeclarations();
-	std::vector<SelectClause> GetSelects();		//if empty = select BOOLEAN
+	std::vector<SelectClause> GetSelects();	
 	std::vector<SuchThatClause> GetSuchThats();
 	std::vector<PatternClause> GetPatterns();
 	std::vector<WithClause> GetWiths();
 
-	static bool IsSynonymExist(std::string, std::string);
-	static bool IsSynonymExist(std::string, std::string *);
-	static bool IsSynonymExist(std::string, std::vector<std::string>);
+	static bool IsSynonymExist(std::string, SynonymType);
+	static bool IsSynonymExist(std::string, SynonymType*);
+	static bool IsSynonymExist(std::string, std::vector<SynonymType>);
 };

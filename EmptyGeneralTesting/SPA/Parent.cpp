@@ -11,7 +11,7 @@ void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
 }
 
 bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
-	return -123;
+	return false;
 }
 
 int Parent::GetChildrenOf(int parentStmtIndex) {

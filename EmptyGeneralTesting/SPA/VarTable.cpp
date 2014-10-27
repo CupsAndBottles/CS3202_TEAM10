@@ -1,5 +1,6 @@
 #include "VarTable.h"
 #include <algorithm>
+#include <vector>
 
 // Default constructor
 VarTable::VarTable() {
@@ -7,17 +8,22 @@ VarTable::VarTable() {
 }
 
 // Methods
-int VarTable::insertVar(string varName) {
-	pair<set<string>::iterator, bool> insertResultPair = varNames.insert(varName);
-	set<string>::iterator varIndex = insertResultPair.first;
-	bool varExists = insertResultPair.second;
+int VarTable::InsertVar(string varName) {
+	vector<string>::iterator searchResult = SearchFor(varName);
 
-	return distance(varNames.begin(), insertResultPair.first);
+	if (searchResult != varNames.end()) {
+		return distance(varNames.begin(), searchResult);
+
+	} else {
+		varNames.push_back(varName);
+		return varNames.size() - 1;
+
+	}
 
 }
 
-int VarTable::getIndexOf(string varName) {
-	set<string>::iterator searchResult = varNames.find(varName);
+int VarTable::GetIndexOf(string varName) {
+	vector<string>::iterator searchResult = SearchFor(varName);
 
 	if (searchResult != varNames.end()) {
 		return distance(varNames.begin(), searchResult);
@@ -29,20 +35,17 @@ int VarTable::getIndexOf(string varName) {
 
 }
 
-string VarTable::getVarName(int varIndex) {
-	set<string>::iterator varNamesIterator = varNames.begin(); 
-
-	// if varIndex is out of range, throw exception
-
-	for (int i = 0; i < varIndex; i++) {
-		varNamesIterator++;
-	}
-
-	return *varNamesIterator;
+string VarTable::GetVarName(int varIndex) {
+	return varNames[varIndex];
 
 }
 
-int VarTable::getSize() {
+int VarTable::GetSize() {
 	return varNames.size();
+
+}
+
+vector<string>::iterator VarTable::SearchFor(string varName) {
+	return find(varNames.begin(), varNames.end(), varName);
 
 }

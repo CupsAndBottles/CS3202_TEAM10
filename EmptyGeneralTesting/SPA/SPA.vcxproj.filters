@@ -116,5 +116,8 @@
     <ClInclude Include="Follows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IndexNotFoundException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

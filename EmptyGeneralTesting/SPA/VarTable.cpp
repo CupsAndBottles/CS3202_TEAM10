@@ -1,4 +1,5 @@
 #include "VarTable.h"
+#include "IndexNotFoundException.h"
 #include <algorithm>
 #include <vector>
 
@@ -36,7 +37,11 @@ int VarTable::GetIndexOf(string varName) {
 }
 
 string VarTable::GetVarName(int varIndex) {
-	return varNames[varIndex];
+	if (varIndex >= 0 && varIndex < varNames.size()) {
+		return varNames[varIndex];
+	} else {
+		throw IndexNotFoundException();
+	}
 
 }
 

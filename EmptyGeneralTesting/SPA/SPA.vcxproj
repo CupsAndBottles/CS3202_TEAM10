@@ -38,6 +38,7 @@
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="IndexNotFoundException.h" />
     <ClInclude Include="VarTable.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

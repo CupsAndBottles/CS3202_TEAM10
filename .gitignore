@@ -2,8 +2,7 @@
 *.exe
 *.dll
 *.user
-
-*.vcxproj
+*.sdf
 
 #############################################################
 ## .gitignore template from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
@@ -80,7 +79,6 @@ ipch/
 *.aps
 *.ncb
 *.opensdf
-*.sdf
 *.cachefile
 
 # Visual Studio profiler

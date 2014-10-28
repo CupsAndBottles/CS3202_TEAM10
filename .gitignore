@@ -3,8 +3,6 @@
 *.dll
 *.user
 
-*.vcxproj
-
 #############################################################
 ## .gitignore template from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 #############################################################

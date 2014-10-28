@@ -13,6 +13,7 @@ public:
 	template<typename T>
 	static T typecast(TNode);
 private:
-	AST();	
+	AST();
+
 };
 

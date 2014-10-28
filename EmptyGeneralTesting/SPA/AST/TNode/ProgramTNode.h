@@ -12,6 +12,6 @@ public:
 	TNode* getDirectParent();
 	ContainerTNode* getRightSibling();
 private:
-	ProgramTNode(string, deque<ProcedureTNode>);
+	ProgramTNode(deque<ProcedureTNode>);
 };
 

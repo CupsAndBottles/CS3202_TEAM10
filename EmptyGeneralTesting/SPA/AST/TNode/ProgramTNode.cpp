@@ -1,10 +1,9 @@
 #include "ProgramTNode.h"
 
 
-ProgramTNode::ProgramTNode(string name, deque<ProcedureTNode> body) 
+ProgramTNode::ProgramTNode(deque<ProcedureTNode> body) 
 	: ContainerTNode(nullptr, nullptr, TNode::Program, TNode::dequeCaster<ProcedureTNode, TNode>(body)) {
 	children = TNode::dequeCaster<ProcedureTNode, TNode>(body);
-	name = (TNode::enumToString(TNode::Program) + ":" + name);
 }
 
 deque<ProcedureTNode> ProgramTNode::getBody() {

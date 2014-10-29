@@ -37,6 +37,15 @@ public:
 
 	static string enumToString(Type);
 
+	template<class T>
+	static T typecast(TNode obj);
+
+	template<class T>
+	static T typecast(TNode* obj);
+
+	template<class T>
+	static vector<T> vectorCaster(vector<TNode> vector);
+
 protected:	
 	Type type;
 	TNode* directParent;
@@ -49,15 +58,6 @@ protected:
 
 	virtual void setDirectParent(TNode*);
 	void buildName(string);
-
-	template<class T>
-	static T typecast(TNode obj);
-
-	template<class T>
-	static T typecast(TNode* obj);
-
-	template<class T>
-	static vector<T> vectorCaster(vector<TNode> vector);
 
 private:
 	static const string enumStringDeclarations[];

@@ -14,8 +14,3 @@ AST::AST() {}
 void AST::InitNewProgram(ProgramTNode program) {
 	programs.push_back(program);
 }
-
-template<typename T>
-T AST::typecast(TNode node) {
-	return dynamic_cast<T>(node);
-}

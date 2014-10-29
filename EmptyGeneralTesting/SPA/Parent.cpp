@@ -27,7 +27,7 @@ bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
 
 }
 
-int Parent::GetChildrenOf(int parentStmtIndex) {
+int Parent::GetChildOf(int parentStmtIndex) {
 	return -123;
 }
 

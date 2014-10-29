@@ -132,6 +132,9 @@
     <ClCompile Include="AST\TNode\ProgramTNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QueryProcessor\RelTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VarTable.h">
@@ -166,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files\SPAFrontEnd\Parser</Filter>
     </ClInclude>
     <ClInclude Include="AST\AST.h">
       <Filter>Header Files</Filter>
@@ -219,6 +219,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AST\TNode\ProgramTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryProcessor\RelTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

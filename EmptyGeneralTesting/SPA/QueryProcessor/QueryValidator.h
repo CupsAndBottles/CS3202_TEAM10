@@ -3,48 +3,44 @@
 #include <vector>
 #include "QueryData.h"
 
-
 class QueryValidator
 {
+	friend class QueryValidatorTest;
 
-private:
+protected:
 	static const std::string de[];
 	static const std::string rel[];
 
-public:
-	QueryValidator(void);
-	~QueryValidator(void);
-
-	bool ValidateQuery(std::string, QueryData&);
 	void Tokenize(std::string, std::vector<std::string>&, std::string);
+
+	//Validate Clause
+	bool ValidateDeclaration(Synonym&, std::string);
+	bool ValidateSelect(Synonym&);
+	bool ValidateRelationship(std::string, RelationshipType&, Argument&, Argument&);
+	bool ValidatePattern(Synonym, Argument&, Argument&);
+
+	//Validate Argument
+	bool IsInteger(const std::string&);
+	bool IsExpression(std::string);
+	bool IsIdent(std::string);
+	bool IsName(std::string);
+
+	//string matching
 	bool IsDeclaration(std::string);
+	bool IsRelationship(std::string);
 	bool IsSelect(std::string);
 	bool IsSemiColon(std::string);
 	bool IsSuchThat(std::string);
 	bool IsPattern(std::string);
-	bool IsWith(std::string);
-	bool IsAnd(std::string);
-	bool IsOpenBracket(std::string);
-	bool IsCloseBracket(std::string);
-	bool IsRelationship(std::string);
-	bool IsUnderScore(std::string);
-	
-	bool ValidateDeclaration(Synonym&, std::string);
-	bool ValidateSelect(Synonym&, bool);
-	bool ValidateRelationship(std::string, Relationship&, Argument&, Argument&);
-	bool ValidatePattern(Synonym, Argument&, Argument&, Argument&);
-	bool ValidateWith(std::string, std::string);
+	bool IsUnderscore(std::string);
 
-	bool ValidateModifies(Argument&, Argument&);
-	bool ValidateParent(Argument&, Argument&);
-	bool ValidateFollows(Argument&, Argument&);
-	
-	bool IsInteger(const std::string&);
-	bool IsString(const std::string&);
-	bool IsBoolean(std::string);
-	bool IsExpression(std::string);
-	bool IsIdent(std::string);
-	bool IsName(std::string);
-	bool GetSynonymType(std::string, SynonymType&); 
+	//Convert string to enum
+	bool GetEnumSynonymType(std::string, SynonymType&); 
+	bool GetEnumRelationshipType(std::string, RelationshipType&);
+
+public:
+	QueryValidator(void);
+
+	bool ValidateQuery(std::string, QueryData&);
 };
 

@@ -1,13 +1,13 @@
 #include "ProgramTNode.h"
 
-
-ProgramTNode::ProgramTNode(vector<ProcedureTNode> body) 
-	: ContainerTNode(nullptr, Program) {
-	setRightSibling(nullptr);
+ProgramTNode::ProgramTNode() 
+	: ContainerTNode(Program) {
+	directParent = nullptr;
+	rightSibling = nullptr;
 }
 
 vector<ProcedureTNode> ProgramTNode::getBody() {
-	return TNode::vectorCaster<TNode, ProcedureTNode>(getTNodes());
+	return TNode::vectorCaster<ProcedureTNode>(getTNodes());
 }
 
 TNode* ProgramTNode::getDirectParent() {
@@ -18,4 +18,8 @@ TNode* ProgramTNode::getDirectParent() {
 ContainerTNode* ProgramTNode::getRightSibling() {
 	throwUnsupportedOperationException();
 	return ContainerTNode::getRightSibling();
+}
+
+void ProgramTNode::addChild(ProcedureTNode procedure) {
+	TNode::addChild(procedure);
 }

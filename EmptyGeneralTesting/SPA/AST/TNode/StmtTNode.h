@@ -5,13 +5,15 @@
 class StmtTNode :
 	public virtual TNode {
 public:
-	StmtTNode(TNode*, Type, int, StmtTNode*);
+	void setParent(StmtTNode*);
 
 	StmtTNode* getParent();
 	StmtTNode* getFollows();
 	int getLineNumber();
 
 protected:
+	StmtTNode(Type, int);
+
 	int lineNumber;
 	StmtTNode* logicalParent;
 

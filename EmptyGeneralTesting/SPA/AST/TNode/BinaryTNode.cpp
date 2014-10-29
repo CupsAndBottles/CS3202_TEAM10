@@ -1,7 +1,12 @@
 #include "BinaryTNode.h"
 
-BinaryTNode::BinaryTNode(TNode* parent, string opr)
-	: TNode(parent, BinaryOperator, opr) {
+BinaryTNode::BinaryTNode(string opr)
+	: TNode(BinaryOperator, opr) {
+}
+
+void BinaryTNode::buildBinaryNode(TNode LHS, TNode RHS) {
+	addChild(LHS);
+	addChild(RHS);
 }
 
 TNode& BinaryTNode::getLHS() {

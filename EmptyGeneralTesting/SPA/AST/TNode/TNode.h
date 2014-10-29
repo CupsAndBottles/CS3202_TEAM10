@@ -19,18 +19,18 @@ public:
 		Call
 	};
 
-	TNode(TNode*, Type);
-	TNode(TNode*, Type, string);
+	TNode(Type);
+	TNode(Type, string);
 
 	virtual TNode* getDirectParent();
 	virtual TNode* getRightSibling();
 	virtual vector<TNode> getChildren();
 	virtual TNode& getChild(int);
 	Type getType();
+	bool isType(Type);
 	
 	
-	void setRightSibling(TNode*);
-	virtual void addChildren(vector<TNode>);
+	virtual void setRightSibling(TNode*);
 	virtual void addChild(TNode);
 	string getName();
 	virtual string getContent();
@@ -47,13 +47,17 @@ protected:
 
 	void throwUnsupportedOperationException();
 
+	virtual void setDirectParent(TNode*);
 	void buildName(string);
 
-	template<class T1, class T2>
-	static T2 typecast(T1 obj);
+	template<class T>
+	static T typecast(TNode obj);
 
-	template<class T1, class T2>
-	static vector<T2> vectorCaster(vector<T1> vector);
+	template<class T>
+	static T typecast(TNode* obj);
+
+	template<class T>
+	static vector<T> vectorCaster(vector<TNode> vector);
 
 private:
 	static const string enumStringDeclarations[];

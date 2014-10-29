@@ -6,7 +6,9 @@
 class WhileTNode :
 	public ConditionalTNode {
 public:
-	WhileTNode(StmtListTNode*, int, StmtTNode*);
+	WhileTNode(int);
+
+	void buildWhileTNode(VariableTNode, StmtListTNode);
 
 	StmtListTNode& getBody();
 private:

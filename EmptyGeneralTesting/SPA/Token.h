@@ -24,9 +24,6 @@ public:
 	static const string KEYWORD_ELSE;
 	static const string KEYWORD_PROCEDURE;
 
-	static const string NEWLINE_WIN;
-	static const string NEWLINE_UNIX;
-
 	enum Type {
 		StartOfStmtList,
 		EndOfStmtList,
@@ -43,7 +40,6 @@ public:
 		Then,
 		Else,
 		Procedure,
-		Newline,
 		Number,
 		Identifier,
 		Nontoken
@@ -53,13 +49,9 @@ public:
 
 	Token(string content, Type type);
 
-	Type GetType();
-	string GetContent();
-
-private:
 	const Type type;
 	const string content;
 
-	Token();
+private:
 
 };

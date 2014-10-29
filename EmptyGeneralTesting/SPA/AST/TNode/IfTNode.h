@@ -6,7 +6,9 @@
 class IfTNode :
 	public ConditionalTNode {
 public:
-	IfTNode(StmtListTNode*, int, StmtTNode*);
+	IfTNode(int);
+
+	void buildIfTNode(VariableTNode, StmtListTNode, StmtListTNode);
 
 	StmtListTNode& getThenBody();
 	StmtListTNode& getElseBody();

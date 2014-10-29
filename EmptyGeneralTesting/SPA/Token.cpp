@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Token.h"
+
 #include <iostream>
 
 using namespace std;
@@ -23,15 +24,4 @@ const string Token::KEYWORD_THEN		= "then";
 const string Token::KEYWORD_ELSE		= "else";
 const string Token::KEYWORD_PROCEDURE	= "Procedure";
 
-const string Token::NEWLINE_WIN			= "\r\n";
-const string Token::NEWLINE_UNIX		= "\n";
-
 Token::Token(string content, Type type) : content(content), type(type) {}
-
-Token::Type Token::GetType() {
-	return type;
-}
-
-string Token::GetContent() {
-	return content;
-}

@@ -2,9 +2,9 @@
 
 #include <string>
 
-ConstantTNode::ConstantTNode(BinaryTNode* parent, int value)
-	: AtomicTNode(parent, Constant, to_string((_Longlong)value))
-	, value(value) {
+ConstantTNode::ConstantTNode(string value)
+	: AtomicTNode(Constant, value)
+	, value(stoi(value)) {
 		buildName(enumToString(Constant).append(":"));
 }
 

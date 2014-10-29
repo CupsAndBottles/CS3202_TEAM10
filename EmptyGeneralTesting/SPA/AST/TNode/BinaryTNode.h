@@ -5,7 +5,9 @@
 class BinaryTNode : 
 	public virtual TNode {
 public:
-	BinaryTNode(TNode*, string);
+	BinaryTNode(string);
+
+	void buildBinaryNode(TNode, TNode);
 
 	virtual TNode& getLHS();
 	TNode& getRHS();

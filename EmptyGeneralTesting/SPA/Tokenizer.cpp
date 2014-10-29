@@ -3,8 +3,6 @@
 #include "Tokenizer.h"
 #include "Token.h"
 
-#include <iostream>
-#include <vector>
 #include <string>
 
 using namespace std;
@@ -49,8 +47,8 @@ vector<Token> Tokenizer::tokenize(string source) {
 				alphaString = "";
 			}
 
-			if (currentChar == '	' || currentChar == '\r' || currentChar == ' ') {
-				// if space or tab or cf, skip
+			if (currentChar == '	' || currentChar == '\r' || currentChar == '\n' || currentChar == ' ') {
+				// if space or tab or newline, skip
 				continue;
 			} else {
 				string charString = "" + currentChar;
@@ -98,10 +96,6 @@ Token::Type Tokenizer::stringToToken(string str) {
 		return Token::Else;
 	} else if (str == Token::KEYWORD_PROCEDURE) {
 		return Token::Procedure;
-	} else if (str == Token::NEWLINE_WIN) {
-		return Token::Newline;
-	} else if (str == Token::NEWLINE_UNIX) {
-		return Token::Newline;
 	} else {
 		return Token::Nontoken;
 	}

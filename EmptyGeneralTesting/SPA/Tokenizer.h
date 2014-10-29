@@ -1,10 +1,8 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
 #include "Token.h"
 
-using namespace std;
+#include <vector>
 
 class Tokenizer {
 public:

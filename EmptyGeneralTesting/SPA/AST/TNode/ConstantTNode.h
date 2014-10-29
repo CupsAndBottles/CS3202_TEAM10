@@ -6,7 +6,7 @@
 class ConstantTNode :
 	public AtomicTNode {
 public:
-	ConstantTNode(BinaryTNode*, int);
+	ConstantTNode(string);
 
 	int getValue();
 

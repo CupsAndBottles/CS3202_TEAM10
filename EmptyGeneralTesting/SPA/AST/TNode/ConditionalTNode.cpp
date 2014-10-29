@@ -1,10 +1,14 @@
 #include "ConditionalTNode.h"
 
-ConditionalTNode::ConditionalTNode(StmtListTNode* directParent, Type type, int lineNumber, StmtTNode* logicalParent) 
-	: TNode(directParent, type) 
-	, StmtTNode(directParent, type, lineNumber, logicalParent) {
+ConditionalTNode::ConditionalTNode(Type type, int lineNumber) 
+	: TNode(type) 
+	, StmtTNode(type, lineNumber) {
+}
+
+void ConditionalTNode::setCondition(VariableTNode condition) {
+	addChild(condition);
 }
 
 VariableTNode ConditionalTNode::getCondition() {
-	return TNode::typecast<TNode, VariableTNode>(getChild(0));
+	return TNode::typecast<VariableTNode>(getChild(0));
 }

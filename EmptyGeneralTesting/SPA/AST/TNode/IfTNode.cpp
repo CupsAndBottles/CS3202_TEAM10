@@ -1,16 +1,22 @@
 #include "IfTNode.h"
 
-IfTNode::IfTNode(StmtListTNode* directParent, int lineNumber, StmtTNode* logicalParent) 
-	: TNode(directParent, If)
-	, ConditionalTNode(directParent, If, lineNumber, logicalParent) {
+IfTNode::IfTNode(int lineNumber) 
+	: TNode(If)
+	, ConditionalTNode(If, lineNumber) {
 
 	buildName(enumToString(If));
 }
 
+void IfTNode::buildIfTNode(VariableTNode condition, StmtListTNode thenBranch, StmtListTNode elseBranch) {
+	setCondition(condition);
+	addChild(thenBranch);
+	addChild(elseBranch);
+}
+
 StmtListTNode& IfTNode::getThenBody() {
-	return typecast<TNode, StmtListTNode>(getChild(1));
+	return typecast<StmtListTNode>(getChild(1));
 }
 
 StmtListTNode& IfTNode::getElseBody() {
-	return typecast<TNode, StmtListTNode>(getChild(2));
+	return typecast<StmtListTNode>(getChild(2));
 }

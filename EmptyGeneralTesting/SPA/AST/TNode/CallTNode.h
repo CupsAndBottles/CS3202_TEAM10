@@ -6,7 +6,7 @@
 class CallTNode :
 	public StmtTNode {
 public:
-	CallTNode(StmtListTNode*, int, StmtTNode*, string);
+	CallTNode(int, string);
 
 	string getProcName();
 	string getContent();

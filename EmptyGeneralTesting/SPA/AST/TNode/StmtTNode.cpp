@@ -1,9 +1,12 @@
 #include "StmtTNode.h"
 
-StmtTNode::StmtTNode(TNode* directParent, Type type, int lineNumber, StmtTNode* logicalParent)
-	: TNode(directParent, type)
-	, lineNumber(lineNumber) 
-	, logicalParent(logicalParent) {
+StmtTNode::StmtTNode(Type type, int lineNumber)
+	: TNode(type)
+	, lineNumber(lineNumber) {
+}
+
+void StmtTNode::setParent(StmtTNode* logicalParent) {
+	logicalParent = logicalParent;
 }
 
 StmtTNode* StmtTNode::getParent() {
@@ -11,7 +14,7 @@ StmtTNode* StmtTNode::getParent() {
 }
 
 StmtTNode* StmtTNode::getFollows() {
-	return TNode::typecast<TNode*, StmtTNode*>(rightSibling);
+	return TNode::typecast<StmtTNode*>(rightSibling);
 }
 
 int StmtTNode::getLineNumber() {

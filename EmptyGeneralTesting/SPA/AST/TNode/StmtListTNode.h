@@ -6,8 +6,9 @@
 class StmtListTNode :
 	public ContainerTNode {
 public:
-	StmtListTNode(TNode*, string);
+	StmtListTNode(string);
 
+	void addChild(StmtTNode);
 	vector<StmtTNode> getStmtList();
 
 protected:

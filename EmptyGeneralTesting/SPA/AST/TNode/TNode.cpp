@@ -13,12 +13,12 @@ const string enumStringDeclarations[] = {
 	"Call"
 };
 
-TNode::TNode(TNode* parent, Type type)
-	: directParent(parent), type(type), name(""), content("") {
+TNode::TNode(Type type)
+	: type(type) {
 }
 
-TNode::TNode(TNode* parent, Type type, string content)
-	: directParent(parent), type(type), name(content), content(content) {
+TNode::TNode(Type type, string content)
+	: type(type), content(content) {
 }
 
 void TNode::throwUnsupportedOperationException() {
@@ -45,18 +45,24 @@ TNode::Type TNode::getType() {
 	return type;
 }
 
+bool TNode::isType(Type testType) {
+	return (type == testType);
+}
+
+void TNode::setDirectParent(TNode* parent) {
+	directParent = parent;
+}
+
 void TNode::setRightSibling(TNode* rightSibling) {
 	rightSibling = rightSibling;
 }
 
 void TNode::addChild(TNode child) {
-	children.push_back(child);
-}
-
-void TNode::addChildren(vector<TNode> newChildren) {
-	for (int i = 0; i < newChildren.size(); i++) {
-		addChild(newChildren[i]);
+	if (children.size() > 0) {
+		children.back().setRightSibling(&child);
 	}
+	children.push_back(child);
+	child.setDirectParent(this);
 }
 
 string TNode::getName() {
@@ -76,16 +82,21 @@ string TNode::enumToString(TNode::Type type) {
 	return enumStringDeclarations[type];
 }
 
-template<class T1, class T2>
-static T2 TNode::typecast(T1 obj) {
-	return dynamic_cast<T2>(obj);
+template <class T>
+T TNode::typecast(TNode obj) {
+	return dynamic_cast<T>(obj);
 }
 
-template<class T1, class T2>
-static vector<T2> TNode::vectorCaster(vector<T1> vector) {
-	vector<T2> result;
+template <class Tptr>
+Tptr TNode::typecast(TNode* obj) {
+	return dynamic_cast<Tptr>(obj);
+}
+
+template <class T>
+vector<T> TNode::vectorCaster(vector<TNode> vector) {
+	vector<T> result;
 	for (int i = 0; i < vector.size; i++) {
-		result.push_back(typecast<T1, T2>(vector[i]));
+		result.push_back(typecast<T>(vector[i]));
 	}
 	return vector;
 }

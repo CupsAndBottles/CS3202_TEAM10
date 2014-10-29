@@ -1,8 +1,8 @@
 #include "CallTNode.h"
 
-CallTNode::CallTNode(StmtListTNode* directParent, int lineNumber, StmtTNode* logicalParent, string procName) 
-	: TNode(directParent, Call, procName) 
-	, StmtTNode(directParent, Call, lineNumber, logicalParent) {
+CallTNode::CallTNode(int lineNumber, string procName) 
+	: TNode(Call, procName) 
+	, StmtTNode(Call, lineNumber) {
 
 	buildName(enumToString(Call).append(":"));
 }

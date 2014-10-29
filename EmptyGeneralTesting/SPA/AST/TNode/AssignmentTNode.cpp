@@ -1,13 +1,17 @@
 #include "AssignmentTNode.h"
 
-AssignmentTNode::AssignmentTNode(StmtListTNode* directParent, int lineNumber, StmtTNode* logicalParent)
-	: TNode(directParent, Assignment, "=")
-	, StmtTNode(directParent, Assignment, lineNumber, logicalParent)
-	, BinaryTNode(directParent, "=") {
+AssignmentTNode::AssignmentTNode(int lineNumber)
+	: TNode(Assignment, "=")
+	, StmtTNode(Assignment, lineNumber)
+	, BinaryTNode("=") {
 
 	buildName(enumToString(Assignment));
 }
 
+void AssignmentTNode::buildAssignmentNode(VariableTNode LHS, TNode RHS) {
+	buildBinaryNode(LHS, RHS);
+}
+
 VariableTNode& AssignmentTNode::getLHS() {
-	return typecast<TNode, VariableTNode>(getChild(0));
+	return typecast<VariableTNode>(getChild(0));
 }

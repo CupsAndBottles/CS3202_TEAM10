@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Token.h"
 #include "AST\TNode\TNode.h"
 #include "AST\TNode\ProgramTNode.h"
 
@@ -7,13 +8,15 @@
 
 class AST {
 public:
-	void initNewProgram(ProgramTNode);
-	TNode CreateTNode(TNode::Type, ...);
+	AST();
+
+	void InitNewProgram(ProgramTNode);
+	static TNode CreateTNode(TNode::Type, ...);
+	static TNode::Type GetTNodeTypeFrom(Token::Type);
 
 	template<typename T>
 	static T typecast(TNode);
 private:
-	AST();
-
+	vector<ProgramTNode> programs;
 };
 

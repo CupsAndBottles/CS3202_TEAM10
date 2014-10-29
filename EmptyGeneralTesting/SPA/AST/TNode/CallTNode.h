@@ -1,14 +1,17 @@
 #pragma once
 
-#include "AST\TNode\StmtTNode.h"
-#include "AST\TNode\StmtListTNode.h"
+#include "StmtTNode.h"
+#include "StmtListTNode.h"
 
 class CallTNode :
 	public StmtTNode {
 public:
+	CallTNode(StmtListTNode*, int, StmtTNode*, string);
+
 	string getProcName();
 	string getContent();
+
 protected:
-	CallTNode(StmtListTNode*, StmtTNode*, int, StmtTNode*, string);
+
 };
 

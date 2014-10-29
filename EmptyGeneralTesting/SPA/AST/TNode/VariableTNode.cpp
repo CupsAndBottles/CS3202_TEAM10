@@ -1,6 +1,6 @@
 #include "VariableTNode.h"
 
-VariableTNode::VariableTNode(TNode* parent, TNode* rightSibling, string identifier)
-	: AtomicTNode(parent, rightSibling, Variable, identifier) {
+VariableTNode::VariableTNode(TNode* parent, string identifier)
+	: AtomicTNode(parent, Variable, identifier) {
 		buildName(enumToString(Variable).append(":"));
 }

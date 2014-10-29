@@ -6,23 +6,19 @@ const string enumStringDeclarations[] = {
 	"Assignment",
 	"Variable",
 	"Constant",
-	"Plus",
-	"Minus",
-	"Multiply",
+	"BinaryOperator",
 	"StmtList",
 	"If",
-	"Then",
-	"Else",
 	"While",
 	"Call"
 };
 
-TNode::TNode(TNode* parent, TNode* rightSibling, Type type)
-	: directParent(parent), rightSibling(rightSibling), type(type), name(""), content("") {
+TNode::TNode(TNode* parent, Type type)
+	: directParent(parent), type(type), name(""), content("") {
 }
 
-TNode::TNode(TNode* parent, TNode* rightSibling, Type type, string content)
-	: directParent(parent), rightSibling(rightSibling), type(type), name(content), content(content) {
+TNode::TNode(TNode* parent, Type type, string content)
+	: directParent(parent), type(type), name(content), content(content) {
 }
 
 void TNode::throwUnsupportedOperationException() {
@@ -37,8 +33,20 @@ TNode* TNode::getRightSibling() {
 	return rightSibling;
 }
 
+vector<TNode> TNode::getChildren() {
+	return children;
+}
+
+TNode& TNode::getChild(int index) {
+	return children[index];
+}
+
 TNode::Type TNode::getType() {
 	return type;
+}
+
+void TNode::setRightSibling(TNode* rightSibling) {
+	rightSibling = rightSibling;
 }
 
 void TNode::addChild(TNode child) {
@@ -49,14 +57,6 @@ void TNode::addChildren(vector<TNode> newChildren) {
 	for (int i = 0; i < newChildren.size(); i++) {
 		addChild(newChildren[i]);
 	}
-}
-
-vector<TNode> TNode::getChildren() {
-	return children;
-}
-
-TNode& TNode::getChild(int index) {
-	return children[index];
 }
 
 string TNode::getName() {

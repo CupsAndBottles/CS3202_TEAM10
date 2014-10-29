@@ -9,8 +9,11 @@ class AssignmentTNode :
 	public StmtTNode,
 	public BinaryTNode {
 public:
+	AssignmentTNode(StmtListTNode*, int, StmtTNode*);
+
 	VariableTNode& getLHS();
+
 private:
-	AssignmentTNode(StmtListTNode*, StmtTNode*, int, StmtTNode*, VariableTNode, TNode);
+
 };
 

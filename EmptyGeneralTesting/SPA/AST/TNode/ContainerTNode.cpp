@@ -1,8 +1,7 @@
 #include "ContainerTNode.h"
 
-ContainerTNode::ContainerTNode(TNode* directParent, ContainerTNode* rightSibling, Type type, vector<TNode> nodes)
-	: TNode(directParent, rightSibling, type) {
-	addChildren(nodes);
+ContainerTNode::ContainerTNode(TNode* directParent, Type type)
+	: TNode(directParent, type) {
 }
 
 ContainerTNode* ContainerTNode::getRightSibling() {

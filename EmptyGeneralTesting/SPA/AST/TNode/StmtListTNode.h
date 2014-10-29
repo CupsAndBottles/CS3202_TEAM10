@@ -6,9 +6,11 @@
 class StmtListTNode :
 	public ContainerTNode {
 public:
+	StmtListTNode(TNode*, string);
+
 	vector<StmtTNode> getStmtList();
+
 protected:
-	StmtListTNode(TNode*, StmtListTNode*, string, vector<StmtTNode>);
 
 };
 

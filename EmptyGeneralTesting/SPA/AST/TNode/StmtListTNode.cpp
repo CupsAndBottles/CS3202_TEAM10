@@ -1,7 +1,7 @@
 #include "StmtListTNode.h"
 
-StmtListTNode::StmtListTNode(TNode* parent, StmtListTNode* rightSibling, string name, vector<StmtTNode> stmtList)
-	: ContainerTNode(parent, rightSibling, StmtList, vectorCaster<StmtTNode, TNode>(stmtList)) {
+StmtListTNode::StmtListTNode(TNode* parent, string name)
+	: ContainerTNode(parent, StmtList) {
 
 		buildName(name.append(":").append(enumToString(StmtList)));
 }

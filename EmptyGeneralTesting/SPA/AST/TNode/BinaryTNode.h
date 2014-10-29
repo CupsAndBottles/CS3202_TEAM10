@@ -5,9 +5,14 @@
 class BinaryTNode : 
 	public virtual TNode {
 public:
+	BinaryTNode(TNode*, string);
+
 	virtual TNode& getLHS();
 	TNode& getRHS();
+	string getContent();
+	string getOperator();
+
 protected:
-	BinaryTNode(TNode*, TNode*, Type, TNode, TNode);
+
 };
 

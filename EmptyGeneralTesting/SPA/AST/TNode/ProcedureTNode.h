@@ -5,10 +5,13 @@
 class ProcedureTNode :
 	public TNode {
 public:
+	ProcedureTNode(TNode*, string);
+
 	StmtListTNode& getProcedureBody();
 	string getProcName();
 	string getContent();
+
 private:
-	ProcedureTNode(TNode*, ProcedureTNode*, string, StmtListTNode);
+
 };
 

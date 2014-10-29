@@ -1,9 +1,8 @@
 #include "ConditionalTNode.h"
 
-ConditionalTNode::ConditionalTNode(StmtListTNode* directParent, StmtTNode* rightSibling, Type type, int lineNumber, StmtTNode* logicalParent, VariableTNode condition) 
-	: TNode(directParent, rightSibling, type) 
-	, StmtTNode(directParent, rightSibling, type, lineNumber, logicalParent) {
-	addChild(condition);
+ConditionalTNode::ConditionalTNode(StmtListTNode* directParent, Type type, int lineNumber, StmtTNode* logicalParent) 
+	: TNode(directParent, type) 
+	, StmtTNode(directParent, type, lineNumber, logicalParent) {
 }
 
 VariableTNode ConditionalTNode::getCondition() {

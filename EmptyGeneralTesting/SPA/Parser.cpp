@@ -47,6 +47,27 @@ Token Parser::consumeTopTokenOfType(Token::Type type) {
 	return consumeTopToken();
 }
 
+int getPrecedenceValue(Token::Type type) {
+	switch (type) {
+		case Token::CloseBrace:
+			// fallthrough
+		case Token::EndOfStmt:
+			return 0;
+		case Token::Plus:
+			// fallthrough
+		case Token::Minus:
+			return 1;
+		case Token::Multiply:
+			return 2;
+	}
+}
+
+int Parser::compare(Token::Type first, Token::Type second) {
+	int valFirst = getPrecedenceValue(first);
+	int valSecond = getPrecedenceValue(second);
+	return (valFirst - valSecond);
+}
+
 int Parser::Parse() {
 	AST ast;
 	ProgramTNode rootNode;

@@ -36,6 +36,7 @@
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
+    <ClCompile Include="QueryProcessor\RelTable.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="VarTable.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />
     <ClInclude Include="QueryProcessor\QueryProcessor.h" />
     <ClInclude Include="QueryProcessor\QueryValidator.h" />
+    <ClInclude Include="QueryProcessor\RelTable.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Token.h" />

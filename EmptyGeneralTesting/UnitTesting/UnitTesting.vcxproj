@@ -90,6 +90,8 @@
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
+    <ClCompile Include="QueryValidatorTest.cpp" />
+    <ClCompile Include="RelTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="VarTableTest.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
@@ -98,6 +100,8 @@
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
+    <ClInclude Include="QueryValidatorTest.h" />
+    <ClInclude Include="RelTableTest.h" />
     <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>

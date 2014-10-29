@@ -29,8 +29,8 @@ public:
 	int GetFollowsAfter(int stmtBefore);
 	vector<int> GetFollowsTBefore(int stmtAfter);
 	vector<int> GetFollowsTAfter(int stmtBefore);
-	vector<int> GetFollowsTBefore(int stmtAfter);
-	vector<int> GetFollowsTAfter(int stmtBefore);
+	//vector<int> GetFollowsTBefore(int stmtAfter);  ???
+	//vector<int> GetFollowsTAfter(int stmtBefore);  ???
 
 private:
 	vector<pair<int, int>> followsTable;	// List of Follows(s1, s2) relationships

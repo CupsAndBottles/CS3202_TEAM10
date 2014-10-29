@@ -1,7 +1,7 @@
 #include "AtomicTNode.h"
 
-AtomicTNode::AtomicTNode(TNode* directParent, TNode* rightSibling, Type type, string content)
-	: TNode(directParent, rightSibling, type, content) {
+AtomicTNode::AtomicTNode(TNode* directParent, Type type, string content)
+	: TNode(directParent, type, content) {
 }
 
 vector<TNode> AtomicTNode::getChildren() {

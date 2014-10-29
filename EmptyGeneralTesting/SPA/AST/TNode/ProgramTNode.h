@@ -6,10 +6,13 @@
 class ProgramTNode :
 	public ContainerTNode {
 public:
+	ProgramTNode(vector<ProcedureTNode>);
+
 	vector<ProcedureTNode> getBody();
 	TNode* getDirectParent();
 	ContainerTNode* getRightSibling();
-private:
-	ProgramTNode(vector<ProcedureTNode>);
+
+protected:
+
 };
 

@@ -1,12 +1,10 @@
 #include "IfTNode.h"
 
-IfTNode::IfTNode(StmtListTNode* directParent, StmtTNode* rightSibling, int lineNumber, StmtTNode* logicalParent, VariableTNode condition, StmtListTNode thenBranch, StmtListTNode elseBranch) 
-	: TNode(directParent, rightSibling, If)
-	, ConditionalTNode(directParent, rightSibling, If, lineNumber, logicalParent, condition) {
+IfTNode::IfTNode(StmtListTNode* directParent, int lineNumber, StmtTNode* logicalParent) 
+	: TNode(directParent, If)
+	, ConditionalTNode(directParent, If, lineNumber, logicalParent) {
 
 	buildName(enumToString(If));
-	addChild(thenBranch);
-	addChild(elseBranch);
 }
 
 StmtListTNode& IfTNode::getThenBody() {

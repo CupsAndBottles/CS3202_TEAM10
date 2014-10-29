@@ -5,8 +5,9 @@
 class VariableTNode :
 	public AtomicTNode {
 public:
+	VariableTNode(TNode*, string);
 
 protected:
-	VariableTNode(TNode*, TNode*, string);
+
 };
 

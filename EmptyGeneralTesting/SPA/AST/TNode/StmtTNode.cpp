@@ -1,7 +1,7 @@
 #include "StmtTNode.h"
 
-StmtTNode::StmtTNode(TNode* directParent, StmtTNode* rightSibling, Type type, int lineNumber, StmtTNode* logicalParent)
-	: TNode(directParent, rightSibling, type)
+StmtTNode::StmtTNode(TNode* directParent, Type type, int lineNumber, StmtTNode* logicalParent)
+	: TNode(directParent, type)
 	, lineNumber(lineNumber) 
 	, logicalParent(logicalParent) {
 }

@@ -1,9 +1,8 @@
 #include "ProcedureTNode.h"
 
-ProcedureTNode::ProcedureTNode(TNode* directParent, ProcedureTNode* rightSibling, string procName, StmtListTNode body)
-	: TNode(directParent, rightSibling, Procedure, procName) {
+ProcedureTNode::ProcedureTNode(TNode* directParent, string procName)
+	: TNode(directParent, Procedure, procName) {
 
-	addChild(body);
 	buildName(enumToString(Procedure).append(":"));
 }
 

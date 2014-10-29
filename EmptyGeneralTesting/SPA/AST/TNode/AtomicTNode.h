@@ -5,9 +5,12 @@
 class AtomicTNode :
 	public TNode {
 public:
+	AtomicTNode(TNode*, Type, string);
+
 	vector<TNode> getChildren();
 	void addChild();
+
 protected:
-	AtomicTNode(TNode*, TNode*, Type, string);
+
 };
 

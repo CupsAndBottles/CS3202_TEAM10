@@ -2,8 +2,8 @@
 
 
 ProgramTNode::ProgramTNode(vector<ProcedureTNode> body) 
-	: ContainerTNode(nullptr, nullptr, Program, TNode::vectorCaster<ProcedureTNode, TNode>(body)) {
-	children = TNode::vectorCaster<ProcedureTNode, TNode>(body);
+	: ContainerTNode(nullptr, Program) {
+	setRightSibling(nullptr);
 }
 
 vector<ProcedureTNode> ProgramTNode::getBody() {

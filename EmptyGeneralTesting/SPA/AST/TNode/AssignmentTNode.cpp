@@ -1,9 +1,9 @@
 #include "AssignmentTNode.h"
 
-AssignmentTNode::AssignmentTNode(StmtListTNode* directParent, StmtTNode* rightSibling, int lineNumber, StmtTNode* logicalParent, VariableTNode LHS, TNode RHS)
-	: TNode(directParent, rightSibling, Assignment)
-	, StmtTNode(directParent, rightSibling, Assignment, lineNumber, logicalParent)
-	, BinaryTNode(directParent, rightSibling, Assignment, LHS, RHS) {
+AssignmentTNode::AssignmentTNode(StmtListTNode* directParent, int lineNumber, StmtTNode* logicalParent)
+	: TNode(directParent, Assignment, "=")
+	, StmtTNode(directParent, Assignment, lineNumber, logicalParent)
+	, BinaryTNode(directParent, "=") {
 
 	buildName(enumToString(Assignment));
 }

@@ -18,6 +18,8 @@ public:
 
 private:
 	vector<pair<int, int>> followsTable;	// List of Follows(s1, s2) relationships
+	
+	bool AlreadyInserted(pair<int, int> newPair);
 	// insert other private methods here
 
 };

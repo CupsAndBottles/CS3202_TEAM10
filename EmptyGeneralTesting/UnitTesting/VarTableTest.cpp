@@ -115,6 +115,7 @@ void VarTableTest::testGetVarName() {
 
 	// test get a non-existent variable
 	CPPUNIT_ASSERT_THROW(varTableTest.GetVarName(0), IndexNotFoundException);
+	CPPUNIT_ASSERT_THROW(varTableTest.GetVarName(-1), IndexNotFoundException);
 
 	varTableTest.InsertVar("a");
 	varTableTest.InsertVar("a");

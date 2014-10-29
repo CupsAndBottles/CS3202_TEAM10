@@ -5,8 +5,8 @@
 class AtomicTNode :
 	public TNode {
 public:
-	const deque<TNode> getChildren() const;
-	void addChild() const;
+	vector<TNode> getChildren();
+	void addChild();
 protected:
 	AtomicTNode(TNode*, TNode*, Type, string);
 };

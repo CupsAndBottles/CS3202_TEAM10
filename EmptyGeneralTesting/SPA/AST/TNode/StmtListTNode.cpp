@@ -1,10 +1,11 @@
 #include "StmtListTNode.h"
 
+StmtListTNode::StmtListTNode(TNode* parent, StmtListTNode* rightSibling, string name, vector<StmtTNode> stmtList)
+	: ContainerTNode(parent, rightSibling, StmtList, vectorCaster<StmtTNode, TNode>(stmtList)) {
 
-StmtListTNode::StmtListTNode(string name, deque<StmtTNode> stmtList, TNode* parent, StmtListTNode* rightSibling) 
-	: ContainerTNode(TNode::StmtList, name + ":StmtList", TNode::dequeCaster<StmtTNode, TNode>(stmtList), parent, rightSibling) {
+		buildName(name.append(":").append(enumToString(StmtList)));
 }
 
-deque<StmtTNode> StmtListTNode::getStmtList() {
-	return TNode::dequeCaster<TNode, StmtTNode>(children);
+vector<StmtTNode> StmtListTNode::getStmtList() {
+	return vectorCaster<TNode, StmtTNode>(getChildren());
 }

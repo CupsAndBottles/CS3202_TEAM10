@@ -1,5 +1,6 @@
 #pragma once
-#include "AST\TNode\AtomicTNode.h"
+
+#include "AtomicTNode.h"
 
 class VariableTNode :
 	public AtomicTNode {

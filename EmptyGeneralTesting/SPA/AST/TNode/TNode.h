@@ -1,11 +1,10 @@
 #pragma once
 
-#include <deque>
+#include <vector>
 
 using namespace std;
 
-class TNode
-{
+class TNode {
 public:
 	enum Type {
 		Procedure = 0,
@@ -28,7 +27,7 @@ public:
 	virtual TNode* getRightSibling();
 	Type getType();
 	
-	virtual deque<TNode> getChildren();
+	virtual vector<TNode> getChildren();
 	virtual TNode& getChild(int);
 	string getName();
 	virtual string getContent();
@@ -40,11 +39,12 @@ protected:
 	
 	Type type;
 	TNode* directParent;
-	deque<TNode> children;
+	vector<TNode> children;
 	TNode* rightSibling;
 	string name;
 	string content;
 
+	virtual void addChildren(vector<TNode>);
 	virtual void addChild(TNode);
 	void throwUnsupportedOperationException();
 
@@ -54,7 +54,7 @@ protected:
 	static T2 typecast(T1 obj);
 
 	template<class T1, class T2>
-	static deque<T2> dequeCaster(deque<T1> deque);
+	static vector<T2> vectorCaster(vector<T1> vector);
 
 private:
 	static const string enumStringDeclarations[];

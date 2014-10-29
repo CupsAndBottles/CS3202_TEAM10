@@ -1,11 +1,10 @@
 #include "CallTNode.h"
 
-
 CallTNode::CallTNode(StmtListTNode* directParent, StmtTNode* rightSibling, int lineNumber, StmtTNode* logicalParent, string procName) 
-	: TNode(directParent, rightSibling, TNode::Call, procName) 
-	, StmtTNode(directParent, rightSibling, TNode::Call, lineNumber, logicalParent) {
+	: TNode(directParent, rightSibling, Call, procName) 
+	, StmtTNode(directParent, rightSibling, Call, lineNumber, logicalParent) {
 
-	buildName(enumToString(TNode::Call) + ":");
+	buildName(enumToString(Call).append(":"));
 }
 
 string CallTNode::getProcName(){

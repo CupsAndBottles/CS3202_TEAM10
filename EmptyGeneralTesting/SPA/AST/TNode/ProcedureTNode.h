@@ -1,7 +1,6 @@
 #pragma once
 
-#include "AST\TNode\StmtListTNode.h"
-#include "AST\TNode\ProgramTNode.h"
+#include "StmtListTNode.h"
 
 class ProcedureTNode :
 	public TNode {
@@ -10,6 +9,6 @@ public:
 	string getProcName();
 	string getContent();
 private:
-	ProcedureTNode(ProgramTNode*, ProcedureTNode*, string, StmtListTNode);
+	ProcedureTNode(TNode*, ProcedureTNode*, string, StmtListTNode);
 };
 

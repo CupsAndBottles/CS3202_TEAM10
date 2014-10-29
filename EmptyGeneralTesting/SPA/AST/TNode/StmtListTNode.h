@@ -1,16 +1,14 @@
 #pragma once
 
-#include "AST\TNode\ContainerTNode.h"
-#include "AST\TNode\StmtTNode.h"
-
-#include <deque>
+#include "ContainerTNode.h"
+#include "StmtTNode.h"
 
 class StmtListTNode :
 	public ContainerTNode {
 public:
-	deque<StmtTNode> getStmtList();
+	vector<StmtTNode> getStmtList();
 protected:
-	StmtListTNode(string, deque<StmtTNode>, TNode*, StmtListTNode*);
+	StmtListTNode(TNode*, StmtListTNode*, string, vector<StmtTNode>);
 
 };
 

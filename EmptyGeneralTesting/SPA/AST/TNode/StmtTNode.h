@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TNode.h"
-#include "StmtListTNode.h"
 
 class StmtTNode :
 	public virtual TNode {
@@ -10,7 +9,7 @@ public:
 	StmtTNode* getFollows();
 	int getLineNumber();
 protected:
-	StmtTNode(StmtListTNode*, StmtTNode*, Type, int, StmtTNode*);
+	StmtTNode(TNode*, StmtTNode*, Type, int, StmtTNode*);
 	int lineNumber;
 	StmtTNode* logicalParent;
 

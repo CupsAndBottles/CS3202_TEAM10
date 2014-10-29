@@ -1,6 +1,5 @@
 #include "BinaryTNode.h"
 
-
 BinaryTNode::BinaryTNode(TNode* parent, TNode* rightSibling, TNode::Type type, TNode LHS, TNode RHS)
 	: TNode(parent, rightSibling, type) {
 	addChild(LHS);

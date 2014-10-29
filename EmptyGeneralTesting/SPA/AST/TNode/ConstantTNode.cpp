@@ -2,12 +2,10 @@
 
 #include <string>
 
-using namespace std;
-
 ConstantTNode::ConstantTNode(BinaryTNode* parent, TNode* rightSibling, int value)
-	: AtomicTNode(parent, rightSibling, TNode::Constant, to_string(value))
+	: AtomicTNode(parent, rightSibling, Constant, to_string((_Longlong)value))
 	, value(value) {
-	buildName(enumToString(TNode::Constant) + ":");
+		buildName(enumToString(Constant).append(":"));
 }
 
 int ConstantTNode::getValue() {

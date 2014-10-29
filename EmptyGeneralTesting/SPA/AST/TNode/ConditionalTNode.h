@@ -1,7 +1,8 @@
 #pragma once
 
-#include "AST/TNode/StmtTNode.h"
-#include "AST/TNode/VariableTNode.h"
+#include "StmtTNode.h"
+#include "StmtListTNode.h"
+#include "VariableTNode.h"
 
 class ConditionalTNode :
 	public StmtTNode {

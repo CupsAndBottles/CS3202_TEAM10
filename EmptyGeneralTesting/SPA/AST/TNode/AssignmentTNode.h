@@ -1,8 +1,9 @@
 #pragma once
 
-#include "AST\TNode\StmtTNode.h"
-#include "AST\TNode\BinaryTNode.h"
-#include "AST\TNode\VariableTNode.h"
+#include "StmtTNode.h"
+#include "StmtListTNode.h"
+#include "BinaryTNode.h"
+#include "VariableTNode.h"
 
 class AssignmentTNode :
 	public StmtTNode,

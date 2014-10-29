@@ -1,7 +1,7 @@
 #pragma once
 
-#include "AST\TNode\ConditionalTNode.h"
-#include "AST\TNode\StmtListTNode.h"
+#include "ConditionalTNode.h"
+#include "StmtListTNode.h"
 
 class WhileTNode :
 	public ConditionalTNode {

@@ -1,19 +1,21 @@
 #include "ProgramTNode.h"
 
 
-ProgramTNode::ProgramTNode(deque<ProcedureTNode> body) 
-	: ContainerTNode(nullptr, nullptr, TNode::Program, TNode::dequeCaster<ProcedureTNode, TNode>(body)) {
-	children = TNode::dequeCaster<ProcedureTNode, TNode>(body);
+ProgramTNode::ProgramTNode(vector<ProcedureTNode> body) 
+	: ContainerTNode(nullptr, nullptr, Program, TNode::vectorCaster<ProcedureTNode, TNode>(body)) {
+	children = TNode::vectorCaster<ProcedureTNode, TNode>(body);
 }
 
-deque<ProcedureTNode> ProgramTNode::getBody() {
-	return TNode::dequeCaster<TNode, ProcedureTNode>(getTNodes());
+vector<ProcedureTNode> ProgramTNode::getBody() {
+	return TNode::vectorCaster<TNode, ProcedureTNode>(getTNodes());
 }
 
 TNode* ProgramTNode::getDirectParent() {
-	throwUnsupportedOperationException;
+	throwUnsupportedOperationException();
+	return ContainerTNode::getDirectParent();
 }
 
 ContainerTNode* ProgramTNode::getRightSibling() {
-	throwUnsupportedOperationException;
+	throwUnsupportedOperationException();
+	return ContainerTNode::getRightSibling();
 }

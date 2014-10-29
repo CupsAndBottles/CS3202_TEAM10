@@ -1,17 +1,16 @@
-#pragma once
-
 #include "AtomicTNode.h"
 
 AtomicTNode::AtomicTNode(TNode* directParent, TNode* rightSibling, Type type, string content)
 	: TNode(directParent, rightSibling, type, content) {
 }
 
-const deque<TNode> AtomicTNode::getChildren() const {
-	throwUnsupportedOperationException;
+vector<TNode> AtomicTNode::getChildren() {
+	throwUnsupportedOperationException();
+	return TNode::getChildren();
 }
 
-void AtomicTNode::addChild() const {
-	throwUnsupportedOperationException;
+void AtomicTNode::addChild() {
+	throwUnsupportedOperationException();
 }
 
 

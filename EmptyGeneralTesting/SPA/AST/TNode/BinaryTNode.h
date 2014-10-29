@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AST/TNode/TNode.h"
+#include "TNode.h"
 
 class BinaryTNode : 
 	public virtual TNode {

@@ -34,6 +34,27 @@
     <Filter Include="Header Files\QueryProcessor\QueryPreprocessor">
       <UniqueIdentifier>{ee28d6c9-35f5-4d3d-899d-3640e911c295}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PKB">
+      <UniqueIdentifier>{7210b3b2-a687-4681-8f18-1e0c0f4699e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QueryProcessor">
+      <UniqueIdentifier>{327833bc-d4cc-4460-9db8-1f31d0616812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SPAFrontEnd">
+      <UniqueIdentifier>{eb067ab2-e93b-4979-8093-ecb75d3760b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QueryProcessor\QueryEvaluator">
+      <UniqueIdentifier>{b58557eb-7c91-4493-b769-0ee982dbddf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QueryProcessor\QueryPreprocessor">
+      <UniqueIdentifier>{f43d3f2b-99dd-4ac6-9c82-34ff5c0a6bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SPAFrontEnd\DesignExtractor">
+      <UniqueIdentifier>{44a94662-c48f-4a34-8c5b-1cad6ebe531a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SPAFrontEnd\Parser">
+      <UniqueIdentifier>{9cec932e-a898-468e-9779-6296440e592f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">

@@ -18,6 +18,9 @@ public:
 
 private:
 	vector<pair<int, int>> parentTable;	// List of Parent(s1, s2) relationships
+	
+	bool AlreadyInserted(pair<int, int> newPair);
 	// insert other private methods here
+
 
 };

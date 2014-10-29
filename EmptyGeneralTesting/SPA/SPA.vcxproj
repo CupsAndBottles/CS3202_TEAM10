@@ -11,12 +11,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\DesignExtractor.cpp" />
-    <ClCompile Include="..\source\Parser.cpp" />
-    <ClCompile Include="..\source\PKB.cpp" />
-    <ClCompile Include="..\source\TNode.cpp" />
+    <ClCompile Include="AST\AST.cpp" />
+    <ClCompile Include="AST\TNode\AssignmentTNode.cpp" />
+    <ClCompile Include="AST\TNode\AtomicTNode.cpp" />
+    <ClCompile Include="AST\TNode\BinaryTNode.cpp" />
+    <ClCompile Include="AST\TNode\CallTNode.cpp" />
+    <ClCompile Include="AST\TNode\ConditionalTNode.cpp" />
+    <ClCompile Include="AST\TNode\ConstantTNode.cpp" />
+    <ClCompile Include="AST\TNode\ContainerTNode.cpp" />
+    <ClCompile Include="AST\TNode\IfTNode.cpp" />
+    <ClCompile Include="AST\TNode\ProcedureTNode.cpp" />
+    <ClCompile Include="AST\TNode\ProgramTNode.cpp" />
+    <ClCompile Include="AST\TNode\StmtListTNode.cpp" />
+    <ClCompile Include="AST\TNode\StmtTNode.cpp" />
+    <ClCompile Include="AST\TNode\TNode.cpp" />
+    <ClCompile Include="AST\TNode\VariableTNode.cpp" />
+    <ClCompile Include="AST\TNode\WhileTNode.cpp" />
+    <ClCompile Include="DesignExtractor.cpp" />
     <ClCompile Include="Follows.cpp" />
     <ClCompile Include="Parent.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PKB.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
@@ -26,20 +41,38 @@
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\TNode.h" />
+    <ClInclude Include="AST\AST.h" />
+    <ClInclude Include="AST\TNode\AssignmentTNode.h" />
+    <ClInclude Include="AST\TNode\AtomicTNode.h" />
+    <ClInclude Include="AST\TNode\BinaryTNode.h" />
+    <ClInclude Include="AST\TNode\CallTNode.h" />
+    <ClInclude Include="AST\TNode\ConditionalTNode.h" />
+    <ClInclude Include="AST\TNode\ConstantTNode.h" />
+    <ClInclude Include="AST\TNode\ContainerTNode.h" />
+    <ClInclude Include="AST\TNode\IfTNode.h" />
+    <ClInclude Include="AST\TNode\ProcedureTNode.h" />
+    <ClInclude Include="AST\TNode\ProgramTNode.h" />
+    <ClInclude Include="AST\TNode\StmtListTNode.h" />
+    <ClInclude Include="AST\TNode\StmtTNode.h" />
+    <ClInclude Include="AST\TNode\TNode.h" />
+    <ClInclude Include="AST\TNode\VariableTNode.h" />
+    <ClInclude Include="AST\TNode\WhileTNode.h" />
     <ClInclude Include="Follows.h" />
     <ClInclude Include="Parent.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="PKB.h" />
     <ClInclude Include="QueryProcessor\Grammar.h" />
     <ClInclude Include="QueryProcessor\QueryData.h" />
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />
     <ClInclude Include="QueryProcessor\QueryProcessor.h" />
     <ClInclude Include="QueryProcessor\QueryValidator.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Tokenizer.h" />
-    <ClInclude Include="Parser.h" />
     <ClInclude Include="Token.h" />
-    <ClInclude Include="IndexNotFoundException.h" />
     <ClInclude Include="VarTable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SPA.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
@@ -57,7 +90,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -76,6 +109,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -92,6 +126,9 @@
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Lib>
+    <Bscmake>
+      <PreserveSBR>true</PreserveSBR>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

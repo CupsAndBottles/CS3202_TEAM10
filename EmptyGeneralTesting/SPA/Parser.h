@@ -1,15 +1,15 @@
 #pragma once
 
-#include <iostream>;
-#include <vector>;
-#include "Token.h";
+#include "Token.h"
+
+#include <vector>
 
 using namespace std;
 
 class Parser {
 public:
-	int Parse(string);
+	static int Parse(string);
 private:
-	int Parse(vector<Token>);
-};
+	static int Parse(vector<Token>);
 
+};

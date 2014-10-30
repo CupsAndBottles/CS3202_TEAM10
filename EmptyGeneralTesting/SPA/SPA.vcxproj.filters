@@ -236,6 +236,12 @@
     <ClInclude Include="QueryProcessor\RelTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StmtTypeTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexNotFoundException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SPA.rc">

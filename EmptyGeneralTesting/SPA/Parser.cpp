@@ -59,6 +59,8 @@ int getPrecedenceValue(Token::Type type) {
 			return 1;
 		case Token::Multiply:
 			return 2;
+		default:
+			SyntaxError();
 	}
 }
 
@@ -74,8 +76,9 @@ int Parser::Parse() {
 	ast.InitNewProgram(rootNode);
 
 	while(tokens.size() != 0) {
-		Token procedureHead = consumeTopTokenOfType(Token::Procedure);
-		ProcedureTNode procedureNode(procedureHead.content);
+		consumeTopTokenOfType(Token::Procedure);
+		Token procedureName = consumeTopTokenOfType(Token::Identifier);
+		ProcedureTNode procedureNode(procedureName.content);
 		StmtListTNode procedureBody = parseStmtList("");
 		procedureNode.setProcedureBody(procedureBody);
 		rootNode.addChild(procedureNode);

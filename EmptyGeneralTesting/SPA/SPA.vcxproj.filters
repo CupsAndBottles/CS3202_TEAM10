@@ -46,6 +46,15 @@
     <Filter Include="Source Files\SPAFrontEnd\Parser">
       <UniqueIdentifier>{9cec932e-a898-468e-9779-6296440e592f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SPAFrontEnd">
+      <UniqueIdentifier>{e622a47d-8e3a-4c49-9648-88e0191bf3c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPAFrontEnd\Parser">
+      <UniqueIdentifier>{6fc8a6e4-bf96-4d89-95a5-7d78e3286829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPAFrontEnd\DesignExtractor">
+      <UniqueIdentifier>{158c0b4a-246b-407c-b499-5b71025d59e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VarTable.cpp">

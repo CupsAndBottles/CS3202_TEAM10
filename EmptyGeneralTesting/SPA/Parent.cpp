@@ -6,6 +6,7 @@
 // Default constructor
 Parent::Parent() {
 	// empty constructor
+
 }
 
 // Methods

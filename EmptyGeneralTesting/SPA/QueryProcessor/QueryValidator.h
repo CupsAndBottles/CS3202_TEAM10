@@ -12,6 +12,7 @@ protected:
 	static const std::string rel[];
 
 	void Tokenize(std::string, std::vector<std::string>&, std::string);
+	bool Tokenize(std::string, std::vector<std::string>&);
 
 	//Validate Clause
 	bool ValidateDeclaration(Synonym&, std::string);

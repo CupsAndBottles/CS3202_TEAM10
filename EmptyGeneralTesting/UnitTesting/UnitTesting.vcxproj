@@ -87,6 +87,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FollowsTest.cpp" />
+    <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
@@ -97,6 +99,8 @@
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FollowsTest.h" />
+    <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />

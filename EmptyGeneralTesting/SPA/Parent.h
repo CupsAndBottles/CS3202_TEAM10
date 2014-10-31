@@ -29,6 +29,9 @@ public:
 	vector<int> GetChildrenTOf(int parentStmtIndex);
 	bool HasAnyParents();
 
+	// helper methods for testing
+	int SizeOfParent();
+
 private:
 	vector<pair<int, int>> parentTable;	// List of Parent(s1, s2) relationships
 	

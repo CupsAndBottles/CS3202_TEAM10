@@ -28,6 +28,7 @@ public:
 	bool IsFollowsT(int stmtBefore, int stmtAfter);
 	vector<int> GetFollowsTBefore(int stmtAfter);
 	vector<int> GetFollowsTAfter(int stmtBefore);
+	bool HasAnyFollows();
 
 private:
 	vector<pair<int, int>> followsTable;	// List of Follows(s1, s2) relationships

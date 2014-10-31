@@ -69,6 +69,7 @@
     <ClInclude Include="QueryProcessor\QueryValidator.h" />
     <ClInclude Include="QueryProcessor\RelTable.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StmtTypeTable.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="VarTable.h" />

@@ -13,18 +13,209 @@ QueryValidatorTest::QueryValidatorTest(void) {}
 
 void QueryValidatorTest::ActualValidationTest()
 {
+	QueryValidator qv;
+	QueryData qd;
+
+	std::string query = "assign a;while w;Select a";
+	//std::string query = "assign a;while w;Select a such that Parent(w,a)";
+	qd.ClearData();
+
+	bool valid = qv.ValidateQuery(query, qd);
+	CPPUNIT_ASSERT(valid == true);
+	
+	int size = qd.GetDeclarations().size();
+	CPPUNIT_ASSERT(size == 2);
+
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.type == ASSIGN);
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.value == "W");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.type == WHILE);
+
+	size = qd.GetSelects().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.type == ASSIGN);
+	/*
+	size = qd.GetSuchThats().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).relationship == PARENT);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.value == "w");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.value == "w");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.type == WHILE);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "a");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.type == SYNONYM);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.value == "a");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.type == ASSIGN);
+	
+	size = qd.GetPatterns().size();
+	CPPUNIT_ASSERT(size == 0);*/
+
+
+	/*
+	query = "assign a ; Select a such that Modifies(a,5) pattern a(_ , _\" x+ y\" _)";
+	qd.ClearData();
+
+	valid = qv.ValidateQuery(query, qd);
+	CPPUNIT_ASSERT(valid == true);
+	
+	size = qd.GetDeclarations().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.type == ASSIGN);
+
+	size = qd.GetSelects().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.type == ASSIGN);
+
+	size = qd.GetSuchThats().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).relationship == MODIFIES);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.value == "a");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.value == "a");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "5");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.type == INTEGER);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.value == "");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE);
+	
+	size = qd.GetPatterns().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).synonym.type == ASSIGN);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.value == "_");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.type == UNDERSCORE);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.syn.value == "");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.value == "_\" x+ y\" _");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.type == EXPRESSION);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.value == "");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE);*/
 }
 
 void QueryValidatorTest::TokenizeTest()
 {
+	QueryValidator qv;
+	std::vector<std::string> tokenList;
+	std::string query = "assign a;while w;Select a such that Parent(w,a)";
+
+	//tokenize query
+	qv.Tokenize(query,tokenList);
+
+	int size = tokenList.size();
+
+	CPPUNIT_ASSERT(size == 13);
+	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
+	CPPUNIT_ASSERT(tokenList.at(1) == "a");
+	CPPUNIT_ASSERT(tokenList.at(2) == ";");
+	CPPUNIT_ASSERT(tokenList.at(3) == "while");
+	CPPUNIT_ASSERT(tokenList.at(4) == "w");
+	CPPUNIT_ASSERT(tokenList.at(5) == ";");
+	CPPUNIT_ASSERT(tokenList.at(6) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(7) == "a");
+	CPPUNIT_ASSERT(tokenList.at(8) == "such");
+	CPPUNIT_ASSERT(tokenList.at(9) == "that");
+	CPPUNIT_ASSERT(tokenList.at(10) == "Parent");
+	CPPUNIT_ASSERT(tokenList.at(11) == "w");
+	CPPUNIT_ASSERT(tokenList.at(12) == "a");
+
+
+	tokenList.clear();
+	query = "assign  a  ;    Select a pattern a ( \" x \" , _ \" y + 5 \" _  )";
+
+	qv.Tokenize(query,tokenList);
+
+	size = tokenList.size();
+	cout << "\n" << size << "\n";
+	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
+		cout << *it << "\n";
+
+	CPPUNIT_ASSERT(size == 9);
+	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
+	CPPUNIT_ASSERT(tokenList.at(1) == "a");
+	CPPUNIT_ASSERT(tokenList.at(2) == ";");
+	CPPUNIT_ASSERT(tokenList.at(3) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(4) == "a");
+	CPPUNIT_ASSERT(tokenList.at(5) == "pattern");
+	CPPUNIT_ASSERT(tokenList.at(6) == "a");
+	CPPUNIT_ASSERT(tokenList.at(7) == "\" x \"");
+	CPPUNIT_ASSERT(tokenList.at(8) == "_ \" y + 5 \" _");
+
+	
+	tokenList.clear();
+	query = "assign a;while w;Select a such that Parent(w,a) pattern a(_,_\"y+5\"_)";
+
+	//tokenize query
+	qv.Tokenize(query,tokenList);
+
+	size = tokenList.size();
+	CPPUNIT_ASSERT(size == 17);
+	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
+	CPPUNIT_ASSERT(tokenList.at(1) == "a");
+	CPPUNIT_ASSERT(tokenList.at(2) == ";");
+	CPPUNIT_ASSERT(tokenList.at(3) == "while");
+	CPPUNIT_ASSERT(tokenList.at(4) == "w");
+	CPPUNIT_ASSERT(tokenList.at(5) == ";");
+	CPPUNIT_ASSERT(tokenList.at(6) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(7) == "a");
+	CPPUNIT_ASSERT(tokenList.at(8) == "such");
+	CPPUNIT_ASSERT(tokenList.at(9) == "that");
+	CPPUNIT_ASSERT(tokenList.at(10) == "Parent");
+	CPPUNIT_ASSERT(tokenList.at(11) == "w");
+	CPPUNIT_ASSERT(tokenList.at(12) == "a");
+	CPPUNIT_ASSERT(tokenList.at(13) == "pattern");
+	CPPUNIT_ASSERT(tokenList.at(14) == "a");
+	CPPUNIT_ASSERT(tokenList.at(15) == "_");
+	CPPUNIT_ASSERT(tokenList.at(16) == "_\"y+5\"_");
+
+
+	tokenList.clear();
+	query = "assign a  ; while w , w1 ;  variable v  ;  Select w such that Modifies( 3 , w1 ) pattern a( \"  y  \"  , _ \" y + 5  \" _)";
+
+	qv.Tokenize(query,tokenList);
+
+	size = tokenList.size();
+
+	CPPUNIT_ASSERT(size == 21);
+	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
+	CPPUNIT_ASSERT(tokenList.at(1) == "a");
+	CPPUNIT_ASSERT(tokenList.at(2) == ";");
+	CPPUNIT_ASSERT(tokenList.at(3) == "while");
+	CPPUNIT_ASSERT(tokenList.at(4) == "w");
+	CPPUNIT_ASSERT(tokenList.at(5) == "w1");
+	CPPUNIT_ASSERT(tokenList.at(6) == ";");
+	CPPUNIT_ASSERT(tokenList.at(7) == "variable");
+	CPPUNIT_ASSERT(tokenList.at(8) == "v");
+	CPPUNIT_ASSERT(tokenList.at(9) == ";");
+	CPPUNIT_ASSERT(tokenList.at(10) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(11) == "w");
+	CPPUNIT_ASSERT(tokenList.at(12) == "such");
+	CPPUNIT_ASSERT(tokenList.at(13) == "that");
+	CPPUNIT_ASSERT(tokenList.at(14) == "Modifies");
+	CPPUNIT_ASSERT(tokenList.at(15) == "3");
+	CPPUNIT_ASSERT(tokenList.at(16) == "w1");
+	CPPUNIT_ASSERT(tokenList.at(17) == "pattern");
+	CPPUNIT_ASSERT(tokenList.at(18) == "a");
+	CPPUNIT_ASSERT(tokenList.at(19) == "\"  y  \"");
+	CPPUNIT_ASSERT(tokenList.at(20) == "_ \" y + 5  \" _");
 }
 
 void QueryValidatorTest::ClauseValidationTest()
 {
-	/*QueryValidator qv;
-	//QueryData qd;
+	QueryValidator qv;
+	QueryData qd;
 	Synonym syn;
 	syn.value = "a";
+
+	qd.ClearData();
 
 	bool valid = qv.ValidateDeclaration(syn, "assign");
 	CPPUNIT_ASSERT(valid == true);
@@ -58,10 +249,10 @@ void QueryValidatorTest::ClauseValidationTest()
 	syn.type = INVALID_SYNONYM_TYPE;
 	valid = qv.ValidateDeclaration(syn, "LOL");
 	CPPUNIT_ASSERT(valid == false);
-	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);*/
+	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);
 
 	//duplicated declaration
-	/*qd.InsertDeclaration(Synonym("a",ASSIGN));
+	qd.InsertDeclaration(Synonym("a",ASSIGN));
 	qd.InsertDeclaration(Synonym("w",WHILE));
 
 	syn.type = INVALID_SYNONYM_TYPE;
@@ -73,7 +264,7 @@ void QueryValidatorTest::ClauseValidationTest()
 	syn.type = INVALID_SYNONYM_TYPE;
 	valid = qv.ValidateDeclaration(syn, "while");
 	CPPUNIT_ASSERT(valid == false);
-	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);*/
+	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);
 }
 
 void QueryValidatorTest::ArgumentValidationTest()
@@ -82,22 +273,22 @@ void QueryValidatorTest::ArgumentValidationTest()
 
 	//Function in test : bool IsExpression(std::string)
 	bool matched = qd.IsExpression("\"x\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 	
 	matched = qd.IsExpression("\"xyz\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"x50\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"x388x3fg\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"45\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"0\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"25jj\"");
 	CPPUNIT_ASSERT(matched == false);
@@ -112,19 +303,34 @@ void QueryValidatorTest::ArgumentValidationTest()
 	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"x+y\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\" x + y \"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\" 5 + 7\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\"4+a1\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("\" w +2\"");
-	CPPUNIT_ASSERT(matched == true);
+	CPPUNIT_ASSERT(matched == false);
+
+	matched = qd.IsExpression("_");
+	CPPUNIT_ASSERT(matched == false);
+
+	matched = qd.IsExpression("_\"\"_");		//_""_
+	CPPUNIT_ASSERT(matched == false);
+
+	matched = qd.IsExpression("_\" \"_");		//_" "_
+	CPPUNIT_ASSERT(matched == false);
+
+	matched = qd.IsExpression("_\"  _");		//_"  _
+	CPPUNIT_ASSERT(matched == false);
+	
+	matched = qd.IsExpression("__");			//__
+	CPPUNIT_ASSERT(matched == false);
 
 	matched = qd.IsExpression("_\"x\"_");
 	CPPUNIT_ASSERT(matched == true);

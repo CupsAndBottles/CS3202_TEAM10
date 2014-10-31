@@ -1,4 +1,5 @@
 #include "QueryData.h"
+#include <iostream>
 
 std::vector<Declaration> QueryData::declarations;
 std::vector<SelectClause> QueryData::selectClauses;	
@@ -45,6 +46,14 @@ std::vector<SuchThatClause> QueryData::GetSuchThats()
 	return suchThatClauses;
 }
 
+void QueryData::ClearData()
+{
+	declarations.clear();
+	selectClauses.clear();
+	suchThatClauses.clear();
+	patternClauses.clear();
+}
+
 /*
 Check if a synonym "synonym" of type "type" is declared
 Used when the type is known
@@ -81,7 +90,9 @@ bool QueryData::IsSynonymExist(std::string synonym)
 {
 	for(std::vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it)
 	{
-		if((*it).synonym.value == synonym)
+		std::cout << "here " << (*it).synonym.value << "\n";
+
+		if((*it).synonym.value == synonym) 
 			return true;
 	}
 

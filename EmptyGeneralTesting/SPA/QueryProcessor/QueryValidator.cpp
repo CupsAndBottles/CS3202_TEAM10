@@ -13,7 +13,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 {
 	std::vector<std::string> tokenList;
 	std::string token;
-	std::string delim = " ,()";
+	std::string delim = " ,();";
 
 	//tokenize query
 	Tokenize(query,tokenList,delim);
@@ -30,7 +30,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		token = *it;
 
 		//get the synonym
-		while(!IsSemiColon(token))
+		while(!IsUnderscore(token))
 		{
 			Synonym synonym;
 			synonym.value = token;
@@ -172,8 +172,6 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	return false;
 }
 
-//does not take care of whitespace in expression, need to implement that
-//pattern a(" x ", " x + y ")
 void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens, std::string delim)
 {
 	std::stringstream stringStream(str);
@@ -193,6 +191,182 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 	}
 }
 
+bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &tokens) {
+		bool isIdent = false, isExpression = false;
+	for (int pos = 0; pos < query.length(); pos++) { // loop through string
+		char currentChar = query[pos];
+		static std::string integer = "";
+		static std::string alphaString = "";
+
+
+		std::cout << "char[" << pos << "] : " << currentChar << "\n";
+
+		if (currentChar >= 48 && currentChar <= 57) { // integer
+			std::cout << "In Integer\n";
+			if (alphaString == "") {
+				integer = integer + currentChar;
+			} else {
+				alphaString = alphaString + currentChar;
+			}
+
+		} else if ((currentChar >= 65 && currentChar <= 90) ||
+				   (currentChar >= 97 && currentChar <= 122)) { // alpha
+			
+					   std::cout << "In alphabet\n";
+			if (integer != "") {
+				//throw (std::string) "Invalid idenitifier.";
+				return false;
+			} else {
+				alphaString = alphaString + currentChar;
+			}
+
+		} else { // symbol, whitespace or endline
+			std::cout << "In Others\n";
+			if (integer != "") { // previous substring is integer
+				tokens.push_back(integer);
+				integer = "";
+			} 
+			else if (alphaString != "") { // previous substring is... string
+				
+				//if string begins with " or _ which means an expression or IDENT, do not push back
+				if(!(alphaString.at(0) == '"' || alphaString.at(0) == '_'))
+				{
+					tokens.push_back(alphaString);
+					alphaString = "";
+				}
+			}
+
+			/*
+			( - ignore
+			) - ignore
+			, - ignore
+			; - push back
+			" - push back
+			_ - push back
+			*/
+			//if is ( or ) or , just ignore
+			if (currentChar == '(' || currentChar == ')')
+				continue;
+
+			else if(currentChar == ',') {
+				std::cout << "In ,\n";
+				if(isExpression)	//current string start with underscore, push back the first char
+				{
+					std::cout << "In isExpression\n";
+					std::string cs(1,alphaString.at(0));
+					tokens.push_back(cs);
+					isExpression = false;
+					alphaString = "";
+				}
+
+				else continue;
+			}
+
+			//if is white space, depends on previous string
+			else if (currentChar == '	' || currentChar == '\r' || currentChar == '\n' || currentChar == ' ') {
+				std::cout << "In space\n";
+				//if previous string is not empty means it is an expression or IDENT " x " , " x + y " , _ " x + 5 " _ or just _ 
+				//if former case, do not ignore white space
+				//if latter case, pushback tokens
+
+				if (alphaString != "")
+					alphaString += currentChar;
+				
+				//if previous string is empty, ignore whitespace
+				else continue;
+			} 
+			else {
+				if(currentChar == ';')
+				{
+					std::cout << "In ;\n";
+					//push back tokens
+					tokens.push_back(";");
+				}
+				else if(currentChar == '"')
+				{
+					std::cout << "In \"\n";
+					//if alphastring is empty, add to alphastring
+					//else if alphastring is not empty, check if first char is either " or _, if yes add to alphastring and push back, clear alphastring
+					//else return false
+
+					if(alphaString == "") {
+						std::cout << "In empty string\n";
+						alphaString += currentChar;
+						isIdent = true;
+					}
+
+					else {
+						if(isIdent) {
+							std::cout << "In isIdent \"\n";
+							alphaString += currentChar;
+							tokens.push_back(alphaString);
+							alphaString = "";
+							isIdent = false;
+						}
+
+						else if(isExpression) {
+							std::cout << "In isExpression\n";
+							alphaString += currentChar;
+						}
+
+						else {
+							std::cout << "Whaaa??\n";
+							return false;
+						}
+					}
+				}
+
+				else if(currentChar == '_')
+				{
+					std::cout << "In _\n";
+					if(alphaString == "") {
+						std::cout << "In empty string\n";
+						alphaString += currentChar;
+						isExpression = true;
+					}
+
+					else {
+						if(isExpression) {
+							std::cout << "In isExpression\n";
+							alphaString += currentChar;
+							tokens.push_back(alphaString);
+							alphaString = "";
+							isExpression = false;
+						}
+						else {
+							std::cerr << "Whaaa??\n";
+							return false;
+						}
+					}
+				}
+
+				else if(currentChar == '+') 
+				{
+					std::cout << "In +\n";
+					if(isExpression) {
+						std::cout << "In isExpression\n";
+						alphaString += currentChar;
+					}
+
+					else {
+						std::cout << "Invalid character +\n";
+						return false;
+					}
+				}
+
+				else {
+					std::cout << "Invalid character.\n";
+					return false;
+				}
+			}
+		}
+
+		std::cout << "fine\n";
+	}
+
+	return true;
+}
+
 /*
 - Check if there is any duplicated synonym in declaration. E.g. assign a1; while a1;
 - Design entities allowed in declaration are stmt, assign, while, if, variable, constant, procedure, prog_line, call
@@ -201,8 +375,10 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 bool QueryValidator::ValidateDeclaration(Synonym &synonym, std::string type)
 {
 	//check duplicated declaration
-	if(QueryData::IsSynonymExist(synonym.value))
+	if(QueryData::IsSynonymExist(synonym.value)) {
+		std::cout << "Synonym already declared.\n";
 		return false;
+	}
 
 	//convert type(string) to enum
 	if(!GetEnumSynonymType(type,synonym.type)) {
@@ -345,8 +521,6 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 }
 
 /*
-"factor"
-"factor+factor"
 _"factor"_
 _"factor+factor"_
 _
@@ -361,10 +535,13 @@ bool QueryValidator::IsExpression(std::string str)
 	str.erase(std::remove_if(str.begin(), str.end(), [](char x){return isspace(x);}), str.end());
 	
 	//eliminates " " or _" "_ and get the content
-	if(str.at(0) == '\"' && str.at(str.length()-1) == '\"')		//"..."
-		str = str.substr(1, str.length()-2);
+	//if(str.at(0) == '\"' && str.at(str.length()-1) == '\"')		//"..."
+	//	str = str.substr(1, str.length()-2);
 
-	else if (str.at(0) == '_' && str.at(str.length()-1) == '_')	//_..._
+	//str.length() must > 4? _""_
+	if(str.length() < 5)	return false;
+
+	if (str.at(0) == '_' && str.at(str.length()-1) == '_')	//_..._
 	{
 		if(str.at(1) == '\"' && str.at(str.length()-2) == '\"')	//_"..."_
 		{

@@ -8,7 +8,7 @@ Parent::Parent() {
 	// empty constructor
 
 }
-
+/*
 // Methods
 void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
 	pair<int, int> newParentRelationship(parentStmtIndex, childStmtIndex);
@@ -41,4 +41,4 @@ bool Parent::AlreadyInserted(pair<int, int> newPair) {
 
 	return newPairIterator != parentTable.end();
 
-}
+}*/

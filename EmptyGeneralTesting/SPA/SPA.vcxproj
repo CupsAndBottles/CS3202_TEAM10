@@ -59,6 +59,7 @@
     <ClInclude Include="AST\TNode\VariableTNode.h" />
     <ClInclude Include="AST\TNode\WhileTNode.h" />
     <ClInclude Include="Follows.h" />
+    <ClInclude Include="IndexNotFoundException.h" />
     <ClInclude Include="Parent.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PKB.h" />

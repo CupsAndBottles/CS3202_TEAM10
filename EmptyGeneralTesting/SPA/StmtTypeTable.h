@@ -1,7 +1,8 @@
 #include <utility>
 #include <vector>
-#include "Grammar.h"
-#include "TNode.h"
+#include <map>
+#include "AST\TNode\TNode.h"
+#include "QueryProcessor\Grammar.h"
 
 using namespace std;
 

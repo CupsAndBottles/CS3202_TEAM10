@@ -1,8 +1,10 @@
 #include "Parent.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
 
+/** public methods **/
 // Default constructor
 Parent::Parent() {
 	// empty constructor
@@ -28,14 +30,25 @@ bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
 
 }
 
-int Parent::GetChildOf(int parentStmtIndex) {
-	return -123;
+vector<int> Parent::GetParentTOf(int childStmtIndex) {
+	vector<int> childrenList;
+	return childrenList;
 }
 
-int Parent::GetParentOf(int childStmtIndex) {
-	return -123;
+vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
+	vector<int> childrenList;
+	return childrenList;
+
 }
 
+bool Parent::HasAnyParents() {
+	return false;
+}
+
+*/
+
+/** private methods **/
+/*
 bool Parent::AlreadyInserted(pair<int, int> newPair) {
 	vector<pair<int, int>>::iterator newPairIterator = find(parentTable.begin(), parentTable.end(), newPair);
 

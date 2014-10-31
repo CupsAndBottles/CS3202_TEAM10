@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 /** public methods **/
 // Default constructor
@@ -66,26 +67,68 @@ vector<int> Parent::GetChildrenOf(int parentStmtIndex) {
 	return childrenList;
 }
 
-/*
 bool Parent::IsParentT(int parentStmtIndex, int childStmtIndex) {
-	return false
+	vector<int> childrenList = GetChildrenOf(parentStmtIndex);	// this operation is very time-consuming
+	vector<int> grandChildrenList;
+
+	for (unsigned int i = 0; i < childrenList.size(); i++) {
+		if (childStmtIndex == childrenList.at(i)) {
+			return true;
+
+		} else {
+			grandChildrenList = GetChildrenOf(childrenList.at(i));
+			if (grandChildrenList.size() > 0) {
+				if (IsParentT(childrenList.at(i), childStmtIndex)) {
+					return true;
+				}
+
+			}
+		}
+
+	}
+
+	return false;
 }
 
 vector<int> Parent::GetParentTOf(int childStmtIndex) {
+	vector<int> parentList;
+	int currParent;
 
+	currParent = GetParentOf(childStmtIndex);
+
+	while (currParent != -1) {
+		parentList.push_back(currParent);
+
+		childStmtIndex = currParent;
+		currParent = GetParentOf(childStmtIndex);
+
+	}
+
+	return parentList;
 }
 
 vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
-	vector<int> childrenList;
+	vector<int> childrenList = GetChildrenOf(parentStmtIndex);
+	vector<int> grandChildrenList, allDecendants;
+
+	for (unsigned int i = 0; i < childrenList.size(); i++) {
+		grandChildrenList = GetChildrenOf(childrenList.at(i));
+		if (grandChildrenList.size() > 0) {
+			allDecendants = GetChildrenTOf(childrenList.at(i));
+			childrenList.insert(childrenList.end(), allDecendants.begin(), allDecendants.end());
+
+		}
+	
+	}
+
 	return childrenList;
 
 }
 
+// tells whether any parents relationships are stored
 bool Parent::HasAnyParents() {
-	return false;
+	return SizeOfParent() > 0;
 }
-
-*/
 
 int Parent::SizeOfParent() {
 	return parentTable.size();

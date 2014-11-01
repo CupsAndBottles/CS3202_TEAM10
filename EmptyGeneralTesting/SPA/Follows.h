@@ -30,6 +30,9 @@ public:
 	vector<int> GetFollowsTAfter(int stmtBefore);
 	bool HasAnyFollows();
 
+	// helper methods for testing
+	int SizeOfFollows();
+
 private:
 	vector<pair<int, int>> followsTable;	// List of Follows(s1, s2) relationships
 	

@@ -37,7 +37,7 @@ int Parent::GetParentOf(int childStmtIndex) {
 	pair<int, int> checkParentRelationship;
 
 	// sequential search for now
-	for (int i = 0; i < parentTable.size(); i++) {
+	for (unsigned int i = 0; i < parentTable.size(); i++) {
 		checkParentRelationship = parentTable.at(i);
 
 		if (checkParentRelationship.second == childStmtIndex) {

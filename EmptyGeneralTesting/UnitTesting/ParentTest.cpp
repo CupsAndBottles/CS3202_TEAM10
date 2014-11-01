@@ -109,8 +109,8 @@ void ParentTest::testGetParentTOf() {
 
 	resultTestParent = testParent.GetParentTOf(4);
 	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular parent for 1 generation", resultSize, 1);
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular parent for 1 generation", resultTestParent.at(0), 3);
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular parent for 1 generation", 1, resultSize);
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular parent for 1 generation", 3, resultTestParent.at(0));
 
 	resultTestParent = testParent.GetParentTOf(8);
 	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
@@ -140,16 +140,16 @@ void ParentTest::testGetChildrenTOf() {
 	testParent.SetParent(5, 7);
 	testParent.SetParent(7, 8);
 
+	resultTestParent = testParent.GetChildrenTOf(4);
+	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for 1 generation", 1, resultSize);
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for 1 generation", 6, resultTestParent.at(0));
+	
 	resultTestParent = testParent.GetChildrenTOf(5);
 	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for more than 1 generation", 2, resultSize);
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for more than 1 generation", 7, resultTestParent.at(0));
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for more than 1 generation", 8, resultTestParent.at(1));
-
-	resultTestParent = testParent.GetChildrenTOf(4);
-	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for 1 generation", 1, resultSize);
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular children for 1 generation", 6, resultTestParent.at(0));
 
 	resultTestParent = testParent.GetChildrenTOf(6);
 	resultSize = (int16_t) resultTestParent.size();	// assumes 16-bit int
@@ -165,6 +165,7 @@ void ParentTest::testHasAnyParents() {
 	Parent testParent;
 
 	CPPUNIT_ASSERT_MESSAGE("regular has no parent", !testParent.HasAnyParents());
+	
 	testParent.SetParent(3, 4);
 	CPPUNIT_ASSERT_MESSAGE("regular has parent", testParent.HasAnyParents());
 

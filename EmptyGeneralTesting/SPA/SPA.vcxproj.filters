@@ -242,6 +242,12 @@
     <ClInclude Include="IndexNotFoundException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Modifies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Uses.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SPA.rc">

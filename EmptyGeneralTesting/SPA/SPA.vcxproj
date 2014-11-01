@@ -60,6 +60,7 @@
     <ClInclude Include="AST\TNode\WhileTNode.h" />
     <ClInclude Include="Follows.h" />
     <ClInclude Include="IndexNotFoundException.h" />
+    <ClInclude Include="Modifies.h" />
     <ClInclude Include="Parent.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PKB.h" />
@@ -73,6 +74,7 @@
     <ClInclude Include="StmtTypeTable.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="Uses.h" />
     <ClInclude Include="VarTable.h" />
   </ItemGroup>
   <ItemGroup>

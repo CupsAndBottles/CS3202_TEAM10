@@ -1,8 +1,8 @@
 #include <utility>
 #include <vector>
 #include <map>
-#include "AST\TNode\TNode.h"
-#include "QueryProcessor\Grammar.h"
+#include <set>
+#include "QueryProcessor/Grammar.h"
 
 using namespace std;
 
@@ -11,14 +11,14 @@ public:
 	StmtTypeTable();
 
 	//API-Query
-	vector<int> GetAllStmtsOfType(SynonymType type);
+	set<int> GetAllStmtsOfType(SynonymType type);
 	bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
 
 	//API-PKB and DE
-	void insert(int stmtIndex, SynonymType type, TNode node);
+	void insert(int stmtIndex, SynonymType type);
 
 private:
-	//ds
-	map<int, TNode> IndexTNodetable;
-	map<SynonymType, int> TypeIndextable;
-}
+	//data structures
+	map<int, SynonymType> IndexTypeTable;
+	map<SynonymType, set<int> > TypeIndexTable;
+};

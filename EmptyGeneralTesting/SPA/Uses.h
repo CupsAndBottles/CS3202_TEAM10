@@ -1,5 +1,7 @@
 #include <utility>
 #include <vector>
+#include <map>
+#include <set>
 
 using namespace std;
 
@@ -10,12 +12,13 @@ public:
 	Uses();
 
 	// API
-	void SetUsesStmt(int stmtUsing, int varUsed); // additional args: stmt type?
-	bool IsUsesStmt(int stmtUsing, int varUsed);
-	vector<int> GetUsesStmt(int varUsed);
-	vector<int> GetUsedByStmt(int stmtUsing);
+	void SetStmtUsesVar(int stmtUsing, int varUsed);
+	bool IsStmtUsingVar(int stmtUsing, int varUsed);
+    set<int> GetStmtUsingVar(int varUsed);
+    set<int> GetVarUsedByStmt(int stmtUsing);
 
 	bool HasAnyUses();
+	int SizeOfUses();
 
 	// APIs out of scope of assigment 4
 	/*void SetUsesProc(int procUsing, int varUsed);
@@ -24,10 +27,7 @@ public:
 	vector<int> GetUsedByProc(int procUsing);*/
 
 private:
-	// variables
-	vector<pair<int, int>> usesStmtTable;	// List of Modifies(s, v) relationships
-	/*vector<pair<int, int>> usesProcTable;	// List of Modifies(p, v) relationships*/
-
-	// insert other private methods here
+	map <int, set<int> > StmtToVarTable;
+    map <int, set<int> > VarToStmtTable;
 
 };

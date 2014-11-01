@@ -4,6 +4,10 @@
 *.user
 *.sdf
 
+# added by Dat on Nov 1, 2014
+# ignore compiled a.out files used for testing code
+EmptyGeneralTesting/SPA/a.out
+
 #############################################################
 ## .gitignore template from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 #############################################################

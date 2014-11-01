@@ -136,7 +136,7 @@ int Parent::SizeOfParent() {
 
 /** private methods **/
 bool Parent::AlreadyInserted(pair<int, int> newPair) {
-	vector<pair<int, int>>::iterator newPairIterator = find(parentTable.begin(), parentTable.end(), newPair);
+	vector<pair<int, int> >::iterator newPairIterator = find(parentTable.begin(), parentTable.end(), newPair);
 
 	return newPairIterator != parentTable.end();
 

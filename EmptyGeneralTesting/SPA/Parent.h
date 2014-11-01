@@ -8,18 +8,7 @@ public:
 	// Default constructor
 	Parent();
 
-    // API for final Parent
-    // stashed away for now, will be used when <TNode> API is well tested
-    /*
-    TNode GetParentOf(TNode childStmt);
-    TNode GetChildOf(TNode parentStmt);
-    vector<TNode> GetParentTOf(TNode childStmt);
-    vector<TNode> GetChildrenTOf(TNode parentStmt);
-    vector<TNode> GetParentTOf(TNode::Type type);
-    vector<TNode> GetChildrenTOf(TNode::Type type);
-    */
-
-    // API for development
+    // API
 	void SetParent(int parentStmtIndex, int childStmtIndex);
 	bool IsParent(int parentStmtIndex, int childStmtIndex);
 	int GetParentOf(int childStmtIndex);

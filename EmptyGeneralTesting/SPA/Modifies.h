@@ -1,33 +1,34 @@
 #include <utility>
 #include <vector>
+#include <map>
+#include <set>
 
 using namespace std;
 
 class Modifies {
-public:
-	// methods
-	// Default constructor
-	Modifies();
+    public:
+        // methods
+       // Default constructor
+        Modifies();
 
-	// API
-	void SetModifiesStmt(int stmtModifying, int varModified); // additional args: stmt type?
-	bool IsModifiesStmt(int stmtModifying, int varModified);
-	vector<int> GetModifiesStmt(int varModified);
-	vector<int> GetModifiedByStmt(int stmtModifying);
+        // API
+        void SetStmtModifiesVar(int stmtModifying, int varModified); 
+        bool IsStmtModifiesVar(int stmtModifying, int varModified);
+        set<int> GetStmtModifyingVar(int varModified);
+        set<int> GetVarModifiedByStmt(int stmtModifying);
 
-	bool HasAnyModifies();
+        bool HasAnyModifies();
+        int SizeOfModifies();
 
-	// APIs out of scope of assigment 4
-	/*void SetModifiesProc(int procModifying, int varModified);
-	bool IsModifiesProc(int procModifying, int varModified);
-	vector<int> GetModifiesProc(int varModified);
-	vector<int> GetModifiedByProc(int procModifying);*/
+        // APIs out of scope of assigment 4
+        /*void SetModifiesProc(int procModifying, int varModified);
+          bool IsModifiesProc(int procModifying, int varModified);
+          vector<int> GetModifiesProc(int varModified);
+          vector<int> GetModifiedByProc(int procModifying);*/
 
-private:
-	// variables
-	vector<pair<int, int>> modifiesStmtTable;	// List of Modifies(s, v) relationships
-	/*vector<pair<int, int>> modifiesProcTable;	// List of Modifies(p, v) relationships*/
-
-	// insert other private methods here
+    private:
+        map <int, set<int> > StmtToVarTable;
+        map <int, set<int> > VarToStmtTable;
+        // insert other private methods here
 
 };

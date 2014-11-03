@@ -8,7 +8,8 @@ ParserTest::ParserTest() {
 }
 
 AST parseSource(string filename) {
-
+	AST ast;
+	return ast;
 }
 
 void ParserTest::TestSimpleAssignmentParsing() {

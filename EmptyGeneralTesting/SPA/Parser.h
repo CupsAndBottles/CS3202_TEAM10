@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Token.h"
+#include "AST\AST.h"
 #include "AST\TNode\AssignmentTNode.h"
 #include "AST\TNode\CallTNode.h"
 #include "AST\TNode\IfTNode.h"
@@ -15,6 +16,7 @@ class Parser {
 public:
 	static AST Parse(string);
 	static int compare(Token::Type, Token::Type);
+
 private:
 	Parser(vector<Token>);
 

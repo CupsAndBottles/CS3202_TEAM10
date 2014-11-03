@@ -1,7 +1,5 @@
 #pragma once
 
-#define TestParser_h
-
 #include "cppunit/extensions/HelperMacros.h"
 
 class ParserTest : public CPPUNIT_NS::TestFixture {

@@ -85,7 +85,7 @@ AST Parser::Parse() {
 	}
 
 	// fix return value
-	return 0;
+	return ast;
 }
 
 StmtListTNode Parser::parseStmtList(string name) {

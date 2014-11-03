@@ -8,6 +8,7 @@ class StmtListTNode :
 public:
 	StmtListTNode(string);
 
+	StmtTNode& getChild(int);
 	void addChild(StmtTNode);
 	vector<StmtTNode> getStmtList();
 

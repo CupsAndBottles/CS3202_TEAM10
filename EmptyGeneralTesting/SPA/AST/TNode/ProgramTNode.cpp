@@ -6,6 +6,10 @@ ProgramTNode::ProgramTNode()
 	rightSibling = nullptr;
 }
 
+ProcedureTNode& ProgramTNode::getChild(int index) {
+	return typecast<ProcedureTNode&>(TNode(getChild(index)));
+}
+
 vector<ProcedureTNode> ProgramTNode::getBody() {
 	return TNode::vectorCaster<ProcedureTNode>(getTNodes());
 }

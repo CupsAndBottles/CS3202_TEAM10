@@ -8,10 +8,10 @@ class AST {
 public:
 	AST();
 
-	void InitNewProgram(ProgramTNode);
+	ProgramTNode& getRootNode();
 	StmtTNode& getStmtNumber(int);
 
 private:
-	vector<ProgramTNode> programs;
+	ProgramTNode program;
 };
 

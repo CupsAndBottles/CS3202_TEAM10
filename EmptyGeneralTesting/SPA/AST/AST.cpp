@@ -11,6 +11,7 @@
 
 AST::AST() {}
 
-void AST::InitNewProgram(ProgramTNode program) {
-	programs.push_back(program);
+ProgramTNode& AST::getRootNode() {
+	return program;
 }
+

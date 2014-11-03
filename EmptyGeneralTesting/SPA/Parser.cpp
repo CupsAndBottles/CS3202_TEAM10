@@ -72,8 +72,7 @@ int Parser::compare(Token::Type first, Token::Type second) {
 
 AST Parser::Parse() {
 	AST ast;
-	ProgramTNode rootNode;
-	ast.InitNewProgram(rootNode);
+	ProgramTNode rootNode = ast.getRootNode();
 
 	while(tokens.size() != 0) {
 		consumeTopTokenOfType(Token::Procedure);
@@ -84,7 +83,6 @@ AST Parser::Parse() {
 		rootNode.addChild(procedureNode);
 	}
 
-	// fix return value
 	return ast;
 }
 

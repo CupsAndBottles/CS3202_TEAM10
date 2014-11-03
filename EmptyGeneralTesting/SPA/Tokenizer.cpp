@@ -7,6 +7,8 @@
 
 using namespace std;
 
+const char COMMENT_DELINEATOR = '/';
+
 // splits a source string into tokens
 // classifies tokens by type
 // collapses integers e.g. 00123 => 123
@@ -50,8 +52,8 @@ vector<Token> Tokenizer::tokenize(string source) {
 			if (currentChar == '	' || currentChar == '\r' || currentChar == '\n' || currentChar == ' ') {
 				// if space or tab or newline, skip
 				continue;
-			} else if (currentChar == '/') {
-				if (source[pos + 1] != '/') { // double slashes is comment
+			} else if (currentChar == COMMENT_DELINEATOR) {
+				if (source[pos + 1] != COMMENT_DELINEATOR) { // double slashes is comment
 					throw(string) "Syntax error.";
 				} else {
 					while (source[pos] != '\n') { // ignore chars until new line

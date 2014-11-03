@@ -50,6 +50,16 @@ vector<Token> Tokenizer::tokenize(string source) {
 			if (currentChar == '	' || currentChar == '\r' || currentChar == '\n' || currentChar == ' ') {
 				// if space or tab or newline, skip
 				continue;
+			} else if (currentChar == '/') {
+				if (source[pos + 1] != '/') { // double slashes is comment
+					throw(string) "Syntax error.";
+				} else {
+					while (source[pos] != '\n') { // ignore chars until new line
+						pos++;
+					}
+					pos++; // one character after the newline
+				}
+				
 			} else {
 				string charString = "" + currentChar;
 				Token::Type type = stringToToken(charString);

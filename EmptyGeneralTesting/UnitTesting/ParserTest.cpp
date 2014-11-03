@@ -4,10 +4,9 @@ void ParserTest::setUp() {}
 void ParserTest::tearDown() {}
 
 ParserTest::ParserTest() {
-
 }
 
-void ParserTest::TestProcedureParsing() {
+void ParserTest::TestSimpleAssignmentParsing() {
 
 }
 
@@ -15,6 +14,14 @@ void ParserTest::TestAssignmentParsing() {
 
 }
 
-void ParserTest::TestCallParsing() {
+void ParserTest::TestWhileParsing() {
+
+}
+
+void ParserTest::TestNestedWhileParsing() {
+
+}
+
+void ParserTest::TestParsing() {
 
 }

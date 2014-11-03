@@ -59,9 +59,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 					while (source[pos] != '\n') { // ignore chars until new line
 						pos++;
 					}
-					pos++; // one character after the newline
 				}
-				
 			} else {
 				string charString = "" + currentChar;
 				Token::Type type = stringToToken(charString);

@@ -19,7 +19,7 @@ Parser::Parser(vector<Token> tokenVector)
 	, currentLineNumber(0) {
 }
 
-int Parser::Parse (string source) {
+AST Parser::Parse (string source) {
 	vector<Token> tokens = Tokenizer::tokenize(source);
 	return Parser(tokens).Parse();
 }
@@ -70,7 +70,7 @@ int Parser::compare(Token::Type first, Token::Type second) {
 	return (valFirst - valSecond);
 }
 
-int Parser::Parse() {
+AST Parser::Parse() {
 	AST ast;
 	ProgramTNode rootNode;
 	ast.InitNewProgram(rootNode);
@@ -232,9 +232,7 @@ IfTNode Parser::parseIfStmt() {
 	consumeTopTokenOfType(Token::While);
 
 	// parse condition
-	consumeTopTokenOfType(Token::OpenBrace);
 	Token condition = consumeTopTokenOfType(Token::Identifier);
-	consumeTopTokenOfType(Token::CloseBrace);
 	VariableTNode conditionNode(condition.content);
 
 	// parse then branch
@@ -255,9 +253,7 @@ WhileTNode Parser::parseWhileStmt() {
 	consumeTopTokenOfType(Token::While);
 
 	// parse condition
-	consumeTopTokenOfType(Token::OpenBrace);
 	Token condition = consumeTopTokenOfType(Token::Identifier);
-	consumeTopTokenOfType(Token::CloseBrace);
 	VariableTNode conditionNode(condition.content);
 
 	// parse loop body

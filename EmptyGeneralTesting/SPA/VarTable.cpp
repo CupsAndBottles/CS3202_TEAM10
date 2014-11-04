@@ -9,7 +9,7 @@ VarTable::VarTable() {
 }
 
 // Method
-/*
+
 int VarTable::InsertVar(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
@@ -22,8 +22,8 @@ int VarTable::InsertVar(string varName) {
 
 	}
 
-}*/
-/*
+}
+
 int VarTable::GetIndexOf(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
@@ -35,8 +35,8 @@ int VarTable::GetIndexOf(string varName) {
 
 	}
 
-}*/
-/*
+}
+
 string VarTable::GetVarName(int varIndex) {
 	if (varIndex >= 0 && varIndex < varNames.size()) {
 		return varNames[varIndex];
@@ -44,14 +44,14 @@ string VarTable::GetVarName(int varIndex) {
 		throw IndexNotFoundException();
 	}
 
-}*/
-/*
+}
+
 int VarTable::GetSize() {
 	return varNames.size();
 
 }
-*//*
+
 vector<string>::iterator VarTable::SearchFor(string varName) {
 	return find(varNames.begin(), varNames.end(), varName);
 
-}*/
+}

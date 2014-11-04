@@ -29,6 +29,7 @@
     <ClCompile Include="AST\TNode\WhileTNode.cpp" />
     <ClCompile Include="DesignExtractor.cpp" />
     <ClCompile Include="Follows.cpp" />
+    <ClCompile Include="Modifies.cpp" />
     <ClCompile Include="Parent.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PKB.cpp" />
@@ -37,8 +38,10 @@
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
+    <ClCompile Include="StmtTypeTable.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
+    <ClCompile Include="Uses.cpp" />
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>

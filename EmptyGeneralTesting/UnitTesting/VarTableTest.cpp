@@ -14,8 +14,8 @@ void VarTableTest::tearDown() {
 	// empty body
 }
 
-//CPPUNIT_TEST_SUITE_REGISTRATION(VarTableTest);
-/*
+CPPUNIT_TEST_SUITE_REGISTRATION(VarTableTest);
+
 // method to test the constructor
 void VarTableTest::testConstructor() {
 	// create a VarTable object
@@ -126,8 +126,7 @@ void VarTableTest::testGetVarName() {
 	varName = varTableTest.GetVarName(1);
 	CPPUNIT_ASSERT("b" == varName);
 
-
-}*/
+}
 
 // insert other methods below here
 // add a comment before each method to indicate its purpose

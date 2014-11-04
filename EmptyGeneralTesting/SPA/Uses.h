@@ -13,7 +13,7 @@ public:
 
 	// API
 	void SetStmtUsesVar(int stmtUsing, int varUsed);
-	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
+	bool IsStmtUsingVar(int stmtUsing, int varUsed);
     set<int> GetStmtUsingVar(int varUsed);
     set<int> GetVarUsedByStmt(int stmtUsing);
 

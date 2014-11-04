@@ -8,6 +8,8 @@ const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 void ParserTest::setUp() {}
 void ParserTest::tearDown() {}
 
+//CPPUNIT_TEST_SUITE_REGISTRATION(ParserTest);
+
 ParserTest::ParserTest() {
 }
 

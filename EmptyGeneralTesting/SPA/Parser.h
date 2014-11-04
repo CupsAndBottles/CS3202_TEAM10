@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Token.h"
+#include "AST\AST.h"
 #include "AST\TNode\AssignmentTNode.h"
 #include "AST\TNode\CallTNode.h"
 #include "AST\TNode\IfTNode.h"
@@ -13,8 +14,9 @@ using namespace std;
 
 class Parser {
 public:
-	static int Parse(string);
+	static AST Parse(string);
 	static int compare(Token::Type, Token::Type);
+
 private:
 	Parser(vector<Token>);
 
@@ -26,7 +28,7 @@ private:
 	void verifyTopTokenIs(Token::Type);
 	Token consumeTopTokenOfType(Token::Type);
 
-	int Parse();
+	AST Parse();
 
 	StmtListTNode parseStmtList(string);
 	StmtTNode parseStmt();

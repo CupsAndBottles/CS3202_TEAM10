@@ -22,6 +22,6 @@ const string Token::KEYWORD_WHILE		= "while";
 const string Token::KEYWORD_IF			= "if";
 const string Token::KEYWORD_THEN		= "then";
 const string Token::KEYWORD_ELSE		= "else";
-const string Token::KEYWORD_PROCEDURE	= "Procedure";
+const string Token::KEYWORD_PROCEDURE	= "procedure";
 
 Token::Token(string content, Type type) : content(content), type(type) {}

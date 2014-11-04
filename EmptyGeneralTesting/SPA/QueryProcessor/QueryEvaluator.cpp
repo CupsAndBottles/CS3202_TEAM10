@@ -6,7 +6,7 @@ QueryEvaluator::QueryEvaluator(void)
 {
 }
 
-
+/*
 std::vector<Synonym> QueryEvaluator::evaluateQuery(QueryData queryData){
 	
 	
@@ -51,3 +51,4 @@ std::vector<Synonym> QueryEvaluator::evaluateQuery(QueryData queryData){
 std::vector<std::vector<Synonym>> checkModifies(SuchThatClause suchThat,std::vector<SelectClause> select,std::vector<Declaration> declaration){
 	
 }
+*/

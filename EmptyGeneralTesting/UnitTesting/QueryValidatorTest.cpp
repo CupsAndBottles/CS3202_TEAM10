@@ -28,7 +28,7 @@ void QueryValidatorTest::ActualValidationTest()
 
 	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "a");
 	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.type == ASSIGN);
-	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.value == "W");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.value == "w");
 	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.type == WHILE);
 
 	size = qd.GetSelects().size();
@@ -36,26 +36,92 @@ void QueryValidatorTest::ActualValidationTest()
 
 	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.value == "a");
 	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.type == ASSIGN);
-	/*
+	
+	size = qd.GetSuchThats().size();
+	CPPUNIT_ASSERT(size == 0);
+
+	size = qd.GetPatterns().size();
+	CPPUNIT_ASSERT(size == 0);
+
+
+
+	query = "stmt s;variable v;Select s such that Modifies(s,v)";
+	qd.ClearData();
+
+	valid = qv.ValidateQuery(query, qd);
+	CPPUNIT_ASSERT(valid == true);
+	
+	size = qd.GetDeclarations().size();
+	CPPUNIT_ASSERT(size == 2);
+
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "s");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.type == STMT);
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.value == "v");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.type == VARIABLE);
+
+	size = qd.GetSelects().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.value == "s");
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.type == STMT);
+
 	size = qd.GetSuchThats().size();
 	CPPUNIT_ASSERT(size == 1);
 
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).relationship == PARENT);
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.value == "w");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).relationship == MODIFIES);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.value == "s");
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.type == SYNONYM);
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.value == "w");
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.type == WHILE);
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "a");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.value == "s");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.type == STMT);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "v");
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.type == SYNONYM);
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.value == "a");
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.value == "v");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.type == VARIABLE);
 	
 	size = qd.GetPatterns().size();
-	CPPUNIT_ASSERT(size == 0);*/
+	CPPUNIT_ASSERT(size == 0);
 
 
-	/*
-	query = "assign a ; Select a such that Modifies(a,5) pattern a(_ , _\" x+ y\" _)";
+	query = "while w; assign a; Select w pattern a(\" g3 \" , _\" x\" _)";
+	qd.ClearData();
+
+	valid = qv.ValidateQuery(query, qd);
+	CPPUNIT_ASSERT(valid == true);
+	
+	size = qd.GetDeclarations().size();
+	CPPUNIT_ASSERT(size == 2);
+
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "w");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.type == WHILE);
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetDeclarations().at(1).synonym.type == ASSIGN);
+
+	size = qd.GetSelects().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.value == "w");
+	CPPUNIT_ASSERT(qd.GetSelects().at(0).synonym.type == WHILE);
+
+	size = qd.GetSuchThats().size();
+	CPPUNIT_ASSERT(size == 0);
+	
+	size = qd.GetPatterns().size();
+	CPPUNIT_ASSERT(size == 1);
+
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).synonym.value == "a");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).synonym.type == ASSIGN);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.value == "\" g3 \"");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.type == IDENT);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.syn.value == "");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.value == "_\" x\" _");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.type == EXPRESSION);
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.value == "");
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+
+
+	query = "assign a ; Select a such that Modifies(a,\"jj\") pattern a(_ , _\" x+ y\" _)";
 	qd.ClearData();
 
 	valid = qv.ValidateQuery(query, qd);
@@ -81,8 +147,8 @@ void QueryValidatorTest::ActualValidationTest()
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.type == SYNONYM);
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.value == "a");
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg1.syn.type == ASSIGN);
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "5");
-	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.type == INTEGER);
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.value == "\"jj\"");
+	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.type == IDENT);
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.value == "");
 	CPPUNIT_ASSERT(qd.GetSuchThats().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE);
 	
@@ -98,7 +164,7 @@ void QueryValidatorTest::ActualValidationTest()
 	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.value == "_\" x+ y\" _");
 	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.type == EXPRESSION);
 	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.value == "");
-	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE);*/
+	CPPUNIT_ASSERT(qd.GetPatterns().at(0).arg2.syn.type == INVALID_SYNONYM_TYPE); 
 }
 
 void QueryValidatorTest::TokenizeTest()
@@ -217,6 +283,7 @@ void QueryValidatorTest::ClauseValidationTest()
 
 	qd.ClearData();
 
+	//bool QueryValidator::ValidateDeclaration(Synonym &synonym, std::string type)
 	bool valid = qv.ValidateDeclaration(syn, "assign");
 	CPPUNIT_ASSERT(valid == true);
 	CPPUNIT_ASSERT(syn.type == ASSIGN);
@@ -265,6 +332,456 @@ void QueryValidatorTest::ClauseValidationTest()
 	valid = qv.ValidateDeclaration(syn, "while");
 	CPPUNIT_ASSERT(valid == false);
 	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);
+
+	
+	//bool QueryValidator::ValidateSelect(Synonym &synonym)
+	qd.ClearData();
+	qd.InsertDeclaration(Synonym("a",ASSIGN));
+	qd.InsertDeclaration(Synonym("w",WHILE));
+
+	syn.value = "a";
+	syn.type = INVALID_SYNONYM_TYPE;
+	valid = qv.ValidateSelect(syn);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(syn.type == ASSIGN);
+
+	syn.value = "w";
+	syn.type = INVALID_SYNONYM_TYPE;
+	valid = qv.ValidateSelect(syn);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(syn.type == WHILE);
+
+	syn.value = "s";
+	syn.type = INVALID_SYNONYM_TYPE;
+	valid = qv.ValidateSelect(syn);
+	CPPUNIT_ASSERT(valid == false);
+	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);
+
+	//empty declaration
+	qd.ClearData();
+	syn.value = "a";
+	syn.type = INVALID_SYNONYM_TYPE;
+	valid = qv.ValidateSelect(syn);
+	CPPUNIT_ASSERT(valid == false);
+	CPPUNIT_ASSERT(syn.type == INVALID_SYNONYM_TYPE);
+
+
+	//bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &arg2)
+	qd.ClearData();
+	qd.InsertDeclaration(Synonym("a",ASSIGN));
+	qd.InsertDeclaration(Synonym("w",WHILE));
+	qd.InsertDeclaration(Synonym("v",VARIABLE));
+
+	//pattern a( Synonym | _ | "Ident" , _ | _"Expression"_ )
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	Argument arg1, arg2;
+	arg1.value = "v";
+	arg2.value = "_";
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "v");
+	CPPUNIT_ASSERT(arg1.syn.type == VARIABLE);
+	CPPUNIT_ASSERT(arg2.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//synonym not assign
+	syn.value = "w";
+	syn.type = WHILE;
+	arg1.value = "v";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+	CPPUNIT_ASSERT(arg1.type == INVALID_ARGUMENT_TYPE);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == INVALID_ARGUMENT_TYPE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//argument 1 synonym is not a variable
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+	CPPUNIT_ASSERT(arg1.type == INVALID_ARGUMENT_TYPE);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == INVALID_ARGUMENT_TYPE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "v";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_\"x+y\"_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "v");
+	CPPUNIT_ASSERT(arg1.syn.type == VARIABLE);
+	CPPUNIT_ASSERT(arg2.type == EXPRESSION);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//argument 2 expression invalid
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "v";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_\"x+y\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "v");
+	CPPUNIT_ASSERT(arg1.syn.type == VARIABLE);
+	CPPUNIT_ASSERT(arg2.type == INVALID_ARGUMENT_TYPE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "_";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//invalid underscore
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "__";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "_";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_ \" x + y \"   _";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == EXPRESSION);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "\"x\"";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == IDENT);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "\"x3\"";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_ \" x \"   _";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(arg1.type == IDENT);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == EXPRESSION);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//invalid ident
+	syn.value = "a";
+	syn.type = ASSIGN;
+	arg1.value = "\"1x\"";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_ \" x \"   _";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidatePattern(syn, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+
+	//bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel_enum, Argument &arg1, Argument &arg2)
+
+	/*
+	Modifies(Synonym | Integer , Synonym | _ | "Ident")
+	Uses	(Synonym | Integer , Synonym | _ | "Ident")
+	Argument 1 synonym - stmt, assign, while, prog_line
+	Argument 2 synonym - variable
+	*/
+
+	qd.ClearData();
+	qd.InsertDeclaration(Synonym("a",ASSIGN));
+	qd.InsertDeclaration(Synonym("w",WHILE));
+	qd.InsertDeclaration(Synonym("v",VARIABLE));
+	
+	std::string rel = "Modifies";
+	RelationshipType rel_enum;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "v";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "a");
+	CPPUNIT_ASSERT(arg1.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg2.type == SYNONYM);
+	CPPUNIT_ASSERT(arg2.syn.value == "v");
+	CPPUNIT_ASSERT(arg2.syn.type == VARIABLE);
+
+	//invalid argument 1 synonym type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "v";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "v";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid argument 1 value
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "k";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "v";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid argument 2 synonym type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "s";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "a";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid relationship name
+	rel = "Modifie";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "w";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "v";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "a");
+	CPPUNIT_ASSERT(arg1.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg2.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"x\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.syn.value == "a");
+	CPPUNIT_ASSERT(arg1.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg2.type == IDENT);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//invalid ident
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"3x\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "5";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "v";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == INTEGER);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == SYNONYM);
+	CPPUNIT_ASSERT(arg2.syn.value == "v");
+	CPPUNIT_ASSERT(arg2.syn.type == VARIABLE);
+
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "5";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "_";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == INTEGER);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == UNDERSCORE);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "5";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"xyz\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == true);
+	CPPUNIT_ASSERT(rel_enum == MODIFIES);
+	CPPUNIT_ASSERT(arg1.type == INTEGER);
+	CPPUNIT_ASSERT(arg1.syn.value == "");
+	CPPUNIT_ASSERT(arg1.syn.type == INVALID_SYNONYM_TYPE);
+	CPPUNIT_ASSERT(arg2.type == IDENT);
+	CPPUNIT_ASSERT(arg2.syn.value == "");
+	CPPUNIT_ASSERT(arg2.syn.type == INVALID_SYNONYM_TYPE);
+
+	//invalid arg1 type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "\"x\"";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"xyz\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid arg1 type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "_";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"xyz\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid arg2 type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "5";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
+
+	//invalid arg2 type
+	rel = "Modifies";
+	rel_enum = INVALID_RELATIONSHIP_TYPE;
+	arg1.value = "a";
+	arg1.type = INVALID_ARGUMENT_TYPE;
+	arg1.syn = Synonym();
+	arg2.value = "\"x+y\"";
+	arg2.type = INVALID_ARGUMENT_TYPE;
+	arg2.syn = Synonym();
+	valid = qv.ValidateRelationship(rel, rel_enum, arg1, arg2);
+	CPPUNIT_ASSERT(valid == false);
 }
 
 void QueryValidatorTest::ArgumentValidationTest()

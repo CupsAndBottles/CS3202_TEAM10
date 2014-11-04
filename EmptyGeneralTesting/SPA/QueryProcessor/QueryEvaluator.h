@@ -1,6 +1,8 @@
 #pragma once
 #include "QueryData.h"
 
+using namespace std;
+
 class QueryEvaluator
 {
 private:

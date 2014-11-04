@@ -13,6 +13,7 @@ public:
 
 	void buildAssignmentNode(VariableTNode, TNode);
 	VariableTNode& getLHS();
+	using BinaryTNode::getContent;
 
 private:
 

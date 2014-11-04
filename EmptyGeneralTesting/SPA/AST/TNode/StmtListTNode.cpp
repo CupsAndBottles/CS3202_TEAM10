@@ -7,7 +7,7 @@ StmtListTNode::StmtListTNode(string name)
 }
 
 StmtTNode& StmtListTNode::getChild(int index) {
-	return typecast<StmtTNode&>(TNode(getChild(index)));
+	return dynamic_cast<StmtTNode&>(TNode::getChild(index));
 }
 
 void StmtListTNode::addChild(StmtTNode child) {
@@ -15,5 +15,10 @@ void StmtListTNode::addChild(StmtTNode child) {
 }
 
 vector<StmtTNode> StmtListTNode::getStmtList() {
-	return vectorCaster<StmtTNode>(getChildren());
+	vector<StmtTNode> result;
+	for (unsigned int i = 0; i < children.size(); i++) {
+		result.push_back(dynamic_cast<StmtTNode&>(children[i]));
+	}
+
+	return result;
 }

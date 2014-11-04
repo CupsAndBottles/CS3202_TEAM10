@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const char COMMENT_DELINEATOR = '/';
+const char Tokenizer::COMMENT_DELINEATOR = '/';
 
 // splits a source string into tokens
 // classifies tokens by type
@@ -15,7 +15,7 @@ const char COMMENT_DELINEATOR = '/';
 vector<Token> Tokenizer::tokenize(string source) {
 	vector<Token> tokens;
 
-	for (int pos = 0; pos < source.length(); pos++) { // loop through string
+	for (unsigned int pos = 0; pos < source.length(); pos++) { // loop through string
 		char currentChar = source[pos];
 		static string integer = "";
 		static string alphaString = "";

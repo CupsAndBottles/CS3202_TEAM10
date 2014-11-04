@@ -11,5 +11,5 @@ void WhileTNode::buildWhileTNode(VariableTNode condition, StmtListTNode loopBody
 }
 
 StmtListTNode& WhileTNode::getBody() {
-	return TNode::typecast<StmtListTNode>(getChild(1));
+	return dynamic_cast<StmtListTNode&>(getChild(1));
 }

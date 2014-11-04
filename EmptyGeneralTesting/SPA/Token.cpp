@@ -24,4 +24,10 @@ const string Token::KEYWORD_THEN		= "then";
 const string Token::KEYWORD_ELSE		= "else";
 const string Token::KEYWORD_PROCEDURE	= "procedure";
 
+Token& Token::operator=(const Token& element) {
+	content = element.content;
+	type = element.type;
+	return *this;
+}
+
 Token::Token(string content, Type type) : content(content), type(type) {}

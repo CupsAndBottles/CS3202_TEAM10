@@ -11,7 +11,7 @@ void ProcedureTNode::setProcedureBody(StmtListTNode body) {
 }
 
 StmtListTNode& ProcedureTNode::getProcedureBody() {
-	return TNode::typecast<StmtListTNode>(getChild(0));
+	return dynamic_cast<StmtListTNode&>(getChild(0));
 }
 
 string ProcedureTNode::getContent() {

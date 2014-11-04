@@ -13,5 +13,5 @@ void AssignmentTNode::buildAssignmentNode(VariableTNode LHS, TNode RHS) {
 }
 
 VariableTNode& AssignmentTNode::getLHS() {
-	return typecast<VariableTNode>(getChild(0));
+	return dynamic_cast<VariableTNode&>(getChild(0));
 }

@@ -5,5 +5,5 @@ ContainerTNode::ContainerTNode(Type type)
 }
 
 ContainerTNode* ContainerTNode::getRightSibling() {
-	return typecast<ContainerTNode*>(rightSibling);
+	return dynamic_cast<ContainerTNode*>(rightSibling);
 }

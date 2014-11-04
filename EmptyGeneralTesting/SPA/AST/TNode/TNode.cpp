@@ -1,6 +1,6 @@
 #include "TNode.h"
 
-const string enumStringDeclarations[] = {
+const string TNode::enumStringDeclarations[] = {
 	"Procedure",
 	"Program",
 	"Assignment",
@@ -80,25 +80,6 @@ void TNode::buildName(string str) {
 
 string TNode::enumToString(TNode::Type type) {
 	return enumStringDeclarations[type];
-}
-
-template <class T>
-T TNode::typecast(TNode obj) {
-	return dynamic_cast<T>(obj);
-}
-
-template <class Tptr>
-Tptr TNode::typecast(TNode* obj) {
-	return dynamic_cast<Tptr>(obj);
-}
-
-template <class T>
-vector<T> TNode::vectorCaster(vector<TNode> vector) {
-	vector<T> result;
-	for (int i = 0; i < vector.size; i++) {
-		result.push_back(typecast<T>(vector[i]));
-	}
-	return vector;
 }
 
 

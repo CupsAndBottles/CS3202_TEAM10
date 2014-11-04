@@ -14,7 +14,7 @@ StmtTNode* StmtTNode::getParent() {
 }
 
 StmtTNode* StmtTNode::getFollows() {
-	return TNode::typecast<StmtTNode*>(rightSibling);
+	return dynamic_cast<StmtTNode*>(rightSibling);
 }
 
 int StmtTNode::getLineNumber() {

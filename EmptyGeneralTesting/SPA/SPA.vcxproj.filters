@@ -132,9 +132,6 @@
     <ClCompile Include="QueryProcessor\QueryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -142,6 +139,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QueryProcessor\RelTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

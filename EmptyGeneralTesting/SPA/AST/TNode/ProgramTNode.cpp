@@ -7,11 +7,16 @@ ProgramTNode::ProgramTNode()
 }
 
 ProcedureTNode& ProgramTNode::getChild(int index) {
-	return typecast<ProcedureTNode&>(TNode(getChild(index)));
+	return dynamic_cast<ProcedureTNode&>(TNode::getChild(index));
 }
 
 vector<ProcedureTNode> ProgramTNode::getBody() {
-	return TNode::vectorCaster<ProcedureTNode>(getTNodes());
+	vector<ProcedureTNode> result;
+	for (unsigned int i = 0; i < children.size(); i++) {
+		result.push_back(dynamic_cast<ProcedureTNode&>(children[i]));
+	}
+
+	return result;
 }
 
 TNode* ProgramTNode::getDirectParent() {

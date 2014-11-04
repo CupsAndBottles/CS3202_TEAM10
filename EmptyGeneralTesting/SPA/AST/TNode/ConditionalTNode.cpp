@@ -10,5 +10,5 @@ void ConditionalTNode::setCondition(VariableTNode condition) {
 }
 
 VariableTNode ConditionalTNode::getCondition() {
-	return TNode::typecast<VariableTNode>(getChild(0));
+	return dynamic_cast<VariableTNode&>(getChild(0));
 }

@@ -14,9 +14,9 @@ void IfTNode::buildIfTNode(VariableTNode condition, StmtListTNode thenBranch, St
 }
 
 StmtListTNode& IfTNode::getThenBody() {
-	return typecast<StmtListTNode>(getChild(1));
+	return dynamic_cast<StmtListTNode&>(getChild(1));
 }
 
 StmtListTNode& IfTNode::getElseBody() {
-	return typecast<StmtListTNode>(getChild(2));
+	return dynamic_cast<StmtListTNode&>(getChild(2));
 }

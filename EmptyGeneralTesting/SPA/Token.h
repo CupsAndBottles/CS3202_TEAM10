@@ -49,8 +49,8 @@ public:
 
 	Token(string content, Type type);
 
-	const Type type;
-	const string content;
+	Type type;
+	string content;
 
 private:
 

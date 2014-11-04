@@ -37,15 +37,6 @@ public:
 
 	static string enumToString(Type);
 
-	template<class T>
-	static T typecast(TNode obj);
-
-	template<class T>
-	static T typecast(TNode* obj);
-
-	template<class T>
-	static vector<T> vectorCaster(vector<TNode> vector);
-
 protected:	
 	Type type;
 	TNode* directParent;

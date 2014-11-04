@@ -5,7 +5,6 @@
 class ContainerTNode :
 	public TNode {
 public:
-	vector<TNode> getTNodes();
 	virtual ContainerTNode* getRightSibling();
 
 protected:

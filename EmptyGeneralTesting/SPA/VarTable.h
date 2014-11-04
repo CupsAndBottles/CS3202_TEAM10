@@ -15,9 +15,9 @@ public:
 
 	// Methods
 	int InsertVar(string varName);
-	int GetIndexOf(string varName); 
-	string GetVarName(int varIndex);
-	int GetSize();
+	static int GetIndexOf(string varName); 
+	static string GetVarName(int varIndex);
+	static int GetSize();
 
 private:
 	vector<string>  varNames;	// List of variable strings

@@ -13,7 +13,7 @@ class Modifies {
 
         // API
         void SetStmtModifiesVar(int stmtModifying, int varModified); 
-        bool IsStmtModifiesVar(int stmtModifying, int varModified);
+        static bool IsStmtModifiesVar(int stmtModifying, int varModified);
         set<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
         set<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
 		// Select s such that Modifies(w, "x")

@@ -6,11 +6,14 @@ using namespace std;
 class QueryEvaluator
 {
 private:
-	std::vector<std::vector<Synonym>> checkModifies(SuchThatClause,std::vector<SelectClause>,vector<Declaration>);
-	std::vector<std::vector<Synonym>> mergeResult(std::vector<Synonym>);//will have more parameters
+	vector<vector<Synonym>> checkModifies(SuchThatClause,vector<SelectClause>,vector<Declaration>);
+	vector<vector<Synonym>> checkUses(SuchThatClause, vector<SelectClause>, vector<Declaration>);
+	vector<vector<Synonym>> mergeResult(vector<vector<Synonym>>);//will have more parameters
+	Synonym convertIntToSynonym(int,SynonymType);
+	vector<vector<int>> getAllPossibleResult(vector<SelectClause>);
 
 public:
 	QueryEvaluator(void);
-	std::vector<Synonym> QueryEvaluator::evaluateQuery(QueryData queryData);
+	vector<vector<Synonym>> QueryEvaluator::evaluateQuery(QueryData queryData);
 };
 

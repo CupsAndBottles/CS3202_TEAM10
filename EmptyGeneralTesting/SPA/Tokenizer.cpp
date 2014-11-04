@@ -14,25 +14,25 @@ const char Tokenizer::COMMENT_DELINEATOR = '/';
 // collapses integers e.g. 00123 => 123
 vector<Token> Tokenizer::tokenize(string source) {
 	vector<Token> tokens;
+	string integer = "";
+	string alphaString = "";
 
 	for (unsigned int pos = 0; pos < source.length(); pos++) { // loop through string
 		char currentChar = source[pos];
-		static string integer = "";
-		static string alphaString = "";
+
 
 		if (currentChar >= 48 && currentChar <= 57) { // integer
 			if (alphaString == "") {
-				integer = integer + currentChar;
+				integer.push_back(currentChar);
 			} else {
-				alphaString = alphaString + currentChar;
+				alphaString.push_back(currentChar);
 			}
-
-		} else if ((currentChar >= 65 && currentChar <= 90) &&
+		} else if ((currentChar >= 65 && currentChar <= 90) ||
 				   (currentChar >= 97 && currentChar <= 122)) { // alpha
 			if (integer != "") {
 				throw (string) "Invalid idenitifier.";
 			} else {
-				alphaString = alphaString + currentChar;
+				alphaString.push_back(currentChar);
 			}
 
 		} else { // symbol, whitespace or endline
@@ -61,7 +61,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 					}
 				}
 			} else {
-				string charString = "" + currentChar;
+				string charString(1, currentChar);
 				Token::Type type = stringToToken(charString);
 				if (type == Token::Nontoken) {
 					throw(string) "Invalid character encountered.";
@@ -69,6 +69,19 @@ vector<Token> Tokenizer::tokenize(string source) {
 					tokens.push_back(Token(charString, type));
 				}
 			}
+		}
+	}
+
+	// in case string is not terminated by endl
+	// might also just append endl to source string
+	if (integer != "") { // previous substring is integer
+		tokens.push_back(Token(integer, Token::Number));
+	} else if (alphaString != "") { // previous substring is... string
+		Token::Type type = stringToToken(alphaString);
+		if (type == Token::Nontoken) {
+			tokens.push_back(Token(alphaString, Token::Identifier));
+		} else {
+			tokens.push_back(Token(alphaString, type));
 		}
 	}
 

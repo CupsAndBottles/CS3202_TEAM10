@@ -16,6 +16,7 @@ public:
 	bool IsParentT(int parentStmtIndex, int childStmtIndex);
 	vector<int> GetParentTOf(int childStmtIndex);
 	vector<int> GetChildrenTOf(int parentStmtIndex);
+	
 	bool HasAnyParents();
 
 	// helper methods for testing

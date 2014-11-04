@@ -73,14 +73,17 @@ int Parser::compare(Token::Type first, Token::Type second) {
 int Parser::Parse() {
 	AST ast;
 	ProgramTNode rootNode;
+
 	ast.InitNewProgram(rootNode);
 
 	while(tokens.size() != 0) {
 		consumeTopTokenOfType(Token::Procedure);
 		Token procedureName = consumeTopTokenOfType(Token::Identifier);
 		ProcedureTNode procedureNode(procedureName.content);
+
 		StmtListTNode procedureBody = parseStmtList("");
 		procedureNode.setProcedureBody(procedureBody);
+		
 		rootNode.addChild(procedureNode);
 	}
 

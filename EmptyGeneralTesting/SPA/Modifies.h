@@ -14,8 +14,12 @@ class Modifies {
         // API
         void SetStmtModifiesVar(int stmtModifying, int varModified); 
         bool IsStmtModifiesVar(int stmtModifying, int varModified);
-        set<int> GetStmtModifyingVar(int varModified);
-        set<int> GetVarModifiedByStmt(int stmtModifying);
+        set<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
+        set<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
+		// Select s such that Modifies(w, "x")
+		// 1. go VarTable, GetIndexOf("x")
+		// 2. GetStmtModifyingVar(index of x)
+		// 3. StmtTypeTable, filter w
 
         bool HasAnyModifies();
         int SizeOfModifies();

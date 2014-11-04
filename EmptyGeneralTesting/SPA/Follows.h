@@ -25,6 +25,7 @@ public:
 	bool IsFollows(int stmtBefore, int stmtAfter);
 	int GetFollowsBefore(int stmtAfter);
 	int GetFollowsAfter(int stmtBefore);
+	
 	bool IsFollowsT(int stmtBefore, int stmtAfter);
 	vector<int> GetFollowsTBefore(int stmtAfter);
 	vector<int> GetFollowsTAfter(int stmtBefore);

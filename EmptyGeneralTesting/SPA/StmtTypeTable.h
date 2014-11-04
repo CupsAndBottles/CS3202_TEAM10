@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <set>
+
 #include "QueryProcessor/Grammar.h"
 
 using namespace std;

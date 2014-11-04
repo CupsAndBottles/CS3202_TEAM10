@@ -4,6 +4,10 @@
 
 using namespace std;
 
+
+/** To store a mapping of all variables
+	and their indexes. **/
+
 class VarTable {
 public:
 	// Default constructor

@@ -74,6 +74,9 @@
   <ItemGroup>
     <ClCompile Include="source\IntegrationTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="InteractionsBtwnComponents.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

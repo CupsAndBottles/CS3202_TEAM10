@@ -8,10 +8,14 @@ AssignmentTNode::AssignmentTNode(int lineNumber)
 	buildName(enumToString(Assignment));
 }
 
-void AssignmentTNode::buildAssignmentNode(VariableTNode LHS, TNode RHS) {
+void AssignmentTNode::buildAssignmentNode(VariableTNode* LHS, TNode* RHS) {
 	buildBinaryNode(LHS, RHS);
 }
 
 VariableTNode& AssignmentTNode::getLHS() {
 	return dynamic_cast<VariableTNode&>(getChild(0));
+}
+
+string AssignmentTNode::getContent() {
+	return TNode::getContent();
 }

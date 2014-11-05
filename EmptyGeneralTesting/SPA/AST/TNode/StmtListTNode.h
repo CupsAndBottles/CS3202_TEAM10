@@ -9,8 +9,9 @@ public:
 	StmtListTNode(string);
 
 	StmtTNode& getChild(int);
-	void addChild(StmtTNode);
-	vector<StmtTNode> getStmtList();
+	void addChild(StmtTNode*);
+	vector<StmtTNode*> getStmtList();
+	string getContent();
 
 protected:
 

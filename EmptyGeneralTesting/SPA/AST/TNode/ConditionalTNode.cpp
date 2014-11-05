@@ -5,7 +5,7 @@ ConditionalTNode::ConditionalTNode(Type type, int lineNumber)
 	, StmtTNode(type, lineNumber) {
 }
 
-void ConditionalTNode::setCondition(VariableTNode condition) {
+void ConditionalTNode::setCondition(VariableTNode* condition) {
 	addChild(condition);
 }
 

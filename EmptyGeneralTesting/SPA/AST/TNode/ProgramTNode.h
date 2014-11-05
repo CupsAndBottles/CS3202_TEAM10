@@ -9,10 +9,10 @@ public:
 	ProgramTNode();
 
 	ProcedureTNode& getChild(int);
-	vector<ProcedureTNode> getBody();
+	vector<ProcedureTNode*> getBody();
 	TNode* getDirectParent();
 	ContainerTNode* getRightSibling();
-	void addChild(ProcedureTNode);
+	void addChild(ProcedureTNode*);
 
 protected:
 

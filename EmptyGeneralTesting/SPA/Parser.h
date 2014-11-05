@@ -30,12 +30,12 @@ private:
 
 	AST Parse();
 
-	StmtListTNode parseStmtList(string);
-	StmtTNode parseStmt();
-	StmtTNode parseStmt(StmtTNode*);
-	AssignmentTNode parseAssignmentStmt();
-	WhileTNode parseWhileStmt();
-	IfTNode parseIfStmt();
-	CallTNode parseCallStmt();
-	TNode parseExpr(TNode*, int, bool);
+	StmtListTNode* parseStmtList(string);
+	StmtTNode* parseStmt();
+	StmtTNode* parseStmt(StmtTNode*);
+	AssignmentTNode* parseAssignmentStmt();
+	WhileTNode* parseWhileStmt();
+	IfTNode* parseIfStmt();
+	CallTNode* parseCallStmt();
+	TNode* parseExpr(TNode*, int, bool);
 };

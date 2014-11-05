@@ -5,7 +5,7 @@ WhileTNode::WhileTNode(int lineNumber)
 	, ConditionalTNode(While, lineNumber) {
 }
 
-void WhileTNode::buildWhileTNode(VariableTNode condition, StmtListTNode loopBody) {
+void WhileTNode::buildWhileTNode(VariableTNode* condition, StmtListTNode* loopBody) {
 	setCondition(condition);
 	addChild(loopBody);
 }

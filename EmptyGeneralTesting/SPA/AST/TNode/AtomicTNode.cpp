@@ -4,12 +4,12 @@ AtomicTNode::AtomicTNode(Type type, string content)
 	: TNode(type, content) {
 }
 
-vector<TNode> AtomicTNode::getChildren() {
+vector<TNode*> AtomicTNode::getChildren() {
 	throwUnsupportedOperationException();
 	return TNode::getChildren();
 }
 
-void AtomicTNode::addChild() {
+void AtomicTNode::addChild(TNode* child) {
 	throwUnsupportedOperationException();
 }
 

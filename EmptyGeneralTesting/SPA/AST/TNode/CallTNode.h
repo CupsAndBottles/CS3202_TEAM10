@@ -9,7 +9,6 @@ public:
 	CallTNode(int, string);
 
 	string getProcName();
-	string getContent();
 
 protected:
 

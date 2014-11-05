@@ -8,9 +8,5 @@ CallTNode::CallTNode(int lineNumber, string procName)
 }
 
 string CallTNode::getProcName(){
-	return content;
-}
-
-string CallTNode::getContent() {
-	return content;
+	return getContent();
 }

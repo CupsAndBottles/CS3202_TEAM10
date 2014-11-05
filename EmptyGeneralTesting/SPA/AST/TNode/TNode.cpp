@@ -33,12 +33,12 @@ TNode* TNode::getRightSibling() {
 	return rightSibling;
 }
 
-vector<TNode> TNode::getChildren() {
+vector<TNode*> TNode::getChildren() {
 	return children;
 }
 
 TNode& TNode::getChild(int index) {
-	return children[index];
+	return *children[index];
 }
 
 TNode::Type TNode::getType() {
@@ -57,12 +57,15 @@ void TNode::setRightSibling(TNode* rightSibling) {
 	rightSibling = rightSibling;
 }
 
-void TNode::addChild(TNode child) {
-	if (children.size() > 0) {
-		children.back().setRightSibling(&child);
+void TNode::addChild(TNode* child) {
+	if (child == nullptr) {
+		throw(string) "Null pointer!";
 	}
+	if (children.size() > 0) {
+		children.back()->setRightSibling(child);
+	}
+	child->setDirectParent(this);
 	children.push_back(child);
-	child.setDirectParent(this);
 }
 
 string TNode::getName() {
@@ -70,7 +73,6 @@ string TNode::getName() {
 }
 
 string TNode::getContent() {
-	throwUnsupportedOperationException();
 	return content;
 }
 

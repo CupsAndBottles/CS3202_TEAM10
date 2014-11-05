@@ -7,7 +7,7 @@ IfTNode::IfTNode(int lineNumber)
 	buildName(enumToString(If));
 }
 
-void IfTNode::buildIfTNode(VariableTNode condition, StmtListTNode thenBranch, StmtListTNode elseBranch) {
+void IfTNode::buildIfTNode(VariableTNode* condition, StmtListTNode* thenBranch, StmtListTNode* elseBranch) {
 	setCondition(condition);
 	addChild(thenBranch);
 	addChild(elseBranch);

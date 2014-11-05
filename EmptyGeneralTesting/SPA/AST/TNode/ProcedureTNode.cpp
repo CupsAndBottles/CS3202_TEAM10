@@ -3,10 +3,10 @@
 ProcedureTNode::ProcedureTNode(string procName)
 	: TNode(Procedure, procName) {
 
-	buildName(enumToString(Procedure).append(":"));
+	buildName(enumToString(Procedure).append(":").append(procName));
 }
 
-void ProcedureTNode::setProcedureBody(StmtListTNode body) {
+void ProcedureTNode::setProcedureBody(StmtListTNode* body) {
 	addChild(body);
 }
 
@@ -14,10 +14,6 @@ StmtListTNode& ProcedureTNode::getProcedureBody() {
 	return dynamic_cast<StmtListTNode&>(getChild(0));
 }
 
-string ProcedureTNode::getContent() {
-	return content;
-}
-
 string ProcedureTNode::getProcName() {
-	return getContent();
+	return TNode::getContent();
 }

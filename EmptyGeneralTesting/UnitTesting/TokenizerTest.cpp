@@ -122,7 +122,11 @@ void TokenizerTest::TestWordTokens() {
 	result = Tokenizer::tokenize("p9000")[0];
 	CPPUNIT_ASSERT(result.content == "p9000");
 	CPPUNIT_ASSERT(result.type == Token::Identifier);
-	
+
+	result = Tokenizer::tokenize("superMan")[0];
+	CPPUNIT_ASSERT(result.content == "superMan");
+	CPPUNIT_ASSERT(result.type == Token::Identifier);
+
 };
 
 void TokenizerTest::TestMixedTokens() {

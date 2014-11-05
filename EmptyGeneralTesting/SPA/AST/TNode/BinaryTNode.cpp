@@ -4,7 +4,7 @@ BinaryTNode::BinaryTNode(string opr)
 	: TNode(BinaryOperator, opr) {
 }
 
-void BinaryTNode::buildBinaryNode(TNode LHS, TNode RHS) {
+void BinaryTNode::buildBinaryNode(TNode* LHS, TNode* RHS) {
 	addChild(LHS);
 	addChild(RHS);
 }
@@ -15,10 +15,6 @@ TNode& BinaryTNode::getLHS() {
 
 TNode& BinaryTNode::getRHS() {
 	return getChild(1);
-}
-
-string BinaryTNode::getContent() {
-	return content;
 }
 
 string BinaryTNode::getOperator() {

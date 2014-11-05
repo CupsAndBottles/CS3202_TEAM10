@@ -8,6 +8,8 @@ const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 void ParserTest::setUp() {}
 void ParserTest::tearDown() {}
 
+CPPUNIT_TEST_SUITE_REGISTRATION(ParserTest);
+
 ParserTest::ParserTest() {
 }
 
@@ -18,11 +20,11 @@ AST parseSource(string filename) {
 	return Parser::Parse(buffer.str());
 }
 
-TNode getLHS(TNode node) {
+TNode& getLHS(TNode& node) {
 	return dynamic_cast<BinaryTNode&>(node).getLHS();
 }
 
-TNode getRHS(TNode node) {
+TNode& getRHS(TNode& node) {
 	return dynamic_cast<BinaryTNode&>(node).getRHS();
 }
 
@@ -56,7 +58,7 @@ void ParserTest::TestAdditionParsing() {
 	AssignmentTNode thirdStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(2));
 	AssignmentTNode fourthStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(3));
 
-	CPPUNIT_ASSERT(procedure.getName() == "additionTest");
+	CPPUNIT_ASSERT(procedure.getProcName() == "additionTest");
 
 	CPPUNIT_ASSERT(firstStmt.getLineNumber() == 1);
 	CPPUNIT_ASSERT(firstStmt.getOperator() == "=");

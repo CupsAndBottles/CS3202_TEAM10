@@ -20,3 +20,8 @@ StmtTNode* StmtTNode::getFollows() {
 int StmtTNode::getLineNumber() {
 	return lineNumber;
 }
+
+string StmtTNode::getContent() {
+	throwUnsupportedOperationException();
+	return TNode::getContent();
+}

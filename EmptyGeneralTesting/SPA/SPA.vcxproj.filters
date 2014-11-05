@@ -141,9 +141,6 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VarTable.h">

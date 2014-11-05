@@ -10,10 +10,10 @@ ProcedureTNode& ProgramTNode::getChild(int index) {
 	return dynamic_cast<ProcedureTNode&>(TNode::getChild(index));
 }
 
-vector<ProcedureTNode> ProgramTNode::getBody() {
-	vector<ProcedureTNode> result;
+vector<ProcedureTNode*> ProgramTNode::getBody() {
+	vector<ProcedureTNode*> result;
 	for (unsigned int i = 0; i < children.size(); i++) {
-		result.push_back(dynamic_cast<ProcedureTNode&>(children[i]));
+		result.push_back(dynamic_cast<ProcedureTNode*>(children[i]));
 	}
 
 	return result;
@@ -29,6 +29,6 @@ ContainerTNode* ProgramTNode::getRightSibling() {
 	return ContainerTNode::getRightSibling();
 }
 
-void ProgramTNode::addChild(ProcedureTNode procedure) {
+void ProgramTNode::addChild(ProcedureTNode* procedure) {
 	TNode::addChild(procedure);
 }

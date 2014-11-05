@@ -8,7 +8,7 @@ class IfTNode :
 public:
 	IfTNode(int);
 
-	void buildIfTNode(VariableTNode, StmtListTNode, StmtListTNode);
+	void buildIfTNode(VariableTNode*, StmtListTNode*, StmtListTNode*);
 
 	StmtListTNode& getThenBody();
 	StmtListTNode& getElseBody();

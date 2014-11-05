@@ -7,6 +7,8 @@ class ContainerTNode :
 public:
 	virtual ContainerTNode* getRightSibling();
 
+	string getContent();
+
 protected:
 	ContainerTNode(Type);
 

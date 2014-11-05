@@ -24,14 +24,14 @@ public:
 
 	virtual TNode* getDirectParent();
 	virtual TNode* getRightSibling();
-	virtual vector<TNode> getChildren();
+	virtual vector<TNode*> getChildren();
 	virtual TNode& getChild(int);
 	Type getType();
 	bool isType(Type);
 	
 	
 	virtual void setRightSibling(TNode*);
-	virtual void addChild(TNode);
+	virtual void addChild(TNode*);
 	string getName();
 	virtual string getContent();
 
@@ -40,7 +40,7 @@ public:
 protected:	
 	Type type;
 	TNode* directParent;
-	vector<TNode> children;
+	vector<TNode*> children;
 	TNode* rightSibling;
 	string name;
 	string content;

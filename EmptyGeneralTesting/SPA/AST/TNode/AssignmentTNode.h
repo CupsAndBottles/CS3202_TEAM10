@@ -11,9 +11,9 @@ class AssignmentTNode :
 public:
 	AssignmentTNode(int);
 
-	void buildAssignmentNode(VariableTNode, TNode);
+	void buildAssignmentNode(VariableTNode*, TNode*);
 	VariableTNode& getLHS();
-	using BinaryTNode::getContent;
+	string getContent();
 
 private:
 

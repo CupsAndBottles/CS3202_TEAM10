@@ -10,6 +10,7 @@ public:
 	StmtTNode* getParent();
 	StmtTNode* getFollows();
 	int getLineNumber();
+	virtual string getContent();
 
 protected:
 	StmtTNode(Type, int);

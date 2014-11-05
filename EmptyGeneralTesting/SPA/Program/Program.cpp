@@ -20,7 +20,11 @@ CFGNode& Program::getCFGRootNode() {
 	return CFGRoot;
 }
 
-StmtTNode& Program::getStmtNumber(int stmtNum) {
+StmtTNode& Program::getStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
+}
+
+void Program::insertStmt(StmtTNode* stmt) {
+	stmtNumberMap.push_back(stmt);
 }
 

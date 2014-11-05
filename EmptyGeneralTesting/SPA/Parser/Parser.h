@@ -22,20 +22,19 @@ private:
 
 	deque<Token> tokens;
 	int currentLineNumber;
+	Program program;
 
 	Token consumeTopToken();
 	bool topTokenIsType(Token::Type);
 	void verifyTopTokenIs(Token::Type);
 	Token consumeTopTokenOfType(Token::Type);
 
-	Program Parse();
+	void Parse();
 
 	StmtListTNode* parseStmtList(string);
 	StmtTNode* parseStmt();
 	StmtTNode* parseStmt(StmtTNode*);
 	AssignmentTNode* parseAssignmentStmt();
 	WhileTNode* parseWhileStmt();
-	IfTNode* parseIfStmt();
-	CallTNode* parseCallStmt();
-	TNode* parseExpr(TNode*, int, bool);
+	TNode* parseExpr(TNode*, bool);
 };

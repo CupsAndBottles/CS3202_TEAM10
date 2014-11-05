@@ -13,7 +13,8 @@ public:
 
 	ProgramTNode& getASTRootNode();
 	CFGNode& getCFGRootNode();
-	StmtTNode& getStmtNumber(int);
+	StmtTNode& getStmtFromNumber(int);
+	void insertStmt(StmtTNode*);
 
 private:
 	ProgramTNode program;

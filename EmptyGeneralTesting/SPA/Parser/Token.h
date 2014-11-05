@@ -6,44 +6,29 @@ using namespace std;
 
 class Token {
 public:
-	static const string START_OF_STMT_LIST;
-	static const string END_OF_STMT_LIST;
-	static const string OPEN_BRACE;
-	static const string CLOSE_BRACE;
-	static const string END_OF_STMT;
+	static const string StartOfStmtList;
+	static const string EndOfStmtList;
+	static const string EndOfStmt;
 
-	static const string OPERATOR_PLUS;
-	static const string OPERATOR_MINUS;
-	static const string OPERATOR_MULTIPLY;
-	static const string OPERATOR_ASSIGN;
+	static const string OperatorPlus;
+	static const string OperatorAssign;
 
-	static const string KEYWORD_CALL;
-	static const string KEYWORD_WHILE;
-	static const string KEYWORD_IF;
-	static const string KEYWORD_THEN;
-	static const string KEYWORD_ELSE;
-	static const string KEYWORD_PROCEDURE;
+	static const string KeywordWhile;
+	static const string KeywordProcedure;
 
 	enum Type {
-		StartOfStmtList,
-		EndOfStmtList,
-		EndOfStmt,
-		OpenBrace,
-		CloseBrace,
-		Plus,
-		Minus,
-		Multiply,
-		Assign,
-		Call,
-		While,
-		If,
-		Then,
-		Else,
-		Procedure,
-		Number,
-		Identifier,
-		Nontoken
+		START_OF_STMT_LIST = 0,
+		END_OF_STMT_LIST,
+		END_OF_STMT,
+		PLUS,
+		ASSIGN,
+		WHILE,
+		PROCEDURE,
+		NUMBER,
+		IDENTIFIER,
+		NONTOKEN
 	};
+
 
 	Token& operator=(const Token& element);
 

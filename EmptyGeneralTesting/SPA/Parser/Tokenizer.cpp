@@ -13,6 +13,7 @@ const char Tokenizer::COMMENT_DELINEATOR = '/';
 // classifies tokens by type
 // collapses integers e.g. 00123 => 123
 vector<Token> Tokenizer::tokenize(string source) {
+	source.push_back('\n'); // append endl to source
 	vector<Token> tokens;
 	string integer = "";
 	string alphaString = "";
@@ -37,12 +38,17 @@ vector<Token> Tokenizer::tokenize(string source) {
 
 		} else { // symbol, whitespace or endline
 			if (integer != "") { // previous substring is integer
-				tokens.push_back(Token(integer, Token::Number));
+				unsigned int numOfPrecedingZeroes = 0; // remove preceding zeroes
+				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < integer.size() - 1) {
+					numOfPrecedingZeroes++;
+				}
+				integer.erase(0, numOfPrecedingZeroes);
+				tokens.push_back(Token(integer, Token::NUMBER));
 				integer = "";
 			} else if (alphaString != "") { // previous substring is... string
 				Token::Type type = stringToToken(alphaString);
-				if (type == Token::Nontoken) {
-					tokens.push_back(Token(alphaString, Token::Identifier));
+				if (type == Token::NONTOKEN) {
+					tokens.push_back(Token(alphaString, Token::IDENTIFIER));
 				} else {
 					tokens.push_back(Token(alphaString, type));
 				}
@@ -63,7 +69,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 			} else {
 				string charString(1, currentChar);
 				Token::Type type = stringToToken(charString);
-				if (type == Token::Nontoken) {
+				if (type == Token::NONTOKEN) {
 					throw(string) "Invalid character encountered.";
 				} else {
 					tokens.push_back(Token(charString, type));
@@ -72,54 +78,25 @@ vector<Token> Tokenizer::tokenize(string source) {
 		}
 	}
 
-	// in case string is not terminated by endl
-	// might also just append endl to source string
-	if (integer != "") { // previous substring is integer
-		tokens.push_back(Token(integer, Token::Number));
-	} else if (alphaString != "") { // previous substring is... string
-		Token::Type type = stringToToken(alphaString);
-		if (type == Token::Nontoken) {
-			tokens.push_back(Token(alphaString, Token::Identifier));
-		} else {
-			tokens.push_back(Token(alphaString, type));
-		}
-	}
-
 	return tokens;
 }
 
 Token::Type Tokenizer::stringToToken(string str) {
-	if (str == Token::START_OF_STMT_LIST) {
-		return Token::StartOfStmtList;
-	} else if (str == Token::END_OF_STMT_LIST) {
-		return Token::EndOfStmtList;
-	} else if (str == Token::OPEN_BRACE) {
-		return Token::OpenBrace;
-	} else if (str == Token::CLOSE_BRACE) {
-		return Token::CloseBrace;
-	} else if (str == Token::END_OF_STMT) {
-		return Token::EndOfStmt;
-	} else if (str == Token::OPERATOR_PLUS) {
-		return Token::Plus;
-	} else if (str == Token::OPERATOR_MINUS) {
-		return Token::Minus;
-	} else if (str == Token::OPERATOR_MULTIPLY) {
-		return Token::Multiply;
-	} else if (str == Token::OPERATOR_ASSIGN) {
-		return Token::Assign;
-	} else if (str == Token::KEYWORD_CALL) {
-		return Token::Call;
-	} else if (str == Token::KEYWORD_WHILE) {
-		return Token::While;
-	} else if (str == Token::KEYWORD_IF) {
-		return Token::If;
-	} else if (str == Token::KEYWORD_THEN) {
-		return Token::Then;
-	} else if (str == Token::KEYWORD_ELSE) {
-		return Token::Else;
-	} else if (str == Token::KEYWORD_PROCEDURE) {
-		return Token::Procedure;
+	if (str == Token::StartOfStmtList) {
+		return Token::START_OF_STMT_LIST;
+	} else if (str == Token::EndOfStmtList) {
+		return Token::END_OF_STMT_LIST;
+	} else if (str == Token::EndOfStmt) {
+		return Token::END_OF_STMT;
+	} else if (str == Token::OperatorPlus) {
+		return Token::PLUS;
+	} else if (str == Token::OperatorAssign) {
+		return Token::ASSIGN;
+	} else if (str == Token::KeywordWhile) {
+		return Token::WHILE;
+	} else if (str == Token::KeywordProcedure) {
+		return Token::PROCEDURE;
 	} else {
-		return Token::Nontoken;
+		return Token::NONTOKEN;
 	}
 }

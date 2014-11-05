@@ -32,6 +32,7 @@
     <ClCompile Include="PKB\Parent.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />

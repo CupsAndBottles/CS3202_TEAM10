@@ -7,10 +7,10 @@ class StmtTNode :
 public:
 	void setParent(StmtTNode*);
 
-	StmtTNode* getParent();
-	StmtTNode* getFollows();
-	int getLineNumber();
-	virtual string getContent();
+	StmtTNode* GetParent();
+	StmtTNode* GetFollows();
+	int GetLineNumber();
+	virtual string GetContent();
 
 protected:
 	StmtTNode(Type, int);

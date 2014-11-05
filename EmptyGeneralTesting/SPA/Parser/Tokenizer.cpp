@@ -12,7 +12,7 @@ const char Tokenizer::COMMENT_DELINEATOR = '/';
 // splits a source string into tokens
 // classifies tokens by type
 // collapses integers e.g. 00123 => 123
-vector<Token> Tokenizer::tokenize(string source) {
+vector<Token> Tokenizer::Tokenize(string source) {
 	source.push_back('\n'); // append endl to source
 	vector<Token> tokens;
 	string integer = "";
@@ -46,7 +46,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 				tokens.push_back(Token(integer, Token::NUMBER));
 				integer = "";
 			} else if (alphaString != "") { // previous substring is... string
-				Token::Type type = stringToToken(alphaString);
+				Token::Type type = StringToToken(alphaString);
 				if (type == Token::NONTOKEN) {
 					tokens.push_back(Token(alphaString, Token::IDENTIFIER));
 				} else {
@@ -68,7 +68,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 				}
 			} else {
 				string charString(1, currentChar);
-				Token::Type type = stringToToken(charString);
+				Token::Type type = StringToToken(charString);
 				if (type == Token::NONTOKEN) {
 					throw(string) "Invalid character encountered.";
 				} else {
@@ -81,7 +81,7 @@ vector<Token> Tokenizer::tokenize(string source) {
 	return tokens;
 }
 
-Token::Type Tokenizer::stringToToken(string str) {
+Token::Type Tokenizer::StringToToken(string str) {
 	if (str == Token::StartOfStmtList) {
 		return Token::START_OF_STMT_LIST;
 	} else if (str == Token::EndOfStmtList) {

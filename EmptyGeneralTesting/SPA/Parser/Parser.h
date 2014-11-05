@@ -24,17 +24,17 @@ private:
 	int currentLineNumber;
 	Program program;
 
-	Token consumeTopToken();
-	bool topTokenIsType(Token::Type);
-	void verifyTopTokenIs(Token::Type);
-	Token consumeTopTokenOfType(Token::Type);
+	Token ConsumeTopToken();
+	bool TopTokenIsType(Token::Type);
+	void VerifyTopTokenIs(Token::Type);
+	Token ConsumeTopTokenOfType(Token::Type);
 
 	void Parse();
 
-	StmtListTNode* parseStmtList(string);
-	StmtTNode* parseStmt();
-	StmtTNode* parseStmt(StmtTNode*);
-	AssignmentTNode* parseAssignmentStmt();
-	WhileTNode* parseWhileStmt();
-	TNode* parseExpr(TNode*, bool);
+	StmtListTNode* ParseStmtList(string);
+	StmtTNode* ParseStmt();
+	StmtTNode* ParseStmt(StmtTNode*);
+	AssignmentTNode* ParseAssignmentStmt();
+	WhileTNode* ParseWhileStmt();
+	TNode* ParseExpr(TNode*, bool);
 };

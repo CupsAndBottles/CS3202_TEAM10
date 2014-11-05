@@ -1,20 +1,20 @@
 #include "StmtListTNode.h"
 
 StmtListTNode::StmtListTNode(string name)
-	: ContainerTNode(StmtList) {
+	: ContainerTNode(STMT_LIST) {
 
-		buildName(name.append(":").append(enumToString(StmtList)));
+		BuildName(name.append(":").append(EnumToString(STMT_LIST)));
 }
 
-StmtTNode& StmtListTNode::getChild(int index) {
-	return dynamic_cast<StmtTNode&>(TNode::getChild(index));
+StmtTNode& StmtListTNode::GetChild(int index) {
+	return dynamic_cast<StmtTNode&>(TNode::GetChild(index));
 }
 
-void StmtListTNode::addChild(StmtTNode* child) {
-	TNode::addChild(child);
+void StmtListTNode::AddChild(StmtTNode* child) {
+	TNode::AddChild(child);
 }
 
-vector<StmtTNode*> StmtListTNode::getStmtList() {
+vector<StmtTNode*> StmtListTNode::GetStmtList() {
 	vector<StmtTNode*> result;
 	for (unsigned int i = 0; i < children.size(); i++) {
 		result.push_back(dynamic_cast<StmtTNode*>(children[i]));
@@ -23,7 +23,7 @@ vector<StmtTNode*> StmtListTNode::getStmtList() {
 	return result;
 }
 
-string StmtListTNode::getContent() {
-	throwUnsupportedOperationException();
-	return TNode::getContent();
+string StmtListTNode::GetContent() {
+	ThrowUnsupportedOperationException();
+	return TNode::GetContent();
 }

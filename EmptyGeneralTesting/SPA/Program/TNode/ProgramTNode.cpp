@@ -1,16 +1,16 @@
 #include "ProgramTNode.h"
 
 ProgramTNode::ProgramTNode() 
-	: ContainerTNode(Program) {
+	: ContainerTNode(PROGRAM) {
 	directParent = nullptr;
 	rightSibling = nullptr;
 }
 
-ProcedureTNode& ProgramTNode::getChild(int index) {
-	return dynamic_cast<ProcedureTNode&>(TNode::getChild(index));
+ProcedureTNode& ProgramTNode::GetChild(int index) {
+	return dynamic_cast<ProcedureTNode&>(TNode::GetChild(index));
 }
 
-vector<ProcedureTNode*> ProgramTNode::getBody() {
+vector<ProcedureTNode*> ProgramTNode::GetBody() {
 	vector<ProcedureTNode*> result;
 	for (unsigned int i = 0; i < children.size(); i++) {
 		result.push_back(dynamic_cast<ProcedureTNode*>(children[i]));
@@ -19,16 +19,16 @@ vector<ProcedureTNode*> ProgramTNode::getBody() {
 	return result;
 }
 
-TNode* ProgramTNode::getDirectParent() {
-	throwUnsupportedOperationException();
-	return ContainerTNode::getDirectParent();
+TNode* ProgramTNode::GetDirectParent() {
+	ThrowUnsupportedOperationException();
+	return ContainerTNode::GetDirectParent();
 }
 
-ContainerTNode* ProgramTNode::getRightSibling() {
-	throwUnsupportedOperationException();
-	return ContainerTNode::getRightSibling();
+ContainerTNode* ProgramTNode::GetRightSibling() {
+	ThrowUnsupportedOperationException();
+	return ContainerTNode::GetRightSibling();
 }
 
-void ProgramTNode::addChild(ProcedureTNode* procedure) {
-	TNode::addChild(procedure);
+void ProgramTNode::AddChild(ProcedureTNode* procedure) {
+	TNode::AddChild(procedure);
 }

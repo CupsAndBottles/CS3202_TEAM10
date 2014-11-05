@@ -8,9 +8,9 @@ class WhileTNode :
 public:
 	WhileTNode(int);
 
-	void buildWhileTNode(VariableTNode*, StmtListTNode*);
+	void BuildWhileNode(VariableTNode*, StmtListTNode*);
 
-	StmtListTNode& getBody();
+	StmtListTNode& GetBody();
 private:
 
 };

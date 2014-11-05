@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Program\CFG\CFGNode.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
     <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
@@ -43,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program\Program.h" />
-    <ClInclude Include="Program\CFG\CFGNode.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
     <ClInclude Include="Program\TNode\AtomicTNode.h" />
     <ClInclude Include="Program\TNode\BinaryTNode.h" />

@@ -8,9 +8,7 @@ const string TNode::enumStringDeclarations[] = {
 	"Constant",
 	"BinaryOperator",
 	"StmtList",
-	"If",
 	"While",
-	"Call"
 };
 
 TNode::TNode(Type type)
@@ -21,66 +19,66 @@ TNode::TNode(Type type, string content)
 	: type(type), content(content) {
 }
 
-void TNode::throwUnsupportedOperationException() {
+void TNode::ThrowUnsupportedOperationException() {
 	throw(string) "Unsupported Operation";
 }
 
-TNode* TNode::getDirectParent() {
+TNode* TNode::GetDirectParent() {
 	return directParent;
 }
 
-TNode* TNode::getRightSibling() {
+TNode* TNode::GetRightSibling() {
 	return rightSibling;
 }
 
-vector<TNode*> TNode::getChildren() {
+vector<TNode*> TNode::GetChildren() {
 	return children;
 }
 
-TNode& TNode::getChild(int index) {
+TNode& TNode::GetChild(int index) {
 	return *children[index];
 }
 
-TNode::Type TNode::getType() {
+TNode::Type TNode::GetType() {
 	return type;
 }
 
-bool TNode::isType(Type testType) {
+bool TNode::IsType(Type testType) {
 	return (type == testType);
 }
 
-void TNode::setDirectParent(TNode* parent) {
+void TNode::SetDirectParent(TNode* parent) {
 	directParent = parent;
 }
 
-void TNode::setRightSibling(TNode* rightSibling) {
+void TNode::SetRightSibling(TNode* rightSibling) {
 	rightSibling = rightSibling;
 }
 
-void TNode::addChild(TNode* child) {
+void TNode::AddChild(TNode* child) {
 	if (child == nullptr) {
 		throw(string) "Null pointer!";
 	}
 	if (children.size() > 0) {
-		children.back()->setRightSibling(child);
+		children.back()->SetRightSibling(child);
 	}
-	child->setDirectParent(this);
+	child->SetDirectParent(this);
 	children.push_back(child);
 }
 
-string TNode::getName() {
+string TNode::GetName() {
 	return name;
 }
 
-string TNode::getContent() {
+string TNode::GetContent() {
 	return content;
 }
 
-void TNode::buildName(string str) {
+void TNode::BuildName(string str) {
 	name = str.append(name);
 }
 
-string TNode::enumToString(TNode::Type type) {
+string TNode::EnumToString(TNode::Type type) {
 	return enumStringDeclarations[type];
 }
 

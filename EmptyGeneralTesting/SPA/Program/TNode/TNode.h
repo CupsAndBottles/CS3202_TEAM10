@@ -7,35 +7,33 @@ using namespace std;
 class TNode {
 public:
 	enum Type {
-		Procedure = 0,
-		Program,
-		Assignment,
-		Variable,
-		Constant,
-		BinaryOperator,
-		StmtList,
-		If,
-		While,
-		Call
+		PROCEDURE = 0,
+		PROGRAM,
+		ASSIGNMENT,
+		VARIABLE,
+		CONSTANT,
+		BINARY_OPERATOR,
+		STMT_LIST,
+		WHILE,
 	};
 
 	TNode(Type);
 	TNode(Type, string);
 
-	virtual TNode* getDirectParent();
-	virtual TNode* getRightSibling();
-	virtual vector<TNode*> getChildren();
-	virtual TNode& getChild(int);
-	Type getType();
-	bool isType(Type);
+	virtual TNode* GetDirectParent();
+	virtual TNode* GetRightSibling();
+	virtual vector<TNode*> GetChildren();
+	virtual TNode& GetChild(int);
+	Type GetType();
+	bool IsType(Type);
 	
 	
-	virtual void setRightSibling(TNode*);
-	virtual void addChild(TNode*);
-	string getName();
-	virtual string getContent();
+	virtual void SetRightSibling(TNode*);
+	virtual void AddChild(TNode*);
+	string GetName();
+	virtual string GetContent();
 
-	static string enumToString(Type);
+	static string EnumToString(Type);
 
 protected:	
 	Type type;
@@ -45,10 +43,10 @@ protected:
 	string name;
 	string content;
 
-	void throwUnsupportedOperationException();
+	void ThrowUnsupportedOperationException();
 
-	virtual void setDirectParent(TNode*);
-	void buildName(string);
+	virtual void SetDirectParent(TNode*);
+	void BuildName(string);
 
 private:
 	static const string enumStringDeclarations[];

@@ -7,12 +7,12 @@
 class ConditionalTNode :
 	public StmtTNode {
 public:
-	VariableTNode getCondition();
+	VariableTNode GetCondition();
 
 protected:
 	ConditionalTNode(Type, int);
 
-	void setCondition(VariableTNode*);
+	void SetCondition(VariableTNode*);
 
 };
 

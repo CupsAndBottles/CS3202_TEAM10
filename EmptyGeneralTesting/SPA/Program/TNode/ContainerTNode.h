@@ -5,9 +5,9 @@
 class ContainerTNode :
 	public TNode {
 public:
-	virtual ContainerTNode* getRightSibling();
+	virtual ContainerTNode* GetRightSibling();
 
-	string getContent();
+	string GetContent();
 
 protected:
 	ContainerTNode(Type);

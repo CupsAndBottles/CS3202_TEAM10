@@ -8,10 +8,10 @@ class StmtListTNode :
 public:
 	StmtListTNode(string);
 
-	StmtTNode& getChild(int);
-	void addChild(StmtTNode*);
-	vector<StmtTNode*> getStmtList();
-	string getContent();
+	StmtTNode& GetChild(int);
+	void AddChild(StmtTNode*);
+	vector<StmtTNode*> GetStmtList();
+	string GetContent();
 
 protected:
 

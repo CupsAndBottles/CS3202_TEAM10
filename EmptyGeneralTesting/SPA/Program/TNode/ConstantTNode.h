@@ -8,7 +8,7 @@ class ConstantTNode :
 public:
 	ConstantTNode(string);
 
-	int getValue();
+	int GetValue();
 
 protected:
 	int value;

@@ -141,9 +141,6 @@
     <ClCompile Include="Program\Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program\CFG\CFGNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -195,9 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parser\Tokenizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Program\CFG\CFGNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Program\TNode\AssignmentTNode.h">

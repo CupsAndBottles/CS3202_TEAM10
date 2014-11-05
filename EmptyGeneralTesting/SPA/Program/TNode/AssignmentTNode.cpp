@@ -1,21 +1,21 @@
 #include "AssignmentTNode.h"
 
 AssignmentTNode::AssignmentTNode(int lineNumber)
-	: TNode(Assignment, "=")
-	, StmtTNode(Assignment, lineNumber)
+	: TNode(ASSIGNMENT, "=")
+	, StmtTNode(ASSIGNMENT, lineNumber)
 	, BinaryTNode("=") {
 
-	buildName(enumToString(Assignment));
+	BuildName(EnumToString(ASSIGNMENT));
 }
 
-void AssignmentTNode::buildAssignmentNode(VariableTNode* LHS, TNode* RHS) {
-	buildBinaryNode(LHS, RHS);
+void AssignmentTNode::BuildAssignmentNode(VariableTNode* LHS, TNode* RHS) {
+	BuildBinaryNode(LHS, RHS);
 }
 
-VariableTNode& AssignmentTNode::getLHS() {
-	return dynamic_cast<VariableTNode&>(getChild(0));
+VariableTNode& AssignmentTNode::GetLHS() {
+	return dynamic_cast<VariableTNode&>(GetChild(0));
 }
 
-string AssignmentTNode::getContent() {
-	return TNode::getContent();
+string AssignmentTNode::GetContent() {
+	return TNode::GetContent();
 }

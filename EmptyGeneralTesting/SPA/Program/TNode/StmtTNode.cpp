@@ -9,19 +9,19 @@ void StmtTNode::setParent(StmtTNode* logicalParent) {
 	logicalParent = logicalParent;
 }
 
-StmtTNode* StmtTNode::getParent() {
+StmtTNode* StmtTNode::GetParent() {
 	return logicalParent;
 }
 
-StmtTNode* StmtTNode::getFollows() {
+StmtTNode* StmtTNode::GetFollows() {
 	return dynamic_cast<StmtTNode*>(rightSibling);
 }
 
-int StmtTNode::getLineNumber() {
+int StmtTNode::GetLineNumber() {
 	return lineNumber;
 }
 
-string StmtTNode::getContent() {
-	throwUnsupportedOperationException();
-	return TNode::getContent();
+string StmtTNode::GetContent() {
+	ThrowUnsupportedOperationException();
+	return TNode::GetContent();
 }

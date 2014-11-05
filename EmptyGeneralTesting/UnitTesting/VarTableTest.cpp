@@ -1,7 +1,7 @@
 #include <cppunit\config\SourcePrefix.h>
-#include "VarTable.h"
+#include "PKB\VarTable.h"
 #include "VarTableTest.h"
-#include "IndexNotFoundException.h"
+#include "Exception\IndexNotFoundException.h"
 
 #include <iostream>
 #include <string>

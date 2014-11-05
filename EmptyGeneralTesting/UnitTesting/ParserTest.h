@@ -2,8 +2,8 @@
 
 #define ParserTest_h
 
-#include "cppunit/extensions/HelperMacros.h"
-#include "Parser.h"
+#include "cppunit\extensions\HelperMacros.h"
+#include "Parser\Parser.h"
 
 class ParserTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(ParserTest);

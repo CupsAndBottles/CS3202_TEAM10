@@ -1,5 +1,5 @@
 #include "VarTable.h"
-#include "IndexNotFoundException.h"
+#include "Exception\IndexNotFoundException.h"
 #include <algorithm>
 #include <vector>
 

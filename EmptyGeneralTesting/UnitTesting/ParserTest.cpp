@@ -1,5 +1,5 @@
 #include "ParserTest.h"
-#include "AST\AST.h"
+#include "Program\Program.h"
 
 #include <fstream>
 
@@ -13,7 +13,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserTest);
 ParserTest::ParserTest() {
 }
 
-AST parseSource(string filename) {
+Program parseSource(string filename) {
 	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
 	stringstream buffer;
 	buffer << sourceFile.rdbuf();
@@ -29,8 +29,8 @@ TNode& getRHS(TNode& node) {
 }
 
 void ParserTest::TestSimpleAssignmentParsing() {
-	AST testAST = parseSource("simpleAssignmentTest.txt");
-	ProgramTNode program = testAST.getRootNode();
+	Program testAST = parseSource("simpleAssignmentTest.txt");
+	ProgramTNode program = testAST.getASTRootNode();
 	ProcedureTNode procedure = program.getChild(0);
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(0));
 	AssignmentTNode secondStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(1));
@@ -50,8 +50,8 @@ void ParserTest::TestSimpleAssignmentParsing() {
 }
 
 void ParserTest::TestAdditionParsing() {
-	AST testAST = parseSource("additionTest.txt");
-	ProgramTNode program = testAST.getRootNode();
+	Program testAST = parseSource("additionTest.txt");
+	ProgramTNode program = testAST.getASTRootNode();
 	ProcedureTNode procedure = program.getChild(0);
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(0));
 	AssignmentTNode secondStmt = dynamic_cast<AssignmentTNode&>(procedure.getProcedureBody().getChild(1));
@@ -92,8 +92,8 @@ void ParserTest::TestAdditionParsing() {
 }
 
 void ParserTest::TestWhileParsing() {
-	AST testAST = parseSource("whileTest.txt");
-	ProgramTNode program = testAST.getRootNode();
+	Program testAST = parseSource("whileTest.txt");
+	ProgramTNode program = testAST.getASTRootNode();
 	ProcedureTNode procedure = program.getChild(0);
 	WhileTNode whileLoop = dynamic_cast<WhileTNode&>(procedure.getProcedureBody().getChild(0));
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(whileLoop.getBody().getChild(0));
@@ -118,8 +118,8 @@ void ParserTest::TestWhileParsing() {
 }
 
 void ParserTest::TestNestedWhileParsing() {
-	AST testAST = parseSource("nestedWhileTest.txt");
-	ProgramTNode program = testAST.getRootNode();
+	Program testAST = parseSource("nestedWhileTest.txt");
+	ProgramTNode program = testAST.getASTRootNode();
 	ProcedureTNode procedure = program.getChild(0);
 	WhileTNode firstWhileLoop = dynamic_cast<WhileTNode&>(procedure.getProcedureBody().getChild(0));
 	WhileTNode secondWhileLoop = dynamic_cast<WhileTNode&>(firstWhileLoop.getBody().getChild(0));

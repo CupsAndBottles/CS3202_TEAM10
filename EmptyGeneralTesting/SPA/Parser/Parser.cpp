@@ -2,8 +2,8 @@
 
 #include "Parser.h"
 #include "Tokenizer.h"
-#include "AST/AST.h"
-#include "AST/TNode/ConstantTNode.h"
+#include "Program/Program.h"
+#include "Program/TNode/ConstantTNode.h"
 
 #include <iostream>
 
@@ -18,7 +18,7 @@ Parser::Parser(vector<Token> tokenVector)
 	, currentLineNumber(0) {
 }
 
-AST Parser::Parse (string source) {
+Program Parser::Parse (string source) {
 	vector<Token> tokens = Tokenizer::tokenize(source);
 	return Parser(tokens).Parse();
 }
@@ -69,9 +69,9 @@ int Parser::compare(Token::Type first, Token::Type second) {
 	return (valFirst - valSecond);
 }
 
-AST Parser::Parse() {
-	AST ast;
-	ProgramTNode& rootNode = ast.getRootNode();
+Program Parser::Parse() {
+	Program ast;
+	ProgramTNode& rootNode = ast.getASTRootNode();
 
 	while(tokens.size() != 0) {
 		consumeTopTokenOfType(Token::Procedure);

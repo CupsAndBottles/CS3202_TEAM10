@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Token.h"
-#include "AST\AST.h"
-#include "AST\TNode\AssignmentTNode.h"
-#include "AST\TNode\CallTNode.h"
-#include "AST\TNode\IfTNode.h"
-#include "AST\TNode\WhileTNode.h"
+#include "Program\Program.h"
+#include "Program\TNode\AssignmentTNode.h"
+#include "Program\TNode\CallTNode.h"
+#include "Program\TNode\IfTNode.h"
+#include "Program\TNode\WhileTNode.h"
 
 #include <vector>
 #include <deque>
@@ -14,7 +14,7 @@ using namespace std;
 
 class Parser {
 public:
-	static AST Parse(string);
+	static Program Parse(string);
 	static int compare(Token::Type, Token::Type);
 
 private:
@@ -28,7 +28,7 @@ private:
 	void verifyTopTokenIs(Token::Type);
 	Token consumeTopTokenOfType(Token::Type);
 
-	AST Parse();
+	Program Parse();
 
 	StmtListTNode* parseStmtList(string);
 	StmtTNode* parseStmt();

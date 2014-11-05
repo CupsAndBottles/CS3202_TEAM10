@@ -57,54 +57,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AST\AST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\TNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\ContainerTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\AtomicTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\ConstantTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\VariableTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\StmtTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\StmtListTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\ConditionalTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\AssignmentTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\CallTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\WhileTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\IfTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\BinaryTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\ProcedureTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AST\TNode\ProgramTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QueryProcessor\QueryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,57 +99,60 @@
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program\TNode\AssignmentTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\AtomicTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\BinaryTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\CallTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\ConditionalTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\ConstantTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\ContainerTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\IfTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\ProcedureTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\ProgramTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\StmtListTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\StmtTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\TNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\VariableTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\WhileTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\CFG\CFGNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\AST.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\TNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\ContainerTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\AtomicTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\ConstantTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\VariableTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\StmtTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\StmtListTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\ConditionalTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\AssignmentTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\CallTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\WhileTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\IfTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\BinaryTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\ProcedureTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AST\TNode\ProgramTNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryProcessor\Grammar.h">
@@ -246,6 +201,57 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parser\Tokenizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\CFG\CFGNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\AssignmentTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\AtomicTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\BinaryTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\CallTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\ConditionalTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\ConstantTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\ContainerTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\IfTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\ProcedureTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\ProgramTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\StmtListTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\StmtTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\TNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\VariableTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\TNode\WhileTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\Program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

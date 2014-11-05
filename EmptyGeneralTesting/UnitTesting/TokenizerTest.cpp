@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cppunit/config/SourcePrefix.h"
+#include "cppunit\config\SourcePrefix.h"
 #include "TokenizerTest.h"
-#include "Tokenizer.h"
+#include "Parser\Tokenizer.h"
 
 #include <vector>
 #include <iostream>

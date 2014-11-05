@@ -1,5 +1,5 @@
 #include "VarTable.h"
-#include "IndexNotFoundException.h"
+#include "Exception\IndexNotFoundException.h"
 #include <algorithm>
 #include <vector>
 
@@ -8,7 +8,8 @@ VarTable::VarTable() {
 	// empty constructor
 }
 
-// Methods
+// Method
+
 int VarTable::InsertVar(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 

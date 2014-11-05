@@ -16,22 +16,30 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	std::string delim = " ,();";
 
 	//tokenize query
-	Tokenize(query,tokenList,delim);
+	if(!Tokenize(query,tokenList)) {
+		std::cout << "Invalid Query: Invalid Syntax.\n";
+		return false;
+	}
 
 	std::vector<std::string>::iterator it = tokenList.begin();
 	token = *it;
-
+	std::cout << "token: " << token << "\n";
 	//validate declaration
-	if(IsDeclaration(token))	//if token is design entity
+	while(IsDeclaration(token))	//if token is design entity
 	{
+		//assign a;while w;Select a
+
+		std::cout << "\nIn declaration\n";
 		std::string type = token;
 
 		if(++it == tokenList.end())	return false;
 		token = *it;
+		std::cout << "token: " << token << "\n";
 
 		//get the synonym
-		while(!IsUnderscore(token))
+		while(!IsSemiColon(token))
 		{
+			std::cout << "\nIn Check Semicolon\n";
 			Synonym synonym;
 			synonym.value = token;
 
@@ -43,15 +51,17 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 			if(++it == tokenList.end())	return false;
 			token = *it;
+			std::cout << "token: " << token << "\n";
 		}
+		std::cout << "\nAfer Check Semicolon\n";
 
 		if(++it == tokenList.end())	return false;
 		token = *it;
+		std::cout << "token: " << token << "\n";
 	}
 
-	//no declaration
-	else return false;
-	
+	std::cout << "\nafter declaration\n";
+
 	//check if declaration is empty
 	if(queryData.GetDeclarations().empty()) {
 		std::cout << "Invalid Query: No declaration.\n";
@@ -61,9 +71,13 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	//check if next token is select, and validate select
 	if(IsSelect(token))
 	{
-		if(++it == tokenList.end())	return false;
+		std::cout << "\nIn Select\n";
+		if(++it == tokenList.end())	{std::cout << "\nno more token\n";
+			return false;
+		}
 		token = *it;
-		
+		std::cout << "token: " << token << "\n";
+				
 		Synonym synonym;
 		synonym.value = token;
 
@@ -74,6 +88,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 	//no select
 	else return false;
+
+	std::cout << "\nAfter Select\n";
 
 	//get next token
 	if(++it == tokenList.end())	return true;
@@ -130,7 +146,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
 
 		if(IsPattern(token))	//pattern or and
-		{			
+		{		
+			std::cout << "In Pattern\n";
 			Argument arg1, arg2;
 			Synonym synonym;
 
@@ -156,7 +173,10 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 				queryData.InsertPattern(synonym, arg1, arg2);
 			}
 
-			else return false;
+			else {
+				std::cout << "Invalid Query: Pattern synonym is not declared.\n";
+				return false;
+			}
 
 			hasPattern = true;
 
@@ -165,6 +185,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 			else token = *it;
 		}
+
+		std::cout << "After Pattern\n";
 
 		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
 	}
@@ -192,17 +214,20 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 }
 
 bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &tokens) {
-		bool isIdent = false, isExpression = false;
+	bool isIdent = false, isExpression = false;
+
+	query += " ";	//add a whitespace behind, to handle case like assign a;Select a, if not the a will not get push back
+
 	for (int pos = 0; pos < query.length(); pos++) { // loop through string
 		char currentChar = query[pos];
 		static std::string integer = "";
 		static std::string alphaString = "";
 
 
-		std::cout << "char[" << pos << "] : " << currentChar << "\n";
+		//std::cout << "char[" << pos << "] : " << currentChar << "\n";
 
 		if (currentChar >= 48 && currentChar <= 57) { // integer
-			std::cout << "In Integer\n";
+			//std::cout << "In Integer\n";
 			if (alphaString == "") {
 				integer = integer + currentChar;
 			} else {
@@ -212,7 +237,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 		} else if ((currentChar >= 65 && currentChar <= 90) ||
 				   (currentChar >= 97 && currentChar <= 122)) { // alpha
 			
-					   std::cout << "In alphabet\n";
+					   //std::cout << "In alphabet\n";
 			if (integer != "") {
 				//throw (std::string) "Invalid idenitifier.";
 				return false;
@@ -221,7 +246,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 			}
 
 		} else { // symbol, whitespace or endline
-			std::cout << "In Others\n";
+			//std::cout << "In Others\n";
 			if (integer != "") { // previous substring is integer
 				tokens.push_back(integer);
 				integer = "";
@@ -249,10 +274,10 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 				continue;
 
 			else if(currentChar == ',') {
-				std::cout << "In ,\n";
+				//std::cout << "In ,\n";
 				if(isExpression)	//current string start with underscore, push back the first char
 				{
-					std::cout << "In isExpression\n";
+					//std::cout << "In isExpression\n";
 					std::string cs(1,alphaString.at(0));
 					tokens.push_back(cs);
 					isExpression = false;
@@ -264,7 +289,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 
 			//if is white space, depends on previous string
 			else if (currentChar == '	' || currentChar == '\r' || currentChar == '\n' || currentChar == ' ') {
-				std::cout << "In space\n";
+				//std::cout << "In space\n";
 				//if previous string is not empty means it is an expression or IDENT " x " , " x + y " , _ " x + 5 " _ or just _ 
 				//if former case, do not ignore white space
 				//if latter case, pushback tokens
@@ -278,26 +303,26 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 			else {
 				if(currentChar == ';')
 				{
-					std::cout << "In ;\n";
+					//std::cout << "In ;\n";
 					//push back tokens
 					tokens.push_back(";");
 				}
 				else if(currentChar == '"')
 				{
-					std::cout << "In \"\n";
+					//std::cout << "In \"\n";
 					//if alphastring is empty, add to alphastring
 					//else if alphastring is not empty, check if first char is either " or _, if yes add to alphastring and push back, clear alphastring
 					//else return false
 
 					if(alphaString == "") {
-						std::cout << "In empty string\n";
+						//std::cout << "In empty string\n";
 						alphaString += currentChar;
 						isIdent = true;
 					}
 
 					else {
 						if(isIdent) {
-							std::cout << "In isIdent \"\n";
+							//std::cout << "In isIdent \"\n";
 							alphaString += currentChar;
 							tokens.push_back(alphaString);
 							alphaString = "";
@@ -305,12 +330,12 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 						}
 
 						else if(isExpression) {
-							std::cout << "In isExpression\n";
+							//std::cout << "In isExpression\n";
 							alphaString += currentChar;
 						}
 
 						else {
-							std::cout << "Whaaa??\n";
+							//std::cout << "Whaaa??\n";
 							return false;
 						}
 					}
@@ -318,16 +343,16 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 
 				else if(currentChar == '_')
 				{
-					std::cout << "In _\n";
+					//std::cout << "In _\n";
 					if(alphaString == "") {
-						std::cout << "In empty string\n";
+						//std::cout << "In empty string\n";
 						alphaString += currentChar;
 						isExpression = true;
 					}
 
 					else {
 						if(isExpression) {
-							std::cout << "In isExpression\n";
+							//std::cout << "In isExpression\n";
 							alphaString += currentChar;
 							tokens.push_back(alphaString);
 							alphaString = "";
@@ -344,7 +369,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 				{
 					std::cout << "In +\n";
 					if(isExpression) {
-						std::cout << "In isExpression\n";
+						//std::cout << "In isExpression\n";
 						alphaString += currentChar;
 					}
 
@@ -361,7 +386,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 			}
 		}
 
-		std::cout << "fine\n";
+		//std::cout << "fine\n";
 	}
 
 	return true;
@@ -406,11 +431,14 @@ bool QueryValidator::ValidateSelect(Synonym &synonym)
 	if(QueryData::IsSynonymExist(synonym.value, &synonym.type))
 		return true;
 
-	else return false;
+	else {
+		std::cout << "Invalid Query: In ValidateSelect, synonym is not declared.\n";
+		return false;
+	}
 }
 
 /*
-pattern a( Synonym | _ | "Ident" , _ | "Expression" | _"Expression"_ )
+f
 */
 bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &arg2)
 {
@@ -426,18 +454,27 @@ bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &
 			
 		else if(IsIdent(arg1.value)) arg1.type = IDENT;
 
-		else return false;
+		else {
+			std::cout << "Invalid Query: In ValidatePattern, Argument 1 type not found.\n";
+			return false;
+		}
 
 		if(arg2.value == "_") arg2.type = UNDERSCORE;
 
 		else if(IsExpression(arg2.value)) arg2.type = EXPRESSION;
 
-		else return false;
+		else {
+			std::cout << "Invalid Query: In ValidatePattern, Argument 2 type not found.\n";
+			return false;
+		}
 
 		return true;
 	}
 
-	else return false;
+	else {
+		std::cout << "Invalid Query: In ValidatePattern, Synonym type is not assign.\n";
+		return false;
+	}
 }
 
 bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel_enum, Argument &arg1, Argument &arg2)
@@ -462,8 +499,11 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 		arg1.syn = Synonym(arg1.value, synonymType);
 	}
 		
-	else return false;
-	
+	else {
+		std::cout << "Invalid Query: In ValidateRelationship, Argument 1 type not found.\n";
+		return false;
+	}
+
 	try {
 		//get stored argument type
 		std::vector<ArgumentType> argType = RelTable::GetRelArgType(rel_enum, ARG1);
@@ -475,12 +515,17 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 			if(arg1.type == SYNONYM) {
 				//check whether synonym type is one of the allowed type
 				if(std::find(argSynonymType.begin(), argSynonymType.end(), synonymType) != argSynonymType.end()) {}
-				else return false;
+				else {
+					std::cout << "Invalid Query: In ValidateRelationship, Argument 1 Synonym type not allowed.\n";
+					return false;
+				}
 			}
 		}
 
-		else return false;
-
+		else {
+			std::cout << "Invalid Query: In ValidateRelationship, Argument 1 type not allowed.\n";
+			return false;
+		}
 
 		//validate argument 2
 		if(IsUnderscore(arg2.value))	arg2.type = UNDERSCORE;
@@ -494,7 +539,10 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 			arg2.syn = Synonym(arg2.value, synonymType);
 		}
 		
-		else return false;
+		else {
+			std::cout << "Invalid Query: In ValidateRelationship, Argument 2 type not found.\n";
+			return false;
+		}
 
 		//get stored argument type
 		argType = RelTable::GetRelArgType(rel_enum, ARG2);
@@ -506,11 +554,17 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 			if(arg2.type == SYNONYM) {
 				//check whether synonym type is one of the allowed type
 				if(std::find(argSynonymType.begin(), argSynonymType.end(), synonymType) != argSynonymType.end()) {}
-				else return false;
+				else {
+					std::cout << "Invalid Query: In ValidateRelationship, Argument 2 Synonym type not allowed.\n";
+					return false;
+				}
 			}
 		}
 
-		else return false;
+		else {
+			std::cout << "Invalid Query: In ValidateRelationship, Argument 2 type not allowed.\n";
+			return false;
+		}
 
 		return true;
 	}

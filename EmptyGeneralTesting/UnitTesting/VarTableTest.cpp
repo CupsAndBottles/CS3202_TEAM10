@@ -1,7 +1,7 @@
 #include <cppunit\config\SourcePrefix.h>
-#include "VarTable.h"
+#include "PKB\VarTable.h"
 #include "VarTableTest.h"
-#include "IndexNotFoundException.h"
+#include "Exception\IndexNotFoundException.h"
 
 #include <iostream>
 #include <string>
@@ -125,7 +125,6 @@ void VarTableTest::testGetVarName() {
 	// regular GetVarName
 	varName = varTableTest.GetVarName(1);
 	CPPUNIT_ASSERT("b" == varName);
-
 
 }
 

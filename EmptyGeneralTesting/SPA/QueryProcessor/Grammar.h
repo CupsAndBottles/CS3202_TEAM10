@@ -58,6 +58,13 @@ struct Argument {
 	Argument(std::string v, ArgumentType t, Synonym s) : value(v) , type(t) ,syn(s) {}
 	Argument(Synonym s) : syn(s) {}
 	Argument(std::string v) : value(v) {}
+
+	void Clear() {
+		value = "";
+		type = INVALID_ARGUMENT_TYPE;
+		syn.value = "";
+		syn.type = INVALID_SYNONYM_TYPE;
+	}
 };
 
 struct Declaration {

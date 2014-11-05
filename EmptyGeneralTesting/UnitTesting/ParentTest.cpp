@@ -1,6 +1,6 @@
 #include <cppunit\config\SourcePrefix.h>
 
-#include "Parent.h"
+#include "PKB\Parent.h"
 #include "ParentTest.h"
 
 #include <iostream>

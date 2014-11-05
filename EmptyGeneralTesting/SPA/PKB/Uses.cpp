@@ -6,9 +6,7 @@
 using namespace std;
 
 // empty constructor
-Uses::Uses() {
-
-};
+Uses::Uses() {}
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
@@ -16,7 +14,7 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     VarToStmtTable[varUsed].insert(stmtUsing);
 }
 
-bool Uses::IsStmtUsesVar(int stmtUsing, int varUsed) {
+bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
     if (StmtToVarTable.count(stmtUsing)!=0)
         if (StmtToVarTable.at(stmtUsing).count(varUsed)!=0)
             return true;

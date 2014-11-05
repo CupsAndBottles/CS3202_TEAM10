@@ -7,9 +7,9 @@ class ProcedureTNode :
 public:
 	ProcedureTNode(string);
 
-	void setProcedureBody(StmtListTNode*);
-	StmtListTNode& getProcedureBody();
-	string getProcName();
+	void SetProcedureBody(StmtListTNode*);
+	StmtListTNode& GetProcedureBody();
+	string GetProcName();
 
 private:
 

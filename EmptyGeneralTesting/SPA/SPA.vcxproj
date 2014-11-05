@@ -11,16 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Program\CFG\CFGNode.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
     <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
     <ClCompile Include="Program\TNode\BinaryTNode.cpp" />
-    <ClCompile Include="Program\TNode\CallTNode.cpp" />
     <ClCompile Include="Program\TNode\ConditionalTNode.cpp" />
     <ClCompile Include="Program\TNode\ConstantTNode.cpp" />
     <ClCompile Include="Program\TNode\ContainerTNode.cpp" />
-    <ClCompile Include="Program\TNode\IfTNode.cpp" />
     <ClCompile Include="Program\TNode\ProcedureTNode.cpp" />
     <ClCompile Include="Program\TNode\ProgramTNode.cpp" />
     <ClCompile Include="Program\TNode\StmtListTNode.cpp" />
@@ -45,15 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program\Program.h" />
-    <ClInclude Include="Program\CFG\CFGNode.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
     <ClInclude Include="Program\TNode\AtomicTNode.h" />
     <ClInclude Include="Program\TNode\BinaryTNode.h" />
-    <ClInclude Include="Program\TNode\CallTNode.h" />
     <ClInclude Include="Program\TNode\ConditionalTNode.h" />
     <ClInclude Include="Program\TNode\ConstantTNode.h" />
     <ClInclude Include="Program\TNode\ContainerTNode.h" />
-    <ClInclude Include="Program\TNode\IfTNode.h" />
     <ClInclude Include="Program\TNode\ProcedureTNode.h" />
     <ClInclude Include="Program\TNode\ProgramTNode.h" />
     <ClInclude Include="Program\TNode\StmtListTNode.h" />

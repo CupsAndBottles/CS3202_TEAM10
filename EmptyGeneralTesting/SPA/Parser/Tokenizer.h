@@ -7,7 +7,7 @@
 class Tokenizer {
 public:
 	static const char COMMENT_DELINEATOR;
-	static vector<Token> tokenize(string);
+	static vector<Token> Tokenize(string);
 private:
-	static Token::Type stringToToken(string);
+	static Token::Type StringToToken(string);
 };

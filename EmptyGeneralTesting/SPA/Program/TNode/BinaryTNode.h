@@ -7,11 +7,11 @@ class BinaryTNode :
 public:
 	BinaryTNode(string);
 
-	void buildBinaryNode(TNode*, TNode*);
+	void BuildBinaryNode(TNode*, TNode*);
 
-	virtual TNode& getLHS();
-	TNode& getRHS();
-	string getOperator();
+	virtual TNode& GetLHS();
+	TNode& GetRHS();
+	string GetOperator();
 
 protected:
 

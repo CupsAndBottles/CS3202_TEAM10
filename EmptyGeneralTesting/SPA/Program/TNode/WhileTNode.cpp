@@ -1,15 +1,15 @@
 #include "WhileTNode.h"
 
 WhileTNode::WhileTNode(int lineNumber) 
-	: TNode(While)
-	, ConditionalTNode(While, lineNumber) {
+	: TNode(WHILE)
+	, ConditionalTNode(WHILE, lineNumber) {
 }
 
-void WhileTNode::buildWhileTNode(VariableTNode* condition, StmtListTNode* loopBody) {
-	setCondition(condition);
-	addChild(loopBody);
+void WhileTNode::BuildWhileNode(VariableTNode* condition, StmtListTNode* loopBody) {
+	SetCondition(condition);
+	AddChild(loopBody);
 }
 
-StmtListTNode& WhileTNode::getBody() {
-	return dynamic_cast<StmtListTNode&>(getChild(1));
+StmtListTNode& WhileTNode::GetBody() {
+	return dynamic_cast<StmtListTNode&>(GetChild(1));
 }

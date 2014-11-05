@@ -1,19 +1,19 @@
 #include "ProcedureTNode.h"
 
 ProcedureTNode::ProcedureTNode(string procName)
-	: TNode(Procedure, procName) {
+	: TNode(PROCEDURE, procName) {
 
-	buildName(enumToString(Procedure).append(":").append(procName));
+	BuildName(EnumToString(PROCEDURE).append(":").append(procName));
 }
 
-void ProcedureTNode::setProcedureBody(StmtListTNode* body) {
-	addChild(body);
+void ProcedureTNode::SetProcedureBody(StmtListTNode* body) {
+	AddChild(body);
 }
 
-StmtListTNode& ProcedureTNode::getProcedureBody() {
-	return dynamic_cast<StmtListTNode&>(getChild(0));
+StmtListTNode& ProcedureTNode::GetProcedureBody() {
+	return dynamic_cast<StmtListTNode&>(GetChild(0));
 }
 
-string ProcedureTNode::getProcName() {
-	return TNode::getContent();
+string ProcedureTNode::GetProcName() {
+	return TNode::GetContent();
 }

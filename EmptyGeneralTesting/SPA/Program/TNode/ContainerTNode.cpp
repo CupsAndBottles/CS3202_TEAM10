@@ -4,11 +4,11 @@ ContainerTNode::ContainerTNode(Type type)
 	: TNode(type) {
 }
 
-ContainerTNode* ContainerTNode::getRightSibling() {
+ContainerTNode* ContainerTNode::GetRightSibling() {
 	return dynamic_cast<ContainerTNode*>(rightSibling);
 }
 
-string ContainerTNode::getContent() {
-	throwUnsupportedOperationException();
-	return TNode::getContent();
+string ContainerTNode::GetContent() {
+	ThrowUnsupportedOperationException();
+	return TNode::GetContent();
 }

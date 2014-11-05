@@ -1,24 +1,24 @@
 #include "BinaryTNode.h"
 
 BinaryTNode::BinaryTNode(string opr)
-	: TNode(BinaryOperator, opr) {
+	: TNode(BINARY_OPERATOR, opr) {
 }
 
-void BinaryTNode::buildBinaryNode(TNode* LHS, TNode* RHS) {
-	addChild(LHS);
-	addChild(RHS);
+void BinaryTNode::BuildBinaryNode(TNode* LHS, TNode* RHS) {
+	AddChild(LHS);
+	AddChild(RHS);
 }
 
-TNode& BinaryTNode::getLHS() {
-	return getChild(0);
+TNode& BinaryTNode::GetLHS() {
+	return GetChild(0);
 }
 
-TNode& BinaryTNode::getRHS() {
-	return getChild(1);
+TNode& BinaryTNode::GetRHS() {
+	return GetChild(1);
 }
 
-string BinaryTNode::getOperator() {
-	return getContent();
+string BinaryTNode::GetOperator() {
+	return GetContent();
 }
 
 

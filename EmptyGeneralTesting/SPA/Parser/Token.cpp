@@ -6,23 +6,15 @@
 
 using namespace std;
 
-const string Token::START_OF_STMT_LIST	= "{";
-const string Token::END_OF_STMT_LIST	= "}";
-const string Token::OPEN_BRACE			= "(";
-const string Token::CLOSE_BRACE			= ")";
-const string Token::END_OF_STMT			= ";";
+const string Token::StartOfStmtList		= "{";
+const string Token::EndOfStmtList		= "}";
+const string Token::EndOfStmt			= ";";
 
-const string Token::OPERATOR_PLUS		= "+";
-const string Token::OPERATOR_MINUS		= "-";
-const string Token::OPERATOR_MULTIPLY	= "*";
-const string Token::OPERATOR_ASSIGN		= "=";
+const string Token::OperatorPlus		= "+";
+const string Token::OperatorAssign		= "=";
 
-const string Token::KEYWORD_CALL		= "call";
-const string Token::KEYWORD_WHILE		= "while";
-const string Token::KEYWORD_IF			= "if";
-const string Token::KEYWORD_THEN		= "then";
-const string Token::KEYWORD_ELSE		= "else";
-const string Token::KEYWORD_PROCEDURE	= "procedure";
+const string Token::KeywordWhile		= "while";
+const string Token::KeywordProcedure	= "procedure";
 
 Token& Token::operator=(const Token& element) {
 	content = element.content;

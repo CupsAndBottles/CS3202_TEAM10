@@ -3,11 +3,11 @@
 #include <string>
 
 ConstantTNode::ConstantTNode(string value)
-	: AtomicTNode(Constant, value)
+	: AtomicTNode(CONSTANT, value)
 	, value(stoi(value)) {
-		buildName(enumToString(Constant).append(":"));
+		BuildName(EnumToString(CONSTANT).append(":"));
 }
 
-int ConstantTNode::getValue() {
+int ConstantTNode::GetValue() {
 	return value;
 }

@@ -9,18 +9,17 @@
 #include "TNode\WhileTNode.h"
 #include "TNode\CallTNode.h"
 
-Program::Program() 
-	: CFGRoot(CFGNode(1)) {}
+Program::Program() {}
 
-ProgramTNode& Program::getASTRootNode() {
+ProgramTNode& Program::GetASTRootNode() {
 	return program;
 }
 
-CFGNode& Program::getCFGRootNode() {
-	return CFGRoot;
+StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
+	return *(stmtNumberMap[stmtNum]);
 }
 
-StmtTNode& Program::getStmtNumber(int stmtNum) {
-	return *(stmtNumberMap[stmtNum]);
+void Program::InsertStmt(StmtTNode* stmt) {
+	stmtNumberMap.push_back(stmt);
 }
 

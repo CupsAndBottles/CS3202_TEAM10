@@ -1,7 +1,5 @@
 #pragma once
 
-#define ParserTest_h
-
 #include "cppunit\extensions\HelperMacros.h"
 #include "Parser\Parser.h"
 

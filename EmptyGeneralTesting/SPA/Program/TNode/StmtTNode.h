@@ -5,7 +5,7 @@
 class StmtTNode :
 	public virtual TNode {
 public:
-	void setParent(StmtTNode*);
+	void SetParent(StmtTNode*);
 
 	StmtTNode* GetParent();
 	StmtTNode* GetFollows();

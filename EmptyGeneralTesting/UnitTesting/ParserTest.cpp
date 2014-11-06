@@ -17,7 +17,7 @@ Program parseSource(string filename) {
 	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
 	stringstream buffer;
 	buffer << sourceFile.rdbuf();
-	return Parser::Parse(buffer.str());
+	return Parser::Parse(buffer.str(), Follows(), Modifies(), Uses(), Parent(), StmtTypeTable(), VarTable());
 }
 
 TNode& GetLHS(TNode& node) {

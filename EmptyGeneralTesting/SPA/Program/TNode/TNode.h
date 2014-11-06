@@ -27,7 +27,6 @@ public:
 	Type GetType();
 	bool IsType(Type);
 	
-	
 	virtual void SetRightSibling(TNode*);
 	virtual void AddChild(TNode*);
 	string GetName();

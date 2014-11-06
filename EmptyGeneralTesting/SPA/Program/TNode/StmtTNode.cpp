@@ -5,7 +5,7 @@ StmtTNode::StmtTNode(Type type, int lineNumber)
 	, lineNumber(lineNumber) {
 }
 
-void StmtTNode::setParent(StmtTNode* logicalParent) {
+void StmtTNode::SetParent(StmtTNode* logicalParent) {
 	logicalParent = logicalParent;
 }
 

@@ -2,8 +2,9 @@
 
 #include "Parser.h"
 #include "Tokenizer.h"
-#include "Program/Program.h"
-#include "Program/TNode/ConstantTNode.h"
+#include "Program\Program.h"
+#include "Program\TNode\ConstantTNode.h"
+#include "QueryProcessor\Grammar.h"
 
 #include <iostream>
 
@@ -13,14 +14,20 @@ void SyntaxError() {
 	throw (string) "Syntax error!";
 }
 
-Parser::Parser(vector<Token> tokenVector) 
-	: tokens(tokenVector.begin(), tokenVector.end()) 
+Parser::Parser(vector<Token> tokenVector, Follows& follows, Modifies& modifies, Uses& uses, Parent& parent, StmtTypeTable& stmtTypeTable, VarTable& varTable)
+	: tokens(tokenVector.begin(), tokenVector.end())
+	, follows(follows)
+	, modifies(modifies)
+	, uses(uses)
+	, parent(parent)
+	, stmtTypeTable(stmtTypeTable)
+	, varTable(varTable)
 	, currentLineNumber(0) {
 }
 
-Program Parser::Parse (string source) {
+Program Parser::Parse(string source, Follows& follows, Modifies& modifies, Uses& uses, Parent& parent, StmtTypeTable& stmtTypeTable, VarTable& varTable) {
 	vector<Token> tokens = Tokenizer::Tokenize(source);
-	Parser parser(tokens);
+	Parser parser(tokens, follows, modifies, uses, parent, stmtTypeTable, varTable);
 	parser.Parse();
 	return parser.program;
 }
@@ -88,9 +95,13 @@ StmtListTNode* Parser::ParseStmtList(string name) {
 	ConsumeTopTokenOfType(Token::START_OF_STMT_LIST);
 
 	StmtListTNode* stmtListNode = new StmtListTNode(name);
+	StmtTNode* prevStmt = nullptr;
 	while (!TopTokenIsType(Token::END_OF_STMT_LIST)) {
 		StmtTNode* stmt = ParseStmt();
 		stmtListNode->AddChild(stmt);
+		if (prevStmt != nullptr) {
+			follows.SetFollows(prevStmt->GetLineNumber(), stmt->GetLineNumber());
+		}
 	}
 
 	ConsumeTopTokenOfType(Token::END_OF_STMT_LIST);
@@ -99,7 +110,7 @@ StmtListTNode* Parser::ParseStmtList(string name) {
 }
 
 StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
-	Token firstToken = tokens.front();
+	Token firstToken = tokens.front(); // peek at next token
 	StmtTNode* stmt;
 	currentLineNumber++;
 
@@ -107,15 +118,20 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
 			ConsumeTopTokenOfType(Token::END_OF_STMT);
+			stmtTypeTable.insert(currentLineNumber, SynonymType::ASSIGN);
 			break;
 		case Token::WHILE:
 			stmt = ParseWhileStmt();
+			stmtTypeTable.insert(currentLineNumber, SynonymType::WHILE);
 			break;
 		default:
 			SyntaxError();
 	}
 
-	stmt->setParent(parentStmt);
+	stmt->SetParent(parentStmt);
+	if (parentStmt != nullptr) {
+		parent.SetParent(parentStmt->GetLineNumber(), currentLineNumber);
+	}
 	program.InsertStmt(stmt);
 	return stmt;
 }
@@ -133,6 +149,9 @@ AssignmentTNode* Parser::ParseAssignmentStmt() {
 	TNode* RHS = ParseExpr(nullptr, false);
 
 	assignmentStmt->BuildAssignmentNode(LHS, RHS);
+
+	varTable.InsertVar(varToken.content);
+	modifies.SetStmtModifiesVar(currentLineNumber, varTable.InsertVar(varToken.content));
 
 	return assignmentStmt;
 }
@@ -154,6 +173,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 		switch (currentToken.type) {
 			case Token::IDENTIFIER:
 				LHS = new VariableTNode(currentToken.content);
+				uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(currentToken.content));
 				break;
 			case Token::NUMBER:
 				LHS = new ConstantTNode(currentToken.content);
@@ -175,6 +195,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 		switch (currentToken.type) {
 			case Token::IDENTIFIER:
 				RHS = new VariableTNode(currentToken.content);
+				uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(currentToken.content));
 				break;
 			case Token::NUMBER:
 				RHS = new ConstantTNode(currentToken.content);
@@ -207,6 +228,7 @@ WhileTNode* Parser::ParseWhileStmt() {
 	// parse condition
 	Token condition = ConsumeTopTokenOfType(Token::IDENTIFIER);
 	VariableTNode* conditionNode = new VariableTNode(condition.content);
+	uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(condition.content));
 
 	// parse loop body
 	StmtListTNode* loopBody = ParseStmtList("");

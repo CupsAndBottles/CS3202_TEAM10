@@ -5,6 +5,11 @@
 
 using namespace std;
 
+bool HasAnyModifies();
+int SizeOfModifies();
+map <int, set<int> > Modifies::StmtToVarTable;
+map <int, set<int> > Modifies::VarToStmtTable;
+
 // empty constructor
 Modifies::Modifies() {
 
@@ -47,6 +52,11 @@ int Modifies::SizeOfModifies() {
     return StmtToVarTable.size();
 }
 
+void Modifies::ClearData() {
+	StmtToVarTable.clear();
+	VarToStmtTable.clear();
+
+}
 
 // driver code to test out Modifies
 /*

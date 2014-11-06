@@ -5,9 +5,7 @@
 #include "TNode\ProcedureTNode.h"
 #include "TNode\AssignmentTNode.h"
 #include "TNode\ConstantTNode.h"
-#include "TNode\IfTNode.h"
 #include "TNode\WhileTNode.h"
-#include "TNode\CallTNode.h"
 
 Program::Program() {}
 

@@ -3,8 +3,6 @@
 #include "Token.h"
 #include "Program\Program.h"
 #include "Program\TNode\AssignmentTNode.h"
-#include "Program\TNode\CallTNode.h"
-#include "Program\TNode\IfTNode.h"
 #include "Program\TNode\WhileTNode.h"
 #include "PKB\Follows.h"
 #include "PKB\Modifies.h"

@@ -55,7 +55,6 @@ vector<vector<Synonym>> QueryEvaluator::evaluateQuery(QueryData queryData){
 	return mergeResult(modifiesResult);
 }
 
-/*
 vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, vector<SelectClause> select, vector<Declaration> declaration){
 	vector<vector<int>> possibleResult;
 	vector<vector<Synonym>> result;
@@ -125,7 +124,7 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 	// arg1NeedSelect&&arg2NeedSelect may be all != -1
 	return result;			
 }
-			
+/*			
 vector<vector<Synonym>> QueryEvaluator::checkUses(SuchThatClause suchThat, vector<SelectClause> select, vector<Declaration> declaration)
 {
 	vector<vector<int>> possibleResult;

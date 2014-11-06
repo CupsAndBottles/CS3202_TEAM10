@@ -12,6 +12,6 @@ SPAFrontEnd --> PKB
 	.. + only, no "(", no ")"
 	.. var_name and const_value
 
-Query
-
-- mark out private and public methods
+QueryEvaluator --> PKB
+- checkModifies
+- checkUses

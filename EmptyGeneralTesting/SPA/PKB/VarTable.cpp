@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <vector>
 
+
+vector<string>  VarTable::varNames;
+
 // Default constructor
 VarTable::VarTable() {
 	// empty constructor
@@ -53,5 +56,10 @@ int VarTable::GetSize() {
 
 vector<string>::iterator VarTable::SearchFor(string varName) {
 	return find(varNames.begin(), varNames.end(), varName);
+
+}
+
+void VarTable::ClearData() {
+	varNames.clear();
 
 }

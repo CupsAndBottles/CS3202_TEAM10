@@ -5,6 +5,8 @@
 #include <utility>
 #include <vector>
 
+vector<pair<int, int>> Follows::followsTable;
+
 /** public methods **/
 // Default constructor
 Follows::Follows() {
@@ -134,5 +136,10 @@ bool Follows::AlreadyInserted(pair<int, int> newPair) {
 	vector<pair<int, int>>::iterator newPairIterator = find(followsTable.begin(), followsTable.end(), newPair);
 
 	return newPairIterator != followsTable.end();
+
+}
+
+void Follows::ClearData() {
+	followsTable.clear();
 
 }

@@ -12,13 +12,13 @@ public:
 	Uses();
 
 	// API
-	void SetStmtUsesVar(int stmtUsing, int varUsed);
-	bool IsStmtUsingVar(int stmtUsing, int varUsed);
-    set<int> GetStmtUsingVar(int varUsed);
-    set<int> GetVarUsedByStmt(int stmtUsing);
+	static void SetStmtUsesVar(int stmtUsing, int varUsed);
+	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
+    static set<int> GetStmtUsingVar(int varUsed);
+    static set<int> GetVarUsedByStmt(int stmtUsing);
 
-	bool HasAnyUses();
-	int SizeOfUses();
+	static bool HasAnyUses();
+	static int SizeOfUses();
 
 	// APIs out of scope of assigment 4
 	/*void SetUsesProc(int procUsing, int varUsed);
@@ -27,7 +27,7 @@ public:
 	vector<int> GetUsedByProc(int procUsing);*/
 
 private:
-	map <int, set<int> > StmtToVarTable;
-    map <int, set<int> > VarToStmtTable;
+	static map <int, set<int> > StmtToVarTable;
+    static map <int, set<int> > VarToStmtTable;
 
 };

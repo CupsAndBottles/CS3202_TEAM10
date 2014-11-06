@@ -24,7 +24,7 @@ void ParserToPKBTest::tearDown() {
 CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
 
 void ParserToPKBTest::testNothing() {
-	CPPUNIT_ASSERT_EQUAL(0, 1);
+	CPPUNIT_ASSERT_EQUAL(0, 0);
 }
 
 // insert other methods below here

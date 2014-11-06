@@ -12,17 +12,18 @@ class Modifies {
         Modifies();
 
         // API
-        void SetStmtModifiesVar(int stmtModifying, int varModified); 
-        bool IsStmtModifiesVar(int stmtModifying, int varModified);
-        set<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
-        set<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
+        static void SetStmtModifiesVar(int stmtModifying, int varModified); 
+        static bool IsStmtModifiesVar(int stmtModifying, int varModified);
+        static set<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
+        static set<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
 		// Select s such that Modifies(w, "x")
 		// 1. go VarTable, GetIndexOf("x")
 		// 2. GetStmtModifyingVar(index of x)
 		// 3. StmtTypeTable, filter w
 
-        bool HasAnyModifies();
-        int SizeOfModifies();
+        static bool HasAnyModifies();
+        static int SizeOfModifies();
+		static void ClearData();
 
         // APIs out of scope of assigment 4
         /*void SetModifiesProc(int procModifying, int varModified);
@@ -31,8 +32,8 @@ class Modifies {
           vector<int> GetModifiedByProc(int procModifying);*/
 
     private:
-        map <int, set<int> > StmtToVarTable;
-        map <int, set<int> > VarToStmtTable;
+        static map <int, set<int> > StmtToVarTable;
+        static map <int, set<int> > VarToStmtTable;
         // insert other private methods here
 
 };

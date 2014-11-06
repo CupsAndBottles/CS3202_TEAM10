@@ -14,15 +14,16 @@ public:
 	VarTable();
 
 	// Methods
-	int InsertVar(string varName);
-	int GetIndexOf(string varName); 
-	string GetVarName(int varIndex);
-	int GetSize();
+	static int InsertVar(string varName);
+	static int GetIndexOf(string varName); 
+	static string GetVarName(int varIndex);
+	static int GetSize();
+	static void ClearData();
 
 private:
-	vector<string>  varNames;	// List of variable strings
+	static vector<string>  varNames;	// List of variable strings
 	// insert subsequent columns of the VarTable here
 
-	vector<string>::iterator SearchFor(string varName);
+	static vector<string>::iterator SearchFor(string varName);
 
 };

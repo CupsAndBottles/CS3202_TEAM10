@@ -5,6 +5,9 @@
 
 using namespace std;
 
+map <int, set<int> > Uses::StmtToVarTable;
+map <int, set<int> > Uses::VarToStmtTable;
+
 // empty constructor
 Uses::Uses() {}
 

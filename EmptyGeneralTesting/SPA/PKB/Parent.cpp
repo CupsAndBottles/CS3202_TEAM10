@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+vector<pair<int, int>> Parent::parentTable;
+
 /** public methods **/
 // Default constructor
 Parent::Parent() {
@@ -132,6 +134,10 @@ bool Parent::HasAnyParents() {
 
 int Parent::SizeOfParent() {
 	return parentTable.size();
+}
+
+void Parent::ClearData() {
+	parentTable.clear();
 }
 
 /** private methods **/

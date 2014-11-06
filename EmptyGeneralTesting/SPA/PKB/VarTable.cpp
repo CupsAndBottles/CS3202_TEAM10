@@ -1,10 +1,9 @@
+#pragma once
+
 #include "VarTable.h"
 #include "Exception\IndexNotFoundException.h"
 #include <algorithm>
 #include <vector>
-
-
-vector<string>  VarTable::varNames;
 
 // Default constructor
 VarTable::VarTable() {

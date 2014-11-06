@@ -12,14 +12,14 @@ public:
 	StmtTypeTable();
 
 	//API-Query
-	set<int> GetAllStmtsOfType(SynonymType type);
-	bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
+	static set<int> GetAllStmtsOfType(SynonymType type);
+	static bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
 
 	//API-PKB and DE
-	void insert(int stmtIndex, SynonymType type);
+	static void insert(int stmtIndex, SynonymType type);
 
 private:
 	//data structures
-	map<int, SynonymType> IndexTypeTable;
-	map<SynonymType, set<int> > TypeIndexTable;
+	static map<int, SynonymType> IndexTypeTable;
+	static map<SynonymType, set<int> > TypeIndexTable;
 };

@@ -14,20 +14,14 @@ void SyntaxError() {
 	throw (string) "Syntax error!";
 }
 
-Parser::Parser(vector<Token> tokenVector, Follows& follows, Modifies& modifies, Uses& uses, Parent& parent, StmtTypeTable& stmtTypeTable, VarTable& varTable)
+Parser::Parser(vector<Token> tokenVector)
 	: tokens(tokenVector.begin(), tokenVector.end())
-	, follows(follows)
-	, modifies(modifies)
-	, uses(uses)
-	, parent(parent)
-	, stmtTypeTable(stmtTypeTable)
-	, varTable(varTable)
 	, currentLineNumber(0) {
 }
 
-Program Parser::Parse(string source, Follows& follows, Modifies& modifies, Uses& uses, Parent& parent, StmtTypeTable& stmtTypeTable, VarTable& varTable) {
+Program Parser::Parse(string source) {
 	vector<Token> tokens = Tokenizer::Tokenize(source);
-	Parser parser(tokens, follows, modifies, uses, parent, stmtTypeTable, varTable);
+	Parser parser(tokens);
 	parser.Parse();
 	return parser.program;
 }
@@ -100,7 +94,7 @@ StmtListTNode* Parser::ParseStmtList(string name) {
 		StmtTNode* stmt = ParseStmt();
 		stmtListNode->AddChild(stmt);
 		if (prevStmt != nullptr) {
-			follows.SetFollows(prevStmt->GetLineNumber(), stmt->GetLineNumber());
+			Follows::SetFollows(prevStmt->GetLineNumber(), stmt->GetLineNumber());
 		}
 	}
 
@@ -118,11 +112,11 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
 			ConsumeTopTokenOfType(Token::END_OF_STMT);
-			stmtTypeTable.insert(currentLineNumber, SynonymType::ASSIGN);
+			StmtTypeTable::insert(currentLineNumber, SynonymType::ASSIGN);
 			break;
 		case Token::WHILE:
 			stmt = ParseWhileStmt();
-			stmtTypeTable.insert(currentLineNumber, SynonymType::WHILE);
+			StmtTypeTable::insert(currentLineNumber, SynonymType::WHILE);
 			break;
 		default:
 			SyntaxError();
@@ -130,7 +124,7 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 
 	stmt->SetParent(parentStmt);
 	if (parentStmt != nullptr) {
-		parent.SetParent(parentStmt->GetLineNumber(), currentLineNumber);
+		Parent::SetParent(parentStmt->GetLineNumber(), currentLineNumber);
 	}
 	program.InsertStmt(stmt);
 	return stmt;
@@ -150,8 +144,8 @@ AssignmentTNode* Parser::ParseAssignmentStmt() {
 
 	assignmentStmt->BuildAssignmentNode(LHS, RHS);
 
-	varTable.InsertVar(varToken.content);
-	modifies.SetStmtModifiesVar(currentLineNumber, varTable.InsertVar(varToken.content));
+	VarTable::InsertVar(varToken.content);
+	Modifies::SetStmtModifiesVar(currentLineNumber, VarTable::InsertVar(varToken.content));
 
 	return assignmentStmt;
 }
@@ -173,7 +167,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 		switch (currentToken.type) {
 			case Token::IDENTIFIER:
 				LHS = new VariableTNode(currentToken.content);
-				uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(currentToken.content));
+				Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
 				break;
 			case Token::NUMBER:
 				LHS = new ConstantTNode(currentToken.content);
@@ -195,7 +189,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 		switch (currentToken.type) {
 			case Token::IDENTIFIER:
 				RHS = new VariableTNode(currentToken.content);
-				uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(currentToken.content));
+				Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
 				break;
 			case Token::NUMBER:
 				RHS = new ConstantTNode(currentToken.content);
@@ -228,7 +222,7 @@ WhileTNode* Parser::ParseWhileStmt() {
 	// parse condition
 	Token condition = ConsumeTopTokenOfType(Token::IDENTIFIER);
 	VariableTNode* conditionNode = new VariableTNode(condition.content);
-	uses.SetStmtUsesVar(currentLineNumber, varTable.InsertVar(condition.content));
+	Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(condition.content));
 
 	// parse loop body
 	StmtListTNode* loopBody = ParseStmtList("");

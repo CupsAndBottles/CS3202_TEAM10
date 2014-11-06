@@ -6,6 +6,9 @@
 
 using namespace std;
 
+map<int, SynonymType> StmtTypeTable::IndexTypeTable;
+map<SynonymType, set<int> > StmtTypeTable::TypeIndexTable;
+
 // constructor
 StmtTypeTable::StmtTypeTable() {
 

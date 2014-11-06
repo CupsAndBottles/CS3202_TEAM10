@@ -18,22 +18,15 @@ using namespace std;
 
 class Parser {
 public:
-	static Program Parse(string, Follows&, Modifies&, Uses&, Parent&, StmtTypeTable&, VarTable&);
+	static Program Parse(string);
 	static int compare(Token::Type, Token::Type);
 
 private:
-	Parser(vector<Token>, Follows&, Modifies&, Uses&, Parent&, StmtTypeTable&, VarTable&);
+	Parser(vector<Token>);
 
 	deque<Token> tokens;
 	int currentLineNumber;
 	Program program;
-
-	Follows& follows;
-	Modifies& modifies;
-	Uses& uses;
-	Parent& parent;
-	StmtTypeTable& stmtTypeTable;
-	VarTable& varTable;
 
 	Token ConsumeTopToken();
 	bool TopTokenIsType(Token::Type);

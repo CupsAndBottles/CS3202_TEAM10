@@ -1,3 +1,6 @@
+#ifndef FOLLOWS_H
+#define FOLLOWS_H
+
 #include <utility>
 #include <vector>
 
@@ -31,3 +34,5 @@ private:
 	// insert other private methods here
 
 };
+
+#endif

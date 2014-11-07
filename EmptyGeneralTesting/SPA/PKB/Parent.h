@@ -1,3 +1,6 @@
+#ifndef PARENT_H
+#define PARENT_H
+
 #include <utility>
 #include <vector>
 
@@ -31,3 +34,4 @@ private:
 
 
 };
+#endif

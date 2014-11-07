@@ -1,3 +1,6 @@
+#ifndef MODIFIES_H
+#define MODIFIES_H
+
 #include <utility>
 #include <vector>
 #include <map>
@@ -37,3 +40,4 @@ class Modifies {
         // insert other private methods here
 
 };
+#endif

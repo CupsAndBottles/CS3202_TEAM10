@@ -44,8 +44,8 @@ void ParserToPKBTest::testOne() {
 
 	// check if VarTable has correct number of variables
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 2, VarTable::GetSize());
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("first variable of vartable", 0, VarTable::GetIndexOf("x"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("first variable of vartable", 1, VarTable::GetIndexOf("y"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("first variable of VarTable", 0, VarTable::GetIndexOf("x"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("first variable of VarTable", 1, VarTable::GetIndexOf("y"));
 
 	// check if modifies and uses tables are updated
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 2, Modifies::SizeOfModifies());

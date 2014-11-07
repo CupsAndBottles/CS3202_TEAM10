@@ -5,13 +5,9 @@
 #include <algorithm>
 #include <vector>
 
-// Default constructor
-VarTable::VarTable() {
-	// empty constructor
-}
+ vector<string>  VarTable::varNames;
 
-// Method
-
+/* Public Methods*/
 int VarTable::InsertVar(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
@@ -48,17 +44,19 @@ string VarTable::GetVarName(int varIndex) {
 
 }
 
+// methods to aid testing
 int VarTable::GetSize() {
 	return varNames.size();
 
 }
 
-vector<string>::iterator VarTable::SearchFor(string varName) {
-	return find(varNames.begin(), varNames.end(), varName);
+void VarTable::ClearData() {
+	varNames.clear();
 
 }
 
-void VarTable::ClearData() {
-	varNames.clear();
+/*Private Methods*/
+vector<string>::iterator VarTable::SearchFor(string varName) {
+	return find(varNames.begin(), varNames.end(), varName);
 
 }

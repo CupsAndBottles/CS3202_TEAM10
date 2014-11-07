@@ -1,3 +1,6 @@
+#ifndef USES_H
+#define USES_H
+
 #include <utility>
 #include <vector>
 #include <map>
@@ -31,3 +34,4 @@ private:
     static map <int, set<int> > VarToStmtTable;
 
 };
+#endif

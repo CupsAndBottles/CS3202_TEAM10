@@ -16,13 +16,6 @@ void VarTableTest::tearDown() {
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VarTableTest);
 
-// method to test the constructor
-void VarTableTest::testConstructor() {
-	int size = VarTable::GetSize();
-	CPPUNIT_ASSERT_EQUAL(0, size);
-	 
-}
-
 void VarTableTest::testInsert() {
 	VarTable::ClearData();
 

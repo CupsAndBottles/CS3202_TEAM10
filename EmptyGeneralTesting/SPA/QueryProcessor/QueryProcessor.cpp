@@ -8,7 +8,7 @@ QueryProcessor::QueryProcessor(void)
 }
 
 std::string QueryProcessor::ProcessQuery(std::string query) {
-	QueryData queryData;
+	//QueryData queryData;
 	std::string result = "";
 	//QueryEvaluator QE;
 	//QueryValidator QV;

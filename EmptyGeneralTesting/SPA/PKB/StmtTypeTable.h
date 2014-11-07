@@ -1,3 +1,6 @@
+#ifndef STMTTYPETABLE_H
+#define STMTTYPETABLE_H
+
 #include <utility>
 #include <vector>
 #include <map>
@@ -23,3 +26,5 @@ private:
 	static map<int, SynonymType> IndexTypeTable;
 	static map<SynonymType, set<int> > TypeIndexTable;
 };
+
+#endif

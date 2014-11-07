@@ -19,6 +19,8 @@ public:
 	static int InsertVar(string varName);
 	static int GetIndexOf(string varName); 
 	static string GetVarName(int varIndex);
+	
+	// methods to aid testing
 	static int GetSize();
 	static void ClearData();
 

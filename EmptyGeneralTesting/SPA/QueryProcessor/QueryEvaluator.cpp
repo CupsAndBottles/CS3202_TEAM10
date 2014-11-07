@@ -66,7 +66,7 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 	int arg1NeedSelect = -1;
 	int arg2NeedSelect = -1;//-1 means no need to select
 				
-	for (int i = 0; i<select.size(); i++){
+	for (unsigned int i = 0; i<select.size(); i++){
 		if (suchThat.arg1.value == select[i].synonym.value)
 				arg1NeedSelect = i;
 		if (suchThat.arg2.value == select[i].synonym.value)
@@ -75,8 +75,8 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 	}
 				
 	if (arg1NeedSelect == -1 && arg2NeedSelect == -1){
-		for (int i = 0; i<possibleResult.size(); i++){ //need to check the Modifies first
-			for (int j = 0; j<possibleResult[i].size(); j++){
+		for (unsigned int i = 0; i<possibleResult.size(); i++){ //need to check the Modifies first
+			for (unsigned int j = 0; j<possibleResult[i].size(); j++){
 				result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));
 							
 			}
@@ -86,9 +86,9 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 	}
 
 	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1) {
-		for (int i = 0; i < possibleResult.size(); i++) {
+		for (unsigned int i = 0; i < possibleResult.size(); i++) {
 			if (i == arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
+				for (unsigned int j = 0; j < possibleResult[i].size(); j++) {
 					if (Modifies::IsStmtModifiesVar(possibleResult[i][j], VarTable::GetIndexOf(suchThat.arg2.syn.value))){//arg2 may not be a specific variable name
 						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
 					}								
@@ -96,7 +96,7 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 			}
 
 			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
+				for (unsigned int j = 0; j < possibleResult[i].size(); j++) {
 					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
 				}						
 			}					
@@ -104,9 +104,9 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 	}
 
 	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1) {
-		for (int i = 0; i < possibleResult.size(); i++) {
+		for (unsigned int i = 0; i < possibleResult.size(); i++) {
 			if (i == arg2NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
+				for (unsigned int j = 0; j < possibleResult[i].size(); j++) {
 					if (Modifies::IsStmtModifiesVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i][j])) {//arg1 may not be a specific stmtline
 						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));				
 					}								
@@ -114,7 +114,7 @@ vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, v
 			}
 
 			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
+				for (unsigned int j = 0; j < possibleResult[i].size(); j++) {
 					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));								
 				}							
 			}						

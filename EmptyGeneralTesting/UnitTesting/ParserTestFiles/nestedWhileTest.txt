@@ -1,4 +1,4 @@
-// Nested while parsing
+\\ Nested while parsing
 
 procedure nestedWhileParsing {
 	while x {

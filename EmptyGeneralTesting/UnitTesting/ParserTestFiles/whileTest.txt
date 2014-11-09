@@ -1,4 +1,4 @@
-// While loop parsing
+\\ While loop parsing
 
 procedure whileTest {
 	while z {

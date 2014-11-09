@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const char Tokenizer::COMMENT_DELINEATOR = '/';
+const char Tokenizer::COMMENT_DELINEATOR = '\\';
 
 // splits a source string into tokens
 // classifies tokens by type

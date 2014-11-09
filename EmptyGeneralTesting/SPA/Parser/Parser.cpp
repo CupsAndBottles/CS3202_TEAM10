@@ -7,6 +7,8 @@
 #include "QueryProcessor\Grammar.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -226,3 +228,11 @@ WhileTNode* Parser::ParseWhileStmt() {
 	whileStmt->BuildWhileNode(conditionNode, loopBody);
 	return whileStmt;
 }
+//
+//void main() {
+//	ifstream sourceFile("Parser\sample_SIMPLE_source.txt");
+//	stringstream buffer;
+//	buffer << sourceFile.rdbuf();
+//	sourceFile.close();
+//	Program testProgram = Parser::Parse(buffer.str());
+//}

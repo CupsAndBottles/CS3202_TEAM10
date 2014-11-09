@@ -29,16 +29,16 @@
     <ClCompile Include="PKB\Modifies.cpp" />
     <ClCompile Include="PKB\Parent.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
-    <ClCompile Include="QueryProcessor\QueryData.cpp" />
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
-    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
-    <ClCompile Include="QueryProcessor\RelTable.cpp" />
     <ClCompile Include="PKB\StmtTypeTable.cpp" />
     <ClCompile Include="Parser\Token.cpp" />
     <ClCompile Include="Parser\Tokenizer.cpp" />
     <ClCompile Include="PKB\Uses.cpp" />
     <ClCompile Include="PKB\VarTable.cpp" />
+    <ClCompile Include="QueryProcessor\QueryData.cpp" />
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
+    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
+    <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
+    <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program\Program.h" />
@@ -75,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SPA.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Parser\sample_SIMPLE_source.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>

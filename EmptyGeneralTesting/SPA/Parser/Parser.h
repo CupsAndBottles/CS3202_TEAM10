@@ -35,7 +35,7 @@ private:
 
 	void Parse();
 
-	StmtListTNode* ParseStmtList(string);
+	StmtListTNode* ParseStmtList(string, StmtTNode*);
 	StmtTNode* ParseStmt();
 	StmtTNode* ParseStmt(StmtTNode*);
 	AssignmentTNode* ParseAssignmentStmt();

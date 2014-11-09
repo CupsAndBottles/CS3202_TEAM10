@@ -21,6 +21,12 @@
     <ClCompile Include="ParserToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QueryEvaluatorToPKBDATest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -28,6 +34,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserToPKBTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryEvaluatorToPKBDATest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,3 +143,31 @@ void ParserTest::TestNestedWhileParsing() {
 	CPPUNIT_ASSERT(GetLHS(nestedStmt).GetContent() == "x");
 	CPPUNIT_ASSERT(GetRHS(nestedStmt).GetContent() == "0");
 }
+
+void ParserTest::TestParsing() {
+	Program testAST = parseSource("sample_SIMPLE_source.txt");
+	ProgramTNode program = testAST.GetASTRootNode();
+	ProcedureTNode procedure = program.GetChild(0);
+	vector<StmtTNode*> stmts = procedure.GetProcedureBody().GetStmtList();
+
+	CPPUNIT_ASSERT(procedure.GetName() == "ABC");
+
+	CPPUNIT_ASSERT(stmts[0]->GetLineNumber() == 1);
+	CPPUNIT_ASSERT(stmts[0]->GetContent() == "=");
+	CPPUNIT_ASSERT(GetLHS(*stmts[0]).GetContent() == "i");
+	CPPUNIT_ASSERT(GetRHS(*stmts[0]).GetContent() == "1");
+
+	CPPUNIT_ASSERT(stmts[1]->GetLineNumber() == 2);
+	CPPUNIT_ASSERT(stmts[1]->GetContent() == "=");
+	CPPUNIT_ASSERT(GetLHS(*stmts[1]).GetContent() == "b");
+	CPPUNIT_ASSERT(GetRHS(*stmts[1]).GetContent() == "200");
+
+	CPPUNIT_ASSERT(stmts[2]->GetLineNumber() == 3);
+	CPPUNIT_ASSERT(stmts[2]->GetContent() == "=");
+	CPPUNIT_ASSERT(GetLHS(*stmts[2]).GetContent() == "c");
+	CPPUNIT_ASSERT(GetRHS(*stmts[2]).GetContent() == "a");
+
+	CPPUNIT_ASSERT(stmts[3]->GetLineNumber() == 4);
+	CPPUNIT_ASSERT(stmts[3]->GetType() == TNode::WHILE);
+
+}

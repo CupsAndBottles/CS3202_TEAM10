@@ -72,7 +72,7 @@ void ParserToPKBTest::TestModifies() {
 
 void ParserToPKBTest::TestUses() {
 	// check if usesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 10, Uses::SizeOfUses());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 7, Uses::SizeOfUses());
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 1st variable", Uses::IsStmtUsingVar(2, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 2nt variable", Uses::IsStmtUsingVar(3, 2));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 3rd variable", Uses::IsStmtUsingVar(4, 2));

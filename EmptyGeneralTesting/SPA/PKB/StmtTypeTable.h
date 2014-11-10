@@ -15,16 +15,18 @@ public:
 	StmtTypeTable();
 
 	//API-Query
-	static set<int> GetAllStmtsOfType(SynonymType type);
+	static vector<int> GetAllStmtsOfType(SynonymType type);
 	static bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
 
 	//API-PKB and DE
 	static void insert(int stmtIndex, SynonymType type);
 
+	static void ClearData();
+
 private:
 	//data structures
 	static map<int, SynonymType> IndexTypeTable;
-	static map<SynonymType, set<int> > TypeIndexTable;
+	static map<SynonymType, vector<int> > TypeIndexTable;
 };
 
 #endif

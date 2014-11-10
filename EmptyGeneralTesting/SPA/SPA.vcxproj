@@ -41,6 +41,7 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PKB\ConstTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
     <ClInclude Include="Program\TNode\AtomicTNode.h" />
@@ -69,7 +70,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />
     <ClInclude Include="Parser\Tokenizer.h" />
-    <ClInclude Include="Parser\Token.h" />
+    <ClInclude Include="PKB\Token.h" />
     <ClInclude Include="PKB\Uses.h" />
     <ClInclude Include="PKB\VarTable.h" />
   </ItemGroup>

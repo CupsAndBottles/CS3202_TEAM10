@@ -7,15 +7,22 @@
 using namespace std;
 
 map<int, SynonymType> StmtTypeTable::IndexTypeTable;
-map<SynonymType, set<int> > StmtTypeTable::TypeIndexTable;
+map<SynonymType, vector<int> > StmtTypeTable::TypeIndexTable;
 
 // constructor
-StmtTypeTable::StmtTypeTable() {
+StmtTypeTable::StmtTypeTable() {};
 
-};
+vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
+	if(type == STMT)
+	{ 
+		vector<int> stmts;
+		for(map<int,SynonymType>::iterator it = IndexTypeTable.begin(); it != IndexTypeTable.end(); ++it)
+			stmts.push_back(it->first);
 
-set<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
-    return TypeIndexTable.at(type);
+		return stmts;
+	}
+
+    else return TypeIndexTable.at(type);
 }
 
 bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
@@ -25,6 +32,11 @@ bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
 //API-PKB and DE
 void StmtTypeTable::insert(int stmtIndex, SynonymType type) {
     IndexTypeTable[stmtIndex] = type;
-    TypeIndexTable[type].insert(stmtIndex);
+    TypeIndexTable[type].push_back(stmtIndex);
 }
 
+void StmtTypeTable::ClearData()
+{
+	IndexTypeTable.clear();
+	TypeIndexTable.clear();
+}

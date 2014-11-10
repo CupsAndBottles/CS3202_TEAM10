@@ -15,6 +15,8 @@
 #include <string>
 #include <stdint.h>
 
+CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
+
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 Program parseSource(string filename) {
@@ -33,7 +35,7 @@ void ParserToPKBTest::tearDown() {
 	// empty body
 }
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
+
 
 void ParserToPKBTest::TestNothing() {
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("simple dummy test", 0, 0);
@@ -106,15 +108,15 @@ void ParserToPKBTest::TestFollows() {
 
 void ParserToPKBTest::TestStmtTypeTable() {
 	// check if StmtTypeTable is updated
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 1st stmt", StmtTypeTable::CheckIfStmtOfType(1, SynonymType::ASSIGN));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 2nd stmt", StmtTypeTable::CheckIfStmtOfType(2, SynonymType::ASSIGN));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 3rd stmt", StmtTypeTable::CheckIfStmtOfType(3, SynonymType::WHILE));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 4th stmt", StmtTypeTable::CheckIfStmtOfType(4, SynonymType::ASSIGN));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 5th stmt", StmtTypeTable::CheckIfStmtOfType(5, SynonymType::WHILE));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 6th stmt", StmtTypeTable::CheckIfStmtOfType(6, SynonymType::ASSIGN));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 7th stmt", StmtTypeTable::CheckIfStmtOfType(7, SynonymType::WHILE));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 8th stmt", StmtTypeTable::CheckIfStmtOfType(8, SynonymType::ASSIGN));
-	CPPUNIT_ASSERT_MESSAGE("test correct typing for 9th stmt", StmtTypeTable::CheckIfStmtOfType(9, SynonymType::ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 1st stmt", StmtTypeTable::CheckIfStmtOfType(1, ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 2nd stmt", StmtTypeTable::CheckIfStmtOfType(2, ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 3rd stmt", StmtTypeTable::CheckIfStmtOfType(3, WHILE));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 4th stmt", StmtTypeTable::CheckIfStmtOfType(4, ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 5th stmt", StmtTypeTable::CheckIfStmtOfType(5, WHILE));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 6th stmt", StmtTypeTable::CheckIfStmtOfType(6, ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 7th stmt", StmtTypeTable::CheckIfStmtOfType(7, WHILE));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 8th stmt", StmtTypeTable::CheckIfStmtOfType(8, ASSIGN));
+	CPPUNIT_ASSERT_MESSAGE("test correct typing for 9th stmt", StmtTypeTable::CheckIfStmtOfType(9, ASSIGN));
 }
 
 // add a comment before each method to indicate its purpose

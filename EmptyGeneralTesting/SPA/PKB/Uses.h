@@ -23,6 +23,8 @@ public:
 	static bool HasAnyUses();
 	static int SizeOfUses();
 
+	static void ClearData();
+
 	// APIs out of scope of assigment 4
 	/*void SetUsesProc(int procUsing, int varUsed);
 	bool IsUsesProc(int procUsing, int varUsed);

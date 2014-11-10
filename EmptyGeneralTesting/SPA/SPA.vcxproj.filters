@@ -170,9 +170,6 @@
     <ClInclude Include="Parser\Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Parser\Token.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Parser\Tokenizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -234,6 +231,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryProcessor\RelTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKB\ConstTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKB\Token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

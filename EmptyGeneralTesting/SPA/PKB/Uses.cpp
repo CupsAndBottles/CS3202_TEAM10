@@ -51,6 +51,11 @@ int Uses::SizeOfUses() {
     return StmtToVarTable.size();
 }
 
+void Uses::ClearData() 
+{
+	StmtToVarTable.clear();
+}
+
 
 // driver code to test out Uses
 /*

@@ -60,3 +60,7 @@ vector<string>::iterator VarTable::SearchFor(string varName) {
 	return find(varNames.begin(), varNames.end(), varName);
 
 }
+
+vector<string> VarTable::GetAllVar() {
+	return varNames;
+}

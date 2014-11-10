@@ -21,10 +21,10 @@
     <ClCompile Include="ParserToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryEvaluatorToPKBDATest.cpp">
+    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp">
+    <ClCompile Include="QueryEvaluatorToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,7 +39,7 @@
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QueryEvaluatorToPKBDATest.h">
+    <ClInclude Include="QueryEvaluatorToPKBTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

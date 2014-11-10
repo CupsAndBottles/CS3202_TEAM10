@@ -17,8 +17,8 @@ QueryEvaluator::QueryEvaluator(void) {}
 //resultInteger for select a,s,w,n , resultString for select v. for now assume no select v
 bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList){
 
-	//vector<vector<Synonym>> modifiesResult;
-	//vector<vector<Synonym>> usesResult;
+	vector<string> modifiesResult;
+	vector<string> usesResult;
 	vector<string> suchThatResult;
 	vector<string> patternResult;
 	vector<string> selectResult;
@@ -42,11 +42,11 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		switch (suchThat.relationship)
 		{
 		case MODIFIES:
-			//suchThatResult = checkModifies(suchThat, selects, declarations);
+			suchThatResult = checkModifies(suchThat, select, declarations,suchThatResult);
 			break;
 
 		case USES:
-			//suchThatResult = checkUses(suchThat, selects, declarations);
+			suchThatResult = checkUses(suchThat, select, declarations, suchThatResult);
 			break;
 
 		case PARENT:
@@ -732,189 +732,239 @@ string QueryEvaluator::ToString(int i)
 
 	return s;
 }
-/*
-vector<vector<Synonym>> QueryEvaluator::checkModifies(SuchThatClause suchThat, vector<SelectClause> select, vector<Declaration> declaration){
-	vector<vector<int>> possibleResult;
-	vector<vector<Synonym>> result;
+vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClause select, vector<Declaration> declaration, vector<string> result){
+	vector<int> possibleResult;
 
-			
+
 	//to get all the possible result
 	possibleResult = getAllPossibleResult(select);
-				
+
 	int arg1NeedSelect = -1;
 	int arg2NeedSelect = -1;//-1 means no need to select
-				
-	for (int i = 0; i<select.size(); i++){
-		if (suchThat.arg1.value == select[i].synonym.value)
-				arg1NeedSelect = i;
-		if (suchThat.arg2.value == select[i].synonym.value)
-				arg2NeedSelect = i;
-					
+
+	for (unsigned int i = 0; i<1; i++){ // select.size() = 1 in assignment4
+		if (suchThat.arg1.value == select.synonym.value)
+			arg1NeedSelect = i;
+		if (suchThat.arg2.value == select.synonym.value)
+			arg2NeedSelect = i;
+
 	}
-				
+
 	if (arg1NeedSelect == -1 && arg2NeedSelect == -1){
-		for (int i = 0; i<possibleResult.size(); i++){ //need to check the Modifies first
-			for (int j = 0; j<possibleResult[i].size(); j++){
-				result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));
-							
+
+		bool flag = false;// false means modifies() is false
+
+		for (unsigned int i = 0; i < declaration.size(); i++){
+			if (suchThat.arg2.value == declaration[i].synonym.value){
+				if (Modifies::HasAnyModifies()) flag = true;
 			}
-						
+			else if (suchThat.arg1.value == declaration[i].synonym.value){
+				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
+				int var = VarTable::GetIndexOf(suchThat.arg2.value);
+				vector<int>::iterator it;
+				for (it = proglines.begin(); it != proglines.end(); it++) {
+					if (Modifies::IsStmtModifiesVar(*it, var)) flag = true;
+				}
+			}
+
+
 		}
-		return result;			
+
+
+		if (flag){
+			for (unsigned int j = 0; j < possibleResult.size(); j++){
+				result.push_back(convertIntToString(possibleResult[j], select.synonym.type));
+
+			}
+		}
+		return result;
 	}
 
 	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1) {
-		for (int i = 0; i < possibleResult.size(); i++) {
-			if (i == arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					if (Modifies::IsStmtModifiesVar(possibleResult[i][j], VarTable::GetIndexOf(suchThat.arg2.syn.value))){//arg2 may not be a specific variable name
-						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
-					}								
-				}							
-			}
 
-			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
-				}						
-			}					
-		}					
+		for (unsigned int i = 0; i < possibleResult.size(); i++) {
+			for (unsigned int i = 0; i < declaration.size(); i++){
+				if (suchThat.arg2.value == declaration[i].synonym.value){
+					if (Modifies::GetVarModifiedByStmt(possibleResult[i]).size() > 0){
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
+				else {
+					if (Modifies::IsStmtModifiesVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
+			}
+		}
+
+
+
+
 	}
 
 	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1) {
-		for (int i = 0; i < possibleResult.size(); i++) {
-			if (i == arg2NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					if (Modifies::IsStmtModifiesVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i][j])) {//arg1 may not be a specific stmtline
-						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));				
-					}								
-				}							
-			}
 
-			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));								
-				}							
-			}						
-		}					
+		for (unsigned int i = 0; i < declaration.size(); i++){
+			if (suchThat.arg1.value == declaration[i].synonym.value){
+				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
+				vector<int>::iterator it;
+				for (it = proglines.begin(); it != proglines.end(); it++) {
+					for (int j = 0; j < possibleResult.size(); j++){
+						if (Modifies::IsStmtModifiesVar(*it, possibleResult[j])){
+							result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+						}
+					}
+				}
+			}
+			else {
+				for (unsigned int i = 0; i < possibleResult.size(); i++) {
+					if (Modifies::IsStmtModifiesVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
+			}
+		}
 	}
-	
-	// arg1NeedSelect&&arg2NeedSelect may be all != -1
-	return result;			
+
+	// arg1NeedSelect&&arg2NeedSelect may be all != -1(not in assignment4)
+	return result;
 }
-			
-vector<vector<Synonym>> QueryEvaluator::checkUses(SuchThatClause suchThat, vector<SelectClause> select, vector<Declaration> declaration)
-{
-	vector<vector<int>> possibleResult;
-	vector<vector<Synonym>> result;	
-					
+
+vector<string> QueryEvaluator::checkUses(SuchThatClause suchThat, SelectClause select, vector<Declaration> declaration, vector<string> result){
+	vector<int> possibleResult;
+
+
 	//to get all the possible result
 	possibleResult = getAllPossibleResult(select);
-				
+
 	int arg1NeedSelect = -1;
 	int arg2NeedSelect = -1;//-1 means no need to select
-				
-	for (int i = 0; i<select.size(); i++)
-	{
-		if (suchThat.arg1.value == select[i].synonym.value)
+
+	for (unsigned int i = 0; i<1; i++){ // select.size() = 1 in assignment4
+		if (suchThat.arg1.value == select.synonym.value)
 			arg1NeedSelect = i;
-		if (suchThat.arg2.value == select[i].synonym.value)
-			arg2NeedSelect = i;		
-	}
-				
-	if (arg1NeedSelect == -1 && arg2NeedSelect == -1)
-	{
-		for (int i = 0; i<possibleResult.size(); i++) { //need to check the Uses first
-			for (int j = 0; j<possibleResult[i].size(); j++) {
-				result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));				
-			}				
-		}
-		return result;			
+		if (suchThat.arg2.value == select.synonym.value)
+			arg2NeedSelect = i;
+
 	}
 
-	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1)
-	{
-		for (int i = 0; i < possibleResult.size(); i++) {
-			if (i == arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					if (Uses::IsStmtUsingVar(possibleResult[i][j], VarTable::GetIndexOf(suchThat.arg2.syn.value))) {//arg2 may not be a specific variable name
-						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
-					}
-								
+	if (arg1NeedSelect == -1 && arg2NeedSelect == -1){
+
+		bool flag = false;// false means Usees() is false
+
+		for (unsigned int i = 0; i < declaration.size(); i++){
+			if (suchThat.arg2.value == declaration[i].synonym.value){
+				if (Uses::HasAnyUses()) flag = true;
+			}
+			else if (suchThat.arg1.value == declaration[i].synonym.value){
+				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
+				int var = VarTable::GetIndexOf(suchThat.arg2.value);
+				vector<int>::iterator it;
+				for (it = proglines.begin(); it != proglines.end(); it++) {
+					if (Uses::IsStmtUsingVar(*it, var)) flag = true;
 				}
-							
 			}
-			
-			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));				
-				}					
-			}				
-		}			
+
+
+		}
+
+
+		if (flag){
+			for (unsigned int j = 0; j < possibleResult.size(); j++){
+				result.push_back(convertIntToString(possibleResult[j], select.synonym.type));
+
+			}
+		}
+		return result;
 	}
 
-	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1){
-		for (int i = 0; i < possibleResult.size(); i++) {
-			if (i == arg2NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					if (Uses::IsStmtUsingVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i][j])) {//arg1 may not be a specific stmtline
-						result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));					
-					}							
-				}					
+	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1) {
+
+		for (unsigned int i = 0; i < possibleResult.size(); i++) {
+			for (unsigned int i = 0; i < declaration.size(); i++){
+				if (suchThat.arg2.value == declaration[i].synonym.value){
+					if (Uses::GetVarUsedByStmt(possibleResult[i]).size() > 0){
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
+				else {
+					if (Uses::IsStmtUsingVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
 			}
-			
-			else if (i != arg1NeedSelect) {
-				for (int j = 0; j < possibleResult[i].size(); j++) {
-					result[i].push_back(convertIntToSynonym(possibleResult[i][j], select[i].synonym.type));			
-				}				
-			}
-		}			
+		}
+
+
+
+
 	}
 
-	// arg1NeedSelect&&arg2NeedSelect may be all != -1			
-	return result;		
+	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1) {
+
+		for (unsigned int i = 0; i < declaration.size(); i++){
+			if (suchThat.arg1.value == declaration[i].synonym.value){
+				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
+				vector<int>::iterator it;
+				for (it = proglines.begin(); it != proglines.end(); it++) {
+					for (int j = 0; j < possibleResult.size(); j++){
+						if (Uses::IsStmtUsingVar(*it, possibleResult[j])){
+							result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+						}
+					}
+				}
+			}
+			else {
+				for (unsigned int i = 0; i < possibleResult.size(); i++) {
+					if (Uses::IsStmtUsingVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
+						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
+					}
+				}
+			}
+		}
+	}
+
+	// arg1NeedSelect&&arg2NeedSelect may be all != -1(not in assignment4)
+	return result;
 }
 			
-Synonym QueryEvaluator::convertIntToSynonym(int index, SynonymType type)
+string QueryEvaluator::convertIntToString(int index, SynonymType type)
 {
 	if (type != VARIABLE)
 	{				
-		char* proglineNum;
-		itoa(index, proglineNum, 10);
-		Synonym progline = Synonym(proglineNum, type);
-					
+		char* progline;
+		itoa(index, progline, 10);
 		return progline;				
 	}
 		
 	else if (type == VARIABLE)
 	{
-		Synonym variable = Synonym(VarTable::GetVarName(index), VARIABLE);
+		string variable = VarTable::GetVarName(index);
 		return variable;				
 	}			
 }
 			
-vector<vector<int>> getAllPossibleResult(vector<SelectClause> select)
+vector<int> getAllPossibleResult(SelectClause select)
 {
-	set<int> temp;
-	vector<vector<int>> possibleResult;
+	vector<int> temp;
+	vector<int> possibleResult;
 
-	for (int i = 0; i<select.size(); i++) {
-		if (select[i].synonym.type != VARIABLE) {
-			temp = StmtTypeTable::GetAllStmtsOfType(select[i].synonym.type);
-			set<int>::iterator it;
+	for (int i = 0; i<1; i++) { //In assignment4, select.size()=1
+		if (select.synonym.type != VARIABLE) {
+			temp = StmtTypeTable::GetAllStmtsOfType(select.synonym.type);
+			vector<int>::iterator it;
 			for (it = temp.begin(); it != temp.end(); it++) {
-				possibleResult[i].push_back((int)*it);				
+				possibleResult.push_back((int)*it);
 			}
-						
+
 		}
 
-		else if (select[i].synonym.type == VARIABLE) {
+		else if (select.synonym.type == VARIABLE) {
 			for (int j = 0; j<VarTable::GetSize(); i++) {
-				possibleResult[i].push_back(j);			
-			}				
-		}					
+				possibleResult.push_back(j);
+			}
+		}
 	}
 
-	return possibleResult;		
+	return possibleResult;
 }
-*/

@@ -1,38 +1,41 @@
 #include <utility>
 #include <map>
+#include <vector>
+#include <set>
 #include "Uses.h"
 #include <iostream>
 
 using namespace std;
 
-map <int, set<int> > Uses::StmtToVarTable;
-map <int, set<int> > Uses::VarToStmtTable;
+map <int, vector<int> > Uses::StmtToVarTable;
+map <int, vector<int> > Uses::VarToStmtTable;
 
 // empty constructor
 Uses::Uses() {}
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
-    StmtToVarTable[stmtUsing].insert(varUsed);
-    VarToStmtTable[varUsed].insert(stmtUsing);
+    StmtToVarTable[stmtUsing].push_back(varUsed);
+    VarToStmtTable[varUsed].push_back(stmtUsing);
 }
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
     if (StmtToVarTable.count(stmtUsing)!=0)
-        if (StmtToVarTable.at(stmtUsing).count(varUsed)!=0)
-            return true;
+        for (int i=0; i<StmtToVarTable.at(stmtUsing).size(); i++)
+            if (StmtToVarTable.at(stmtUsing).at(i) == varUsed)
+                return true;
     return false;
 }
 
-set<int> Uses::GetStmtUsingVar(int varUsed) {
-    set<int> ret;
+vector<int> Uses::GetStmtUsingVar(int varUsed) {
+    vector<int> ret;
     if (VarToStmtTable.count(varUsed)==0)
         return ret;
     else return VarToStmtTable.at(varUsed);
 }
 
-set<int> Uses::GetVarUsedByStmt(int stmtUsing) {
-    set<int> ret;
+vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
+    vector<int> ret;
     if (StmtToVarTable.count(stmtUsing)==0)
         return ret;
     else return StmtToVarTable.at(stmtUsing);

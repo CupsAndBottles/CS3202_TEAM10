@@ -1,14 +1,14 @@
 #include <utility>
-#include <map>
 #include "Modifies.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 bool HasAnyModifies();
 int SizeOfModifies();
-map <int, set<int> > Modifies::StmtToVarTable;
-map <int, set<int> > Modifies::VarToStmtTable;
+map <int, vector<int> > Modifies::StmtToVarTable;
+map <int, vector<int> > Modifies::VarToStmtTable;
 
 // empty constructor
 Modifies::Modifies() {
@@ -17,26 +17,27 @@ Modifies::Modifies() {
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
-    StmtToVarTable[stmtModifying].insert(varModified);
-    VarToStmtTable[varModified].insert(stmtModifying);
+    StmtToVarTable[stmtModifying].push_back(varModified);
+    VarToStmtTable[varModified].push_back(stmtModifying);
 }
 
 bool Modifies::IsStmtModifiesVar(int stmtModifying, int varModified) {
     if (StmtToVarTable.count(stmtModifying)!=0)
-        if (StmtToVarTable.at(stmtModifying).count(varModified)!=0)
-            return true;
+        for (int i=0; i<StmtToVarTable.at(stmtModifying).size(); i++)
+            if (StmtToVarTable.at(stmtModifying).at(i) == varModified)
+                return true;
     return false;
 }
 
-set<int> Modifies::GetStmtModifyingVar(int varModified) {
-    set<int> ret;
+vector<int> Modifies::GetStmtModifyingVar(int varModified) {
+    vector<int> ret;
     if (VarToStmtTable.count(varModified)==0)
         return ret;
     else return VarToStmtTable.at(varModified);
 }
 
-set<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
-    set<int> ret;
+vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
+    vector<int> ret;
     if (StmtToVarTable.count(stmtModifying)==0)
         return ret;
     else return StmtToVarTable.at(stmtModifying);

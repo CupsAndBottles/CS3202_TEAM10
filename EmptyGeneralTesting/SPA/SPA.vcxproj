@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PKB\PatternMatcher.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
     <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
@@ -35,6 +34,7 @@
     <ClCompile Include="Parser\Tokenizer.cpp" />
     <ClCompile Include="PKB\Uses.cpp" />
     <ClCompile Include="PKB\VarTable.cpp" />
+    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
@@ -42,7 +42,6 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PKB\PatternMatcher.h" />
     <ClInclude Include="PKB\ConstTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
@@ -64,6 +63,7 @@
     <ClInclude Include="PKB\Parent.h" />
     <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="QueryProcessor\Grammar.h" />
+    <ClInclude Include="QueryProcessor\PatternMatcher.h" />
     <ClInclude Include="QueryProcessor\QueryData.h" />
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />
     <ClInclude Include="QueryProcessor\QueryProcessor.h" />

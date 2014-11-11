@@ -73,6 +73,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ParserToPKBTest.cpp" />
+    <ClCompile Include="QueryEvaluatorToPKBDATest.cpp" />
+    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserToPKBTest.h" />
+    <ClInclude Include="QueryEvaluatorToPKBDATest.h" />
+    <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

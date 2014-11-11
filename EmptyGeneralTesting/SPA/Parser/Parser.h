@@ -17,8 +17,10 @@
 using namespace std;
 
 class Parser {
+	friend class PatternMatcher;
+
 public:
-	static Program Parse(string);
+	static void Parse(string);
 	static int compare(Token::Type, Token::Type);
 
 private:
@@ -26,7 +28,6 @@ private:
 
 	deque<Token> tokens;
 	int currentLineNumber;
-	Program program;
 
 	Token ConsumeTopToken();
 	bool TopTokenIsType(Token::Type);

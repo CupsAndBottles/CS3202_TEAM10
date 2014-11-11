@@ -70,8 +70,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>D:\2014 - 2015 Sem1\CS3201\Tools Lab\cppunit-1.12.1\include;$(SolutionDir)source;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)SPA;$(SolutionDir)source;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,26 +88,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FollowsTest.cpp" />
+    <ClCompile Include="ModifiesTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="QueryValidatorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
+    <ClCompile Include="UsesTest.cpp" />
     <ClCompile Include="VarTableTest.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FollowsTest.h" />
+    <ClInclude Include="ModifiesTest.h" />
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="QueryValidatorTest.h" />
     <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
   </ItemGroup>

@@ -54,6 +54,7 @@ int Uses::SizeOfUses() {
 void Uses::ClearData() 
 {
 	StmtToVarTable.clear();
+	VarToStmtTable.clear();
 }
 
 

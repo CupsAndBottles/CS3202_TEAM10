@@ -1,11 +1,13 @@
 #include <string>
+#include <list>
 
 class QueryProcessor
 {
 public:
 	QueryProcessor(void);
 
-	std::string ProcessQuery(std::string);
+	static std::list<std::string> ProcessQuery(std::string);
+
 };
 
 

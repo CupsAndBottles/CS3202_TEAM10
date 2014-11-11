@@ -19,16 +19,17 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
 
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
-Program parseSource(string filename) {
+void ParseSource(string filename) {
 	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
 	stringstream buffer;
 	buffer << sourceFile.rdbuf();
 	sourceFile.close();
-	return Parser::Parse(buffer.str());
+	Parser::Parse(buffer.str());
 }
 
 void ParserToPKBTest::setUp() { 
-	parseSource("pkbTest.txt");
+	Program::ClearData();
+	ParseSource("pkbTest.txt");
 }
 
 void ParserToPKBTest::tearDown() {

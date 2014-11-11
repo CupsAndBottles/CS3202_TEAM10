@@ -7,6 +7,9 @@
 #include "TNode\ConstantTNode.h"
 #include "TNode\WhileTNode.h"
 
+ProgramTNode Program::program;
+vector<StmtTNode*> Program::stmtNumberMap;
+
 Program::Program() {}
 
 ProgramTNode& Program::GetASTRootNode() {
@@ -19,5 +22,10 @@ StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
 
 void Program::InsertStmt(StmtTNode* stmt) {
 	stmtNumberMap.push_back(stmt);
+}
+
+void Program::ClearData() { // leaky method
+	program = ProgramTNode();
+	stmtNumberMap.clear();
 }
 

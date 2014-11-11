@@ -7,6 +7,13 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
+#include "Parser\Parser.h"
+#include "QueryProcessor\QueryProcessor.h"
+
+#include <fstream>
+#include <sstream>
+
+using namespace std;
 
 class TestWrapper : public AbstractWrapper {
  public:

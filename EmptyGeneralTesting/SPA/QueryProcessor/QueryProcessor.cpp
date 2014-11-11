@@ -1,15 +1,16 @@
 #include "QueryProcessor.h"
 #include "QueryData.h"
-#include <string>
 
+#include <string>
+#include <list>
 
 QueryProcessor::QueryProcessor(void)
 {
 }
 
-std::string QueryProcessor::ProcessQuery(std::string query) {
+std::list<std::string> QueryProcessor::ProcessQuery(std::string query) {
 	//QueryData queryData;
-	std::string result = "";
+	std::list<std::string> result;
 	//QueryEvaluator QE;
 	//QueryValidator QV;
 
@@ -25,5 +26,5 @@ std::string QueryProcessor::ProcessQuery(std::string query) {
 	}
 	*/
 
-	return "Invalid query.";
+	return result;
 }

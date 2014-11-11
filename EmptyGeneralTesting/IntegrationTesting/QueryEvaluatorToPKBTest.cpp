@@ -1,18 +1,6 @@
 #include "QueryEvaluatorToPKBTest.h"
 #include <cppunit\config\SourcePrefix.h>
 
-#include "Parser\Parser.h"
-#include "PKB\VarTable.h"
-#include "PKB\StmtTypeTable.h"
-#include "PKB\Follows.h"
-#include "PKB\Parent.h"
-#include "PKB\Modifies.h"
-#include "PKB\Uses.h"
-#include "Program\Program.h"
-#include "QueryProcessor/QueryData.h"
-#include "QueryProcessor/QueryValidator.h"
-#include "QueryProcessor/QueryEvaluator.h"
-
 #include <iostream>
 #include <string>
 

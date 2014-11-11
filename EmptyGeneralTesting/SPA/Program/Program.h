@@ -8,14 +8,15 @@
 
 class Program {
 public:
-	Program();
-
-	ProgramTNode& GetASTRootNode();
-	StmtTNode& GetStmtFromNumber(int);
-	void InsertStmt(StmtTNode*);
+	static ProgramTNode& GetASTRootNode();
+	static StmtTNode& GetStmtFromNumber(int);
+	static void InsertStmt(StmtTNode*);
+	static void ClearData();
 
 private:
-	ProgramTNode program;
-	vector<StmtTNode*> stmtNumberMap;
+	Program();
+
+	static ProgramTNode program;
+	static vector<StmtTNode*> stmtNumberMap;
 };
 

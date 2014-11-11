@@ -21,11 +21,10 @@ Parser::Parser(vector<Token> tokenVector)
 	, currentLineNumber(0) {
 }
 
-Program Parser::Parse(string source) {
+void Parser::Parse(string source) {
 	vector<Token> tokens = Tokenizer::Tokenize(source);
 	Parser parser(tokens);
 	parser.Parse();
-	return parser.program;
 }
 
 Token Parser::ConsumeTopToken() {
@@ -69,7 +68,7 @@ int Parser::compare(Token::Type first, Token::Type second) {
 }
 
 void Parser::Parse() {
-	ProgramTNode& rootNode = program.GetASTRootNode();
+	ProgramTNode& rootNode = Program::GetASTRootNode();
 
 	while(tokens.size() != 0) {
 		ConsumeTopTokenOfType(Token::PROCEDURE);
@@ -129,7 +128,7 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		stmt->SetParent(parentStmt);
 		Parent::SetParent(parentStmt->GetLineNumber(), stmt->GetLineNumber());
 	}
-	program.InsertStmt(stmt);
+	Program::InsertStmt(stmt);
 	return stmt;
 }
 

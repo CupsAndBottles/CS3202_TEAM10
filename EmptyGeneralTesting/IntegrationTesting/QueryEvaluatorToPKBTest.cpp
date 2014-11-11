@@ -23,15 +23,15 @@ void QueryEvaluatorToPKBTest::setUp() {
 	VarTable::InsertVar("b");
 	VarTable::InsertVar("c");
 
-	StmtTypeTable::insert(1,ASSIGN);
-	StmtTypeTable::insert(2,ASSIGN);
-	StmtTypeTable::insert(3,WHILE);
-	StmtTypeTable::insert(4,ASSIGN);
-	StmtTypeTable::insert(5,WHILE);
-	StmtTypeTable::insert(6,ASSIGN);
-	StmtTypeTable::insert(7,WHILE);
-	StmtTypeTable::insert(8,ASSIGN);
-	StmtTypeTable::insert(9,ASSIGN);
+	StmtTypeTable::Insert(1,ASSIGN);
+	StmtTypeTable::Insert(2,ASSIGN);
+	StmtTypeTable::Insert(3,WHILE);
+	StmtTypeTable::Insert(4,ASSIGN);
+	StmtTypeTable::Insert(5,WHILE);
+	StmtTypeTable::Insert(6,ASSIGN);
+	StmtTypeTable::Insert(7,WHILE);
+	StmtTypeTable::Insert(8,ASSIGN);
+	StmtTypeTable::Insert(9,ASSIGN);
 
 	Parent::SetParent(3,4);
 	Parent::SetParent(3,5);

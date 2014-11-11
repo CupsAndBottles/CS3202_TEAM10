@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 using namespace std;
-
+/*
 vector<int> PatternMatcher::MatchPatternAtLeaves(TNode* node, QueryObject object) {
     vector<int> results;
     TNode current = node;
@@ -68,4 +68,4 @@ int main() {
     PatternMatcher::MatchPattern(NULL, dummy);
 
     return 0;
-}
+}*/

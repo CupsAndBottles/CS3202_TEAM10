@@ -13,7 +13,7 @@ map<SynonymType, vector<int> > StmtTypeTable::TypeIndexTable;
 StmtTypeTable::StmtTypeTable() {};
 
 vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
-	if(type == STMT)
+	if(type == STMT || type == PROG_LINE)
 	{ 
 		vector<int> stmts;
 		for(map<int,SynonymType>::iterator it = IndexTypeTable.begin(); it != IndexTypeTable.end(); ++it)
@@ -26,6 +26,11 @@ vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 }
 
 bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
+	if(type == STMT || type == PROG_LINE) {
+		if(IndexTypeTable.at(stmtIndex) == ASSIGN || IndexTypeTable.at(stmtIndex) == WHILE)
+			return true;
+	}
+
     return (IndexTypeTable.at(stmtIndex) == type);
 }
 

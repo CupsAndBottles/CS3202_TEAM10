@@ -195,6 +195,53 @@ void QueryValidatorTest::TokenizeTest()
 
 
 	tokenList.clear();
+	query = "stmt s;Select s such that Parent(s,_)";
+
+	qv.Tokenize(query,tokenList);
+
+	size = tokenList.size();
+	cout << "\n" << size << "\n";
+	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
+		cout << *it << "\n";
+
+	CPPUNIT_ASSERT(size == 10);
+	CPPUNIT_ASSERT(tokenList.at(0) == "stmt");
+	CPPUNIT_ASSERT(tokenList.at(1) == "s");
+	CPPUNIT_ASSERT(tokenList.at(2) == ";");
+	CPPUNIT_ASSERT(tokenList.at(3) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(4) == "s");
+	CPPUNIT_ASSERT(tokenList.at(5) == "such");
+	CPPUNIT_ASSERT(tokenList.at(6) == "that");
+	CPPUNIT_ASSERT(tokenList.at(7) == "Parent");
+	CPPUNIT_ASSERT(tokenList.at(8) == "s");
+	CPPUNIT_ASSERT(tokenList.at(9) == "_");
+
+
+	tokenList.clear();
+	query = "assign a1,a2;Select a1 such that Follows(a1,a2)";
+
+	qv.Tokenize(query,tokenList);
+
+	size = tokenList.size();
+	cout << "\n" << size << "\n";
+	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
+		cout << *it << "\n";
+
+	CPPUNIT_ASSERT(size == 11);
+	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
+	CPPUNIT_ASSERT(tokenList.at(1) == "a1");
+	CPPUNIT_ASSERT(tokenList.at(2) == "a2");
+	CPPUNIT_ASSERT(tokenList.at(3) == ";");
+	CPPUNIT_ASSERT(tokenList.at(4) == "Select");
+	CPPUNIT_ASSERT(tokenList.at(5) == "a1");
+	CPPUNIT_ASSERT(tokenList.at(6) == "such");
+	CPPUNIT_ASSERT(tokenList.at(7) == "that");
+	CPPUNIT_ASSERT(tokenList.at(8) == "Follows");
+	CPPUNIT_ASSERT(tokenList.at(9) == "a1");
+	CPPUNIT_ASSERT(tokenList.at(10) == "a2");
+
+
+	tokenList.clear();
 	query = "assign  a  ;    Select a pattern a ( \" x \" , _ \" y + 5 \" _  )";
 
 	qv.Tokenize(query,tokenList);

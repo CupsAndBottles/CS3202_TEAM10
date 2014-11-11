@@ -39,19 +39,26 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		//get the synonym
 		while(!IsSemiColon(token))
 		{
-			//std::cout << "\nIn Check Semicolon\n";
-			Synonym synonym;
-			synonym.value = token;
+			if(token == ",") {
+				if(++it == tokenList.end())	return false;
+					token = *it;
+			}
 
-			//validate declaration
-			if(!ValidateDeclaration(synonym, type))	return false;
+			else {
+				//std::cout << "\nIn Check Semicolon\n";
+				Synonym synonym;
+				synonym.value = token;
 
-			//save declaration
-			queryData.InsertDeclaration(synonym);
+				//validate declaration
+				if(!ValidateDeclaration(synonym, type))	return false;
 
-			if(++it == tokenList.end())	return false;
-			token = *it;
-			//std::cout << "token: " << token << "\n";
+				//save declaration
+				queryData.InsertDeclaration(synonym);
+
+				if(++it == tokenList.end())	return false;
+				token = *it;
+				//std::cout << "token: " << token << "\n";
+			}
 		}
 		//std::cout << "\nAfer Check Semicolon\n";
 
@@ -272,8 +279,17 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 			_ - push back
 			*/
 			//if is ( or ) or , just ignore
-			if (currentChar == '(' || currentChar == ')')
-				continue;
+			if (currentChar == '(' || currentChar == ')') {
+				if(currentChar == ')'){
+					if(alphaString != "") {	//handle _, e.g. Parent(w,_)
+						tokens.push_back(alphaString);
+						alphaString = "";
+					}
+					else continue;
+				}
+
+				else continue;
+			}
 
 			else if(currentChar == ',') {
 				//std::cout << "In ,\n";
@@ -575,7 +591,7 @@ bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel
 		return true;
 	}
 	catch(const std::invalid_argument &e) {
-		std::cerr << e.what() << std::endl;
+		std::cout << e.what() << std::endl;
 		return false;
 	}
 }

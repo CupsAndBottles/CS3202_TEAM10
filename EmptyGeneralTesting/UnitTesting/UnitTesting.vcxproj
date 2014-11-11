@@ -91,7 +91,6 @@
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="QueryValidatorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
@@ -104,7 +103,6 @@
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="QueryValidatorTest.h" />
     <ClInclude Include="RelTableTest.h" />

@@ -455,7 +455,10 @@ bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClau
 				if(rel == FOLLOWS)	
 				{
 					int followsAfter = Follows::GetFollowsAfter(*i);
-					if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+					
+					if(followsAfter == -1) {}
+					
+					else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
 						result.push_back(ToString(*i));
 				}
 
@@ -485,7 +488,9 @@ bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClau
 				if(rel == FOLLOWS) {
 					int followsBefore = Follows::GetFollowsBefore(*i);
 
-					if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg1Syn.type))
+					if(followsBefore == -1) {}
+					
+					else if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg1Syn.type))
 						result.push_back(ToString(*i));
 				}
 
@@ -515,7 +520,10 @@ bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClau
 				if(rel == FOLLOWS)	
 				{
 					int followsAfter = Follows::GetFollowsAfter(*i);
-					if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+					
+					if(followsAfter == -1) {}
+
+					else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
 						return true;
 				}
 
@@ -732,6 +740,7 @@ string QueryEvaluator::ToString(int i)
 
 	return s;
 }
+
 vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClause select, vector<Declaration> declaration, vector<string> result){
 	vector<int> possibleResult;
 
@@ -944,7 +953,7 @@ string QueryEvaluator::convertIntToString(int index, SynonymType type)
 	}			
 }
 			
-vector<int> getAllPossibleResult(SelectClause select)
+vector<int> QueryEvaluator::getAllPossibleResult(SelectClause select)
 {
 	vector<int> temp;
 	vector<int> possibleResult;

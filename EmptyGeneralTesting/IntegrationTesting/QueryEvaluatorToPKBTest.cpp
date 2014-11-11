@@ -729,3 +729,11 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	std::advance(it,1);
 	CPPUNIT_ASSERT(it == resultList.end());
 }
+
+void QueryEvaluatorToPKBTest::TestPattern()
+{
+}
+
+void QueryEvaluatorToPKBTest::TestSuchThatPattern()
+{
+}

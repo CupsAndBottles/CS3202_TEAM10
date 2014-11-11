@@ -16,6 +16,8 @@ private:
 	vector<string> EvaluateSelect(SelectClause);
 	bool EvaluateParent(vector<Declaration>, SelectClause, SuchThatClause, vector<string>&);
 	bool EvaluateFollows(vector<Declaration>, SelectClause, SuchThatClause, vector<string>&);
+	bool EvaluateModifies(vector<Declaration>, SelectClause, SuchThatClause, vector<string>&);
+	bool EvaluateUses(vector<Declaration>, SelectClause, SuchThatClause, vector<string>&);
 	list<string> MergeResult(vector<string>, vector<string>, vector<string>);
 	list<string> MergeResult(vector<string>, vector<string>);
 

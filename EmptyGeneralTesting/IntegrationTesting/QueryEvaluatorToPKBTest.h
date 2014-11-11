@@ -19,6 +19,8 @@ class QueryEvaluatorToPKBTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestSelectAll);
 	CPPUNIT_TEST(TestParent);
 	CPPUNIT_TEST(TestFollows);
+	CPPUNIT_TEST(TestPattern);
+	CPPUNIT_TEST(TestSuchThatPattern);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -28,5 +30,9 @@ public:
 	void TestSelectAll();
 	void TestParent();
 	void TestFollows();
+
+	void TestPattern();
+
+	void TestSuchThatPattern();
 };
 

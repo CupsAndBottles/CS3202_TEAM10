@@ -697,7 +697,231 @@ bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClau
 
 	else return false;
 }
+/*
+bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectClause select, SuchThatClause suchThat, vector<string> &result)
+{
+	Argument arg1 = suchThat.arg1;
+	Argument arg2 = suchThat.arg2;
+	Synonym arg1Syn = suchThat.arg1.syn;
+	Synonym arg2Syn = suchThat.arg2.syn;
+	Synonym selectSyn = select.synonym;
+	RelationshipType rel = suchThat.relationship;
 
+
+	if(arg1.type == SYNONYM && arg2.type == SYNONYM)
+	{
+		if(arg1Syn.value == arg2Syn.value)
+			return false;
+
+		else if(arg1Syn.value == selectSyn.value)
+		{
+			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				vector<int> vars;
+
+				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+				//else				children = Parent::GetVarModifiedByStmt(*i);
+
+				for(vector<int>::iterator j = vars.begin(); j != vars.end(); ++j) {
+					int varIndex = VarTable::GetIndexOf(*j);
+
+
+
+					if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
+						result.push_back(ToString(*i));
+						break;
+					}
+				}
+			}
+
+			if(result.empty()) return false;
+
+			return true;
+		}
+
+		else if(arg2Syn.value == selectSyn.value)
+		{	
+			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+			
+			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				if(rel == PARENT) {
+					int parent = Parent::GetParentOf(*i);
+
+					if(parent == -1) {}	//if no parent
+
+					else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
+						result.push_back(ToString(*i));
+				}
+
+				else {
+					vector<int> parent = Parent::GetParentTOf(*i);
+
+					for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
+						if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+							result.push_back(ToString(*i));
+							break;
+						}
+					}
+				}
+			}
+
+			if(result.empty()) return false;
+
+			return true;
+		}
+		
+		else
+		{
+			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				vector<int> children;
+
+				if(rel == PARENT)	children = Parent::GetChildrenOf(*i);
+				else				children = Parent::GetChildrenTOf(*i);
+
+				for(vector<int>::iterator j = children.begin(); j != children.end(); ++j) {
+					if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) 
+						return true;
+
+					else return false;
+				}
+			}
+		}
+	}
+
+	else if(arg1.type == SYNONYM && arg2.type == UNDERSCORE)
+	{		
+		vector<string> tempResult;
+		vector<string> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+			vector<int> var;
+			
+			if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(*it);
+			//else				children = Parent::GetChildrenTOf(*it);
+			
+			if(!var.empty())
+				tempResult.push_back(ToString(*it));
+		}
+
+		if(arg1Syn.value == selectSyn.value)
+			result = tempResult;
+
+		if(tempResult.empty()) return false;
+
+		return true;
+	}
+
+	else if(arg1.type == SYNONYM && arg2.type == IDENT)
+	{
+		string ident = arg2.value;
+		str.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+		ident = ident.substr(1, ident.length()-2);
+
+		int varIndex = VarTable::GetIndexOf(ident);
+			
+		if(varIndex == -1) return false;
+
+
+		vector<string> tempResult;
+		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
+		{
+			bool doesModifies = false;
+
+			if(rel == MODIFIES)	doesModifies = Modifies::IsStmtModifiesVar(*it, varIndex);
+			//else				doesModifies = Parent::IsParentT(*it, arg2Value);
+
+			if(doesModifies)	tempResult.push_back(ToString(*it));
+		}
+
+		if(arg1Syn.value == selectSyn.value)
+			result = tempResult;
+
+		if(tempResult.empty()) return false;
+
+		return true;
+	}
+
+	else if(arg1.type == INTEGER && arg2.type == SYNONYM)
+	{
+		//if synonym = variable, GetAllVar
+		//for each var, GetIndexOf(var)
+		//	if -1 return false
+		//	if(IsStmtModifiesVar())
+		//		push back var to temp result
+		//the rest is the same
+
+		vector<string> tempResult;
+		vector<string> vars;
+
+		if(arg2.syn.type == VARIABLE)
+			vars = VarTable::GetAllVar();
+
+		else return false;
+		
+		for(vector<string>::iterator it = vars.begin(); it != vars.end(); ++it) {
+			int arg1Value = atoi(arg1.value.c_str());
+			int varIndex = VarTable::GetIndexOf(*it);
+
+			bool doesModifies = false;
+		
+			if(rel == MODIFIES)		doesModifies = IsStmtModifiesVar(arg1Value,varIndex);
+			//else uses
+
+			if(doesModifies)	tempResult.push_back(*it);
+		}
+
+		if(arg2Syn.value == selectSyn.value)
+			result = tempResult;
+
+		if(tempResult.empty()) return false;
+
+		return true;
+	}
+
+	else if(arg1.type == INTEGER && arg2.type == IDENT)
+	{
+		string ident = arg2.value;
+		str.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+	
+		//eliminates " " and get the content
+		ident = ident.substr(1, ident.length()-2);
+
+		//get index of ident
+		int varIndex = VarTable::GetIndexOf(ident);
+
+		int arg1Value = atoi(arg1.value.c_str());
+		bool doesModifies = false;
+
+		if(rel == MODIFIES)	doesModifies = Modifies::IsStmtModifiesVar(arg1Value, varIndex);
+		//else				isParent = Parent::IsParentT(arg1Value, *it);
+
+		if(doesModifies)	return true;
+		
+		else return true;
+	}
+
+	else if(arg1.type == INTEGER && arg2.type == UNDERSCORE)
+	{
+		int arg1Value = atoi(arg1.value.c_str());
+
+		vector<int> var;
+		if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(arg1Value);
+		//else				children = Parent::GetChildrenTOf(arg1Value);
+
+		if(var.empty()) return false;
+
+		return true;
+	}
+
+	else return false;
+}
+
+*/
 list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<string> suchThatResult, vector<string> patternResult)
 {
 	vector<string> intermediateResult, finalResult;

@@ -12,9 +12,9 @@ public:
 	Uses();
 
 	// API
-	void SetStmtUsesConst(int stmtUsing, int varUsed);
-	bool IsStmtUsingConst(int stmtUsing, int varUsed);
-    set<int> GetStmtUsingConst(int varUsed);
+	void SetStmtUsesConst(int stmtUsing, int constUsed);
+	bool IsStmtUsingConst(int stmtUsing, int constUsed);
+    set<int> GetStmtUsingConst(int constUsed);
     set<int> GetConstUsedByStmt(int stmtUsing);
 
 	bool HasAnyUses();

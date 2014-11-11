@@ -19,7 +19,7 @@ public:
 	static bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
 
 	//API-PKB and DE
-	static void insert(int stmtIndex, SynonymType type);
+	static void Insert(int stmtIndex, SynonymType type);
 
 	static void ClearData();
 

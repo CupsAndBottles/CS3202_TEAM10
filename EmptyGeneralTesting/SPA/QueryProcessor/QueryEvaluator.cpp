@@ -14,7 +14,6 @@ using namespace std;
 
 QueryEvaluator::QueryEvaluator(void) {}
 
-//resultInteger for select a,s,w,n , resultString for select v. for now assume no select v
 bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList){
 
 	vector<string> modifiesResult;
@@ -25,13 +24,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	bool suchThatHasAnswer = false, patternHasAnswer = false;
 	bool hasSuchThat = true, hasPattern = true;
-		
+
 	vector<Declaration> declarations = queryData.GetDeclarations();
 	SelectClause select = queryData.GetSelects().at(0);	//only 1 select
 	vector<PatternClause> patterns = queryData.GetPatterns();
 	vector<SuchThatClause> suchThats = queryData.GetSuchThats();
-	//vector<SelectClause> selects = queryData.GetSelects();
 	
+
 	//evaluate select
 	selectResult = EvaluateSelect(select);
 
@@ -42,27 +41,27 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		switch (suchThat.relationship)
 		{
 		case MODIFIES:
-			//suchThatResult = EvaluateModifies(suchThat, select, declarations,suchThatResult);
+			suchThatHasAnswer = EvaluateModifies(select, suchThat, suchThatResult);
 			break;
 
 		case USES:
-			//suchThatResult = EvaluateUses(suchThat, select, declarations, suchThatResult);
+			suchThatHasAnswer = EvaluateModifies(select, suchThat, suchThatResult);
 			break;
 
 		case PARENT:
-			suchThatHasAnswer = EvaluateParent(declarations, select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateParent(select, suchThat, suchThatResult);
 			break;
 
 		case PARENTT:
-			suchThatHasAnswer = EvaluateParent(declarations, select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateParent(select, suchThat, suchThatResult);
 			break;
 
 		case FOLLOWS:
-			suchThatHasAnswer = EvaluateFollows(declarations, select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateFollows(select, suchThat, suchThatResult);
 			break;
 
 		case FOLLOWST:
-			suchThatHasAnswer = EvaluateFollows(declarations, select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateFollows(select, suchThat, suchThatResult);
 			break;
 
 		case INVALID_RELATIONSHIP_TYPE:
@@ -84,6 +83,8 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	
 	else hasPattern = false;
 
+
+	/*
 	cout<< "\nSelect result list: ";
 	for(vector<string>::iterator it = selectResult.begin(); it != selectResult.end(); ++it)
 		cout << *it << " ";
@@ -94,12 +95,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	cout<< "\nPattern result list: ";
 	for(vector<string>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
-		cout << *it << " ";
+		cout << *it << " ";*/
 
 	//merge select, such that , pattern result and pass back to caller
 
 	//only select, no such that no pattern
 	if(!hasSuchThat && !hasPattern) {
+		sort(selectResult.begin(), selectResult.end());
 		copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 	}
 
@@ -107,8 +109,10 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		if(suchThatHasAnswer && !suchThatResult.empty()) 
 			resultList = MergeResult(selectResult, suchThatResult);	
 
-		else if(suchThatHasAnswer && suchThatResult.empty()) 
+		else if(suchThatHasAnswer && suchThatResult.empty()) {
+			sort(selectResult.begin(), selectResult.end());
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+		}
 
 		else resultList.clear();
 	}
@@ -117,8 +121,10 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		if(patternHasAnswer && !patternResult.empty())	
 			resultList = MergeResult(selectResult, patternResult);	
 
-		else if(patternHasAnswer && patternResult.empty()) 
+		else if(patternHasAnswer && patternResult.empty()) {
+			sort(selectResult.begin(), selectResult.end());
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+		}
 
 		else resultList.clear();
 	}
@@ -134,21 +140,23 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && !patternResult.empty())
 			resultList = MergeResult(selectResult, patternResult);	
 
-		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && patternResult.empty())
+		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && patternResult.empty()) {
+			sort(selectResult.begin(), selectResult.end());
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+		}
 
 		else resultList.clear();
 	}
-
+/*
 	cout<< "\nFinal result list: ";
 	for(list<string>::iterator it = resultList.begin(); it != resultList.end(); ++it)
 		cout << *it << " ";
-	cout<< "\n";
+	cout<< "\n";*/
 
 	return true;
 }
 
-
+//Evaluate Select
 vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 {
 	vector<int> stmts;
@@ -195,7 +203,7 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 }
 
 //Evaluate Parent and Parent*
-bool QueryEvaluator::EvaluateParent(vector<Declaration> declaration, SelectClause select, SuchThatClause suchThat, vector<string> &result)
+bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat, vector<string> &result)
 {
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
@@ -431,7 +439,7 @@ bool QueryEvaluator::EvaluateParent(vector<Declaration> declaration, SelectClaus
 }
 
 //Evaluate Follows and Follows*
-bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClause select, SuchThatClause suchThat, vector<string> &result)
+bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchThat, vector<string> &result)
 {
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
@@ -698,7 +706,8 @@ bool QueryEvaluator::EvaluateFollows(vector<Declaration> declaration, SelectClau
 	else return false;
 }
 
-bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectClause select, SuchThatClause suchThat, vector<string> &result)
+//Evaluate Modifies and Uses
+bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchThat, vector<string> &result)
 {
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
@@ -721,7 +730,7 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 				vector<int> vars;
 
 				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				//else				children = Parent::GetVarModifiedByStmt(*i);
+				else				vars = Uses::GetVarUsedByStmt(*i);
 
 				if(!vars.empty())	result.push_back(ToString(*i));
 			}
@@ -739,7 +748,7 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 				vector<int> vars;
 
 				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				//else				children = Parent::GetVarModifiedByStmt(*i);
+				else				vars = Uses::GetVarUsedByStmt(*i);
 
 				if(!vars.empty())	{
 					vector<string> varString;
@@ -767,7 +776,7 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 				vector<int> vars;
 
 				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				//else				children = Parent::GetChildrenTOf(*i);
+				else				vars = Uses::GetVarUsedByStmt(*i);
 
 				if(!vars.empty())	return true;
 			}
@@ -785,7 +794,7 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 			vector<int> var;
 			
 			if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(*it);
-			//else				children = Parent::GetChildrenTOf(*it);
+			else				var = Uses::GetVarUsedByStmt(*it);
 			
 			if(!var.empty())
 				tempResult.push_back(ToString(*it));
@@ -815,12 +824,12 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
-			bool doesModifies = false;
+			bool doesModifiesOrUses = false;
 
-			if(rel == MODIFIES)	doesModifies = Modifies::IsStmtModifiesVar(*it, varIndex);
-			//else				doesModifies = Parent::IsParentT(*it, arg2Value);
+			if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifiesVar(*it, varIndex);
+			else				doesModifiesOrUses = Uses::IsStmtUsingVar(*it, varIndex);
 
-			if(doesModifies)	tempResult.push_back(ToString(*it));
+			if(doesModifiesOrUses)	tempResult.push_back(ToString(*it));
 		}
 
 		if(arg1Syn.value == selectSyn.value)
@@ -833,13 +842,6 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 
 	else if(arg1.type == INTEGER && arg2.type == SYNONYM)
 	{
-		//if synonym = variable, GetAllVar
-		//for each var, GetIndexOf(var)
-		//	if -1 return false
-		//	if(IsStmtModifiesVar())
-		//		push back var to temp result
-		//the rest is the same
-
 		vector<string> tempResult;
 		vector<string> vars;
 
@@ -852,12 +854,12 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 			int arg1Value = atoi(arg1.value.c_str());
 			int varIndex = VarTable::GetIndexOf(*it);
 
-			bool doesModifies = false;
+			bool doesModifiesOrUses = false;
 		
-			if(rel == MODIFIES)		doesModifies = Modifies::IsStmtModifiesVar(arg1Value,varIndex);
-			//else uses
+			if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsStmtModifiesVar(arg1Value,varIndex);
+			else					doesModifiesOrUses = Uses::IsStmtUsingVar(arg1Value,varIndex);
 
-			if(doesModifies)	tempResult.push_back(*it);
+			if(doesModifiesOrUses)	tempResult.push_back(*it);
 		}
 
 		if(arg2Syn.value == selectSyn.value)
@@ -880,12 +882,12 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 		int varIndex = VarTable::GetIndexOf(ident);
 
 		int arg1Value = atoi(arg1.value.c_str());
-		bool doesModifies = false;
+		bool doesModifiesOrUses = false;
 
-		if(rel == MODIFIES)	doesModifies = Modifies::IsStmtModifiesVar(arg1Value, varIndex);
-		//else				isParent = Parent::IsParentT(arg1Value, *it);
+		if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifiesVar(arg1Value, varIndex);
+		else				doesModifiesOrUses = Uses::IsStmtUsingVar(arg1Value, varIndex);
 
-		if(doesModifies)	return true;
+		if(doesModifiesOrUses)	return true;
 		
 		else return true;
 	}
@@ -896,7 +898,7 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 
 		vector<int> var;
 		if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(arg1Value);
-		//else				children = Parent::GetChildrenTOf(arg1Value);
+		else				var = Uses::GetVarUsedByStmt(arg1Value);
 
 		if(var.empty()) return false;
 
@@ -906,6 +908,12 @@ bool QueryEvaluator::EvaluateModifies(vector<Declaration> declaration, SelectCla
 	else return false;
 }
 
+//Evaluate Pattern
+bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<string> &result)
+{
+
+	return true;
+}
 
 list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<string> suchThatResult, vector<string> patternResult)
 {
@@ -949,240 +957,3 @@ string QueryEvaluator::ToString(int i)
 
 	return s;
 }
-/*
-vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClause select, vector<Declaration> declaration, vector<string> result){
-	vector<int> possibleResult;
-
-
-	//to get all the possible result
-	possibleResult = getAllPossibleResult(select);
-
-	int arg1NeedSelect = -1;
-	int arg2NeedSelect = -1;//-1 means no need to select
-
-	for (unsigned int i = 0; i<1; i++){ // select.size() = 1 in assignment4
-		if (suchThat.arg1.value == select.synonym.value)
-			arg1NeedSelect = i;
-		if (suchThat.arg2.value == select.synonym.value)
-			arg2NeedSelect = i;
-
-	}
-
-	if (arg1NeedSelect == -1 && arg2NeedSelect == -1){
-
-		bool flag = false;// false means modifies() is false
-
-		for (unsigned int i = 0; i < declaration.size(); i++){
-			if (suchThat.arg2.value == declaration[i].synonym.value){
-				if (Modifies::HasAnyModifies()) flag = true;
-			}
-			else if (suchThat.arg1.value == declaration[i].synonym.value){
-				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
-				int var = VarTable::GetIndexOf(suchThat.arg2.value);
-				vector<int>::iterator it;
-				for (it = proglines.begin(); it != proglines.end(); it++) {
-					if (Modifies::IsStmtModifiesVar(*it, var)) flag = true;
-				}
-			}
-
-
-		}
-
-
-		if (flag){
-			for (unsigned int j = 0; j < possibleResult.size(); j++){
-				result.push_back(convertIntToString(possibleResult[j], select.synonym.type));
-
-			}
-		}
-		return result;
-	}
-
-	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1) {
-
-		for (unsigned int i = 0; i < possibleResult.size(); i++) {
-			for (unsigned int i = 0; i < declaration.size(); i++){
-				if (suchThat.arg2.value == declaration[i].synonym.value){
-					if (Modifies::GetVarModifiedByStmt(possibleResult[i]).size() > 0){
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-				else {
-					if (Modifies::IsStmtModifiesVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-			}
-		}
-
-
-
-
-	}
-
-	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1) {
-
-		for (unsigned int i = 0; i < declaration.size(); i++){
-			if (suchThat.arg1.value == declaration[i].synonym.value){
-				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
-				vector<int>::iterator it;
-				for (it = proglines.begin(); it != proglines.end(); it++) {
-					for (int j = 0; j < possibleResult.size(); j++){
-						if (Modifies::IsStmtModifiesVar(*it, possibleResult[j])){
-							result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-						}
-					}
-				}
-			}
-			else {
-				for (unsigned int i = 0; i < possibleResult.size(); i++) {
-					if (Modifies::IsStmtModifiesVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-			}
-		}
-	}
-
-	// arg1NeedSelect&&arg2NeedSelect may be all != -1(not in assignment4)
-	return result;
-}
-
-vector<string> QueryEvaluator::checkUses(SuchThatClause suchThat, SelectClause select, vector<Declaration> declaration, vector<string> result){
-	vector<int> possibleResult;
-
-
-	//to get all the possible result
-	possibleResult = getAllPossibleResult(select);
-
-	int arg1NeedSelect = -1;
-	int arg2NeedSelect = -1;//-1 means no need to select
-
-	for (unsigned int i = 0; i<1; i++){ // select.size() = 1 in assignment4
-		if (suchThat.arg1.value == select.synonym.value)
-			arg1NeedSelect = i;
-		if (suchThat.arg2.value == select.synonym.value)
-			arg2NeedSelect = i;
-
-	}
-
-	if (arg1NeedSelect == -1 && arg2NeedSelect == -1){
-
-		bool flag = false;// false means Usees() is false
-
-		for (unsigned int i = 0; i < declaration.size(); i++){
-			if (suchThat.arg2.value == declaration[i].synonym.value){
-				if (Uses::HasAnyUses()) flag = true;
-			}
-			else if (suchThat.arg1.value == declaration[i].synonym.value){
-				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
-				int var = VarTable::GetIndexOf(suchThat.arg2.value);
-				vector<int>::iterator it;
-				for (it = proglines.begin(); it != proglines.end(); it++) {
-					if (Uses::IsStmtUsingVar(*it, var)) flag = true;
-				}
-			}
-
-
-		}
-
-
-		if (flag){
-			for (unsigned int j = 0; j < possibleResult.size(); j++){
-				result.push_back(convertIntToString(possibleResult[j], select.synonym.type));
-
-			}
-		}
-		return result;
-	}
-
-	else if (arg1NeedSelect != -1 && arg2NeedSelect == -1) {
-
-		for (unsigned int i = 0; i < possibleResult.size(); i++) {
-			for (unsigned int i = 0; i < declaration.size(); i++){
-				if (suchThat.arg2.value == declaration[i].synonym.value){
-					if (Uses::GetVarUsedByStmt(possibleResult[i]).size() > 0){
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-				else {
-					if (Uses::IsStmtUsingVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-			}
-		}
-
-
-
-
-	}
-
-	else if (arg2NeedSelect == -1 && arg2NeedSelect != -1) {
-
-		for (unsigned int i = 0; i < declaration.size(); i++){
-			if (suchThat.arg1.value == declaration[i].synonym.value){
-				vector<int> proglines = StmtTypeTable::GetAllStmtsOfType(declaration[i].synonym.type);
-				vector<int>::iterator it;
-				for (it = proglines.begin(); it != proglines.end(); it++) {
-					for (int j = 0; j < possibleResult.size(); j++){
-						if (Uses::IsStmtUsingVar(*it, possibleResult[j])){
-							result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-						}
-					}
-				}
-			}
-			else {
-				for (unsigned int i = 0; i < possibleResult.size(); i++) {
-					if (Uses::IsStmtUsingVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
-						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
-					}
-				}
-			}
-		}
-	}
-
-	// arg1NeedSelect&&arg2NeedSelect may be all != -1(not in assignment4)
-	return result;
-}
-			
-string QueryEvaluator::convertIntToString(int index, SynonymType type)
-{
-	if (type != VARIABLE)
-	{				
-		char* progline;
-		itoa(index, progline, 10);
-		return progline;				
-	}
-		
-	else if (type == VARIABLE)
-	{
-		string variable = VarTable::GetVarName(index);
-		return variable;				
-	}			
-}
-			
-vector<int> QueryEvaluator::getAllPossibleResult(SelectClause select)
-{
-	vector<int> temp;
-	vector<int> possibleResult;
-
-	for (int i = 0; i<1; i++) { //In assignment4, select.size()=1
-		if (select.synonym.type != VARIABLE) {
-			temp = StmtTypeTable::GetAllStmtsOfType(select.synonym.type);
-			vector<int>::iterator it;
-			for (it = temp.begin(); it != temp.end(); it++) {
-				possibleResult.push_back((int)*it);
-			}
-
-		}
-
-		else if (select.synonym.type == VARIABLE) {
-			for (int j = 0; j<VarTable::GetSize(); i++) {
-				possibleResult.push_back(j);
-			}
-		}
-	}
-
-	return possibleResult;
-}*/

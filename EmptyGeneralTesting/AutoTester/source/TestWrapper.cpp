@@ -1,7 +1,5 @@
 #include "TestWrapper.h"
 
-const string TESTFILE_DIRECTORY = "SIMPLESource/";
-
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
 AbstractWrapper* WrapperFactory::createWrapper() {
@@ -21,7 +19,7 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(string filename) {
 	// call your parser to do the parsing
 	// ...rest of your code...
-	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
+	ifstream sourceFile(filename);
 	stringstream buffer;
 	buffer << sourceFile.rdbuf();
 	sourceFile.close();

@@ -30,7 +30,7 @@ bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
 }
 
 //API-PKB and DE
-void StmtTypeTable::insert(int stmtIndex, SynonymType type) {
+void StmtTypeTable::Insert(int stmtIndex, SynonymType type) {
     IndexTypeTable[stmtIndex] = type;
     TypeIndexTable[type].push_back(stmtIndex);
 }

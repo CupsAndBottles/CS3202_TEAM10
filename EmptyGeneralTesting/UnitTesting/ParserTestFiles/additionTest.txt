@@ -1,4 +1,4 @@
-// Normal Assignment Parsing for addition
+\\ Normal Assignment Parsing for addition
 
 procedure additionTest {
 	x = y + z;

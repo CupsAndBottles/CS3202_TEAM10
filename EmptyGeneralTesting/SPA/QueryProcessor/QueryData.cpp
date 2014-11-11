@@ -90,7 +90,7 @@ bool QueryData::IsSynonymExist(std::string synonym)
 {
 	for(std::vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it)
 	{
-		std::cout << "here " << (*it).synonym.value << "\n";
+		//std::cout << "here " << (*it).synonym.value << "\n";
 
 		if((*it).synonym.value == synonym) 
 			return true;

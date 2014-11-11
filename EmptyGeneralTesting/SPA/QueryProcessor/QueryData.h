@@ -17,8 +17,6 @@ private:
 	static std::vector<SuchThatClause> suchThatClauses;
 	static std::vector<PatternClause> patternClauses;
 
-	void ClearData();
-
 public:
 	void InsertDeclaration(Synonym);
 	void InsertSelect(Synonym);
@@ -34,4 +32,6 @@ public:
 	static bool IsSynonymExist(std::string, SynonymType);
 	static bool IsSynonymExist(std::string, SynonymType*);
 	static bool IsSynonymExist(std::string, std::vector<SynonymType>);
+
+	void ClearData();
 };

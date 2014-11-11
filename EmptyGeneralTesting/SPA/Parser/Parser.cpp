@@ -7,6 +7,8 @@
 #include "QueryProcessor\Grammar.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -74,14 +76,14 @@ void Parser::Parse() {
 		Token procedureName = ConsumeTopTokenOfType(Token::IDENTIFIER);
 		ProcedureTNode* procedureNode = new ProcedureTNode(procedureName.content);
 
-		StmtListTNode* procedureBody = ParseStmtList("");
+		StmtListTNode* procedureBody = ParseStmtList("", nullptr);
 		procedureNode->SetProcedureBody(procedureBody);
 		
 		rootNode.AddChild(procedureNode);
 	}
 }
 
-StmtListTNode* Parser::ParseStmtList(string name) {
+StmtListTNode* Parser::ParseStmtList(string name, StmtTNode* parent) {
 	// first token should be start of stmt list token
 	// consumes tokens until a matching close brace is found
 	// if tokens are fully consumed, throw exception
@@ -91,11 +93,12 @@ StmtListTNode* Parser::ParseStmtList(string name) {
 	StmtListTNode* stmtListNode = new StmtListTNode(name);
 	StmtTNode* prevStmt = nullptr;
 	while (!TopTokenIsType(Token::END_OF_STMT_LIST)) {
-		StmtTNode* stmt = ParseStmt();
+		StmtTNode* stmt = ParseStmt(parent);
 		stmtListNode->AddChild(stmt);
 		if (prevStmt != nullptr) {
 			Follows::SetFollows(prevStmt->GetLineNumber(), stmt->GetLineNumber());
 		}
+		prevStmt = stmt;
 	}
 
 	ConsumeTopTokenOfType(Token::END_OF_STMT_LIST);
@@ -112,26 +115,22 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
 			ConsumeTopTokenOfType(Token::END_OF_STMT);
-			StmtTypeTable::insert(currentLineNumber, SynonymType::ASSIGN);
+			StmtTypeTable::insert(stmt->GetLineNumber(), ASSIGN);
 			break;
 		case Token::WHILE:
 			stmt = ParseWhileStmt();
-			StmtTypeTable::insert(currentLineNumber, SynonymType::WHILE);
+			StmtTypeTable::insert(stmt->GetLineNumber(), WHILE);
 			break;
 		default:
 			SyntaxError();
 	}
 
-	stmt->SetParent(parentStmt);
 	if (parentStmt != nullptr) {
-		Parent::SetParent(parentStmt->GetLineNumber(), currentLineNumber);
+		stmt->SetParent(parentStmt);
+		Parent::SetParent(parentStmt->GetLineNumber(), stmt->GetLineNumber());
 	}
 	program.InsertStmt(stmt);
 	return stmt;
-}
-
-StmtTNode* Parser::ParseStmt() {
-	return ParseStmt(nullptr);
 }
 
 AssignmentTNode* Parser::ParseAssignmentStmt() {
@@ -140,12 +139,10 @@ AssignmentTNode* Parser::ParseAssignmentStmt() {
 
 	VariableTNode* LHS = new VariableTNode(varToken.content);
 	AssignmentTNode* assignmentStmt = new AssignmentTNode(currentLineNumber);
+	Modifies::SetStmtModifiesVar(currentLineNumber, VarTable::InsertVar(varToken.content));
 	TNode* RHS = ParseExpr(nullptr, false);
 
 	assignmentStmt->BuildAssignmentNode(LHS, RHS);
-
-	VarTable::InsertVar(varToken.content);
-	Modifies::SetStmtModifiesVar(currentLineNumber, VarTable::InsertVar(varToken.content));
 
 	return assignmentStmt;
 }
@@ -225,9 +222,17 @@ WhileTNode* Parser::ParseWhileStmt() {
 	Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(condition.content));
 
 	// parse loop body
-	StmtListTNode* loopBody = ParseStmtList("");
+	StmtListTNode* loopBody = ParseStmtList("", whileStmt);
 
 	// create if statement
 	whileStmt->BuildWhileNode(conditionNode, loopBody);
 	return whileStmt;
 }
+//
+//void main() {
+//	ifstream sourceFile("Parser\sample_SIMPLE_source.txt");
+//	stringstream buffer;
+//	buffer << sourceFile.rdbuf();
+//	sourceFile.close();
+//	Program testProgram = Parser::Parse(buffer.str());
+//}

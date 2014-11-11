@@ -1,4 +1,4 @@
-// Simple Assingment Parsing
+\\ Simple Assingment Parsing
 
 procedure simpleAssignmentTest {
 	x = 1;

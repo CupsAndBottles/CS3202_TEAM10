@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
+    <None Include="ParserTestFiles\pkbTest.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserToPKBTest.h">
@@ -38,7 +39,11 @@
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="QueryEvaluatorToPKBDATest.h">
+=======
+    <ClInclude Include="QueryEvaluatorToPKBTest.h">
+>>>>>>> c6cad6f7f8afa1e4d777f1f7b3e30413c6ee411e
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

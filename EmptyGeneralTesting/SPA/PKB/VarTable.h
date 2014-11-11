@@ -19,6 +19,7 @@ public:
 	static int InsertVar(string varName);
 	static int GetIndexOf(string varName); 
 	static string GetVarName(int varIndex);
+	static vector<string> GetAllVar();
 	
 	// methods to aid testing
 	static int GetSize();

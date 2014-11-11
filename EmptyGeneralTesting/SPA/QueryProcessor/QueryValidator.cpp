@@ -23,23 +23,23 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 	std::vector<std::string>::iterator it = tokenList.begin();
 	token = *it;
-	std::cout << "token: " << token << "\n";
+	//std::cout << "token: " << token << "\n";
 	//validate declaration
 	while(IsDeclaration(token))	//if token is design entity
 	{
 		//assign a;while w;Select a
 
-		std::cout << "\nIn declaration\n";
+		//std::cout << "\nIn declaration\n";
 		std::string type = token;
 
 		if(++it == tokenList.end())	return false;
 		token = *it;
-		std::cout << "token: " << token << "\n";
+		//std::cout << "token: " << token << "\n";
 
 		//get the synonym
 		while(!IsSemiColon(token))
 		{
-			std::cout << "\nIn Check Semicolon\n";
+			//std::cout << "\nIn Check Semicolon\n";
 			Synonym synonym;
 			synonym.value = token;
 
@@ -51,16 +51,16 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 			if(++it == tokenList.end())	return false;
 			token = *it;
-			std::cout << "token: " << token << "\n";
+			//std::cout << "token: " << token << "\n";
 		}
-		std::cout << "\nAfer Check Semicolon\n";
+		//std::cout << "\nAfer Check Semicolon\n";
 
 		if(++it == tokenList.end())	return false;
 		token = *it;
-		std::cout << "token: " << token << "\n";
+		//std::cout << "token: " << token << "\n";
 	}
 
-	std::cout << "\nafter declaration\n";
+	//std::cout << "\nafter declaration\n";
 
 	//check if declaration is empty
 	if(queryData.GetDeclarations().empty()) {
@@ -71,12 +71,12 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	//check if next token is select, and validate select
 	if(IsSelect(token))
 	{
-		std::cout << "\nIn Select\n";
-		if(++it == tokenList.end())	{std::cout << "\nno more token\n";
+		//std::cout << "\nIn Select\n";
+		if(++it == tokenList.end())	{//std::cout << "\nno more token\n";
 			return false;
 		}
 		token = *it;
-		std::cout << "token: " << token << "\n";
+		//std::cout << "token: " << token << "\n";
 				
 		Synonym synonym;
 		synonym.value = token;
@@ -89,7 +89,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	//no select
 	else return false;
 
-	std::cout << "\nAfter Select\n";
+	//std::cout << "\nAfter Select\n";
 
 	//get next token
 	if(++it == tokenList.end())	return true;
@@ -147,7 +147,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 
 		if(IsPattern(token))	//pattern or and
 		{		
-			std::cout << "In Pattern\n";
+			//std::cout << "In Pattern\n";
 			Argument arg1, arg2;
 			Synonym synonym;
 
@@ -186,7 +186,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 			else token = *it;
 		}
 
-		std::cout << "After Pattern\n";
+		//std::cout << "After Pattern\n";
 
 		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
 	}
@@ -214,7 +214,7 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 }
 
 bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &tokens) {
-	bool isIdent = false, isExpression = false;
+	bool isIdent = false, isExpression = false, isProgLine = false;
 
 	query += " ";	//add a whitespace behind, to handle case like assign a;Select a, if not the a will not get push back
 
@@ -252,9 +252,11 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 				integer = "";
 			} 
 			else if (alphaString != "") { // previous substring is... string
-				
+				if(alphaString == "prog") 
+					isProgLine = true;
+	
 				//if string begins with " or _ which means an expression or IDENT, do not push back
-				if(!(alphaString.at(0) == '"' || alphaString.at(0) == '_'))
+				else if(!(alphaString.at(0) == '"' || alphaString.at(0) == '_'))
 				{
 					tokens.push_back(alphaString);
 					alphaString = "";
@@ -358,8 +360,12 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 							alphaString = "";
 							isExpression = false;
 						}
+						else if(isProgLine) {
+							alphaString += currentChar;
+							isProgLine = false;
+						}
 						else {
-							std::cerr << "Whaaa??\n";
+							std::cout << "Whaaa??\n";
 							return false;
 						}
 					}
@@ -367,7 +373,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 
 				else if(currentChar == '+') 
 				{
-					std::cout << "In +\n";
+					//std::cout << "In +\n";
 					if(isExpression) {
 						//std::cout << "In isExpression\n";
 						alphaString += currentChar;

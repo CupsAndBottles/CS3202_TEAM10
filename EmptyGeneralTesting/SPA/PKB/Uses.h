@@ -14,7 +14,7 @@ public:
 	// Default constructor
 	Uses();
 
-	// API
+	// APIu
 	static void SetStmtUsesVar(int stmtUsing, int varUsed);
 	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
     static vector<int> GetStmtUsingVar(int varUsed);

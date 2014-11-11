@@ -13,12 +13,12 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserTest);
 ParserTest::ParserTest() {
 }
 
-Program parseSource(string filename) {
+void ParseSource(string filename) {
 	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
 	stringstream buffer;
 	buffer << sourceFile.rdbuf();
 	sourceFile.close();
-	return Parser::Parse(buffer.str());
+	Parser::Parse(buffer.str());
 }
 
 TNode& GetLHS(TNode& node) {
@@ -30,8 +30,9 @@ TNode& GetRHS(TNode& node) {
 }
 
 void ParserTest::TestSimpleAssignmentParsing() {
-	Program testAST = parseSource("simpleAssignmentTest.txt");
-	ProgramTNode program = testAST.GetASTRootNode();
+	Program::ClearData();
+	ParseSource("simpleAssignmentTest.txt");
+	ProgramTNode program = Program::GetASTRootNode();
 	ProcedureTNode procedure = program.GetChild(0);
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(procedure.GetProcedureBody().GetChild(0));
 	AssignmentTNode secondStmt = dynamic_cast<AssignmentTNode&>(procedure.GetProcedureBody().GetChild(1));
@@ -51,8 +52,9 @@ void ParserTest::TestSimpleAssignmentParsing() {
 }
 
 void ParserTest::TestAdditionParsing() {
-	Program testAST = parseSource("additionTest.txt");
-	ProgramTNode program = testAST.GetASTRootNode();
+	Program::ClearData();
+	ParseSource("additionTest.txt");
+	ProgramTNode program = Program::GetASTRootNode();
 	ProcedureTNode procedure = program.GetChild(0);
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(procedure.GetProcedureBody().GetChild(0));
 	AssignmentTNode secondStmt = dynamic_cast<AssignmentTNode&>(procedure.GetProcedureBody().GetChild(1));
@@ -93,8 +95,9 @@ void ParserTest::TestAdditionParsing() {
 }
 
 void ParserTest::TestWhileParsing() {
-	Program testAST = parseSource("whileTest.txt");
-	ProgramTNode program = testAST.GetASTRootNode();
+	Program::ClearData();
+	ParseSource("whileTest.txt");
+	ProgramTNode program = Program::GetASTRootNode();
 	ProcedureTNode procedure = program.GetChild(0);
 	WhileTNode whileLoop = dynamic_cast<WhileTNode&>(procedure.GetProcedureBody().GetChild(0));
 	AssignmentTNode firstStmt = dynamic_cast<AssignmentTNode&>(whileLoop.GetBody().GetChild(0));
@@ -119,8 +122,9 @@ void ParserTest::TestWhileParsing() {
 }
 
 void ParserTest::TestNestedWhileParsing() {
-	Program testAST = parseSource("nestedWhileTest.txt");
-	ProgramTNode program = testAST.GetASTRootNode();
+	Program::ClearData();
+	ParseSource("nestedWhileTest.txt");
+	ProgramTNode program = Program::GetASTRootNode();
 	ProcedureTNode procedure = program.GetChild(0);
 	WhileTNode firstWhileLoop = dynamic_cast<WhileTNode&>(procedure.GetProcedureBody().GetChild(0));
 	WhileTNode secondWhileLoop = dynamic_cast<WhileTNode&>(firstWhileLoop.GetBody().GetChild(0));
@@ -145,8 +149,9 @@ void ParserTest::TestNestedWhileParsing() {
 }
 
 void ParserTest::TestParsing() {
-	Program testAST = parseSource("sample_SIMPLE_source.txt");
-	ProgramTNode program = testAST.GetASTRootNode();
+	Program::ClearData();
+	ParseSource("sample_SIMPLE_source.txt");
+	ProgramTNode program = Program::GetASTRootNode();
 	ProcedureTNode procedure = program.GetChild(0);
 	vector<StmtTNode*> stmts = procedure.GetProcedureBody().GetStmtList();
 

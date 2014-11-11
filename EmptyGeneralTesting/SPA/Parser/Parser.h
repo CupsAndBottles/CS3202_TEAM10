@@ -20,11 +20,8 @@ class Parser {
 	friend class PatternMatcher;
 
 public:
-	static Program Parse(string);
+	static void Parse(string);
 	static int compare(Token::Type, Token::Type);
-
-protected:
-	Program program;
 
 private:
 	Parser(vector<Token>);

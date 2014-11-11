@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\PatternMatcher.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
     <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PKB\PatternMatcher.h" />
     <ClInclude Include="PKB\ConstTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
@@ -143,6 +145,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

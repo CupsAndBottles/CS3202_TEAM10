@@ -95,6 +95,11 @@ void ParserToPKBTest::TestParent() {
 	CPPUNIT_ASSERT_MESSAGE("test correct Parent relationship for 4th variable", Parent::IsParent(3, 9));
 	CPPUNIT_ASSERT_MESSAGE("test correct Parent relationship for 5th variable", Parent::IsParent(5, 6));
 	CPPUNIT_ASSERT_MESSAGE("test correct Parent relationship for 6th variable", Parent::IsParent(7, 8));
+
+	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 6));
+	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 7));
+	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 8));
+
 }
 
 void ParserToPKBTest::TestFollows() {

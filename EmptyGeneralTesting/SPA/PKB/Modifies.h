@@ -10,7 +10,7 @@ using namespace std;
 
 class Modifies {
     public:
-        // methods
+       // methods
        // Default constructor
         Modifies();
 

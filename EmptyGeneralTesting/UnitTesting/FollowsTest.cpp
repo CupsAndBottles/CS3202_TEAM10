@@ -8,11 +8,11 @@
 #include <stdint.h>
 
 void FollowsTest::setUp() {
-	// empty body
+	Follows::ClearData();
 }
 
 void FollowsTest::tearDown() {
-	// empty body
+	Follows::ClearData();
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FollowsTest);

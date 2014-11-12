@@ -19,6 +19,14 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
 
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
+ParserToPKBTest::ParserToPKBTest() {
+	Program::ClearData();
+	Parent::ClearData();
+	Uses::ClearData();
+	Modifies::ClearData();
+	Follows::ClearData();
+}
+
 void ParseSource(string filename) {
 	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
 	stringstream buffer;
@@ -28,7 +36,6 @@ void ParseSource(string filename) {
 }
 
 void ParserToPKBTest::setUp() { 
-	Program::ClearData();
 	ParseSource("pkbTest.txt");
 }
 
@@ -62,18 +69,20 @@ void ParserToPKBTest::TestVarTable() {
 
 void ParserToPKBTest::TestModifies() {
 	// check if modifiesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 6, Modifies::SizeOfModifies());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 12, Modifies::SizeOfModifies());
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifyingVar(2, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifyingVar(4, 3));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 4th variable", Modifies::IsStmtModifyingVar(6, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 5th variable", Modifies::IsStmtModifyingVar(8, 3));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 6th variable", Modifies::IsStmtModifyingVar(9, 5));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 7th variable", Modifies::IsStmtModifyingVar(3, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 8th variable", Modifies::IsStmtModifyingVar(5, 2));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 9th variable", Modifies::IsStmtModifyingVar(3, 2));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 10th variable", Modifies::IsStmtModifyingVar(7, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 11th variable", Modifies::IsStmtModifyingVar(3, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 12th variable", Modifies::IsStmtModifyingVar(3, 5));
 
-	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("a"))[0] == 9);
-	//CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[0] == 6);
-	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[1] == 8);
-	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[1] == 7);
 }
 
 void ParserToPKBTest::TestUses() {

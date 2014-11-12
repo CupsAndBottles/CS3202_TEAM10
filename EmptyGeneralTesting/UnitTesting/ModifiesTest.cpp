@@ -1,8 +1,12 @@
 #include "ModifiesTest.h"
 #include "PKB\Modifies.h"
 
-void ModifiesTest::setUp() {}
-void ModifiesTest::tearDown() {}
+void ModifiesTest::setUp() {
+	Modifies::ClearData();
+}
+void ModifiesTest::tearDown() {
+	Modifies::ClearData();
+}
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ModifiesTest);
 

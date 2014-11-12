@@ -14,12 +14,12 @@ public:
 	static void ClearData();
 
 protected:
-	static void InsertStmt(StmtTNode*);
+	static void InsertStmt(StmtTNode*, int);
 
 private:
 	Program();
 
 	static ProgramTNode program;
-	static vector<StmtTNode*> stmtNumberMap;
+	static map<int, StmtTNode*> stmtNumberMap;
 };
 

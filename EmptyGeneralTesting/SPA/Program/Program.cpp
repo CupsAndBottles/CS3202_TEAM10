@@ -8,7 +8,7 @@
 #include "TNode\WhileTNode.h"
 
 ProgramTNode Program::program;
-vector<StmtTNode*> Program::stmtNumberMap;
+map<int, StmtTNode*> Program::stmtNumberMap;
 
 Program::Program() {}
 
@@ -20,8 +20,8 @@ StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(StmtTNode* stmt) {
-	stmtNumberMap.push_back(stmt);
+void Program::InsertStmt(StmtTNode* stmt, int stmtNum) {
+	stmtNumberMap[stmtNum] = stmt;
 }
 
 void Program::ClearData() { // leaky method

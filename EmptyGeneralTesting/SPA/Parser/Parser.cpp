@@ -145,7 +145,7 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		stmt->SetParent(parentStmt);
 	}
 
-	Program::InsertStmt(stmt);
+	Program::InsertStmt(stmt, stmt->GetLineNumber());
 	return stmt;
 }
 

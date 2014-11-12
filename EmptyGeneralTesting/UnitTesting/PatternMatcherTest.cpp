@@ -70,8 +70,5 @@ void PatternMatcherTest::matchExprsWithMultipleVariables() {
 	CPPUNIT_ASSERT_EQUAL(true, PatternMatcher::MatchPatternAtLeaves(exprTree, xPlus1, true));
 	CPPUNIT_ASSERT_EQUAL(false, PatternMatcher::MatchPatternAtLeaves(exprTree, xPlusY, true));
 	CPPUNIT_ASSERT_EQUAL(false, PatternMatcher::MatchPatternAtLeaves(exprTree, yPlus1, true));
-
-
-
 }
 

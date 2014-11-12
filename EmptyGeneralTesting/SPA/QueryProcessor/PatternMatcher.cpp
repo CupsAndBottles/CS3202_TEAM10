@@ -77,9 +77,9 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMat
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
 	vector<int> results;
 
-	for (int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
-		StmtTNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
-		if (MatchPatternAtLeaves(&currentStmtTNode, object, partialMatch)) {
+	for (unsigned int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
+		AssignmentTNode& currentStmtTNode = dynamic_cast<AssignmentTNode&>(Program::GetStmtFromNumber(assignmentStmts[currentStmt]));
+		if (MatchPatternAtLeaves(&currentStmtTNode.GetRHS(), object, partialMatch)) {
 			results.push_back(assignmentStmts[currentStmt]);
 		}
 	}

@@ -114,11 +114,11 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
 			ConsumeTopTokenOfType(Token::END_OF_STMT);
-			StmtTypeTable::insert(stmt->GetLineNumber(), ASSIGN);
+			StmtTypeTable::Insert(stmt->GetLineNumber(), ASSIGN);
 			break;
 		case Token::WHILE:
 			stmt = ParseWhileStmt();
-			StmtTypeTable::insert(stmt->GetLineNumber(), WHILE);
+			StmtTypeTable::Insert(stmt->GetLineNumber(), WHILE);
 			break;
 		default:
 			SyntaxError();

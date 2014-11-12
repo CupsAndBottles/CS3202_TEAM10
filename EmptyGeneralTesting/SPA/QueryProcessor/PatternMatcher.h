@@ -4,17 +4,17 @@
 
 using namespace std;
 
-struct QueryObject {
-    string expr;
-    string leftVar;
-    string rightVar;
-    bool underscoreBefore;
-    bool underscoreAfter;
+struct Pattern {
+	string expr;
+	Pattern* leftPattern;
+	Pattern* rightPattern;
+	bool partialMatch;
 };
 
 class PatternMatcher {
     public:
         PatternMatcher() { };
 
-        static vector<int> MatchPatternFromRoot(TNode* root, QueryObject object);
+		static vector<int> MatchPatternFromRoot(Pattern object);
+		static bool MatchPatternAtLeaves(TNode* node, Pattern object);
 };

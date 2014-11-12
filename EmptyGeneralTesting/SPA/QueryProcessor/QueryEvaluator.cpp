@@ -772,7 +772,7 @@ vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClau
 				int var = VarTable::GetIndexOf(suchThat.arg2.value);
 				vector<int>::iterator it;
 				for (it = proglines.begin(); it != proglines.end(); it++) {
-					if (Modifies::IsStmtModifiesVar(*it, var)) flag = true;
+					if (Modifies::IsStmtModifyingVar(*it, var)) flag = true;
 				}
 			}
 
@@ -799,7 +799,7 @@ vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClau
 					}
 				}
 				else {
-					if (Modifies::IsStmtModifiesVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
+					if (Modifies::IsStmtModifyingVar(possibleResult[i], VarTable::GetIndexOf(suchThat.arg2.value))){
 						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
 					}
 				}
@@ -819,7 +819,7 @@ vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClau
 				vector<int>::iterator it;
 				for (it = proglines.begin(); it != proglines.end(); it++) {
 					for (int j = 0; j < possibleResult.size(); j++){
-						if (Modifies::IsStmtModifiesVar(*it, possibleResult[j])){
+						if (Modifies::IsStmtModifyingVar(*it, possibleResult[j])){
 							result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
 						}
 					}
@@ -827,7 +827,7 @@ vector<string> QueryEvaluator::checkModifies(SuchThatClause suchThat, SelectClau
 			}
 			else {
 				for (unsigned int i = 0; i < possibleResult.size(); i++) {
-					if (Modifies::IsStmtModifiesVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
+					if (Modifies::IsStmtModifyingVar(atoi(suchThat.arg1.syn.value.c_str()), possibleResult[i])) {
 						result.push_back(convertIntToString(possibleResult[i], select.synonym.type));
 					}
 				}

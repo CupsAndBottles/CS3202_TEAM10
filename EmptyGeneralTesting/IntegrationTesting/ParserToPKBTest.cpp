@@ -63,12 +63,17 @@ void ParserToPKBTest::TestVarTable() {
 void ParserToPKBTest::TestModifies() {
 	// check if modifiesTable is updated
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 6, Modifies::SizeOfModifies());
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifiesVar(1, 0));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifiesVar(2, 1));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifiesVar(4, 3));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 4th variable", Modifies::IsStmtModifiesVar(6, 1));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 5th variable", Modifies::IsStmtModifiesVar(8, 3));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 6th variable", Modifies::IsStmtModifiesVar(9, 5));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifyingVar(2, 1));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifyingVar(4, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 4th variable", Modifies::IsStmtModifyingVar(6, 1));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 5th variable", Modifies::IsStmtModifyingVar(8, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 6th variable", Modifies::IsStmtModifyingVar(9, 5));
+
+	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("a"))[0] == 9);
+	//CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[0] == 6);
+	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[1] == 8);
+	CPPUNIT_ASSERT(Modifies::GetStmtModifyingVar(VarTable::GetIndexOf("tEst"))[1] == 7);
 }
 
 void ParserToPKBTest::TestUses() {
@@ -99,6 +104,7 @@ void ParserToPKBTest::TestParent() {
 	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 6));
 	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 7));
 	CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(3, 8));
+	//CPPUNIT_ASSERT_MESSAGE("test correct ParentT relationship for 3th variable", Parent::IsParentT(2, 9));
 
 }
 
@@ -110,6 +116,14 @@ void ParserToPKBTest::TestFollows() {
 	CPPUNIT_ASSERT_MESSAGE("test correct Follows relationship for 3rd variable", Follows::IsFollows(4, 5));
 	CPPUNIT_ASSERT_MESSAGE("test correct Follows relationship for 4th variable", Follows::IsFollows(5, 7));
 	CPPUNIT_ASSERT_MESSAGE("test correct Follows relationship for 5th variable", Follows::IsFollows(7, 9));
+
+	CPPUNIT_ASSERT(Follows::IsFollowsT(1, 3));
+	CPPUNIT_ASSERT(Follows::IsFollowsT(1, 2));
+	CPPUNIT_ASSERT(Follows::IsFollowsT(4, 9));
+
+	//CPPUNIT_ASSERT(Follows::IsFollowsT(4, 6));
+	//CPPUNIT_ASSERT(Follows::IsFollowsT(9, 4));
+
 }
 
 void ParserToPKBTest::TestStmtTypeTable() {

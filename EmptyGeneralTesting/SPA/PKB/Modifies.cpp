@@ -22,7 +22,7 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
     VarToStmtTable[varModified].push_back(stmtModifying);
 }
 
-bool Modifies::IsStmtModifiesVar(int stmtModifying, int varModified) {
+bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
     if (StmtToVarTable.count(stmtModifying)!=0)
         for (int i=0; i<StmtToVarTable.at(stmtModifying).size(); i++)
             if (StmtToVarTable.at(stmtModifying).at(i) == varModified)

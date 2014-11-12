@@ -1,8 +1,8 @@
 #include <utility>
 #include <map>
-#include "Modifies.h"
-#include <iostream>
 #include <vector>
+#include "Parent.h"
+#include "Modifies.h"
 
 using namespace std;
 
@@ -20,6 +20,9 @@ Modifies::Modifies() {
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
     StmtToVarTable[stmtModifying].push_back(varModified);
     VarToStmtTable[varModified].push_back(stmtModifying);
+
+    if (Parent::GetParentOf(stmtModifying) != -1) 
+           SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
 }
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {

@@ -5,7 +5,7 @@ AtomicTNode::AtomicTNode(Type type, string content)
 }
 
 vector<TNode*> AtomicTNode::GetChildren() {
-	ThrowUnsupportedOperationException();
+	// ThrowUnsupportedOperationException();
 	return TNode::GetChildren();
 }
 

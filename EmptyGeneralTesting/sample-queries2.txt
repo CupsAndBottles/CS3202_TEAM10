@@ -1,0 +1,5 @@
+1 - comment
+assign a;
+Select a;
+1, 2, 4, 6, 8, 9
+5000

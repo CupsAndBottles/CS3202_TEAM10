@@ -826,7 +826,7 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 		{
 			bool doesModifiesOrUses = false;
 
-			if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifiesVar(*it, varIndex);
+			if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifyingVar(*it, varIndex);
 			else				doesModifiesOrUses = Uses::IsStmtUsingVar(*it, varIndex);
 
 			if(doesModifiesOrUses)	tempResult.push_back(ToString(*it));
@@ -856,7 +856,7 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 
 			bool doesModifiesOrUses = false;
 		
-			if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsStmtModifiesVar(arg1Value,varIndex);
+			if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsStmtModifyingVar(arg1Value,varIndex);
 			else					doesModifiesOrUses = Uses::IsStmtUsingVar(arg1Value,varIndex);
 
 			if(doesModifiesOrUses)	tempResult.push_back(*it);
@@ -884,7 +884,7 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 		int arg1Value = atoi(arg1.value.c_str());
 		bool doesModifiesOrUses = false;
 
-		if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifiesVar(arg1Value, varIndex);
+		if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifyingVar(arg1Value, varIndex);
 		else				doesModifiesOrUses = Uses::IsStmtUsingVar(arg1Value, varIndex);
 
 		if(doesModifiesOrUses)	return true;

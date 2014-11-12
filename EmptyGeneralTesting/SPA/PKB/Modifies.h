@@ -16,7 +16,7 @@ class Modifies {
 
         // API
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
-        static bool IsStmtModifiesVar(int stmtModifying, int varModified);
+        static bool IsStmtModifyingVar(int stmtModifying, int varModified);
         static vector<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
         static vector<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
 		// Select s such that Modifies(w, "x")

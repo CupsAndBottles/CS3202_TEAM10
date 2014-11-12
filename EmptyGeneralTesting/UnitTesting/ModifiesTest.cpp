@@ -18,7 +18,7 @@ void ModifiesTest::TestSingleStmt() {
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 1);
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
 
 	vector<int> stmtsModifyingVar0 = Modifies::GetStmtModifyingVar(0);
 	CPPUNIT_ASSERT(stmtsModifyingVar0.size() == 1);
@@ -43,10 +43,10 @@ void ModifiesTest::TestMultipleStmts() {
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 4);
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 3));
 
 	vector<int> stmtsModifiesVar0 = Modifies::GetStmtModifyingVar(0);
 	CPPUNIT_ASSERT(stmtsModifiesVar0.size() == 1);
@@ -97,10 +97,10 @@ void ModifiesTest::TestMultipleStmtsModifyingSingleVar() {
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 4);
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 0));
 
 	vector<int> stmtsModifyingVar0 = Modifies::GetStmtModifyingVar(0);
 	CPPUNIT_ASSERT(stmtsModifyingVar0.size() == 4);
@@ -141,10 +141,10 @@ void ModifiesTest::TestSingleStmtModifyingMultipleVars() {
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 1);
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 3));
 
 	vector<int> stmtsModifyingVar0 = Modifies::GetStmtModifyingVar(0);
 	CPPUNIT_ASSERT(stmtsModifyingVar0.size() == 1);
@@ -203,28 +203,28 @@ void ModifiesTest::TestModifies() {
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 6);
 
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(1, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 3));
 
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(2, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(2, 3));
 
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(3, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(3, 3));
 
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 0));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 1));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 2));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(4, 3));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 1));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 2));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(4, 3));
 
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(5, 4));
-	CPPUNIT_ASSERT(Modifies::IsStmtModifiesVar(10, 15));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(5, 4));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(10, 15));
 
 	vector<int> stmtsModifyingVar0 = Modifies::GetStmtModifyingVar(0);
 	CPPUNIT_ASSERT(stmtsModifyingVar0.size() == 4);

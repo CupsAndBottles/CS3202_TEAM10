@@ -6,66 +6,64 @@
 #include "../Program/TNode/AssignmentTNode.h"
 #include "../Program/TNode/WhileTNode.h"
 #include "../Program/Program.h"
+#include "../PKB/StmtTypeTable.h"
 
 #include <iostream>
 #include <stdio.h>
 
 using namespace std;
-/*
-vector<int> PatternMatcher::MatchPatternAtLeaves(TNode* node, QueryObject object) {
-    vector<int> results;
-    TNode current = node;
 
-    if (!current.GetChildren().empty()) {
-        vector<TNode*> children = current.GetChildren();    
+bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
+	// match tree
+	// if no need to match children, return match
+	// if
+	
+	bool match = (node->GetContent() == object.expr);
 
-        for (int i=0 ; i<children.size(); i++) {
-            TNode* child = children.at(i);
-            if (child->GetType() == TNode::Type::ASSIGNMENT) {
-                if (child->GetChild(0).GetContent() == object.leftVar) {
-                    //condition true
-                }
-                if (child->GetChild(1).GetContent() == object.rightVar) {
-                    //condition true
-                }
+	// check for children
+	// if both empty, return match
+	// if pattern has children but not tree, return false
+	// if tree has children but not pattern. return partialMatch && match
+	// if both have children, match left tree and right tree
 
-                //get line number;
-                int stmt = dynamic_cast<StmtTNode*>(child)->GetLineNumber();
-                results.push_back(stmt);
-            }
+	vector<TNode*> children = node->GetChildren();
+	bool hasChildPatterns = (object.leftPattern != nullptr) && (object.rightPattern != nullptr);
+	bool hasChildNodes = children.size() == 2;
+	if (hasChildPatterns && hasChildNodes) {
+		// match subtrees
+		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern) && MatchPatternAtLeaves(children[1], *object.rightPattern));
+		if (!match) {
+			bool matchLeft = MatchPatternAtLeaves(children[0], object);
+			bool matchRight = MatchPatternAtLeaves(children[1], object);
 
-            if (child->GetType() == TNode::Type::WHILE) {
-            }
-        
-            PatternMatcher::MatchPatternAtLeaves(child, object);
-        }
-    }
-    return results;
+			return (matchLeft || matchRight);
+		} else {
+			return match;
+		}
+
+	} else if (!hasChildPatterns && hasChildNodes) {
+		return (match && object.partialMatch);
+	} else if (hasChildPatterns && !hasChildNodes) {
+		return false;
+	} else if (!hasChildPatterns && !hasChildNodes) {
+		return match;
+	} else {
+		return false;
+	}
 }
 
-vector<int> PatternMatcher::MatchPatternFromRoot(QueryObject object) {
-    printf("1 %s 2 %s 3 %s\n", object.expr.c_str(), object.leftVar.c_str(), object.rightVar.c_str());
+vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
+	// printf("1 %s 2 %s 3 %s\n", object.expr.c_str(), object.leftPattern->expr.c_str(), object.rightPattern->expr.c_str());
 
-    //TNode* current = root;
+	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
+	vector<int> results;
 
-    ProgramTNode root = Program::GetASTRootNode();
+	for (int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
+		StmtTNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
+		if (MatchPatternAtLeaves(&currentStmtTNode, object)) {
+			results.push_back(assignmentStmts[currentStmt]);
+		}
+	}
 
-    return PattterMatcher::MatchPatternAtLeaves(root, object);
+	return results;
 }
-
-
-int main() {
-
-    QueryObject dummy;
-    dummy.expr = "plus";
-    dummy.leftVar = "x";
-    dummy.rightVar = "y";
-
-    string name = "testproc";
-
-    //ProcedureTNode::ProcedureTNode root = new ProcedureTNode::TNode(name);
-    //if(dummy.rightVar=="") printf("empty string!\n");
-    PatternMatcher::MatchPattern(NULL, dummy);
-
-    return 0;
-}*/

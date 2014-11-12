@@ -1,5 +1,66 @@
-1 - comment
+1 - Get All Assignment Stmts
 assign a;
 Select a;
-1, 2, 4, 6, 8, 9
+7
 5000
+
+2 - Get All While Stmts
+while w;
+Select w;
+1, 2, 3, 4, 5, 6
+5000
+
+3 - Modifies x
+stmt s;
+Select s such that Modifies (s, "x");
+1, 2, 3, 4, 5, 6, 7, 8
+5000
+
+4 - Uses x
+stmt s;
+Select s such that Uses (s, "x");
+1
+5000
+
+5 - Uses z
+stmt s;
+Select s such that Uses (s, "z");
+1, 2, 3
+5000
+
+6 - Follows
+stmt s1, s2;
+Select <s1, s2> such that Follows (s1, s2);
+3 8
+5000
+
+7 - Parent
+stmt s;
+Select s such that Parent (s, _);
+1, 2, 3, 4, 5, 6
+5000
+
+8 - Specific Parent
+while w;
+assign a;
+Select <w, a> such that Parent (w, a);
+6 7, 2 8
+5000
+
+9 - Parent*
+while w;
+assign a;
+Select w such that Parent* (w, a);
+1, 2, 3, 4, 5, 6
+5000
+
+10 - More Strict Parent*
+while w1, w2;
+Select w1 such that Parent* (w1, w2) and Uses (w2, "a");
+1, 2, 3
+
+11 - Even More Strict Parent*
+while w;
+assign a;
+Select w such that Parent* (w, a) pattern a (_, _"1"_);
+1, 2

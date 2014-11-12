@@ -3,79 +3,66 @@ assign a;
 Select a
 1, 2, 4, 6, 8, 9
 5000
-
 2 - Get All While Stmts
 while w;
 Select w
 3, 5, 7
 5000
-
 3 - Simple Modifies
 assign a;
 Select a such that Modifies (a, "x")
 1
 5000
-
 4 - Nested Modifies
 stmt s;
 Select s such that Modifies (s, "y")
 2, 3, 5, 6
 5000
-
 5 - Simple Uses
 assign a;
 Select a such that Uses (a, "b");
 9
 5000
-
 6 - Nested Uses
 stmt s;
 Select s such that Uses (s, tEst)
 3, 5, 6, 7
 5000
-
 7 - Simple Follows
 assign a1, a2;
 Select <a1, a2> such that Follows (a1, a2)
 1 2
 5000
-
 8 - Follows Across Stmt Lists
 while w1, w2;
 Select <w1, w2> such that Follows (w1, w2)
 5, 7
 5000
-
 9 - Follows*
 assign a;
 while w;
 Select <a, w> such that Follows* (a, w)
 1 3, 2 3, 4 5, 4 7
 5000
-
 10 - Simple Parent
 while w1, w2;
 Select <w1, w2> such that Parent (w1, w2)
 3 5, 3 7
 5000
-
 11 - More Parents
 stmt s1, s2;
 Select <s1, s2> such that Parent (s1, s2)
 3 4, 3 5, 3 7, 3 9, 5 6, 7 8
 5000
-
 12 - Parent*
 Select BOOLEAN such that Parent* (3, 6)
 true
 5000
-
 13 - Simple LHS Patterns
 assign a;
 Select a pattern a ("y", _)
 2, 6
 5000
-
 14 - Simple RHS Patterns
 assign a;
 Select a pattern a (_"x"_)

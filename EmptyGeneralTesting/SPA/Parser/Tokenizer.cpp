@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tokenizer.h"
-#include "PKB\Token.h"
+#include "Token.h"
 
 #include <string>
 

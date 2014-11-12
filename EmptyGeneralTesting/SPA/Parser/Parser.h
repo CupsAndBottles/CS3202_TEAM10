@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PKB\Token.h"
+#include "Token.h"
 #include "Program\Program.h"
 #include "Program\TNode\AssignmentTNode.h"
 #include "Program\TNode\WhileTNode.h"

@@ -33,6 +33,7 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 		// match subtrees
 		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern) && MatchPatternAtLeaves(children[1], *object.rightPattern));
 		if (!match) {
+			// recursive call
 			bool matchLeft = MatchPatternAtLeaves(children[0], object);
 			bool matchRight = MatchPatternAtLeaves(children[1], object);
 
@@ -40,7 +41,6 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 		} else {
 			return match;
 		}
-
 	} else if (!hasChildPatterns && hasChildNodes) {
 		return (match && object.partialMatch);
 	} else if (hasChildPatterns && !hasChildNodes) {

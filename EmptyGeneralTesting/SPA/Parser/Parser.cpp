@@ -5,6 +5,7 @@
 #include "Program\Program.h"
 #include "Program\TNode\ConstantTNode.h"
 #include "QueryProcessor\Grammar.h"
+#include "..\AutoTester\source\AbstractWrapper.h"
 
 #include <iostream>
 #include <fstream>
@@ -70,7 +71,10 @@ int Parser::compare(Token::Type first, Token::Type second) {
 void Parser::Parse() {
 	ProgramTNode& rootNode = Program::GetASTRootNode();
 
-	while(tokens.size() != 0) {
+	while (tokens.size() != 0) {
+		//if (AbstractWrapper::GlobalStop) {
+		//	break;
+		//}
 		ConsumeTopTokenOfType(Token::PROCEDURE);
 		Token procedureName = ConsumeTopTokenOfType(Token::IDENTIFIER);
 		ProcedureTNode* procedureNode = new ProcedureTNode(procedureName.content);
@@ -92,6 +96,10 @@ StmtListTNode* Parser::ParseStmtList(string name, StmtTNode* parent) {
 	StmtListTNode* stmtListNode = new StmtListTNode(name);
 	StmtTNode* prevStmt = nullptr;
 	while (!TopTokenIsType(Token::END_OF_STMT_LIST)) {
+		//if (AbstractWrapper::GlobalStop) {
+		//	return stmtListNode;
+		//}
+
 		StmtTNode* stmt = ParseStmt(parent);
 		stmtListNode->AddChild(stmt);
 		if (prevStmt != nullptr) {

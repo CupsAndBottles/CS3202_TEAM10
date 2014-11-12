@@ -8,10 +8,13 @@
 
 class Program {
 public:
+	friend class Parser;
 	static ProgramTNode& GetASTRootNode();
 	static StmtTNode& GetStmtFromNumber(int);
-	static void InsertStmt(StmtTNode*);
 	static void ClearData();
+
+protected:
+	static void InsertStmt(StmtTNode*);
 
 private:
 	Program();

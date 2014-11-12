@@ -251,7 +251,4 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Parser\sample_SIMPLE_source.txt" />
-  </ItemGroup>
 </Project>

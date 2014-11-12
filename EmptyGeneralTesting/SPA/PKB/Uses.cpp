@@ -14,8 +14,10 @@ Uses::Uses() {}
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
-    StmtToVarTable[stmtUsing].push_back(varUsed);
-    VarToStmtTable[varUsed].push_back(stmtUsing);
+    if (!IsStmtUsingVar(stmtUsing, varUsed)) {
+        StmtToVarTable[stmtUsing].push_back(varUsed);
+        VarToStmtTable[varUsed].push_back(stmtUsing);
+    }
 
     if (Parent::GetParentOf(stmtUsing) != -1)
         SetStmtUsesVar(Parent::GetParentOf(stmtUsing), varUsed);
@@ -50,7 +52,11 @@ bool Uses::HasAnyUses() {
 }
 
 int Uses::SizeOfUses() {
-    return StmtToVarTable.size();
+    int sum = 0;
+
+    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end();        it++)
+    sum += it->second.size();
+    return sum;
 }
 
 void Uses::ClearData() 

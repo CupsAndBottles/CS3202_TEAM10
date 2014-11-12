@@ -18,8 +18,10 @@ Modifies::Modifies() {
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
-    StmtToVarTable[stmtModifying].push_back(varModified);
-    VarToStmtTable[varModified].push_back(stmtModifying);
+    if (!IsStmtModifyingVar(stmtModifying, varModified)) {
+        StmtToVarTable[stmtModifying].push_back(varModified);
+        VarToStmtTable[varModified].push_back(stmtModifying);
+    }
 
     if (Parent::GetParentOf(stmtModifying) != -1) 
            SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
@@ -54,7 +56,11 @@ bool Modifies::HasAnyModifies() {
 }
 
 int Modifies::SizeOfModifies() {
-    return StmtToVarTable.size();
+    int sum = 0;
+    
+    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++)
+        sum += it->second.size();
+    return sum;
 }
 
 void Modifies::ClearData() {

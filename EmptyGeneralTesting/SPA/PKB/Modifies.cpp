@@ -18,8 +18,10 @@ Modifies::Modifies() {
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
-    StmtToVarTable[stmtModifying].push_back(varModified);
-    VarToStmtTable[varModified].push_back(stmtModifying);
+    if (!IsStmtModifyingVar(stmtModifying, varModified)) {
+        StmtToVarTable[stmtModifying].push_back(varModified);
+        VarToStmtTable[varModified].push_back(stmtModifying);
+    }
 
     if (Parent::GetParentOf(stmtModifying) != -1) 
            SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);

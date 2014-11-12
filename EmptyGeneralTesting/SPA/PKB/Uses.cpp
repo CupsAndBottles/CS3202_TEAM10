@@ -14,8 +14,10 @@ Uses::Uses() {}
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
-    StmtToVarTable[stmtUsing].push_back(varUsed);
-    VarToStmtTable[varUsed].push_back(stmtUsing);
+    if (!IsStmtUsingVar(stmtUsing, varUsed)) {
+        StmtToVarTable[stmtUsing].push_back(varUsed);
+        VarToStmtTable[varUsed].push_back(stmtUsing);
+    }
 
     if (Parent::GetParentOf(stmtUsing) != -1)
         SetStmtUsesVar(Parent::GetParentOf(stmtUsing), varUsed);

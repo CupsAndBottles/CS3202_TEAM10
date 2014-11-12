@@ -18,7 +18,6 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.expr == "x");
 	CPPUNIT_ASSERT(patternObj.leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.partialMatch == true);
 
 
 
@@ -28,7 +27,6 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.expr == "111");
 	CPPUNIT_ASSERT(patternObj.leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.partialMatch == true);
 
 
 
@@ -38,16 +36,13 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.expr == "+");
 	CPPUNIT_ASSERT(patternObj.leftPattern != NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern != NULL);
-	CPPUNIT_ASSERT(patternObj.partialMatch == true);
 	CPPUNIT_ASSERT(patternObj.leftPattern->expr == "x");
 	CPPUNIT_ASSERT(patternObj.leftPattern->leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.leftPattern->rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.leftPattern->partialMatch == true);
 	CPPUNIT_ASSERT(patternObj.rightPattern->expr == "y");
 	CPPUNIT_ASSERT(patternObj.rightPattern->leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.rightPattern->partialMatch == true);
-
+	\
 
 	expr = "_ \" 3 +  fnJw\" _";
 	patternObj = qe.CreatePatternObject(expr); 
@@ -55,15 +50,12 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.expr == "+");
 	CPPUNIT_ASSERT(patternObj.leftPattern != NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern != NULL);
-	CPPUNIT_ASSERT(patternObj.partialMatch == true);
 	CPPUNIT_ASSERT(patternObj.leftPattern->expr == "3");
 	CPPUNIT_ASSERT(patternObj.leftPattern->leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.leftPattern->rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.leftPattern->partialMatch == true);
 	CPPUNIT_ASSERT(patternObj.rightPattern->expr == "fnJw");
 	CPPUNIT_ASSERT(patternObj.rightPattern->leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
-	CPPUNIT_ASSERT(patternObj.rightPattern->partialMatch == true);
 }
 
 void QueryEvaluatorTest::TestMergeResult()

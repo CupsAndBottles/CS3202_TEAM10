@@ -101,7 +101,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	//merge select, such that , pattern result and pass back to caller
 
 	//only select, no such that no pattern
-	if(!hasSuchThat && !hasPattern)
+	if(!hasSuchThat && !hasPattern) 
 		copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 	
 	else if(hasSuchThat && !hasPattern) {
@@ -140,6 +140,8 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 		else resultList.clear();
 	}
+
+	resultList.sort();
 
 	cout<< "\nFinal result list: ";
 	for(list<string>::iterator it = resultList.begin(); it != resultList.end(); ++it)
@@ -985,7 +987,7 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 			if(patternObj.expr == "")	return false;
 
 			//cout << "\nhere1\n";
-			vector<int> rightResultInt = PatternMatcher::MatchPatternFromRoot(patternObj);
+			vector<int> rightResultInt = PatternMatcher::MatchPatternFromRoot(patternObj,true);
 			if(rightResultInt.empty())		return false;
 			//cout << "\nhere2\n";
 			vector<string> rightResult;
@@ -1126,20 +1128,20 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 
 	if(tokenList.size() == 1)
 	{
-		return Pattern(tokenList.at(0), NULL, NULL, true);
+		return Pattern(tokenList.at(0), NULL, NULL);
 	}
 
 	else if(tokenList.size() == 2)
 	{
-		Pattern *left = new Pattern(tokenList.at(0), NULL, NULL, true);
-		Pattern *right = new Pattern(tokenList.at(1), NULL, NULL, true);
-		Pattern p("+", left, right, true);
+		Pattern *left = new Pattern(tokenList.at(0), NULL, NULL);
+		Pattern *right = new Pattern(tokenList.at(1), NULL, NULL);
+		Pattern p("+", left, right);
 		return p;
 	}
 
 	else
 	{
 		cout << "\nIn CreatePatternObject, invalid expression\n";
-		return Pattern("", NULL, NULL, true);
+		return Pattern("", NULL, NULL);
 	}
 }

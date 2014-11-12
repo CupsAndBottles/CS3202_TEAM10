@@ -13,7 +13,7 @@
 
 using namespace std;
 
-bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
+bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object, bool partialMatch) {
 	// match tree
 	// if no need to match children, return match
 	
@@ -40,18 +40,28 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	bool hasChildPatterns = (object.leftPattern != nullptr) && (object.rightPattern != nullptr);
 	if (hasChildPatterns && hasChildNodes) {
 		// match subtrees
-		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern) && MatchPatternAtLeaves(children[1], *object.rightPattern));
-		if (!match) {
+		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern, false) && MatchPatternAtLeaves(children[1], *object.rightPattern, false));
+		if (!match && partialMatch) {
 			// recursive call
-			bool matchLeft = MatchPatternAtLeaves(children[0], object);
-			bool matchRight = MatchPatternAtLeaves(children[1], object);
+			bool matchLeft = MatchPatternAtLeaves(children[0], object, partialMatch);
+			bool matchRight = MatchPatternAtLeaves(children[1], object, partialMatch);
 
 			return (matchLeft || matchRight);
 		} else {
 			return match;
 		}
 	} else if (!hasChildPatterns && hasChildNodes) {
-		return (match && object.partialMatch);
+		if (match && partialMatch) {
+			return true;
+		} else if (!match && partialMatch) {
+			// recursive call
+			bool matchLeft = MatchPatternAtLeaves(children[0], object, partialMatch);
+			bool matchRight = MatchPatternAtLeaves(children[1], object, partialMatch);
+
+			return (matchLeft || matchRight);
+		} else {
+			return false;
+		}
 	} else if (hasChildPatterns && !hasChildNodes) {
 		return false;
 	} else if (!hasChildPatterns && !hasChildNodes) {
@@ -59,8 +69,6 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	} else {
 		return false;
 	}
-
-	return false;
 }
 
 vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
@@ -71,7 +79,7 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
 
 	for (int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
 		StmtTNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
-		if (MatchPatternAtLeaves(&currentStmtTNode, object)) {
+		if (MatchPatternAtLeaves(&currentStmtTNode, object, object.partialMatch)) {
 			results.push_back(assignmentStmts[currentStmt]);
 		}
 	}

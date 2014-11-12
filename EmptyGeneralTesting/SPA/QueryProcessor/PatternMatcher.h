@@ -23,5 +23,5 @@ class PatternMatcher {
         PatternMatcher() { };
 
 		static vector<int> MatchPatternFromRoot(Pattern object);
-		static bool MatchPatternAtLeaves(TNode* node, Pattern object);
+		static bool MatchPatternAtLeaves(TNode* node, Pattern object, bool partialMatch);
 };

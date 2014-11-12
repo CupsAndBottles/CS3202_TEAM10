@@ -60,7 +60,7 @@ Select a such that a (_, _"1 + 2"_)
 
 10 - Compound Patterns
 assign a;
-Select a such that a (y, _"1"_)
+Select a such that a ("y", _"1"_)
 2
 5000
 

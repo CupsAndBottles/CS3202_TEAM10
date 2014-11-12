@@ -16,7 +16,6 @@ using namespace std;
 bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	// match tree
 	// if no need to match children, return match
-	// if
 	
 	bool match = (node->GetContent() == object.expr);
 
@@ -26,9 +25,19 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	// if tree has children but not pattern. return partialMatch && match
 	// if both have children, match left tree and right tree
 
-	vector<TNode*> children = node->GetChildren();
+	bool hasChildNodes = false;
+	vector<TNode*> children;
+
+	if (node->HasChildren()) {
+		children = node->GetChildren();
+		if (children.size() != 2) {
+			hasChildNodes = false;
+		} else {
+			hasChildNodes = true;
+		}
+	}
+
 	bool hasChildPatterns = (object.leftPattern != nullptr) && (object.rightPattern != nullptr);
-	bool hasChildNodes = children.size() == 2;
 	if (hasChildPatterns && hasChildNodes) {
 		// match subtrees
 		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern) && MatchPatternAtLeaves(children[1], *object.rightPattern));
@@ -50,6 +59,8 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	} else {
 		return false;
 	}
+
+	return false;
 }
 
 vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {

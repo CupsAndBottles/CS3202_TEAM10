@@ -47,6 +47,10 @@ bool TNode::IsType(Type testType) {
 	return (type == testType);
 }
 
+bool TNode::HasChildren() {
+	return (children.size() > 0);
+}
+
 void TNode::SetDirectParent(TNode* parent) {
 	directParent = parent;
 }

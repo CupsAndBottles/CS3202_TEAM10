@@ -28,6 +28,7 @@ public:
 	string GetName();
 	virtual string GetContent();
 	bool IsType(Type);
+	bool HasChildren();
 	
 	virtual void SetRightSibling(TNode*);
 	virtual void AddChild(TNode*);

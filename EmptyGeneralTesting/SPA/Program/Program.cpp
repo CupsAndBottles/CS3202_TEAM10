@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Program.h"
-#include "PKB\Token.h"
+#include "Parser\Token.h"
 #include "TNode\ProcedureTNode.h"
 #include "TNode\AssignmentTNode.h"
 #include "TNode\ConstantTNode.h"

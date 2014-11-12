@@ -42,6 +42,7 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Parser\Token.h" />
     <ClInclude Include="PKB\ConstTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />

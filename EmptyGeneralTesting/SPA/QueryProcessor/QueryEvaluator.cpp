@@ -5,10 +5,12 @@
 #include "PKB\Uses.h"
 #include "PKB\StmtTypeTable.h"
 #include "PKB\VarTable.h"
+#include "QueryProcessor\QueryValidator.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 
 #include <sstream>
+//#include "AbstractWrapper.h"
 
 using namespace std;
 
@@ -75,16 +77,15 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	else hasSuchThat = false;
 
 	///evaluate pattern
-	if(!patterns.empty())
+	if(!patterns.empty()) 
 	{
-
-
+		PatternClause pattern = patterns.at(0);;
+		patternHasAnswer = EvaluatePattern(select, pattern, patternResult);
 	}
 	
 	else hasPattern = false;
 
 
-	/*
 	cout<< "\nSelect result list: ";
 	for(vector<string>::iterator it = selectResult.begin(); it != selectResult.end(); ++it)
 		cout << *it << " ";
@@ -95,24 +96,20 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	cout<< "\nPattern result list: ";
 	for(vector<string>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
-		cout << *it << " ";*/
+		cout << *it << " ";
 
 	//merge select, such that , pattern result and pass back to caller
 
 	//only select, no such that no pattern
-	if(!hasSuchThat && !hasPattern) {
-		sort(selectResult.begin(), selectResult.end());
+	if(!hasSuchThat && !hasPattern)
 		copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
-	}
-
+	
 	else if(hasSuchThat && !hasPattern) {
 		if(suchThatHasAnswer && !suchThatResult.empty()) 
 			resultList = MergeResult(selectResult, suchThatResult);	
 
-		else if(suchThatHasAnswer && suchThatResult.empty()) {
-			sort(selectResult.begin(), selectResult.end());
+		else if(suchThatHasAnswer && suchThatResult.empty())
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
-		}
 
 		else resultList.clear();
 	}
@@ -121,11 +118,9 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		if(patternHasAnswer && !patternResult.empty())	
 			resultList = MergeResult(selectResult, patternResult);	
 
-		else if(patternHasAnswer && patternResult.empty()) {
-			sort(selectResult.begin(), selectResult.end());
+		else if(patternHasAnswer && patternResult.empty())
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
-		}
-
+		
 		else resultList.clear();
 	}
 
@@ -140,18 +135,16 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && !patternResult.empty())
 			resultList = MergeResult(selectResult, patternResult);	
 
-		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && patternResult.empty()) {
-			sort(selectResult.begin(), selectResult.end());
+		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && patternResult.empty()) 
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
-		}
 
 		else resultList.clear();
 	}
-/*
+
 	cout<< "\nFinal result list: ";
 	for(list<string>::iterator it = resultList.begin(); it != resultList.end(); ++it)
 		cout << *it << " ";
-	cout<< "\n";*/
+	cout<< "\n";
 
 	return true;
 }
@@ -909,12 +902,170 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 }
 
 //Evaluate Pattern
-bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<string> &result)
+bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern, vector<string> &result)
 {
+	Synonym selectSyn = select.synonym;
+	Synonym patternSyn = pattern.synonym;
+	Argument arg1 = pattern.arg1;
+	Argument arg2 = pattern.arg2;
+	ArgumentType arg1Type = pattern.arg1.type;
+	ArgumentType arg2Type = pattern.arg2.type;
+	string arg1Value = pattern.arg1.value;
+	string arg2Value = pattern.arg2.value;
+	
+	if(patternSyn.type == ASSIGN)
+	{
+		if(arg2Type == UNDERSCORE)
+		{
+			vector<string> tempResult;
+
+			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
+
+				for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
+					tempResult.push_back(ToString(*it));
+				
+				if(patternSyn.value == selectSyn.value)
+					result = tempResult;
+
+				if(tempResult.empty())	return false;
+				else					return true;
+			}
+
+			else if(arg1Type == IDENT)
+			{
+				string ident = arg1Value;
+				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+				ident = ident.substr(1, ident.length()-2);
+
+				int varIndex = VarTable::GetIndexOf(ident);
+				
+				if(varIndex != -1)
+				{
+					vector<int> stmts = Modifies::GetStmtModifyingVar(varIndex);
+
+					if(!stmts.empty())
+					{
+						for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
+						{
+							if(StmtTypeTable::CheckIfStmtOfType(*it,ASSIGN))
+								tempResult.push_back(ToString(*it));
+						}
+					}
+
+					else return false;
+
+					if(patternSyn.value == selectSyn.value)
+						result = tempResult;
+
+					if(tempResult.empty())	return false;
+					else					return true;
+				}
+
+				else
+				{
+					cout << "\nIn EvaluatePattern, pattern argument 1 IDENT not found.\n";
+					return false;
+				}
+			}
+
+			else 
+			{
+				cout << "\nIn EvaluatePattern, invalid pattern argument 1 type.\n";
+				return false;
+			}
+		}
+
+		else if(arg2Type == EXPRESSION)
+		{
+			vector<string> tempResult;
+
+			Pattern patternObj = CreatePatternObject(arg2Value);
+			if(patternObj.expr == "")	return false;
+
+			//cout << "\nhere1\n";
+			vector<int> rightResultInt = PatternMatcher::MatchPatternFromRoot(patternObj);
+			if(rightResultInt.empty())		return false;
+			//cout << "\nhere2\n";
+			vector<string> rightResult;
+			for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
+				rightResult.push_back(ToString(*it));
+			//cout << "\nhere3\n";
+			if(arg1Type == UNDERSCORE || SYNONYM)
+			{
+				//cout << "\nhere4\n";
+				tempResult = rightResult;
+				return true;
+			}
+
+			else if(arg1Type == IDENT)
+			{
+				vector<string> leftResult;
+
+				string ident = arg1Value;
+				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+				ident = ident.substr(1, ident.length()-2);
+
+				int varIndex = VarTable::GetIndexOf(ident);
+				
+				if(varIndex != -1)
+				{
+					vector<int> stmts = Modifies::GetStmtModifyingVar(varIndex);
+
+					if(!stmts.empty())
+					{
+						for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
+						{
+							if(StmtTypeTable::CheckIfStmtOfType(*it,ASSIGN))
+								leftResult.push_back(ToString(*it));
+						}
+					}
+
+					else return false;
+
+					if(leftResult.empty())	return false;
+
+					set_intersection(leftResult.begin(), leftResult.end(), rightResult.begin(), rightResult.end(), back_inserter(tempResult));
+
+					if(patternSyn.value == selectSyn.value)
+						result = tempResult;
+
+					if(tempResult.empty())	return false;
+					else					return true;
+				}
+
+				else
+				{
+					cout << "\nIn EvaluatePattern, pattern argument 1 IDENT not found.\n";
+					return false;
+				}
+			}
+
+			else 
+			{
+				cout << "\nIn EvaluatePattern, invalid pattern argument 1 type.\n";
+				return false;
+			}
+		}
+
+		else
+		{
+			cout << "\nIn EvaluatePattern, invalid pattern argument 2 type.\n";
+			return false;
+		}
+	}
+
+	else 
+	{
+		cout << "\nIn EvaluatePattern, invalid pattern synonym type.\n";
+		return false; //only pattern a() in assignment 4
+	}
 
 	return true;
 }
 
+//Merge Select && Such That && Pattern
 list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<string> suchThatResult, vector<string> patternResult)
 {
 	vector<string> intermediateResult, finalResult;
@@ -933,6 +1084,7 @@ list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<str
 	return resultList;
 }
 
+//Merge Select && Pattern or Select && Such That
 list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<string> suchThatPatternResult)
 {
 	vector<string> finalResult;
@@ -948,6 +1100,7 @@ list<string> QueryEvaluator::MergeResult(vector<string> selectResult, vector<str
 	return resultList;
 }
 
+//Convert interger to string
 string QueryEvaluator::ToString(int i)
 {
 	string s;
@@ -956,4 +1109,37 @@ string QueryEvaluator::ToString(int i)
 	s = out.str();
 
 	return s;
+}
+
+//Construct Pattern struct
+Pattern QueryEvaluator::CreatePatternObject(string expr)
+{
+	//remove white spaces and get expression content
+	expr.erase(remove_if(expr.begin(), expr.end(), [](char x){return isspace(x);}), expr.end());
+	int length = expr.length() - 4;
+	expr = expr.substr(2, length);
+
+	vector<string> tokenList;
+	string delim = "+";
+
+	QueryValidator::Tokenize(expr, tokenList, delim);
+
+	if(tokenList.size() == 1)
+	{
+		return Pattern(tokenList.at(0), NULL, NULL, true);
+	}
+
+	else if(tokenList.size() == 2)
+	{
+		Pattern *left = new Pattern(tokenList.at(0), NULL, NULL, true);
+		Pattern *right = new Pattern(tokenList.at(1), NULL, NULL, true);
+		Pattern p("+", left, right, true);
+		return p;
+	}
+
+	else
+	{
+		cout << "\nIn CreatePatternObject, invalid expression\n";
+		return Pattern("", NULL, NULL, true);
+	}
 }

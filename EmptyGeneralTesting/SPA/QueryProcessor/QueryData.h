@@ -8,9 +8,6 @@ Class for storing query string data, accessed by QueryValidator and QueryEvaluat
 */
 class QueryData
 {
-	friend class QueryValidatorTest;
-	friend class QueryDataTest;
-
 private:
 	static std::vector<Declaration> declarations;
 	static std::vector<SelectClause> selectClauses;	

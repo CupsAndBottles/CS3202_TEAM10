@@ -53,7 +53,7 @@ struct Argument {
 	ArgumentType type;
 	Synonym syn;
 
-	Argument() : value(""), type(INVALID_ARGUMENT_TYPE), syn() {};
+	Argument() : value(""), type(INVALID_ARGUMENT_TYPE), syn() {}
 	Argument(std::string v, ArgumentType t) : value(v) , type(t) ,syn() {}
 	Argument(std::string v, ArgumentType t, Synonym s) : value(v) , type(t) ,syn(s) {}
 	Argument(Synonym s) : syn(s) {}

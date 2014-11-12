@@ -13,6 +13,7 @@
     <ClCompile Include="UsesTest.cpp" />
     <ClCompile Include="VarTableTest.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
+    <ClCompile Include="QueryEvaluatorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FollowsTest.h" />
@@ -26,6 +27,7 @@
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
+    <ClInclude Include="QueryEvaluatorTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\additionTest.txt" />

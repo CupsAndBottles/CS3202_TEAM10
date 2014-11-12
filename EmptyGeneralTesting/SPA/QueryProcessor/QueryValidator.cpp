@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include "RelTable.h"
+#include "..\AutoTester\source\AbstractWrapper.h"
 
 const std::string QueryValidator::de[] = {"stmt", "assign", "while", "variable", "prog_line", "constant"};
 const std::string QueryValidator::rel[] = {"Modifies", "Uses", "Parent", "Parent*", "Follows", "Follows*"};
@@ -15,11 +16,15 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	std::string token;
 	std::string delim = " ,();";
 
+	std::cout << "Before tokenize\n";
+
 	//tokenize query
 	if(!Tokenize(query,tokenList)) {
 		std::cout << "Invalid Query: Invalid Syntax.\n";
 		return false;
 	}
+
+	std::cout << "AFter tokenize\n";
 
 	std::vector<std::string>::iterator it = tokenList.begin();
 	token = *it;
@@ -75,6 +80,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		return false;
 	}
 
+	if(AbstractWrapper::GlobalStop)	return false;
+
 	//check if next token is select, and validate select
 	if(IsSelect(token))
 	{
@@ -96,7 +103,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	//no select
 	else return false;
 
-	//std::cout << "\nAfter Select\n";
+	if(AbstractWrapper::GlobalStop)	return false;
 
 	//get next token
 	if(++it == tokenList.end())	return true;
@@ -196,6 +203,8 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		//std::cout << "After Pattern\n";
 
 		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
+
+		if(AbstractWrapper::GlobalStop)	return false;
 	}
 
 	return false;
@@ -289,6 +298,8 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 					if(alphaString != "") {	//handle _, e.g. Parent(w,_)
 						tokens.push_back(alphaString);
 						alphaString = "";
+						isExpression = false;
+						isIdent = false;
 					}
 					else continue;
 				}
@@ -300,7 +311,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 				//std::cout << "In ,\n";
 				if(isExpression)	//current string start with underscore, push back the first char
 				{
-					//std::cout << "In isExpression\n";
+					std::cout << "In isExpression\n";
 					std::string cs(1,alphaString.at(0));
 					tokens.push_back(cs);
 					isExpression = false;

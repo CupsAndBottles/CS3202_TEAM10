@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <iterator> 
 #include <sstream>
-//#include "AbstractWrapper.h"
+#include "..\AutoTester\source\AbstractWrapper.h"
 
 using namespace std;
 
@@ -76,6 +76,8 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
  		
 	else hasSuchThat = false;
 
+	if(AbstractWrapper::GlobalStop)	return false;
+
 	///evaluate pattern
 	if(!patterns.empty()) 
 	{
@@ -85,6 +87,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	
 	else hasPattern = false;
 
+	if(AbstractWrapper::GlobalStop)	return false;
 
 	cout<< "\nSelect result list: ";
 	for(vector<string>::iterator it = selectResult.begin(); it != selectResult.end(); ++it)
@@ -986,19 +989,22 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 			Pattern patternObj = CreatePatternObject(arg2Value);
 			if(patternObj.expr == "")	return false;
 
-			//cout << "\nhere1\n";
 			vector<int> rightResultInt = PatternMatcher::MatchPatternFromRoot(patternObj,true);
 			if(rightResultInt.empty())		return false;
-			//cout << "\nhere2\n";
+	
 			vector<string> rightResult;
 			for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
-				rightResult.push_back(ToString(*it));
-			//cout << "\nhere3\n";
-			if(arg1Type == UNDERSCORE || SYNONYM)
+			rightResult.push_back(ToString(*it));
+			
+			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
 			{
-				//cout << "\nhere4\n";
 				tempResult = rightResult;
-				return true;
+
+				if(patternSyn.value == selectSyn.value)
+					result = tempResult;
+
+				if(tempResult.empty())	return false;
+				else					return true;
 			}
 
 			else if(arg1Type == IDENT)

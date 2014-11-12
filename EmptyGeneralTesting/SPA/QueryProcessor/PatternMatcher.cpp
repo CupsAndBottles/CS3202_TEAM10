@@ -71,7 +71,7 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object, bool part
 	}
 }
 
-vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
+vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMatch) {
 	// printf("1 %s 2 %s 3 %s\n", object.expr.c_str(), object.leftPattern->expr.c_str(), object.rightPattern->expr.c_str());
 
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
@@ -79,7 +79,7 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
 
 	for (int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
 		StmtTNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
-		if (MatchPatternAtLeaves(&currentStmtTNode, object, object.partialMatch)) {
+		if (MatchPatternAtLeaves(&currentStmtTNode, object, partialMatch)) {
 			results.push_back(assignmentStmts[currentStmt]);
 		}
 	}

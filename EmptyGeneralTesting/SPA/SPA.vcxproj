@@ -128,8 +128,7 @@
       </Message>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)lib\AutoTester_debug.lib</AdditionalDependencies>
     </Lib>
     <Bscmake>
       <PreserveSBR>true</PreserveSBR>
@@ -149,6 +148,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>$(SolutionDir)lib\AutoTesterLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

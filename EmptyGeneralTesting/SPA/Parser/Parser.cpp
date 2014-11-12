@@ -118,6 +118,10 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 	StmtTNode* stmt;
 	currentLineNumber++;
 
+	if (parentStmt != nullptr) {
+		Parent::SetParent(parentStmt->GetLineNumber(), currentLineNumber);
+	}
+
 	switch (firstToken.type) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
@@ -134,8 +138,8 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 
 	if (parentStmt != nullptr) {
 		stmt->SetParent(parentStmt);
-		Parent::SetParent(parentStmt->GetLineNumber(), stmt->GetLineNumber());
 	}
+
 	Program::InsertStmt(stmt);
 	return stmt;
 }

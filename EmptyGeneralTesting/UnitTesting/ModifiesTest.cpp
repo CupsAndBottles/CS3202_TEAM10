@@ -144,7 +144,7 @@ void ModifiesTest::TestSingleStmtModifyingMultipleVars() {
 	Modifies::SetStmtModifiesVar(1, 3);
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
-	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 1);
+	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 4);
 	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 1));
 	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 2));
@@ -205,7 +205,7 @@ void ModifiesTest::TestModifies() {
 	Modifies::SetStmtModifiesVar(10, 15);
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
-	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 6);
+	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 18);
 
 	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVar(1, 1));

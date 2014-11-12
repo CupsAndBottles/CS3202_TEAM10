@@ -69,7 +69,7 @@ void ParserToPKBTest::TestVarTable() {
 
 void ParserToPKBTest::TestModifies() {
 	// check if modifiesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 12, Modifies::SizeOfModifies());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 11, Modifies::SizeOfModifies());
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifyingVar(2, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifyingVar(4, 3));
@@ -77,19 +77,18 @@ void ParserToPKBTest::TestModifies() {
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 5th variable", Modifies::IsStmtModifyingVar(8, 3));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 6th variable", Modifies::IsStmtModifyingVar(9, 5));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 7th variable", Modifies::IsStmtModifyingVar(3, 3));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 8th variable", Modifies::IsStmtModifyingVar(5, 2));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 9th variable", Modifies::IsStmtModifyingVar(3, 2));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 8th variable", Modifies::IsStmtModifyingVar(5, 1));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 9th variable", Modifies::IsStmtModifyingVar(3, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 10th variable", Modifies::IsStmtModifyingVar(7, 3));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 11th variable", Modifies::IsStmtModifyingVar(3, 3));
-	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 12th variable", Modifies::IsStmtModifyingVar(3, 5));
+	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 11th variable", Modifies::IsStmtModifyingVar(3, 5));
 
 }
 
 void ParserToPKBTest::TestUses() {
 	// check if usesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 7, Uses::SizeOfUses());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 17, Uses::SizeOfUses());
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 1st variable", Uses::IsStmtUsingVar(2, 0));
-	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 2nt variable", Uses::IsStmtUsingVar(3, 2));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 2nd variable", Uses::IsStmtUsingVar(3, 2));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 3rd variable", Uses::IsStmtUsingVar(4, 2));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 4th variable", Uses::IsStmtUsingVar(4, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 5th variable", Uses::IsStmtUsingVar(5, 0));
@@ -98,6 +97,13 @@ void ParserToPKBTest::TestUses() {
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 8th variable", Uses::IsStmtUsingVar(7, 3));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 9th variable", Uses::IsStmtUsingVar(9, 6));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 10th variable", Uses::IsStmtUsingVar(9, 7));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 11th variable", Uses::IsStmtUsingVar(3, 0));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 12th variable", Uses::IsStmtUsingVar(3, 4));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 13th variable", Uses::IsStmtUsingVar(3, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 14th variable", Uses::IsStmtUsingVar(3, 6));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 15th variable", Uses::IsStmtUsingVar(3, 7));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 16th variable", Uses::IsStmtUsingVar(5, 3));
+	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 17th variable", Uses::IsStmtUsingVar(5, 4));
 }
 
 void ParserToPKBTest::TestParent() {

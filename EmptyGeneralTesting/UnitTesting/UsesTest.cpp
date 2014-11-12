@@ -145,7 +145,7 @@ void UsesTest::TestSingleStmtUsingMultipleVars() {
 	Uses::SetStmtUsesVar(1, 3);
 
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == true);
-	CPPUNIT_ASSERT(Uses::SizeOfUses() == 1);
+	CPPUNIT_ASSERT(Uses::SizeOfUses() == 4);
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(1, 0));
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(1, 1));
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(1, 2));
@@ -206,7 +206,7 @@ void UsesTest::TestUses() {
 	Uses::SetStmtUsesVar(10, 15);
 
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == true);
-	CPPUNIT_ASSERT(Uses::SizeOfUses() == 6);
+	CPPUNIT_ASSERT(Uses::SizeOfUses() == 18);
 
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(1, 0));
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(1, 1));

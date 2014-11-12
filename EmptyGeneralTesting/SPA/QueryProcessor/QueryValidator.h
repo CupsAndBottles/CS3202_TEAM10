@@ -10,8 +10,7 @@ class QueryValidator
 protected:
 	static const std::string de[];
 	static const std::string rel[];
-
-	void Tokenize(std::string, std::vector<std::string>&, std::string);
+		
 	bool Tokenize(std::string, std::vector<std::string>&);
 
 	//Validate Clause
@@ -43,5 +42,6 @@ public:
 	QueryValidator(void);
 
 	bool ValidateQuery(std::string, QueryData&);
+	static void Tokenize(std::string, std::vector<std::string>&, std::string);
 };
 

@@ -9,6 +9,9 @@ struct Pattern {
 	Pattern* leftPattern;
 	Pattern* rightPattern;
 	bool partialMatch;
+
+	Pattern(string e, Pattern* l, Pattern* r, bool p) : 
+	expr(e), leftPattern(l), rightPattern(r), partialMatch(p) {}
 };
 
 class PatternMatcher {

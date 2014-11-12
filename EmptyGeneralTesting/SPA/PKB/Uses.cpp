@@ -52,7 +52,11 @@ bool Uses::HasAnyUses() {
 }
 
 int Uses::SizeOfUses() {
-    return StmtToVarTable.size();
+    int sum = 0;
+
+    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end();        it++)
+    sum += it->second.size();
+    return sum;
 }
 
 void Uses::ClearData() 

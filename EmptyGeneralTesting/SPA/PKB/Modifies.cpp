@@ -56,7 +56,11 @@ bool Modifies::HasAnyModifies() {
 }
 
 int Modifies::SizeOfModifies() {
-    return StmtToVarTable.size();
+    int sum = 0;
+    
+    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++)
+        sum += it->second.size();
+    return sum;
 }
 
 void Modifies::ClearData() {

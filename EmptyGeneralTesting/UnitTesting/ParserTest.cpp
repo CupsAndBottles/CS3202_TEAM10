@@ -14,11 +14,7 @@ ParserTest::ParserTest() {
 }
 
 void ParseSource(string filename) {
-	ifstream sourceFile(string(TESTFILE_DIRECTORY).append(filename));
-	stringstream buffer;
-	buffer << sourceFile.rdbuf();
-	sourceFile.close();
-	Parser::Parse(buffer.str());
+	Parser::Parse(string(TESTFILE_DIRECTORY).append(filename));
 }
 
 TNode& GetLHS(TNode& node) {

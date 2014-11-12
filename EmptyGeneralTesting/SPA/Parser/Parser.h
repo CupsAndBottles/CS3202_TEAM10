@@ -24,7 +24,7 @@ public:
 	static void Parse(string);
 	static int compare(Token::Type, Token::Type);
 
-private:
+protected:
 	Parser(vector<Token>);
 
 	deque<Token> tokens;

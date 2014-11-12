@@ -19,11 +19,7 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(string filename) {
 	// call your parser to do the parsing
 	// ...rest of your code...
-	ifstream sourceFile(filename);
-	stringstream buffer;
-	buffer << sourceFile.rdbuf();
-	sourceFile.close();
-	Parser::Parse(buffer.str());
+	Parser::Parse(filename);
 
 }
 

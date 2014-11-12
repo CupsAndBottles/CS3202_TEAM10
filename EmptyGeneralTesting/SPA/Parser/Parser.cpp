@@ -22,8 +22,13 @@ Parser::Parser(vector<Token> tokenVector)
 	, currentLineNumber(0) {
 }
 
-void Parser::Parse(string source) {
-	vector<Token> tokens = Tokenizer::Tokenize(source);
+void Parser::Parse(string fileName) {
+	ifstream sourceFile(fileName);
+	stringstream buffer;
+	buffer << sourceFile.rdbuf();
+	sourceFile.close();
+
+	vector<Token> tokens = Tokenizer::Tokenize(buffer.str());
 	Parser parser(tokens);
 	parser.Parse();
 }

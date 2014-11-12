@@ -200,9 +200,9 @@ void QueryValidatorTest::TokenizeTest()
 	qv.Tokenize(query,tokenList);
 
 	size = tokenList.size();
-	cout << "\n" << size << "\n";
+	/*cout << "\n" << size << "\n";
 	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
-		cout << *it << "\n";
+		cout << *it << "\n";*/
 
 	CPPUNIT_ASSERT(size == 10);
 	CPPUNIT_ASSERT(tokenList.at(0) == "stmt");
@@ -223,9 +223,9 @@ void QueryValidatorTest::TokenizeTest()
 	qv.Tokenize(query,tokenList);
 
 	size = tokenList.size();
-	cout << "\n" << size << "\n";
+	/*cout << "\n" << size << "\n";
 	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
-		cout << *it << "\n";
+		cout << *it << "\n";*/
 
 	CPPUNIT_ASSERT(size == 11);
 	CPPUNIT_ASSERT(tokenList.at(0) == "assign");
@@ -247,9 +247,9 @@ void QueryValidatorTest::TokenizeTest()
 	qv.Tokenize(query,tokenList);
 
 	size = tokenList.size();
-	cout << "\n" << size << "\n";
+	/*cout << "\n" << size << "\n";
 	for(std::vector<std::string>::iterator it = tokenList.begin(); it!=tokenList.end(); ++it)
-		cout << *it << "\n";
+		cout << *it << "\n";*/
 
 	CPPUNIT_ASSERT(size == 9);
 	CPPUNIT_ASSERT(tokenList.at(0) == "assign");

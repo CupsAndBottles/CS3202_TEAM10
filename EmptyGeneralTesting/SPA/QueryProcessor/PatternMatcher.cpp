@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 using namespace std;
-
+/*
 bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	// match tree
 	// if no need to match children, return match
@@ -66,4 +66,4 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
 	}
 
 	return results;
-}
+}*/

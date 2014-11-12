@@ -7,11 +7,11 @@
 #include <string>
 
 void VarTableTest::setUp() {
-	// create a VarTable object
+	VarTable::ClearData();
 }
 
 void VarTableTest::tearDown() {
-	// empty body
+	VarTable::ClearData();
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VarTableTest);

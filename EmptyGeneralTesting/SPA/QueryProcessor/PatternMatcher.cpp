@@ -13,10 +13,9 @@
 
 using namespace std;
 
-bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
+bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object, bool partialMatch) {
 	// match tree
 	// if no need to match children, return match
-	// if
 	
 	bool match = (node->GetContent() == object.expr);
 
@@ -26,23 +25,43 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	// if tree has children but not pattern. return partialMatch && match
 	// if both have children, match left tree and right tree
 
-	vector<TNode*> children = node->GetChildren();
+	bool hasChildNodes = false;
+	vector<TNode*> children;
+
+	if (node->HasChildren()) {
+		children = node->GetChildren();
+		if (children.size() != 2) {
+			hasChildNodes = false;
+		} else {
+			hasChildNodes = true;
+		}
+	}
+
 	bool hasChildPatterns = (object.leftPattern != nullptr) && (object.rightPattern != nullptr);
-	bool hasChildNodes = children.size() == 2;
 	if (hasChildPatterns && hasChildNodes) {
 		// match subtrees
-		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern) && MatchPatternAtLeaves(children[1], *object.rightPattern));
-		if (!match) {
-			bool matchLeft = MatchPatternAtLeaves(children[0], object);
-			bool matchRight = MatchPatternAtLeaves(children[1], object);
+		match = (match && MatchPatternAtLeaves(children[0], *object.leftPattern, false) && MatchPatternAtLeaves(children[1], *object.rightPattern, false));
+		if (!match && partialMatch) {
+			// recursive call
+			bool matchLeft = MatchPatternAtLeaves(children[0], object, partialMatch);
+			bool matchRight = MatchPatternAtLeaves(children[1], object, partialMatch);
 
 			return (matchLeft || matchRight);
 		} else {
 			return match;
 		}
-
 	} else if (!hasChildPatterns && hasChildNodes) {
-		return (match && object.partialMatch);
+		if (match && partialMatch) {
+			return true;
+		} else if (!match && partialMatch) {
+			// recursive call
+			bool matchLeft = MatchPatternAtLeaves(children[0], object, partialMatch);
+			bool matchRight = MatchPatternAtLeaves(children[1], object, partialMatch);
+
+			return (matchLeft || matchRight);
+		} else {
+			return false;
+		}
 	} else if (hasChildPatterns && !hasChildNodes) {
 		return false;
 	} else if (!hasChildPatterns && !hasChildNodes) {
@@ -52,15 +71,15 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object) {
 	}
 }
 
-vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object) {
+vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMatch) {
 	// printf("1 %s 2 %s 3 %s\n", object.expr.c_str(), object.leftPattern->expr.c_str(), object.rightPattern->expr.c_str());
 
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
 	vector<int> results;
 
-	for (int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
-		StmtTNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
-		if (MatchPatternAtLeaves(&currentStmtTNode, object)) {
+	for (unsigned int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
+		AssignmentTNode& currentStmtTNode = dynamic_cast<AssignmentTNode&>(Program::GetStmtFromNumber(assignmentStmts[currentStmt]));
+		if (MatchPatternAtLeaves(&currentStmtTNode.GetRHS(), object, partialMatch)) {
 			results.push_back(assignmentStmts[currentStmt]);
 		}
 	}

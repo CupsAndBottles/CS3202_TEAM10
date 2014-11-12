@@ -5,16 +5,22 @@
 using namespace std;
 
 struct Pattern {
+	Pattern() : expr(""), leftPattern(nullptr), rightPattern(nullptr) {};
+
+	Pattern(string e, Pattern* l, Pattern* r) :
+		expr(e), leftPattern(l), rightPattern(r) {
+	};
+
 	string expr;
 	Pattern* leftPattern;
 	Pattern* rightPattern;
-	bool partialMatch;
+
 };
 
 class PatternMatcher {
     public:
         PatternMatcher() { };
 
-		static vector<int> MatchPatternFromRoot(Pattern object);
-		static bool MatchPatternAtLeaves(TNode* node, Pattern object);
+		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch);
+		static bool MatchPatternAtLeaves(TNode* node, Pattern object, bool partialMatch);
 };

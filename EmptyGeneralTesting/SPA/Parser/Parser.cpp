@@ -5,6 +5,7 @@
 #include "Program\Program.h"
 #include "Program\TNode\ConstantTNode.h"
 #include "QueryProcessor\Grammar.h"
+#include "..\AutoTester\source\AbstractWrapper.h"
 
 #include <iostream>
 #include <fstream>
@@ -21,8 +22,13 @@ Parser::Parser(vector<Token> tokenVector)
 	, currentLineNumber(0) {
 }
 
-void Parser::Parse(string source) {
-	vector<Token> tokens = Tokenizer::Tokenize(source);
+void Parser::Parse(string fileName) {
+	ifstream sourceFile(fileName);
+	stringstream buffer;
+	buffer << sourceFile.rdbuf();
+	sourceFile.close();
+
+	vector<Token> tokens = Tokenizer::Tokenize(buffer.str());
 	Parser parser(tokens);
 	parser.Parse();
 }
@@ -70,7 +76,10 @@ int Parser::compare(Token::Type first, Token::Type second) {
 void Parser::Parse() {
 	ProgramTNode& rootNode = Program::GetASTRootNode();
 
-	while(tokens.size() != 0) {
+	while (tokens.size() != 0) {
+		if (AbstractWrapper::GlobalStop) {
+			break;
+		}
 		ConsumeTopTokenOfType(Token::PROCEDURE);
 		Token procedureName = ConsumeTopTokenOfType(Token::IDENTIFIER);
 		ProcedureTNode* procedureNode = new ProcedureTNode(procedureName.content);
@@ -92,6 +101,10 @@ StmtListTNode* Parser::ParseStmtList(string name, StmtTNode* parent) {
 	StmtListTNode* stmtListNode = new StmtListTNode(name);
 	StmtTNode* prevStmt = nullptr;
 	while (!TopTokenIsType(Token::END_OF_STMT_LIST)) {
+		if (AbstractWrapper::GlobalStop) {
+			return stmtListNode;
+		}
+
 		StmtTNode* stmt = ParseStmt(parent);
 		stmtListNode->AddChild(stmt);
 		if (prevStmt != nullptr) {
@@ -110,6 +123,10 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 	StmtTNode* stmt;
 	currentLineNumber++;
 
+	if (parentStmt != nullptr) {
+		Parent::SetParent(parentStmt->GetLineNumber(), currentLineNumber);
+	}
+
 	switch (firstToken.type) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
@@ -126,9 +143,9 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 
 	if (parentStmt != nullptr) {
 		stmt->SetParent(parentStmt);
-		Parent::SetParent(parentStmt->GetLineNumber(), stmt->GetLineNumber());
 	}
-	Program::InsertStmt(stmt);
+
+	Program::InsertStmt(stmt, stmt->GetLineNumber());
 	return stmt;
 }
 

@@ -18,6 +18,8 @@ class ParserToPKBTest : public CPPUNIT_NS::TestFixture {
 public:
 	void setUp();
 	void tearDown();
+
+	ParserToPKBTest();
 	
 	void TestNothing();
 	void TestVarTable();

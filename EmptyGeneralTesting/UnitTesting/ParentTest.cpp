@@ -8,11 +8,11 @@
 #include <stdint.h>
 
 void ParentTest::setUp() {
-	// empty body
+	Parent::ClearData();
 }
 
 void ParentTest::tearDown() {
-	// empty body
+	Parent::ClearData();
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ParentTest);

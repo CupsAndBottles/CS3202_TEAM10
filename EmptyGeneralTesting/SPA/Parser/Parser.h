@@ -11,19 +11,20 @@
 #include "PKB\StmtTypeTable.h"
 #include "PKB\VarTable.h"
 
+
 #include <vector>
 #include <deque>
 
 using namespace std;
 
 class Parser {
-	friend class PatternMatcher;
+	friend class PatternMatcherTest;
 
 public:
 	static void Parse(string);
 	static int compare(Token::Type, Token::Type);
 
-private:
+protected:
 	Parser(vector<Token>);
 
 	deque<Token> tokens;

@@ -25,12 +25,13 @@ public:
 	virtual vector<TNode*> GetChildren();
 	virtual TNode& GetChild(int);
 	Type GetType();
+	string GetName();
+	virtual string GetContent();
 	bool IsType(Type);
+	bool HasChildren();
 	
 	virtual void SetRightSibling(TNode*);
 	virtual void AddChild(TNode*);
-	string GetName();
-	virtual string GetContent();
 
 	static string EnumToString(Type);
 

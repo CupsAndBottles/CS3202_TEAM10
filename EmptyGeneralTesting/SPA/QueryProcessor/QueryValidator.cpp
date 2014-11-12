@@ -261,6 +261,11 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 			else if (alphaString != "") { // previous substring is... string
 				if(alphaString == "prog") 
 					isProgLine = true;
+
+				else if(currentChar == '*') {
+					tokens.push_back(alphaString+"*");
+					alphaString = "";
+				}
 	
 				//if string begins with " or _ which means an expression or IDENT, do not push back
 				else if(!(alphaString.at(0) == '"' || alphaString.at(0) == '_'))
@@ -400,6 +405,8 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 						return false;
 					}
 				}
+
+				else if(currentChar == '*') {}
 
 				else {
 					std::cout << "Invalid character.\n";
@@ -622,8 +629,7 @@ bool QueryValidator::IsExpression(std::string str)
 		if(str.at(1) == '\"' && str.at(str.length()-2) == '\"')	//_"..."_
 		{
 			int length = str.length() - 4;
-			str = str.substr(2, 
-				length);
+			str = str.substr(2, length);
 		}
 
 		else return false;

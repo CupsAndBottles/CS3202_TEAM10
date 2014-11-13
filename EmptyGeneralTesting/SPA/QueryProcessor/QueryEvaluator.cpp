@@ -177,6 +177,7 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 	vector<int> stmts;
 	vector<string> result;
 	bool isVar = false;
+	bool isConst = false;
 
 	switch(select.synonym.type)
 	{
@@ -203,6 +204,8 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 
 		case CONSTANT:
 			stmts = ConstTable::GetAllConst();
+			isConst = true;
+			break;
 
 		case INVALID_SYNONYM_TYPE:
 			break;
@@ -212,6 +215,11 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 	}
 
 	if(isVar) return result;
+
+	if(isConst) {
+		set<int> s( stmts.begin(), stmts.end() );
+		stmts.assign( s.begin(), s.end() );
+	}
 
 	//convert vec<int> to vec<string>
 	for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)

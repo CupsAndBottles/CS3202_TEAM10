@@ -21,7 +21,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	vector<string> modifiesResult;
 	vector<string> usesResult;
 	vector<string> suchThatResult;
-	vector<string> patternResult;
+	vector<int> patternResult;
 	vector<string> selectResult;
 
 	bool suchThatHasAnswer = false, patternHasAnswer = false;
@@ -36,34 +36,57 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	//evaluate select
 	selectResult = EvaluateSelect(select);
 
+	///evaluate pattern
+	if(!patterns.empty()) 
+	{
+		PatternClause pattern = patterns.at(0);
+		patternHasAnswer = EvaluatePattern(select, pattern, patternResult);
+	}
+	
+	else hasPattern = false;
+
+	if(AbstractWrapper::GlobalStop)	return false;
+
+	//if hasPattern && !patternHasAnswer(means patternResult empty), then resultLIst.clear, return true
+	if(hasPattern && !patternHasAnswer){
+		resultList.clear();
+		return true;
+	}
+
 	//evaluate such that
 	if(!suchThats.empty())
 	{
 		SuchThatClause suchThat = suchThats.at(0);
+
+		Synonym patternSyn;
+
+		if(hasPattern) 
+			patternSyn = patterns.at(0).synonym;
+
 		switch (suchThat.relationship)
 		{
 		case MODIFIES:
-			suchThatHasAnswer = EvaluateModifies(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateModifies(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case USES:
-			suchThatHasAnswer = EvaluateModifies(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateModifies(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case PARENT:
-			suchThatHasAnswer = EvaluateParent(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateParent(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case PARENTT:
-			suchThatHasAnswer = EvaluateParent(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateParent(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case FOLLOWS:
-			suchThatHasAnswer = EvaluateFollows(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateFollows(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case FOLLOWST:
-			suchThatHasAnswer = EvaluateFollows(select, suchThat, suchThatResult);
+			suchThatHasAnswer = EvaluateFollows(select, suchThat, hasPattern, patternResult, patternSyn, suchThatResult);
 			break;
 
 		case INVALID_RELATIONSHIP_TYPE:
@@ -78,16 +101,6 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	if(AbstractWrapper::GlobalStop)	return false;
 
-	///evaluate pattern
-	if(!patterns.empty()) 
-	{
-		PatternClause pattern = patterns.at(0);;
-		patternHasAnswer = EvaluatePattern(select, pattern, patternResult);
-	}
-	
-	else hasPattern = false;
-
-	if(AbstractWrapper::GlobalStop)	return false;
 
 	cout<< "\nSelect result list: ";
 	for(vector<string>::iterator it = selectResult.begin(); it != selectResult.end(); ++it)
@@ -98,10 +111,18 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		cout << *it << " ";
 
 	cout<< "\nPattern result list: ";
-	for(vector<string>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
+	for(vector<int>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
 		cout << *it << " ";
 
+
 	//merge select, such that , pattern result and pass back to caller
+
+
+	vector<string> patternResultString;
+
+	for(vector<int>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
+		patternResultString.push_back(ToString(*it));
+
 
 	//only select, no such that no pattern
 	if(!hasSuchThat && !hasPattern) 
@@ -118,27 +139,22 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	}
 
 	else if(!hasSuchThat && hasPattern) {
-		if(patternHasAnswer && !patternResult.empty())	
-			resultList = MergeResult(selectResult, patternResult);	
-
-		else if(patternHasAnswer && patternResult.empty())
-			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+		if(patternHasAnswer && !patternResult.empty()) {
+			if(patterns.at(0).synonym.value == select.synonym.value)
+				resultList = MergeResult(selectResult, patternResultString);	
+			
+			else copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+		}
 		
 		else resultList.clear();
 	}
 
 	else if(hasSuchThat && hasPattern) {
 		//both must have answer, if not then empty result
-		if(suchThatHasAnswer && patternHasAnswer && !suchThatResult.empty() && !patternResult.empty())
-			resultList = MergeResult(selectResult, suchThatResult, patternResult);	
-		
-		else if(suchThatHasAnswer && patternHasAnswer && !suchThatResult.empty() && patternResult.empty())
+		if(suchThatHasAnswer && patternHasAnswer && !suchThatResult.empty())
 			resultList = MergeResult(selectResult, suchThatResult);	
 
-		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && !patternResult.empty())
-			resultList = MergeResult(selectResult, patternResult);	
-
-		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty() && patternResult.empty()) 
+		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty()) 
 			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 
 		else resultList.clear();
@@ -201,8 +217,9 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 }
 
 //Evaluate Parent and Parent*
-bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat, vector<string> &result)
+bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat, bool hasPattern, vector<int> patternResult, Synonym patternSyn, vector<string> &result)
 {
+	cout << "In EvaluateParent\n";
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
 	Synonym arg1Syn = suchThat.arg1.syn;
@@ -216,75 +233,169 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 		if(arg1Syn.value == arg2Syn.value)
 			return false;
 
-		else if(arg1Syn.value == selectSyn.value)
+		else if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
 		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = patternResult;
 
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				vector<int> children;
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == PARENT)	{
+						int parent = Parent::GetParentOf(*i);
 
-				if(rel == PARENT)	children = Parent::GetChildrenOf(*i);
-				else				children = Parent::GetChildrenTOf(*i);
+						if(parent == -1) {}	//if no parent
 
-				for(vector<int>::iterator j = children.begin(); j != children.end(); ++j) {
-					if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
-						result.push_back(ToString(*i));
-						break;
+						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
+							result.push_back(ToString(parent));
+					}
+					else				
+					{	
+						vector<int> parent = Parent::GetParentTOf(*i);
+
+						for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+								result.push_back(ToString(*j));
+							}
+						}
 					}
 				}
+
+				if(result.empty()) return false;
+
+				return true;
 			}
 
-			if(result.empty()) return false;
-
-			return true;
-		}
-
-		else if(arg2Syn.value == selectSyn.value)
-		{	
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+			else if(arg2Syn.value == selectSyn.value)
+			{	
+				vector<int> stmts = patternResult;
 			
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				if(rel == PARENT) {
-					int parent = Parent::GetParentOf(*i);
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == PARENT) {
+						int parent = Parent::GetParentOf(*i);
 
-					if(parent == -1) {}	//if no parent
+						if(parent == -1) {}	//if no parent
 
-					else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
-						result.push_back(ToString(*i));
+						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
+							result.push_back(ToString(*i));
+					}
+
+					else {
+						vector<int> parent = Parent::GetParentTOf(*i);
+
+						for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+								result.push_back(ToString(*i));
+							}
+						}
+					}
 				}
 
-				else {
-					vector<int> parent = Parent::GetParentTOf(*i);
+				if(result.empty()) return false;
 
-					for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
-						if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+				return true;
+			}
+		
+			else
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == PARENT) {
+						int parent = Parent::GetParentOf(*i);
+
+						if(parent == -1) {}	//if no parent
+
+						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
+							return true;
+					}
+
+					else {
+						vector<int> parent = Parent::GetParentTOf(*i);
+
+						for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) 
+								return true;						
+						}
+					}
+
+					return false;
+				}
+			}
+		}
+	
+		else {
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> children;
+
+					if(rel == PARENT)	children = Parent::GetChildrenOf(*i);
+					else				children = Parent::GetChildrenTOf(*i);
+
+					for(vector<int>::iterator j = children.begin(); j != children.end(); ++j) {
+						if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
 							result.push_back(ToString(*i));
 							break;
 						}
 					}
 				}
+
+				if(result.empty()) return false;
+
+				return true;
 			}
 
-			if(result.empty()) return false;
+			else if(arg2Syn.value == selectSyn.value)
+			{	
+				cout << "here\n";
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+			
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == PARENT) {
+						int parent = Parent::GetParentOf(*i);
+						cout << "here2\n";
+						if(parent == -1) {}	//if no parent
 
-			return true;
-		}
+						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
+							result.push_back(ToString(*i));
+						cout << "here3\n";
+					}
+
+					else {
+						vector<int> parent = Parent::GetParentTOf(*i);
+
+						for(vector<int>::iterator j = parent.begin(); j != parent.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+								result.push_back(ToString(*i));
+								break;
+							}
+						}
+					}
+				}
+				cout << "here4\n";
+				if(result.empty()) return false;
+
+				return true;
+			}
 		
-		else
-		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+			else
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				vector<int> children;
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> children;
 
-				if(rel == PARENT)	children = Parent::GetChildrenOf(*i);
-				else				children = Parent::GetChildrenTOf(*i);
+					if(rel == PARENT)	children = Parent::GetChildrenOf(*i);
+					else				children = Parent::GetChildrenTOf(*i);
 
-				for(vector<int>::iterator j = children.begin(); j != children.end(); ++j) {
-					if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) 
-						return true;
+					for(vector<int>::iterator j = children.begin(); j != children.end(); ++j) {
+						if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) 
+							return true;
+					}
 
-					else return false;
+					return false;
 				}
 			}
 		}
@@ -293,7 +404,12 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 	else if(arg1.type == SYNONYM && arg2.type == UNDERSCORE)
 	{		
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+		
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			vector<int> children;
@@ -316,7 +432,12 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 	else if(arg1.type == UNDERSCORE && arg2.type == SYNONYM)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+		vector<int> stmts;
+		
+		if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
@@ -344,7 +465,12 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 	else if(arg1.type == SYNONYM && arg2.type == INTEGER)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+		
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
@@ -368,7 +494,12 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 	else if(arg1.type == INTEGER && arg2.type == SYNONYM)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+		vector<int> stmts;
+		
+		if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			int arg1Value = atoi(arg1.value.c_str());
@@ -437,7 +568,7 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 }
 
 //Evaluate Follows and Follows*
-bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchThat, vector<string> &result)
+bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchThat, bool hasPattern, vector<int> patternResult, Synonym patternSyn, vector<string> &result)
 {
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
@@ -705,7 +836,7 @@ bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchTha
 }
 
 //Evaluate Modifies and Uses
-bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchThat, vector<string> &result)
+bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchThat, bool hasPattern, vector<int> patternResult, Synonym patternSyn, vector<string> &result)
 {
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
@@ -907,7 +1038,7 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 }
 
 //Evaluate Pattern
-bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern, vector<string> &result)
+bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern, vector<int> &result)
 {
 	Synonym selectSyn = select.synonym;
 	Synonym patternSyn = pattern.synonym;
@@ -922,16 +1053,16 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 	{
 		if(arg2Type == UNDERSCORE)
 		{
-			vector<string> tempResult;
+			vector<int> tempResult;
 
 			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
 			{
 				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 
 				for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
-					tempResult.push_back(ToString(*it));
+					tempResult.push_back(*it);
 				
-				if(patternSyn.value == selectSyn.value)
+				//if(patternSyn.value == selectSyn.value)
 					result = tempResult;
 
 				if(tempResult.empty())	return false;
@@ -955,13 +1086,13 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 						for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
 						{
 							if(StmtTypeTable::CheckIfStmtOfType(*it,ASSIGN))
-								tempResult.push_back(ToString(*it));
+								tempResult.push_back(*it);
 						}
 					}
 
 					else return false;
 
-					if(patternSyn.value == selectSyn.value)
+					//if(patternSyn.value == selectSyn.value)
 						result = tempResult;
 
 					if(tempResult.empty())	return false;
@@ -984,23 +1115,23 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 
 		else if(arg2Type == EXPRESSION)
 		{
-			vector<string> tempResult;
+			vector<int> tempResult;
 
 			Pattern patternObj = CreatePatternObject(arg2Value);
 			if(patternObj.expr == "")	return false;
 
-			vector<int> rightResultInt = PatternMatcher::MatchPatternFromRoot(patternObj,true);
-			if(rightResultInt.empty())		return false;
+			vector<int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,true);
+			if(rightResult.empty())		return false;
 	
-			vector<string> rightResult;
-			for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
-			rightResult.push_back(ToString(*it));
+			//vector<string> rightResult;
+			//for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
+				//rightResult.push_back(*it);
 			
 			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
 			{
 				tempResult = rightResult;
 
-				if(patternSyn.value == selectSyn.value)
+				//if(patternSyn.value == selectSyn.value)
 					result = tempResult;
 
 				if(tempResult.empty())	return false;
@@ -1009,7 +1140,7 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 
 			else if(arg1Type == IDENT)
 			{
-				vector<string> leftResult;
+				vector<int> leftResult;
 
 				string ident = arg1Value;
 				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
@@ -1026,7 +1157,7 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 						for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)
 						{
 							if(StmtTypeTable::CheckIfStmtOfType(*it,ASSIGN))
-								leftResult.push_back(ToString(*it));
+								leftResult.push_back(*it);
 						}
 					}
 
@@ -1036,7 +1167,7 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 
 					set_intersection(leftResult.begin(), leftResult.end(), rightResult.begin(), rightResult.end(), back_inserter(tempResult));
 
-					if(patternSyn.value == selectSyn.value)
+					//if(patternSyn.value == selectSyn.value)
 						result = tempResult;
 
 					if(tempResult.empty())	return false;

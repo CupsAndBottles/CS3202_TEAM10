@@ -20,12 +20,12 @@ Select s such that Modifies (s, "y")
 5000
 5 - Simple Uses
 assign a;
-Select a such that Uses (a, "b");
+Select a such that Uses (a, "b")
 9
 5000
 6 - Nested Uses
 stmt s;
-Select s such that Uses (s, tEst)
+Select s such that Uses (s, "tEst")
 3, 5, 6, 7
 5000
 7 - Simple Follows
@@ -41,8 +41,7 @@ Select a such that Follows (w, a)
 9
 5000
 9 - Follows*
-assign a;
-while w;
+assign a;while w;
 Select a such that Follows* (a, w)
 1, 2, 4
 5000
@@ -70,6 +69,6 @@ Select a pattern a ("y", _)
 5000
 14 - Simple RHS Patterns
 assign a;
-Select a pattern a (_"x"_)
+Select a pattern a (_,_"x"_)
 2, 4
 5000

@@ -11,11 +11,11 @@ class QueryEvaluator
 
 protected:
 	vector<string> EvaluateSelect(SelectClause);
-	bool EvaluateParent(SelectClause, SuchThatClause, vector<string>&);
-	bool EvaluateFollows(SelectClause, SuchThatClause, vector<string>&);
-	bool EvaluateModifies(SelectClause, SuchThatClause, vector<string>&);
-	bool EvaluateUses(SelectClause, SuchThatClause, vector<string>&);
-	bool EvaluatePattern(SelectClause, PatternClause, vector<string>&);
+	bool EvaluateParent(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
+	bool EvaluateFollows(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
+	bool EvaluateModifies(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
+	bool EvaluateUses(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
+	bool EvaluatePattern(SelectClause, PatternClause, vector<int>&);
 
 	list<string> MergeResult(vector<string>, vector<string>, vector<string>);
 	list<string> MergeResult(vector<string>, vector<string>);

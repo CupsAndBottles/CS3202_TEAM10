@@ -25,7 +25,7 @@ Select s such that Uses (s, "z")
 5000
 6 - Follows
 stmt s;
-Select s1 such that Follows (s, _)
+Select s such that Follows (s, _)
 3
 5000
 7 - Parent
@@ -34,20 +34,25 @@ Select s such that Parent (s, _)
 1, 2, 3, 4, 5, 6
 5000
 8 - Specific Parent
-while w;
-assign a;
+while w;assign a;
 Select w such that Parent (w, a)
-6, 2
+2, 6
 5000
 9 - Parent*
-while w;
-assign a;
+while w;assign a;
 Select w such that Parent* (w, a)
 1, 2, 3, 4, 5, 6
 5000
 10 - More Strict Parent*
-while w;
-assign a;
+while w;assign a;
+Select a pattern a("x",_) such that Parent*(2,a)
+7, 8
+while w;assign a;
 Select w such that Parent* (w, a) pattern a (_, _"1"_)
 1, 2
+5000
+12 - More Strict Parent*
+while w;assign a;
+Select a pattern a("x",_) such that Parent(2,a)
+8
 5000

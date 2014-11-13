@@ -11,7 +11,7 @@ none
 3 - Modifies x
 stmt s;
 Select s such that Modifies (s, "x")
-1, 7
+1, 6
 5000
 4 - Uses x
 stmt s;
@@ -23,10 +23,10 @@ stmt s;
 Select s such that Follows (s, _)
 1, 2, 3, 4, 5, 6, 7, 8
 5000
-6 - Follows* with condition
-stmt s;
-Select s such that Follows* (_, s)
-2, 3, 4, 5, 6, 7, 8, 9
+6 - Follows* 
+assign a;
+Select a such that Follows (a,9)
+8
 5000
 7 - Parent
 stmt s;
@@ -36,7 +36,7 @@ none
 8 - LHS Pattern
 assign a;
 Select a pattern a ("x", _)
-1, 7
+1, 6
 5000
 9 - RHS Patterns
 assign a;
@@ -48,13 +48,13 @@ assign a;
 Select a pattern a (_, _"1 + 2"_)
 7, 9
 5000
-11- Compound Patterns
+11 - Compound Patterns
 assign a;
 Select a pattern a ("y", _"1"_)
 2
 5000
 12 - More Compound Patterns
 assign a;
-Select a pattern a (lastOne, _"1 + 2 + 3 + x"_)
+Select a pattern a ("lastOne", _"1 + 2"_)
 9
 5000

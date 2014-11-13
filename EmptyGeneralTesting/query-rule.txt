@@ -1,0 +1,14 @@
+declaration in 1 line
+assign a;while 2;
+
+query structure
+Select __ such that __ pattern __
+Select __ pattern __ such that __
+-no AND
+-only only 1 such that and 1 pattern
+
+Select
+-no <tuple>
+-no BOOLEAN
+-only select 1 synonym
+

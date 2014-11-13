@@ -184,6 +184,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 				break;
 			case Token::NUMBER:
 				LHS = new ConstantTNode(currentToken.content);
+				ConstTable::SetStmtUsesConst(currentLineNumber, dynamic_cast<ConstantTNode*>(LHS)->GetValue());
 				break;
 			default:
 				SyntaxError();
@@ -206,6 +207,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
 				break;
 			case Token::NUMBER:
 				RHS = new ConstantTNode(currentToken.content);
+				ConstTable::SetStmtUsesConst(currentLineNumber, dynamic_cast<ConstantTNode*>(RHS)->GetValue());
 				break;
 			default:
 				SyntaxError();

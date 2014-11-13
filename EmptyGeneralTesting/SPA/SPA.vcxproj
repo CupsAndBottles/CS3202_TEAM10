@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\ConstTable.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
     <ClCompile Include="Program\TNode\AtomicTNode.cpp" />

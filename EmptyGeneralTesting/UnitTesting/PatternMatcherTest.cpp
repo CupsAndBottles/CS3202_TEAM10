@@ -11,6 +11,7 @@ TNode* PatternMatcherTest::ParseExpr(string expr) {
 	TNode* exprTree = parser.ParseExpr(nullptr, false);
 	Uses::ClearData();
 	VarTable::ClearData();
+	ConstTable::ClearData();
 	return exprTree;
 }
 

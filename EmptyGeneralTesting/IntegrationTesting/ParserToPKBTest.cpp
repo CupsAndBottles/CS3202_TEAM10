@@ -25,6 +25,8 @@ ParserToPKBTest::ParserToPKBTest() {
 	Uses::ClearData();
 	Modifies::ClearData();
 	Follows::ClearData();
+	VarTable::ClearData();
+	ConstTable::ClearData();
 }
 
 void ParseSource(string filename) {

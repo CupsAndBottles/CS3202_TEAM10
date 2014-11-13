@@ -94,8 +94,7 @@
     <ClCompile Include="PatternMatcherTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryEvaluatorTest.cpp" />
-    <ClCompile Include="QueryPreprocessorTest.cpp" />
-    <ClCompile Include="QueryValidatorTest.cpp" />
+    <ClCompile Include="QueryPreProcessorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="UsesTest.cpp" />
@@ -110,8 +109,7 @@
     <ClInclude Include="PatternMatcherTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryEvaluatorTest.h" />
-    <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="QueryValidatorTest.h" />
+    <ClInclude Include="QueryPreProcessorTest.h" />
     <ClInclude Include="RelTableTest.h" />
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />

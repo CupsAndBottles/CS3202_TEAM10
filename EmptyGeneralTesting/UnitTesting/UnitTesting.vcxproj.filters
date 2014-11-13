@@ -6,8 +6,6 @@
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
-    <ClCompile Include="QueryPreprocessorTest.cpp" />
-    <ClCompile Include="QueryValidatorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="UsesTest.cpp" />
@@ -15,6 +13,7 @@
     <ClCompile Include="TokenizerTest.cpp" />
     <ClCompile Include="QueryEvaluatorTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
+    <ClCompile Include="QueryPreProcessorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FollowsTest.h" />
@@ -22,14 +21,13 @@
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="QueryValidatorTest.h" />
     <ClInclude Include="RelTableTest.h" />
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
     <ClInclude Include="QueryEvaluatorTest.h" />
     <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="QueryPreProcessorTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\additionTest.txt" />

@@ -4,7 +4,7 @@
 #include "Grammar.h"
 
 /*
-Class for storing query string data, accessed by QueryValidator and QueryEvaluator
+Class for storing query string data, accessed by QueryPreProcessor and QueryEvaluator
 */
 class QueryData
 {

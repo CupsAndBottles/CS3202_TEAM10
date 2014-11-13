@@ -4,8 +4,9 @@
 #include "PKB\Modifies.h"
 #include "PKB\Uses.h"
 #include "PKB\StmtTypeTable.h"
+#include "PKB\ConstTable.h"
 #include "PKB\VarTable.h"
-#include "QueryProcessor\QueryValidator.h"
+#include "QueryProcessor\QueryPreProcessor.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 
@@ -199,6 +200,9 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 		case PROG_LINE:
 			stmts = StmtTypeTable::GetAllStmtsOfType(STMT);
 			break;
+
+		case CONSTANT:
+			stmts = ConstTable::GetAllConst();
 
 		case INVALID_SYNONYM_TYPE:
 			break;
@@ -1557,7 +1561,7 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 	vector<string> tokenList;
 	string delim = "+";
 
-	QueryValidator::Tokenize(expr, tokenList, delim);
+	QueryPreProcessor::Tokenize(expr, tokenList, delim);
 
 	if(tokenList.size() == 1)
 	{

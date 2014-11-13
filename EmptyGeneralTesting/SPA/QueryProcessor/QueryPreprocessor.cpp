@@ -1,16 +1,16 @@
-#include "QueryValidator.h"
+#include "QueryPreProcessor.h"
 #include <sstream>
 #include <algorithm>
 #include <iostream>
 #include "RelTable.h"
 #include "..\AutoTester\source\AbstractWrapper.h"
 
-const std::string QueryValidator::de[] = {"stmt", "assign", "while", "variable", "prog_line", "constant"};
-const std::string QueryValidator::rel[] = {"Modifies", "Uses", "Parent", "Parent*", "Follows", "Follows*"};
+const std::string QueryPreProcessor::de[] = {"stmt", "assign", "while", "variable", "prog_line", "constant"};
+const std::string QueryPreProcessor::rel[] = {"Modifies", "Uses", "Parent", "Parent*", "Follows", "Follows*"};
  
-QueryValidator::QueryValidator(void) {}
+QueryPreProcessor::QueryPreProcessor(void) {}
 
-bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
+bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 {
 	std::vector<std::string> tokenList;
 	std::string token;
@@ -210,7 +210,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	return false;
 }
 
-void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens, std::string delim)
+void QueryPreProcessor::Tokenize(std::string str, std::vector<std::string> &tokens, std::string delim)
 {
 	std::stringstream stringStream(str);
 	std::string line;
@@ -229,7 +229,7 @@ void QueryValidator::Tokenize(std::string str, std::vector<std::string> &tokens,
 	}
 }
 
-bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &tokens) {
+bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &tokens) {
 	bool isIdent = false, isExpression = false, isProgLine = false;
 
 	query += " ";	//add a whitespace behind, to handle case like assign a;Select a, if not the a will not get push back
@@ -437,7 +437,7 @@ bool QueryValidator::Tokenize(std::string query, std::vector<std::string> &token
 - Design entities allowed in declaration are stmt, assign, while, if, variable, constant, procedure, prog_line, call
   (Although assignnment 4 only have stmt, assign, while, variable, constant, prog_line)
 */
-bool QueryValidator::ValidateDeclaration(Synonym &synonym, std::string type)
+bool QueryPreProcessor::ValidateDeclaration(Synonym &synonym, std::string type)
 {
 	//check duplicated declaration
 	if(QueryData::IsSynonymExist(synonym.value)) {
@@ -465,7 +465,7 @@ bool QueryValidator::ValidateDeclaration(Synonym &synonym, std::string type)
 - Check if select BOOLEAN, if yes return synonym=type="BOOLEAN"
 - Otherwise, check if synonym is declared in declaration, if yes get the type and return type
 */
-bool QueryValidator::ValidateSelect(Synonym &synonym)
+bool QueryPreProcessor::ValidateSelect(Synonym &synonym)
 {
 	//pass reference twice, not sure will work or not
 	if(QueryData::IsSynonymExist(synonym.value, &synonym.type))
@@ -480,7 +480,7 @@ bool QueryValidator::ValidateSelect(Synonym &synonym)
 /*
 f
 */
-bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &arg2)
+bool QueryPreProcessor::ValidatePattern(Synonym synonym, Argument &arg1, Argument &arg2)
 {
 	if(synonym.type == ASSIGN)
 	{
@@ -517,7 +517,7 @@ bool QueryValidator::ValidatePattern(Synonym synonym, Argument &arg1, Argument &
 	}
 }
 
-bool QueryValidator::ValidateRelationship(std::string rel, RelationshipType &rel_enum, Argument &arg1, Argument &arg2)
+bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &rel_enum, Argument &arg1, Argument &arg2)
 {
 	//convert relationship string to enum
 	if(!GetEnumRelationshipType(rel,rel_enum)) {
@@ -623,7 +623,7 @@ assume whitespace hasn't been remove
 " x ", _ " x + y" _ are also valid
 assume _ and " " is included, e.g. _"x"_
 */
-bool QueryValidator::IsExpression(std::string str)
+bool QueryPreProcessor::IsExpression(std::string str)
 {
 	//remove white spaces
 	str.erase(std::remove_if(str.begin(), str.end(), [](char x){return isspace(x);}), str.end());
@@ -666,7 +666,7 @@ IDENT: LETTER (LETTER| DIGIT | '#')*
 IDENT must be an alphabet followed by 0 or more times of alphanumeric character or '#'
 assume " " is included, e.g. "x"
 */
-bool QueryValidator::IsIdent(std::string str)
+bool QueryPreProcessor::IsIdent(std::string str)
 {
 	//remove white spaces
 	str.erase(std::remove_if(str.begin(), str.end(), [](char x){return isspace(x);}), str.end());
@@ -692,7 +692,7 @@ bool QueryValidator::IsIdent(std::string str)
 Name : LETTER (LETTER | DIGIT)*
 Name must be an alphabet followed by 0 or more times of alphanumeric character
 */
-bool QueryValidator::IsName(std::string s)
+bool QueryPreProcessor::IsName(std::string s)
 {
 	std::string::iterator it = s.begin();
 
@@ -709,7 +709,7 @@ bool QueryValidator::IsName(std::string s)
 Integer : DIGIT+
 Integer must be repetition of 1 or more times of number
 */
-bool QueryValidator::IsInteger(const std::string& s)
+bool QueryPreProcessor::IsInteger(const std::string& s)
 {
     std::string::const_iterator it = s.begin();
 
@@ -721,7 +721,7 @@ bool QueryValidator::IsInteger(const std::string& s)
 /*
 Convert synonym type string to SynonymType enum
 */
-bool QueryValidator::GetEnumSynonymType(std::string type, SynonymType &enumType) 
+bool QueryPreProcessor::GetEnumSynonymType(std::string type, SynonymType &enumType) 
 {
 	if(type == "assign")			enumType = ASSIGN;
 	else if(type == "stmt")			enumType = STMT;
@@ -741,7 +741,7 @@ bool QueryValidator::GetEnumSynonymType(std::string type, SynonymType &enumType)
 /*
 Convert relationship type string to SynonymType enum
 */
-bool QueryValidator::GetEnumRelationshipType(std::string type, RelationshipType &enumType) 
+bool QueryPreProcessor::GetEnumRelationshipType(std::string type, RelationshipType &enumType) 
 {
 	if(type == "Modifies")			enumType = MODIFIES;
 	else if(type == "Uses")			enumType = USES;
@@ -764,31 +764,31 @@ bool QueryValidator::GetEnumRelationshipType(std::string type, RelationshipType 
 
 
 //string matching functions
-bool QueryValidator::IsSelect(std::string str)
+bool QueryPreProcessor::IsSelect(std::string str)
 {
 	if(str == "Select")	return true;
 	return false;
 }
 
-bool QueryValidator::IsSemiColon(std::string str)
+bool QueryPreProcessor::IsSemiColon(std::string str)
 {
 	if(str == ";")	return true;
 	return false;
 }
 
-bool QueryValidator::IsSuchThat(std::string str)
+bool QueryPreProcessor::IsSuchThat(std::string str)
 {
 	if(str == "such")	return true;
 	return false;
 }
 
-bool QueryValidator::IsPattern(std::string str)
+bool QueryPreProcessor::IsPattern(std::string str)
 {
 	if(str == "pattern")	return true;
 	return false;
 }
 
-bool QueryValidator::IsUnderscore(std::string str)
+bool QueryPreProcessor::IsUnderscore(std::string str)
 {
 	if(str == "_")	return true;
 	return false;
@@ -797,7 +797,7 @@ bool QueryValidator::IsUnderscore(std::string str)
 /*
 Check whether string is one of the design entities
 */
-bool QueryValidator::IsDeclaration(std::string str)
+bool QueryPreProcessor::IsDeclaration(std::string str)
 {
 	std::vector<std::string> DesignEntity(de, de + sizeof(de) / sizeof(de[0]));
 
@@ -810,7 +810,7 @@ bool QueryValidator::IsDeclaration(std::string str)
 /*
 check whether string is one of the RelationshipType
 */
-bool QueryValidator::IsRelationship(std::string str)
+bool QueryPreProcessor::IsRelationship(std::string str)
 {
 	std::vector<std::string> rel_vec(rel, rel + sizeof(rel) / sizeof(rel[0]));
 

@@ -3,9 +3,9 @@
 #include <vector>
 #include "QueryData.h"
 
-class QueryValidator
+class QueryPreProcessor
 {
-	friend class QueryValidatorTest;
+	friend class QueryPreProcessorTest;
 
 protected:
 	static const std::string de[];
@@ -39,7 +39,7 @@ protected:
 	bool GetEnumRelationshipType(std::string, RelationshipType&);
 
 public:
-	QueryValidator(void);
+	QueryPreProcessor(void);
 
 	bool ValidateQuery(std::string, QueryData&);
 	static void Tokenize(std::string, std::vector<std::string>&, std::string);

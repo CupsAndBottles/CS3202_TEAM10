@@ -25,7 +25,7 @@ void QueryEvaluatorToPKBTest::tearDown() {}
 void QueryEvaluatorToPKBTest::TestSelectAll()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -45,6 +45,25 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	actualResultList.push_back("6");
 	actualResultList.push_back("8");
 	actualResultList.push_back("9");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	resultList.clear();
+	qd.ClearData();
+
+	query = "constant c;Select c";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("0");
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
 	actualResultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -150,7 +169,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 void QueryEvaluatorToPKBTest::TestParent()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -402,7 +421,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 void QueryEvaluatorToPKBTest::TestParentT()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -652,7 +671,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 void QueryEvaluatorToPKBTest::TestFollows()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -879,7 +898,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 void QueryEvaluatorToPKBTest::TestModifies()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -1069,7 +1088,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 void QueryEvaluatorToPKBTest::TestUses()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -1265,31 +1284,12 @@ void QueryEvaluatorToPKBTest::TestUses()
 	actualResultList.clear();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
-
-
-
-	
-	qd.ClearData();
-	resultList.clear();
-
-	query = "assign a;while w;Select w such that Parent* (w, a) pattern a (_, _\"b\"_)";
-
-	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
-
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
-
-	actualResultList.clear();
-	actualResultList.push_back("3");
-	actualResultList.sort();
-
-	CPPUNIT_ASSERT(resultList == actualResultList);
 }
 
 void QueryEvaluatorToPKBTest::TestPattern()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 
@@ -1529,7 +1529,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 {
 	QueryData qd;
-	QueryValidator qv;
+	QueryPreProcessor qv;
 	QueryEvaluator qe;
 	std::list<std::string> resultList; 
 

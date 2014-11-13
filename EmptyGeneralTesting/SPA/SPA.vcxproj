@@ -39,7 +39,7 @@
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\QueryValidator.cpp" />
+    <ClCompile Include="QueryProcessor\QueryPreProcessor.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +69,7 @@
     <ClInclude Include="QueryProcessor\QueryData.h" />
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />
     <ClInclude Include="QueryProcessor\QueryProcessor.h" />
-    <ClInclude Include="QueryProcessor\QueryValidator.h" />
+    <ClInclude Include="QueryProcessor\QueryPreprocessor.h" />
     <ClInclude Include="QueryProcessor\RelTable.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />

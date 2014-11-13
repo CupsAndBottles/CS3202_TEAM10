@@ -1,7 +1,7 @@
 #include "QueryProcessor.h"
 #include "QueryData.h"
 #include "QueryEvaluator.h"
-#include "QueryValidator.h"
+#include "QueryPreProcessor.h"
 
 #include <string>
 #include <list>
@@ -13,7 +13,7 @@ std::list<std::string> QueryProcessor::ProcessQuery(std::string query) {
 	QueryData queryData;
 	std::list<std::string> result;
 	QueryEvaluator QE;
-	QueryValidator QV;
+	QueryPreProcessor QV;
 
 	queryData.ClearData();
 	//std::cout << "\nHERE\n";

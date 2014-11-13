@@ -103,7 +103,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	if(AbstractWrapper::GlobalStop)	return false;
 
 
-	cout<< "\nSelect result list: ";
+	/*cout<< "\nSelect result list: ";
 	for(vector<string>::iterator it = selectResult.begin(); it != selectResult.end(); ++it)
 		cout << *it << " ";
 
@@ -113,7 +113,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	cout<< "\nPattern result list: ";
 	for(vector<int>::iterator it = patternResult.begin(); it != patternResult.end(); ++it)
-		cout << *it << " ";
+		cout << *it << " ";*/
 
 
 	//merge select, such that , pattern result and pass back to caller
@@ -163,10 +163,10 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	resultList.sort();
 
-	cout<< "\nFinal result list: ";
+	/*cout<< "\nFinal result list: ";
 	for(list<string>::iterator it = resultList.begin(); it != resultList.end(); ++it)
 		cout << *it << " ";
-	cout<< "\n";
+	cout<< "\n";*/
 
 	return true;
 }
@@ -177,6 +177,7 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 	vector<int> stmts;
 	vector<string> result;
 	bool isVar = false;
+	bool isConst = false;
 
 	switch(select.synonym.type)
 	{
@@ -203,6 +204,8 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 
 		case CONSTANT:
 			stmts = ConstTable::GetAllConst();
+			isConst = true;
+			break;
 
 		case INVALID_SYNONYM_TYPE:
 			break;
@@ -212,6 +215,11 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 	}
 
 	if(isVar) return result;
+
+	if(isConst) {
+		set<int> s( stmts.begin(), stmts.end() );
+		stmts.assign( s.begin(), s.end() );
+	}
 
 	//convert vec<int> to vec<string>
 	for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it)

@@ -311,7 +311,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 				//std::cout << "In ,\n";
 				if(isExpression)	//current string start with underscore, push back the first char
 				{
-					std::cout << "In isExpression\n";
+					//std::cout << "In isExpression\n";
 					std::string cs(1,alphaString.at(0));
 					tokens.push_back(cs);
 					isExpression = false;

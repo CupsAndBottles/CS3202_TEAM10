@@ -583,106 +583,308 @@ bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchTha
 		if(arg1Syn.value == arg2Syn.value)
 			return false;
 
-		else if(arg1Syn.value == selectSyn.value)
+		else if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
 		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
-
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				
-				if(rel == FOLLOWS)	
-				{
-					int followsAfter = Follows::GetFollowsAfter(*i);
-					
-					if(followsAfter == -1) {}
-					
-					else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
-						result.push_back(ToString(*i));
-				}
-
-				else				
-				{
-					vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
-
-					for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
-						if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
-							result.push_back(ToString(*i));
-							break;
-						}
-					}
-				}	
-			}
-
-			if(result.empty()) return false;
-
-			return true;
-		}
-
-		else if(arg2Syn.value == selectSyn.value)
-		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
-
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				if(rel == FOLLOWS) {
-					int followsBefore = Follows::GetFollowsBefore(*i);
-
-					if(followsBefore == -1) {}
-					
-					else if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg1Syn.type))
-						result.push_back(ToString(*i));
-				}
-
-				else {
-					vector<int> followsBefore = Follows::GetFollowsTBefore(*i);
-
-					for(vector<int>::iterator j = followsBefore.begin(); j != followsBefore.end(); ++j) {
-						if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
-							result.push_back(ToString(*i));
-							break;
-						}
-					}
-				}
-			}
-
-			if(result.empty()) return false;
-
-			return true;
-		}
-		
-		else
-		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
-
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) 
+			if(arg1Syn.value == selectSyn.value)
 			{
-				if(rel == FOLLOWS)	
-				{
-					int followsAfter = Follows::GetFollowsAfter(*i);
-					
-					if(followsAfter == -1) {}
+				vector<int> stmts = patternResult;
 
-					else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
-						return true;
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				
+					if(rel == FOLLOWS)	
+					{
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+							result.push_back(ToString(*i));
+					}
+
+					else				
+					{
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
+								result.push_back(ToString(*i));
+								break;
+							}
+						}
+					}	
 				}
 
-				else				
-				{
-					vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+				if(result.empty()) return false;
 
-					for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
-						if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type))
+				return true;
+			}
+
+			else if(arg2Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == FOLLOWS) {
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+							result.push_back(ToString(followsAfter));
+					}
+
+					else {
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) 
+								result.push_back(ToString(*j));
+						}
+					}
+				}
+
+				if(result.empty()) return false;
+
+				return true;
+			}
+		
+			else
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) 
+				{
+					if(rel == FOLLOWS)	
+					{
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
 							return true;
 					}
-				}	
+
+					else				
+					{
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type))
+								return true;
+						}
+					}	
+				}
+
+				return false;
+			}
+		}
+
+		else if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
+		{
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				
+					if(rel == FOLLOWS)	
+					{
+						int followsBefore = Follows::GetFollowsBefore(*i);
+					
+						if(followsBefore == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg2Syn.type)) 
+							result.push_back(ToString(followsBefore));
+					}
+
+					else				
+					{
+						vector<int> followsBefore = Follows::GetFollowsTBefore(*i);
+
+						for(vector<int>::iterator j = followsBefore.begin(); j != followsBefore.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
+								result.push_back(ToString(*j));
+								break;
+							}
+						}
+					}	
+				}
+
+				if(result.empty()) return false;
+
+				return true;
 			}
 
-			return false;
+			else if(arg2Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == FOLLOWS) {
+						int followsBefore = Follows::GetFollowsBefore(*i);
+
+						if(followsBefore == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg1Syn.type))
+							result.push_back(ToString(*i));
+					}
+
+					else {
+						vector<int> followsBefore = Follows::GetFollowsTBefore(*i);
+
+						for(vector<int>::iterator j = followsBefore.begin(); j != followsBefore.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+								result.push_back(ToString(*i));
+								break;
+							}
+						}
+					}
+				}
+
+				if(result.empty()) return false;
+
+				return true;
+			}
+		
+			else
+			{
+				vector<int> stmts = patternResult;
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) 
+				{
+					if(rel == FOLLOWS)	
+					{
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+							return true;
+					}
+
+					else				
+					{
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type))
+								return true;
+						}
+					}	
+				}
+
+				return false;
+			}
+		}
+
+		else
+		{
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+				
+					if(rel == FOLLOWS)	
+					{
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+							result.push_back(ToString(*i));
+					}
+
+					else				
+					{
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type)) {
+								result.push_back(ToString(*i));
+								break;
+							}
+						}
+					}	
+				}
+
+				if(result.empty()) return false;
+
+				return true;
+			}
+
+			else if(arg2Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					if(rel == FOLLOWS) {
+						int followsBefore = Follows::GetFollowsBefore(*i);
+
+						if(followsBefore == -1) {}
+					
+						else if(StmtTypeTable::CheckIfStmtOfType(followsBefore, arg1Syn.type))
+							result.push_back(ToString(*i));
+					}
+
+					else {
+						vector<int> followsBefore = Follows::GetFollowsTBefore(*i);
+
+						for(vector<int>::iterator j = followsBefore.begin(); j != followsBefore.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg1Syn.type)) {
+								result.push_back(ToString(*i));
+								break;
+							}
+						}
+					}
+				}
+
+				if(result.empty()) return false;
+
+				return true;
+			}
+		
+			else
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) 
+				{
+					if(rel == FOLLOWS)	
+					{
+						int followsAfter = Follows::GetFollowsAfter(*i);
+					
+						if(followsAfter == -1) {}
+
+						else if(StmtTypeTable::CheckIfStmtOfType(followsAfter, arg2Syn.type)) 
+							return true;
+					}
+
+					else				
+					{
+						vector<int> followsAfter = Follows::GetFollowsTAfter(*i);
+
+						for(vector<int>::iterator j = followsAfter.begin(); j != followsAfter.end(); ++j) {
+							if(StmtTypeTable::CheckIfStmtOfType(*j, arg2Syn.type))
+								return true;
+						}
+					}	
+				}
+
+				return false;
+			}
 		}
 	}
 
 	else if(arg1.type == SYNONYM && arg2.type == UNDERSCORE)
 	{		
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
@@ -710,7 +912,12 @@ bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchTha
 	else if(arg1.type == UNDERSCORE && arg2.type == SYNONYM)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
@@ -738,7 +945,12 @@ bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchTha
 	else if(arg1.type == SYNONYM && arg2.type == INTEGER)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{
@@ -762,7 +974,12 @@ bool QueryEvaluator::EvaluateFollows(SelectClause select, SuchThatClause suchTha
 	else if(arg1.type == INTEGER && arg2.type == SYNONYM)
 	{
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg2Syn.type == patternSyn.type && arg2Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			int arg1Value = atoi(arg1.value.c_str());
@@ -851,73 +1068,147 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 		if(arg1Syn.value == arg2Syn.value)
 			return false;
 
-		else if(arg1Syn.value == selectSyn.value)
+		else if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
 		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = patternResult;
 
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				vector<int> vars;
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
 
-				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				else				vars = Uses::GetVarUsedByStmt(*i);
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
 
-				if(!vars.empty())	result.push_back(ToString(*i));
-			}
-
-			if(result.empty()) return false;
-
-			return true;
-		}
-
-		else if(arg2Syn.value == selectSyn.value)
-		{	
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
-
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				vector<int> vars;
-
-				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				else				vars = Uses::GetVarUsedByStmt(*i);
-
-				if(!vars.empty())	{
-					vector<string> varString;
-
-					for(vector<int>::iterator j = vars.begin(); j != vars.end(); ++j) 
-						varString.push_back(VarTable::GetVarName(*j));	
-
-					result.insert(result.end(),varString.begin(),varString.end());
+					if(!vars.empty())	result.push_back(ToString(*i));
 				}
+
+				if(result.empty()) return false;
+
+				return true;
 			}
 
-			if(result.empty()) return false;
+			else if(arg2Syn.value == selectSyn.value)
+			{	
+				vector<int> stmts = patternResult;
 
-			set<string> s( result.begin(), result.end() );
-			result.assign( s.begin(), s.end() );
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
 
-			return true;
-		}
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
+
+					if(!vars.empty())	{
+						vector<string> varString;
+
+						for(vector<int>::iterator j = vars.begin(); j != vars.end(); ++j) 
+							varString.push_back(VarTable::GetVarName(*j));	
+
+						result.insert(result.end(),varString.begin(),varString.end());
+					}
+				}
+
+				if(result.empty()) return false;
+
+				set<string> s( result.begin(), result.end() );
+				result.assign( s.begin(), s.end() );
+
+				return true;
+			}
 		
-		else
-		{
-			vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+			else
+			{
+				vector<int> stmts = patternResult;
 
-			for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
-				vector<int> vars;
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
 
-				if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
-				else				vars = Uses::GetVarUsedByStmt(*i);
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
 
-				if(!vars.empty())	return true;
+					if(!vars.empty())	return true;
+				}
+
+				return false;
 			}
 
-			return false;
+		}
+
+		else 
+		{
+			if(arg1Syn.value == selectSyn.value)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
+
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
+
+					if(!vars.empty())	result.push_back(ToString(*i));
+				}
+
+				if(result.empty()) return false;
+
+				return true;
+			}
+
+			else if(arg2Syn.value == selectSyn.value)
+			{	
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
+
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
+
+					if(!vars.empty())	{
+						vector<string> varString;
+
+						for(vector<int>::iterator j = vars.begin(); j != vars.end(); ++j) 
+							varString.push_back(VarTable::GetVarName(*j));	
+
+						result.insert(result.end(),varString.begin(),varString.end());
+					}
+				}
+
+				if(result.empty()) return false;
+
+				set<string> s( result.begin(), result.end() );
+				result.assign( s.begin(), s.end() );
+
+				return true;
+			}
+		
+			else
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+
+				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
+					vector<int> vars;
+
+					if(rel == MODIFIES)	vars = Modifies::GetVarModifiedByStmt(*i);
+					else				vars = Uses::GetVarUsedByStmt(*i);
+
+					if(!vars.empty())	return true;
+				}
+
+				return false;
+			}
 		}
 	}
 
 	else if(arg1.type == SYNONYM && arg2.type == UNDERSCORE)
 	{		
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			vector<int> var;
@@ -949,7 +1240,12 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 
 
 		vector<string> tempResult;
-		vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
+		vector<int> stmts;
+
+		if(hasPattern && arg1Syn.type == patternSyn.type && arg1Syn.value == patternSyn.value) 
+			stmts = patternResult;
+	
+		else stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 
 		for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 		{

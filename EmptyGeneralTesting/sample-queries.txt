@@ -25,7 +25,7 @@ Select s such that Follows (s, _)
 5000
 6 - Follows* 
 assign a;
-Select a such that Follows (a,9)
+Select a such that Follows (a, 9)
 8
 5000
 7 - Parent

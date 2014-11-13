@@ -22,7 +22,16 @@ vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 		return stmts;
 	}
 
-    else return TypeIndexTable.at(type);
+    else {
+		if(TypeIndexTable.find(type) != TypeIndexTable.end())
+			return TypeIndexTable.at(type);
+
+		//should throw exception
+		else {
+			vector<int> empty;
+			return empty;
+		}
+	}
 }
 
 bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {

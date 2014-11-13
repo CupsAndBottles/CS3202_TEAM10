@@ -16,7 +16,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 	std::string token;
 	std::string delim = " ,();";
 
-	std::cout << "Before tokenize\n";
+	//std::cout << "Before tokenize\n";
 
 	//tokenize query
 	if(!Tokenize(query,tokenList)) {
@@ -24,7 +24,7 @@ bool QueryValidator::ValidateQuery(std::string query, QueryData &queryData)
 		return false;
 	}
 
-	std::cout << "AFter tokenize\n";
+	//std::cout << "AFter tokenize\n";
 
 	std::vector<std::string>::iterator it = tokenList.begin();
 	token = *it;

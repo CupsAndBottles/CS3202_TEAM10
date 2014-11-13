@@ -41,7 +41,7 @@ Select s such that Uses (s, "x")
 9 - Simple Follows
 assign a; while w;
 Select a such that Follows (a, w)
-4
+2, 4
 5000
 10 - Follows Across Stmt Lists
 assign a; while w;
@@ -60,7 +60,7 @@ Select a such that Follows* (a, w)
 5000
 13 - Follows* 1
 stmt s;
-Select s such that Follows (1, s)
+Select s such that Follows* (1, s)
 2, 3
 5000
 14 - Follows* 6
@@ -115,7 +115,7 @@ Select a pattern a (_, _"x + 1"_)
 5000
 22 - Pattern
 assign a;
-Select a pattern a (y, _"newVar + tEst"_)
+Select a pattern a ("y", _"newVar + tEst"_)
 6
 5000
 5 - Modifies tEst with Pattern
@@ -125,7 +125,7 @@ Select a such that Modifies (a, "tEst") pattern a (_, _"z + x"_)
 5000
 5 - Modifies newVar with Pattern
 assign a;
-Select a such that Modifies (a, "newVar") pattern a (_, _"tEst"_)
+Select a such that Modifies (a, "y") pattern a (_, _"tEst"_)
 6
 5000
 8 - Uses x with Pattern
@@ -146,7 +146,7 @@ Select w such that Follows (a, w) pattern a (_, _"x + 1"_)
 13 - Follows* with Pattern
 assign a;
 Select a such that Follows* (_, a) pattern a (_, _"x"_)
-2, 4
+2
 5000
 16 - Parent with Pattern
 while w; assign a;
@@ -160,7 +160,7 @@ Select w such that Parent (w, a) pattern a (_, _)
 5000
 18 - Parent* with Pattern
 while w; assign a;
-Select w such that Parent* (w, a) pattern a (y, _"newVar + tEst"_)
+Select w such that Parent* (w, a) pattern a ("y", _"newVar + tEst"_)
 3, 5
 5000
 17 - Parent* with LHS pattern

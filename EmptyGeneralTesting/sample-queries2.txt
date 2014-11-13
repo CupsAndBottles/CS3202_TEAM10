@@ -66,7 +66,7 @@ Select w such that Parent (w, a)
 14 - Parented by 2
 stmt s;
 Select s such that Parent (2, s)
-3
+3, 8
 5000
 15 - Parent*
 while w; assign a;
@@ -116,7 +116,7 @@ Select a such that Modifies (a, "x") pattern a (_, _"1"_)
 24 - Modifies z with Pattern
 assign a;
 Select a such that Modifies (a, "z") pattern a (_, _)
-3
+none
 5000
 25 - Uses x with Pattern
 assign a;

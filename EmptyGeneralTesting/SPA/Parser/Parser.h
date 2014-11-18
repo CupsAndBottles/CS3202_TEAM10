@@ -12,7 +12,6 @@
 #include "PKB\VarTable.h"
 #include "PKB\ConstTable.h"
 
-
 #include <vector>
 #include <deque>
 
@@ -32,6 +31,7 @@ protected:
 	int currentLineNumber;
 
 	Token ConsumeTopToken();
+	Token PeekAtTopToken();
 	bool TopTokenIsType(Token::Type);
 	void VerifyTopTokenIs(Token::Type);
 	Token ConsumeTopTokenOfType(Token::Type);
@@ -43,5 +43,7 @@ protected:
 	StmtTNode* ParseStmt(StmtTNode*);
 	AssignmentTNode* ParseAssignmentStmt();
 	WhileTNode* ParseWhileStmt();
+	TNode* ParseExpr();
 	TNode* ParseExpr(TNode*, bool);
+	AtomicTNode* ParseAtomicToken();
 };

@@ -8,7 +8,7 @@ TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// kinda hacky
 	Parser parser(Tokenizer::Tokenize(expr.append(";"))); // need to append end of stmt
 	parser.currentLineNumber = 1;
-	TNode* exprTree = parser.ParseExpr(nullptr, false);
+	TNode* exprTree = parser.ParseExpr();
 	Uses::ClearData();
 	VarTable::ClearData();
 	ConstTable::ClearData();

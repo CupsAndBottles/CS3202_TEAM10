@@ -176,10 +176,10 @@ void QueryEvaluatorToPKBTest::TestParent()
 	qd.ClearData();
 
 	std::string query = "assign a;while w;Select a such that Parent(w,a)";
-	std::cout << "Test query : " << query << "\n";
+	//std::cout << "Test query : " << query << "\n";
 
-	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));	cout << "valid query\n";
-	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));	cout << "valid evaluate\n";
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));	
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
 
@@ -198,7 +198,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	resultList.clear();
 
 	query = "assign a;while w;Select w such that Parent(w,w)";
-	std::cout << "Test query : " << query << "\n";
+	//std::cout << "Test query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -215,7 +215,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	resultList.clear();
 
 	query = "assign a;stmt s;Select s such that Parent(s,a)";
-	std::cout << "Test query : " << query << "\n";
+	//std::cout << "Test query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -1837,8 +1837,8 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 
 	query = "assign a;Select a pattern a(\" y \",_) such that Uses(a,\" tEst \")";
 
-	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); std::cout << "here1\n";
-	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); std::cout << "here2\n";
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); 
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
@@ -1856,8 +1856,8 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 
 	query = "assign a;Select a pattern a(_,_\"1\"_) such that Modifies(a,\"  tEst\")";
 
-	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); std::cout << "here1\n";
-	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); std::cout << "here2\n";
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
@@ -1872,13 +1872,147 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 
 	query = "assign a;Select a pattern a(_,_\"0\"_) such that Modifies(a,\"  tEst\")";
 
-	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); std::cout << "here1\n";
-	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); std::cout << "here2\n";
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
 	actualResultList.clear();
 	actualResultList.push_back("8");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select a such that Modifies(a,\"tEst\") pattern a(v,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("4");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Modifies(a,\"tEst\") pattern a(v,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("tEst");
+	actualResultList.push_back("x");
+	actualResultList.push_back("y");
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Modifies(a,v) pattern a(v,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("tEst");
+	actualResultList.push_back("x");
+	actualResultList.push_back("y");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Uses(a,v) pattern a(v,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("x");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v1,v2;Select v1 such that Uses(a,v1) pattern a(v2,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("x");
+	actualResultList.push_back("z");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Uses(a,v) pattern a(v,_\"x\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, int(resultList.size()));
+
+	actualResultList.clear();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Uses(a,v) pattern a(v,_\"1\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("x");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;variable v;Select v such that Uses(a,v) pattern a(v,_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("tEst");
+	actualResultList.push_back("x");
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 }

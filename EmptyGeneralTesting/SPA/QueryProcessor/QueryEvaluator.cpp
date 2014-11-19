@@ -125,9 +125,9 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		patternResultVar.assign( s.begin(), s.end() );
 
 
-		cout<< "\nPattern resultVar list: ";
+		/*cout<< "\nPattern resultVar list: ";
 		for(vector<string>::iterator it = patternResultVar.begin(); it != patternResultVar.end(); ++it)
-			cout << *it << " ";
+			cout << *it << " ";*/
 	}
 
 
@@ -168,10 +168,16 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	else if(hasSuchThat && hasPattern) {
 		//both must have answer, if not then empty result
 		if(suchThatHasAnswer && patternHasAnswer && !suchThatResult.empty())
-			resultList = MergeResult(selectResult, suchThatResult);	
+			if(select.synonym.type == VARIABLE && select.synonym.type == patterns.at(0).arg1.syn.type && select.synonym.value == patterns.at(0).arg1.syn.value)
+				resultList = MergeResult(selectResult, suchThatResult, patternResultVar);	
+
+			else resultList = MergeResult(selectResult, suchThatResult);	
 
 		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty()) 
-			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+			if(select.synonym.type == VARIABLE && select.synonym.type == patterns.at(0).arg1.syn.type && select.synonym.value == patterns.at(0).arg1.syn.value)
+				resultList = MergeResult(selectResult, patternResultVar);	
+
+			else copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 
 		else resultList.clear();
 	}
@@ -246,7 +252,6 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 //Evaluate Parent and Parent*
 bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat, bool hasPattern, vector<int> patternResult, Synonym patternSyn, vector<string> &result)
 {
-	cout << "In EvaluateParent\n";
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
 	Synonym arg1Syn = suchThat.arg1.syn;
@@ -376,18 +381,18 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 
 			else if(arg2Syn.value == selectSyn.value)
 			{	
-				cout << "here\n";
+				//cout << "here\n";
 				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 			
 				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
 					if(rel == PARENT) {
 						int parent = Parent::GetParentOf(*i);
-						cout << "here2\n";
+						//cout << "here2\n";
 						if(parent == -1) {}	//if no parent
 
 						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
 							result.push_back(ToString(*i));
-						cout << "here3\n";
+						//cout << "here3\n";
 					}
 
 					else {
@@ -401,7 +406,7 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 						}
 					}
 				}
-				cout << "here4\n";
+				//cout << "here4\n";
 				if(result.empty()) return false;
 
 				return true;

@@ -60,7 +60,7 @@ Select a such that Follows (a, 9)
 5000
 13 - Follows* after 6
 assign a;
-Select a such that Follows (6, a)
+Select a such that Follows* (6, a)
 7, 8, 9
 5000
 14 - Follows*
@@ -151,7 +151,7 @@ Select a such that Uses (a, "z") pattern a ("y", _)
 28 - Uses y with Pattern
 assign a;
 Select a such that Uses (a, "y") pattern a (_, _)
-none
+1, 4, 9
 5000
 29 - Follows 1 with Pattern
 assign a;
@@ -162,14 +162,4 @@ none
 assign a;
 Select a such that Follows* (3, a) pattern a (_, _"x"_)
 4, 6, 9
-5000
-31 - Parent with Pattern
-assign a;
-Select a such that Parent (a, _) pattern a (_, _)
-none
-5000
-32 - Parent* with Pattern
-assign a;
-Select a such that Parent* (a, _) pattern a (_, _)
-none
 5000

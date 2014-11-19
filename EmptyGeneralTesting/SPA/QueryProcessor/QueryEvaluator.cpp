@@ -1,17 +1,17 @@
 #include "QueryEvaluator.h"
-#include "PKB\Parent.h"
-#include "PKB\Follows.h"
-#include "PKB\Modifies.h"
-#include "PKB\Uses.h"
-#include "PKB\StmtTypeTable.h"
-#include "PKB\ConstTable.h"
-#include "PKB\VarTable.h"
-#include "QueryProcessor\QueryPreProcessor.h"
+#include "..\PKB\Parent.h"
+#include "..\PKB\Follows.h"
+#include "..\PKB\Modifies.h"
+#include "..\PKB\Uses.h"
+#include "..\PKB\StmtTypeTable.h"
+#include "..\PKB\ConstTable.h"
+#include "..\PKB\VarTable.h"
+#include "..\QueryProcessor\QueryPreProcessor.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 
 #include <sstream>
-#include "..\AutoTester\source\AbstractWrapper.h"
+#include "..\..\AutoTester\source\AbstractWrapper.h"
 
 using namespace std;
 

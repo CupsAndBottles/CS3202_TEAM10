@@ -2,7 +2,7 @@
 
 #include "cppunit\config\SourcePrefix.h"
 #include "TokenizerTest.h"
-#include "Parser\Tokenizer.h"
+#include "..\SPA\Parser\Tokenizer.h"
 
 #include <vector>
 #include <iostream>

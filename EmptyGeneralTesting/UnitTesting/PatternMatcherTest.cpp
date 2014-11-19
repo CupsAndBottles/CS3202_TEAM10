@@ -1,7 +1,7 @@
 #include "PatternMatcherTest.h"
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\Tokenizer.h"
-#include "QueryProcessor\PatternMatcher.h"
+#include "..\SPA\QueryProcessor\PatternMatcher.h"
 
 TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// use parser to construct a tree to test with

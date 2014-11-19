@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Parser\Token.h"
+#include "..\Parser\Token.h"
 #include "TNode\StmtTNode.h"
 #include "TNode\ProgramTNode.h"
 

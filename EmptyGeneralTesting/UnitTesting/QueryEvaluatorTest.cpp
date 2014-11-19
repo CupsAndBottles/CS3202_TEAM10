@@ -1,6 +1,6 @@
 #include "QueryEvaluatorTest.h"
 #include <cppunit/config/SourcePrefix.h>
-#include "QueryProcessor\QueryEvaluator.h"
+#include "..\SPA\QueryProcessor\QueryEvaluator.h"
 
 void QueryEvaluatorTest::setUp() {};
 void QueryEvaluatorTest::tearDown() {};

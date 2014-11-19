@@ -3,7 +3,7 @@
 #include <cppunit/config/SourcePrefix.h>
 
 #include "QueryDataTest.h"
-#include "QueryProcessor/QueryData.h"
+#include "..\SPA\QueryProcessor\QueryData.h"
 
 #include <vector>
 

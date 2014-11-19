@@ -1,5 +1,5 @@
 #include "ModifiesTest.h"
-#include "PKB\Modifies.h"
+#include "..\SPA\PKB\Modifies.h"
 
 void ModifiesTest::setUp() {
 	Modifies::ClearData();

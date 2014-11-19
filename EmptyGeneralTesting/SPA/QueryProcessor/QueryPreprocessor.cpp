@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include "RelTable.h"
-#include "..\AutoTester\source\AbstractWrapper.h"
+#include "..\..\AutoTester\source\AbstractWrapper.h"
 
 const std::string QueryPreProcessor::de[] = {"stmt", "assign", "while", "variable", "prog_line", "constant"};
 const std::string QueryPreProcessor::rel[] = {"Modifies", "Uses", "Parent", "Parent*", "Follows", "Follows*"};

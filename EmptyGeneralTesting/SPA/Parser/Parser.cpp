@@ -2,10 +2,10 @@
 
 #include "Parser.h"
 #include "Tokenizer.h"
-#include "Program\Program.h"
-#include "Program\TNode\ConstantTNode.h"
-#include "QueryProcessor\Grammar.h"
-#include "..\AutoTester\source\AbstractWrapper.h"
+#include "..\Program\Program.h"
+#include "..\Program\TNode\ConstantTNode.h"
+#include "..\QueryProcessor\Grammar.h"
+#include "..\..\AutoTester\source\AbstractWrapper.h"
 
 #include <iostream>
 #include <fstream>
@@ -148,6 +148,7 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 	if (parentStmt != nullptr) {
 		stmt->SetParent(parentStmt);
 	}
+
 
 	Program::InsertStmt(stmt, stmt->GetLineNumber());
 	return stmt;

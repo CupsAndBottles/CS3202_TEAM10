@@ -15,7 +15,7 @@ protected:
 	bool EvaluateFollows(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
 	bool EvaluateModifies(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
 	bool EvaluateUses(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
-	bool EvaluatePattern(SelectClause, PatternClause, vector<int>&);
+	bool EvaluatePattern(SelectClause, PatternClause, vector<int>&, vector<string>&);
 
 	list<string> MergeResult(vector<string>, vector<string>, vector<string>);
 	list<string> MergeResult(vector<string>, vector<string>);

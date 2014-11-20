@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -11,40 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PKB\ConstTable.cpp" />
-    <ClCompile Include="Program\Program.cpp" />
-    <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
-    <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
-    <ClCompile Include="Program\TNode\BinaryTNode.cpp" />
-    <ClCompile Include="Program\TNode\ConditionalTNode.cpp" />
-    <ClCompile Include="Program\TNode\ConstantTNode.cpp" />
-    <ClCompile Include="Program\TNode\ContainerTNode.cpp" />
-    <ClCompile Include="Program\TNode\ProcedureTNode.cpp" />
-    <ClCompile Include="Program\TNode\ProgramTNode.cpp" />
-    <ClCompile Include="Program\TNode\StmtListTNode.cpp" />
-    <ClCompile Include="Program\TNode\StmtTNode.cpp" />
-    <ClCompile Include="Program\TNode\TNode.cpp" />
-    <ClCompile Include="Program\TNode\VariableTNode.cpp" />
-    <ClCompile Include="Program\TNode\WhileTNode.cpp" />
-    <ClCompile Include="PKB\Follows.cpp" />
-    <ClCompile Include="PKB\Modifies.cpp" />
-    <ClCompile Include="PKB\Parent.cpp" />
-    <ClCompile Include="Parser\Parser.cpp" />
-    <ClCompile Include="PKB\StmtTypeTable.cpp" />
-    <ClCompile Include="Parser\Token.cpp" />
-    <ClCompile Include="Parser\Tokenizer.cpp" />
-    <ClCompile Include="PKB\Uses.cpp" />
-    <ClCompile Include="PKB\VarTable.cpp" />
-    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
-    <ClCompile Include="QueryProcessor\QueryData.cpp" />
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
-    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\QueryPreProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\RelTable.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Exception\IndexNotFoundException.h" />
+    <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="Parser\Token.h" />
+    <ClInclude Include="Parser\Tokenizer.h" />
     <ClInclude Include="PKB\ConstTable.h" />
+    <ClInclude Include="PKB\Follows.h" />
+    <ClInclude Include="PKB\Modifies.h" />
+    <ClInclude Include="PKB\Parent.h" />
+    <ClInclude Include="PKB\StmtTypeTable.h" />
+    <ClInclude Include="PKB\Uses.h" />
+    <ClInclude Include="PKB\VarTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\AssignmentTNode.h" />
     <ClInclude Include="Program\TNode\AtomicTNode.h" />
@@ -59,27 +36,45 @@
     <ClInclude Include="Program\TNode\TNode.h" />
     <ClInclude Include="Program\TNode\VariableTNode.h" />
     <ClInclude Include="Program\TNode\WhileTNode.h" />
-    <ClInclude Include="PKB\Follows.h" />
-    <ClInclude Include="Exception\IndexNotFoundException.h" />
-    <ClInclude Include="PKB\Modifies.h" />
-    <ClInclude Include="PKB\Parent.h" />
-    <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="QueryProcessor\Grammar.h" />
     <ClInclude Include="QueryProcessor\PatternMatcher.h" />
     <ClInclude Include="QueryProcessor\QueryData.h" />
     <ClInclude Include="QueryProcessor\QueryEvaluator.h" />
+    <ClInclude Include="QueryProcessor\QueryPreProcessor.h" />
     <ClInclude Include="QueryProcessor\QueryProcessor.h" />
-    <ClInclude Include="QueryProcessor\QueryPreprocessor.h" />
     <ClInclude Include="QueryProcessor\RelTable.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="PKB\StmtTypeTable.h" />
-    <ClInclude Include="Parser\Tokenizer.h" />
-    <ClInclude Include="PKB\Token.h" />
-    <ClInclude Include="PKB\Uses.h" />
-    <ClInclude Include="PKB\VarTable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="SPA.rc" />
+    <ClCompile Include="Parser\Parser.cpp" />
+    <ClCompile Include="Parser\Token.cpp" />
+    <ClCompile Include="Parser\Tokenizer.cpp" />
+    <ClCompile Include="PKB\ConstTable.cpp" />
+    <ClCompile Include="PKB\Follows.cpp" />
+    <ClCompile Include="PKB\Modifies.cpp" />
+    <ClCompile Include="PKB\Parent.cpp" />
+    <ClCompile Include="PKB\StmtTypeTable.cpp" />
+    <ClCompile Include="PKB\Uses.cpp" />
+    <ClCompile Include="PKB\VarTable.cpp" />
+    <ClCompile Include="Program\Program.cpp" />
+    <ClCompile Include="Program\TNode\AssignmentTNode.cpp" />
+    <ClCompile Include="Program\TNode\AtomicTNode.cpp" />
+    <ClCompile Include="Program\TNode\BinaryTNode.cpp" />
+    <ClCompile Include="Program\TNode\ConditionalTNode.cpp" />
+    <ClCompile Include="Program\TNode\ConstantTNode.cpp" />
+    <ClCompile Include="Program\TNode\ContainerTNode.cpp" />
+    <ClCompile Include="Program\TNode\ProcedureTNode.cpp" />
+    <ClCompile Include="Program\TNode\ProgramTNode.cpp" />
+    <ClCompile Include="Program\TNode\StmtListTNode.cpp" />
+    <ClCompile Include="Program\TNode\StmtTNode.cpp" />
+    <ClCompile Include="Program\TNode\TNode.cpp" />
+    <ClCompile Include="Program\TNode\VariableTNode.cpp" />
+    <ClCompile Include="Program\TNode\WhileTNode.cpp" />
+    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
+    <ClCompile Include="QueryProcessor\QueryData.cpp" />
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
+    <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
+    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
+    <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
@@ -90,14 +85,12 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -115,26 +108,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>$(SolutionDir)lib\AutoTester_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
     <PostBuildEvent>
       <Command>
       </Command>
-    </PostBuildEvent>
-    <PostBuildEvent>
       <Message>
       </Message>
     </PostBuildEvent>
-    <Lib>
-      <AdditionalDependencies>$(SolutionDir)lib\AutoTester_debug.lib</AdditionalDependencies>
-    </Lib>
-    <Bscmake>
-      <PreserveSBR>true</PreserveSBR>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -143,7 +129,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)SPA;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

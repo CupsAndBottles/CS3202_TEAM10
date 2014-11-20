@@ -1,14 +1,14 @@
 #include "PatternMatcherTest.h"
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\Tokenizer.h"
-#include "QueryProcessor\PatternMatcher.h"
+#include "..\SPA\QueryProcessor\PatternMatcher.h"
 
 TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// use parser to construct a tree to test with
 	// kinda hacky
 	Parser parser(Tokenizer::Tokenize(expr.append(";"))); // need to append end of stmt
 	parser.currentLineNumber = 1;
-	TNode* exprTree = parser.ParseExpr(nullptr, false);
+	TNode* exprTree = parser.ParseExpr();
 	Uses::ClearData();
 	VarTable::ClearData();
 	ConstTable::ClearData();

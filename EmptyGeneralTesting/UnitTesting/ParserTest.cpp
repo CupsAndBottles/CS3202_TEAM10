@@ -1,5 +1,5 @@
 #include "ParserTest.h"
-#include "Program\Program.h"
+#include "..\SPA\Program\Program.h"
 
 #include <fstream>
 

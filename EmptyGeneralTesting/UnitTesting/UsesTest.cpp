@@ -1,6 +1,6 @@
 #include "UsesTest.h"
-#include "PKB\Uses.h"
-#include "PKB\Parent.h"
+#include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\Parent.h"
 
 void UsesTest::setUp() { 
 	Uses::ClearData();

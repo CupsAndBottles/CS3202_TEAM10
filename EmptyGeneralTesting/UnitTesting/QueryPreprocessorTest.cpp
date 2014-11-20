@@ -1,6 +1,6 @@
 #include "QueryPreProcessorTest.h"
 #include <cppunit/config/SourcePrefix.h>
-#include "QueryProcessor\QueryPreProcessor.h"
+#include "..\SPA\QueryProcessor\QueryPreProcessor.h"
 
 using namespace std;
 

@@ -1,17 +1,17 @@
 #include "QueryEvaluator.h"
-#include "PKB\Parent.h"
-#include "PKB\Follows.h"
-#include "PKB\Modifies.h"
-#include "PKB\Uses.h"
-#include "PKB\StmtTypeTable.h"
-#include "PKB\ConstTable.h"
-#include "PKB\VarTable.h"
-#include "QueryProcessor\QueryPreProcessor.h"
+#include "..\PKB\Parent.h"
+#include "..\PKB\Follows.h"
+#include "..\PKB\Modifies.h"
+#include "..\PKB\Uses.h"
+#include "..\PKB\StmtTypeTable.h"
+#include "..\PKB\ConstTable.h"
+#include "..\PKB\VarTable.h"
+#include "..\QueryProcessor\QueryPreProcessor.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 
 #include <sstream>
-#include "..\AutoTester\source\AbstractWrapper.h"
+#include "..\..\AutoTester\source\AbstractWrapper.h"
 
 using namespace std;
 
@@ -23,6 +23,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	vector<string> usesResult;
 	vector<string> suchThatResult;
 	vector<int> patternResult;
+	vector<string> patternResultVar;
 	vector<string> selectResult;
 
 	bool suchThatHasAnswer = false, patternHasAnswer = false;
@@ -41,7 +42,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	if(!patterns.empty()) 
 	{
 		PatternClause pattern = patterns.at(0);
-		patternHasAnswer = EvaluatePattern(select, pattern, patternResult);
+		patternHasAnswer = EvaluatePattern(select, pattern, patternResult, patternResultVar);
 	}
 	
 	else hasPattern = false;
@@ -118,6 +119,17 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 	//merge select, such that , pattern result and pass back to caller
 
+	if(!patternResultVar.empty()) {
+
+		set<string> s( patternResultVar.begin(), patternResultVar.end() );
+		patternResultVar.assign( s.begin(), s.end() );
+
+
+		/*cout<< "\nPattern resultVar list: ";
+		for(vector<string>::iterator it = patternResultVar.begin(); it != patternResultVar.end(); ++it)
+			cout << *it << " ";*/
+	}
+
 
 	vector<string> patternResultString;
 
@@ -140,10 +152,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	}
 
 	else if(!hasSuchThat && hasPattern) {
-		if(patternHasAnswer && !patternResult.empty()) {
+		if(patternHasAnswer && (!patternResult.empty() || !patternResultVar.empty())) {
 			if(patterns.at(0).synonym.value == select.synonym.value)
 				resultList = MergeResult(selectResult, patternResultString);	
-			
+
+			else if(patterns.at(0).arg1.syn.value == select.synonym.value)
+				resultList = MergeResult(selectResult, patternResultVar);	
+
 			else copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 		}
 		
@@ -153,10 +168,16 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	else if(hasSuchThat && hasPattern) {
 		//both must have answer, if not then empty result
 		if(suchThatHasAnswer && patternHasAnswer && !suchThatResult.empty())
-			resultList = MergeResult(selectResult, suchThatResult);	
+			if(select.synonym.type == VARIABLE && select.synonym.type == patterns.at(0).arg1.syn.type && select.synonym.value == patterns.at(0).arg1.syn.value)
+				resultList = MergeResult(selectResult, suchThatResult, patternResultVar);	
+
+			else resultList = MergeResult(selectResult, suchThatResult);	
 
 		else if(suchThatHasAnswer && patternHasAnswer && suchThatResult.empty()) 
-			copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
+			if(select.synonym.type == VARIABLE && select.synonym.type == patterns.at(0).arg1.syn.type && select.synonym.value == patterns.at(0).arg1.syn.value)
+				resultList = MergeResult(selectResult, patternResultVar);	
+
+			else copy(selectResult.begin(), selectResult.end(), back_inserter(resultList));
 
 		else resultList.clear();
 	}
@@ -231,7 +252,6 @@ vector<string> QueryEvaluator::EvaluateSelect(SelectClause select)
 //Evaluate Parent and Parent*
 bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat, bool hasPattern, vector<int> patternResult, Synonym patternSyn, vector<string> &result)
 {
-	cout << "In EvaluateParent\n";
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
 	Synonym arg1Syn = suchThat.arg1.syn;
@@ -361,18 +381,18 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 
 			else if(arg2Syn.value == selectSyn.value)
 			{	
-				cout << "here\n";
+				//cout << "here\n";
 				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 			
 				for(vector<int>::iterator i = stmts.begin(); i != stmts.end(); ++i) {
 					if(rel == PARENT) {
 						int parent = Parent::GetParentOf(*i);
-						cout << "here2\n";
+						//cout << "here2\n";
 						if(parent == -1) {}	//if no parent
 
 						else if(StmtTypeTable::CheckIfStmtOfType(parent, arg1Syn.type))
 							result.push_back(ToString(*i));
-						cout << "here3\n";
+						//cout << "here3\n";
 					}
 
 					else {
@@ -386,7 +406,7 @@ bool QueryEvaluator::EvaluateParent(SelectClause select, SuchThatClause suchThat
 						}
 					}
 				}
-				cout << "here4\n";
+				//cout << "here4\n";
 				if(result.empty()) return false;
 
 				return true;
@@ -1346,7 +1366,7 @@ bool QueryEvaluator::EvaluateModifies(SelectClause select, SuchThatClause suchTh
 }
 
 //Evaluate Pattern
-bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern, vector<int> &result)
+bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern, vector<int> &result, vector<string> &resultVar)
 {
 	Synonym selectSyn = select.synonym;
 	Synonym patternSyn = pattern.synonym;
@@ -1363,7 +1383,7 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 		{
 			vector<int> tempResult;
 
-			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
+			if(arg1Type == UNDERSCORE)
 			{
 				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 
@@ -1372,6 +1392,29 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 				
 				//if(patternSyn.value == selectSyn.value)
 					result = tempResult;
+
+				if(tempResult.empty())	return false;
+				else					return true;
+			}
+
+			else if(arg1Type == SYNONYM)
+			{
+				vector<int> stmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
+
+				tempResult = stmts;
+				//cout<<"\n\nHERE\n\n";
+
+				for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+					vector<int> var = Modifies::GetVarModifiedByStmt(*it);
+
+					if(!var.empty()){
+						resultVar.push_back(VarTable::GetVarName(var.at(0)));
+						//cout<<"\nvar name: "<<VarTable::GetVarName(var.at(0)) <<"\n";
+
+					}
+				}			
+
+				result = tempResult;
 
 				if(tempResult.empty())	return false;
 				else					return true;
@@ -1435,14 +1478,28 @@ bool QueryEvaluator::EvaluatePattern(SelectClause select, PatternClause pattern,
 			//for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
 				//rightResult.push_back(*it);
 			
-			if(arg1Type == UNDERSCORE || arg1Type == SYNONYM)
+			if(arg1Type == UNDERSCORE)
 			{
 				tempResult = rightResult;
 
-				//if(patternSyn.value == selectSyn.value)
-					result = tempResult;
+				result = tempResult;
 
 				if(tempResult.empty())	return false;
+				else					return true;
+			}
+
+			else if(arg1Type == SYNONYM)
+			{
+				for(vector<int>::iterator it = rightResult.begin(); it != rightResult.end(); ++it) {
+					vector<int> var = Modifies::GetVarModifiedByStmt(*it);
+
+					if(!var.empty())
+						resultVar.push_back(VarTable::GetVarName(var.at(0)));
+				}
+
+				result = rightResult;
+
+				if(result.empty())	return false;
 				else					return true;
 			}
 

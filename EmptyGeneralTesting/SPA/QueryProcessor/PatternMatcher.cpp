@@ -1,12 +1,12 @@
 #include <string>
 #include <vector>
 #include "PatternMatcher.h"
-#include "../Program/TNode/TNode.h"
-#include "../Program/TNode/ProcedureTNode.h"
-#include "../Program/TNode/AssignmentTNode.h"
-#include "../Program/TNode/WhileTNode.h"
-#include "../Program/Program.h"
-#include "../PKB/StmtTypeTable.h"
+#include "..\Program\TNode\TNode.h"
+#include "..\Program\TNode\ProcedureTNode.h"
+#include "..\Program\TNode\AssignmentTNode.h"
+#include "..\Program\TNode\WhileTNode.h"
+#include "..\Program\Program.h"
+#include "..\PKB\StmtTypeTable.h"
 
 #include <iostream>
 #include <stdio.h>

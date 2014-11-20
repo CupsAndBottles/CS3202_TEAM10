@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cppunit\extensions\HelperMacros.h"
-#include "Parser\Parser.h"
+#include "..\SPA\Parser\Parser.h"
 
 class ParserTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(ParserTest);

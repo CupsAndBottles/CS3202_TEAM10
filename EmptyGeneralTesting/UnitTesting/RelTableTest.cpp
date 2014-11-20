@@ -1,6 +1,6 @@
 #include "RelTableTest.h"
 #include <cppunit/config/SourcePrefix.h>
-#include "QueryProcessor/RelTable.h"
+#include "..\SPA\QueryProcessor/RelTable.h"
 
 using namespace std;
 

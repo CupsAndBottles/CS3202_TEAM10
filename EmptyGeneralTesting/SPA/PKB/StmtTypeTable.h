@@ -6,7 +6,7 @@
 #include <map>
 #include <set>
 
-#include "QueryProcessor/Grammar.h"
+#include "..\QueryProcessor\Grammar.h"
 
 using namespace std;
 

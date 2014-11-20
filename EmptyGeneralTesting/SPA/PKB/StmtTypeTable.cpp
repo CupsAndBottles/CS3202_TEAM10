@@ -1,7 +1,7 @@
 #include <utility>
 #include <map>
 #include <set>
-#include "QueryProcessor/Grammar.h"
+#include "..\QueryProcessor\Grammar.h"
 #include "StmtTypeTable.h"
 
 using namespace std;

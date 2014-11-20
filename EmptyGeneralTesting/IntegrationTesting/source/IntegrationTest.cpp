@@ -23,8 +23,5 @@ bool wasSucessful = runner.run();
 
 //getchar();
 
-	char* c = (char*) malloc(10 * sizeof (char));
-	scanf (c, "%c");
-
 return wasSucessful ? 0 : 1;
 }

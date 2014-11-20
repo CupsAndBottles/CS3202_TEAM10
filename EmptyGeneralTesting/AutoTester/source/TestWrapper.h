@@ -7,8 +7,8 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
-#include "Parser\Parser.h"
-#include "QueryProcessor\QueryProcessor.h"
+#include "..\..\SPA\Parser\Parser.h"
+#include "..\..\SPA\QueryProcessor\QueryProcessor.h"
 
 #include <fstream>
 #include <sstream>

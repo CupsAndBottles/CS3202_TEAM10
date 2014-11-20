@@ -2,10 +2,10 @@
 
 #include "Parser.h"
 #include "Tokenizer.h"
-#include "Program\Program.h"
-#include "Program\TNode\ConstantTNode.h"
-#include "QueryProcessor\Grammar.h"
-#include "..\AutoTester\source\AbstractWrapper.h"
+#include "..\Program\Program.h"
+#include "..\Program\TNode\ConstantTNode.h"
+#include "..\QueryProcessor\Grammar.h"
+#include "..\..\AutoTester\source\AbstractWrapper.h"
 
 #include <iostream>
 #include <fstream>
@@ -39,6 +39,10 @@ Token Parser::ConsumeTopToken() {
 	return token;
 }
 
+Token Parser::PeekAtTopToken() {
+	return tokens.front();
+}
+
 bool Parser::TopTokenIsType(Token::Type type) {
 	return (tokens.front().type == type);
 }
@@ -59,7 +63,7 @@ Token Parser::ConsumeTopTokenOfType(Token::Type type) {
 int getPrecedenceValue(Token::Type type) {
 	switch (type) {
 		case Token::END_OF_STMT:
-			return 0;
+			return -1;
 		case Token::PLUS:
 			return 1;
 		default:
@@ -119,7 +123,7 @@ StmtListTNode* Parser::ParseStmtList(string name, StmtTNode* parent) {
 }
 
 StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
-	Token firstToken = tokens.front(); // peek at next token
+	Token firstToken = PeekAtTopToken(); // peek at next token
 	StmtTNode* stmt;
 	currentLineNumber++;
 
@@ -145,6 +149,7 @@ StmtTNode* Parser::ParseStmt(StmtTNode* parentStmt) {
 		stmt->SetParent(parentStmt);
 	}
 
+
 	Program::InsertStmt(stmt, stmt->GetLineNumber());
 	return stmt;
 }
@@ -156,77 +161,74 @@ AssignmentTNode* Parser::ParseAssignmentStmt() {
 	VariableTNode* LHS = new VariableTNode(varToken.content);
 	AssignmentTNode* assignmentStmt = new AssignmentTNode(currentLineNumber);
 	Modifies::SetStmtModifiesVar(currentLineNumber, VarTable::InsertVar(varToken.content));
-	TNode* RHS = ParseExpr(nullptr, false);
+	TNode* RHS = ParseExpr();
 
 	assignmentStmt->BuildAssignmentNode(LHS, RHS);
 
 	return assignmentStmt;
 }
 
-TNode* Parser::ParseExpr(TNode* LHS, bool endOfStmt) {
+TNode* Parser::ParseExpr() {
+	Token currentToken = PeekAtTopToken(); // peek
+	TNode* result = nullptr;
+	while (currentToken.type != Token::END_OF_STMT) {
+		if (result == nullptr) {
+			result = ParseAtomicToken();
+
+			if (PeekAtTopToken().type == Token::END_OF_STMT) { // peek at next token
+				return result;
+			}
+		}
+		result = ParseExpr(result, false);
+		currentToken = PeekAtTopToken();
+	}
+	return result;
+}
+
+TNode* Parser::ParseExpr(TNode* LHS, bool isBracket) {
 	// if next op is of lower precedence, construct and return
 	// if next op is of equal precedence, construct and loop
 	// if next op is of higher precedence, perform recursive call
 	// if bracket, build bracket and return
 
-	if (endOfStmt) {
-		// base case
+	if (PeekAtTopToken().type == Token::END_OF_STMT_LIST) {
 		return LHS;
 	}
+	
+	Token op1 = ConsumeTopToken();
+	TNode* RHS = ParseAtomicToken();
+	Token nextOp = PeekAtTopToken(); // peek
+	int comparison = compare(op1.type, nextOp.type);
 
-	Token currentToken = ConsumeTopToken();
-
-	if (LHS == nullptr) {
-		switch (currentToken.type) {
-			case Token::IDENTIFIER:
-				LHS = new VariableTNode(currentToken.content);
-				Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
-				break;
-			case Token::NUMBER:
-				LHS = new ConstantTNode(currentToken.content);
-				ConstTable::SetStmtUsesConst(currentLineNumber, dynamic_cast<ConstantTNode*>(LHS)->GetValue());
-				break;
-			default:
-				SyntaxError();
-		}
-
-		if (tokens[0].type == Token::END_OF_STMT) { // peek at next token
-			return ParseExpr(LHS, true);
-		} else {
-			return ParseExpr(LHS, endOfStmt);
-		}
-
-	} else {
-		Token currentOp = currentToken;
-		currentToken = ConsumeTopToken();
-		TNode* RHS;
-		switch (currentToken.type) {
-			case Token::IDENTIFIER:
-				RHS = new VariableTNode(currentToken.content);
-				Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
-				break;
-			case Token::NUMBER:
-				RHS = new ConstantTNode(currentToken.content);
-				ConstTable::SetStmtUsesConst(currentLineNumber, dynamic_cast<ConstantTNode*>(RHS)->GetValue());
-				break;
-			default:
-				SyntaxError();
-		}
-		Token nextOp = tokens[0]; // peek
-		int comparison = compare(currentOp.type, nextOp.type);
-		if (nextOp.type == Token::END_OF_STMT) {
-			endOfStmt = true;
-		}
-
-		if (comparison > 0) { // nextOp is of higher precedence than currentOp
-			RHS = ParseExpr(RHS, endOfStmt);
-		}
-
-		BinaryTNode* expression = new BinaryTNode(currentOp.content);
-		expression->BuildBinaryNode(LHS, RHS);
-		LHS = expression;
-		return ParseExpr(LHS, endOfStmt);
+	if (comparison < 0) { // nextOp is of lower precedence than currentOp
+		RHS = ParseExpr(RHS, isBracket);
 	}
+	BinaryTNode* expression = new BinaryTNode(op1.content);
+	expression->BuildBinaryNode(LHS, RHS);
+	if (comparison > 0) { // nextOp is of higher precedence than currentOp
+		return expression;
+	} else { // equal precedence
+		return ParseExpr(expression, isBracket);
+	}
+}
+
+AtomicTNode* Parser::ParseAtomicToken() {
+	Token currentToken = ConsumeTopToken(); // peek
+	AtomicTNode* result;
+	switch (currentToken.type) {
+		case Token::IDENTIFIER:
+			result = new VariableTNode(currentToken.content);
+			Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
+			break;
+		case Token::NUMBER:
+			result = new ConstantTNode(currentToken.content);
+			ConstTable::SetStmtUsesConst(currentLineNumber, dynamic_cast<ConstantTNode*>(result)->GetValue());
+			break;
+		default:
+			SyntaxError();
+	}
+
+	return result;
 }
 
 WhileTNode* Parser::ParseWhileStmt() {

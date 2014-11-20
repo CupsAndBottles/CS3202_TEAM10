@@ -2,14 +2,14 @@
 
 #include "ParserToPKBTest.h"
 
-#include "Parser\Parser.h"
-#include "PKB\VarTable.h"
-#include "PKB\StmtTypeTable.h"
-#include "PKB\Follows.h"
-#include "PKB\Parent.h"
-#include "PKB\Modifies.h"
-#include "PKB\Uses.h"
-#include "Program\Program.h"
+#include "..\SPA\Parser\Parser.h"
+#include "..\SPA\PKB\VarTable.h"
+#include "..\SPA\PKB\StmtTypeTable.h"
+#include "..\SPA\PKB\Follows.h"
+#include "..\SPA\PKB\Parent.h"
+#include "..\SPA\PKB\Modifies.h"
+#include "..\SPA\PKB\Uses.h"
+#include "..\SPA\Program\Program.h"
 
 #include <iostream>
 #include <string>

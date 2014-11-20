@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-#include "../Program/TNode/TNode.h"
+#include "..\Program\TNode\TNode.h"
 
 using namespace std;
 

@@ -7,6 +7,7 @@ using namespace std;
 
 map <int, vector<int> > Modifies::stmtToVarTable;
 map <int, vector<int> > Modifies::varToStmtTable;
+int Modifies::sizeOfModifies;
 
 // empty constructor
 Modifies::Modifies() {};
@@ -16,10 +17,16 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
     if (!IsStmtModifyingVar(stmtModifying, varModified)) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
+
+		sizeOfModifies++;
+
     }
 
-    if (Parent::GetParentOf(stmtModifying) != -1) 
+    if (Parent::GetParentOf(stmtModifying) != -1) {
            SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
+
+	}
+
 }
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
@@ -73,20 +80,14 @@ bool Modifies::HasAnyModifies() {
 }
 
 int Modifies::SizeOfModifies() {
-    int sum = 0;
-    
-    for(map<int, vector<int> >::iterator it = stmtToVarTable.begin(); it != stmtToVarTable.end(); it++) {
-        sum += it->second.size();
+	return sizeOfModifies;
 
-	}
-    
-	return sum;
-	// try Map::size() method
 }
 
 void Modifies::ClearData() {
 	stmtToVarTable.clear();
 	varToStmtTable.clear();
+	sizeOfModifies = 0;
 
 }
 

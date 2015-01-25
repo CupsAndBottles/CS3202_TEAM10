@@ -7,6 +7,7 @@ using namespace std;
 
 map <int, vector<int> > Uses::stmtToVarTable;
 map <int, vector<int> > Uses::varToStmtTable;
+int Uses::sizeOfUses;
 
 // empty constructor
 Uses::Uses() {};
@@ -16,12 +17,16 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     if (!IsStmtUsingVar(stmtUsing, varUsed)) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
+
+		sizeOfUses++;
+
     }
 
     if (Parent::GetParentOf(stmtUsing) != -1) {
         SetStmtUsesVar(Parent::GetParentOf(stmtUsing), varUsed);
 
 	}
+
 }
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
@@ -72,19 +77,14 @@ bool Uses::HasAnyUses() {
 }
 
 int Uses::SizeOfUses() {
-    int sum = 0;
+     return sizeOfUses;
 
-    for(map<int, vector<int> >::iterator it=stmtToVarTable.begin(); it != stmtToVarTable.end(); it++) {
-		sum += it->second.size();
-
-	}
-    
-	return sum;
 }
 
 void Uses::ClearData() {
     stmtToVarTable.clear();
     varToStmtTable.clear();
+	sizeOfUses = 0;
 
 }
 

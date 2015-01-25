@@ -34,7 +34,7 @@ class Modifies {
     private:
         static map <int, vector<int> > stmtToVarTable;
         static map <int, vector<int> > varToStmtTable;
-        // insert other private methods here
+		static int sizeOfModifies;
 
 };
 #endif

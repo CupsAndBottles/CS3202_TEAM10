@@ -34,6 +34,7 @@ public:
 private:
 	static map <int, vector<int> > stmtToVarTable;
     static map <int, vector<int> > varToStmtTable;
+	static int sizeOfUses;
 
 };
 #endif

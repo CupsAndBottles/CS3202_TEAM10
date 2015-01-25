@@ -1,20 +1,16 @@
 #include <utility>
 #include <map>
-#include <vector>
+//#include <vector>
 #include "Parent.h"
 #include "Modifies.h"
 
 using namespace std;
 
-bool HasAnyModifies();
-int SizeOfModifies();
 map <int, vector<int> > Modifies::StmtToVarTable;
 map <int, vector<int> > Modifies::VarToStmtTable;
 
 // empty constructor
-Modifies::Modifies() {
-
-};
+Modifies::Modifies() {};
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
@@ -28,25 +24,47 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 }
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-    if (StmtToVarTable.count(stmtModifying)!=0)
-        for (int i=0; i<StmtToVarTable.at(stmtModifying).size(); i++)
-            if (StmtToVarTable.at(stmtModifying).at(i) == varModified)
+    if (StmtToVarTable.count(stmtModifying) != 0) {
+		for (int i = 0; i < StmtToVarTable.at(stmtModifying).size(); i++) {
+            if (StmtToVarTable.at(stmtModifying).at(i) == varModified) {
                 return true;
-    return false;
+			}
+		}
+	}
+    
+	return false;
+
+	// try printing out # of variables that 'stmtModifying' has, 
+	// it should be 1 all the time
 }
 
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {
-    vector<int> ret;
-    if (VarToStmtTable.count(varModified)==0)
-        return ret;
-    else return VarToStmtTable.at(varModified);
+    
+    if (VarToStmtTable.count(varModified) == 0) {
+		vector<int> stmtsModifyingVarModified;
+		return stmtsModifyingVarModified;
+
+	}
+
+    else { 
+		return VarToStmtTable.at(varModified);
+
+	}
 }
 
 vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
-    vector<int> ret;
-    if (StmtToVarTable.count(stmtModifying)==0)
-        return ret;
-    else return StmtToVarTable.at(stmtModifying);
+    
+    if (StmtToVarTable.count(stmtModifying) == 0) {
+		vector<int> varsModifyiedByStmtModifying;
+		return varsModifyiedByStmtModifying;
+
+	}
+    
+	else {
+		return StmtToVarTable.at(stmtModifying);
+
+	}
+
 }
 
 
@@ -58,9 +76,13 @@ bool Modifies::HasAnyModifies() {
 int Modifies::SizeOfModifies() {
     int sum = 0;
     
-    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++)
+    for(map<int, vector<int> >::iterator it = StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++) {
         sum += it->second.size();
-    return sum;
+
+	}
+    
+	return sum;
+	// try Map::size() method
 }
 
 void Modifies::ClearData() {

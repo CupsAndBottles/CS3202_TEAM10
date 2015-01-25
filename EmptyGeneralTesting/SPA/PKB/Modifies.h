@@ -2,7 +2,7 @@
 #define MODIFIES_H
 
 #include <utility>
-#include <vector>
+//#include <vector>
 #include <map>
 #include <set>
 
@@ -18,14 +18,11 @@ class Modifies {
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
         static bool IsStmtModifyingVar(int stmtModifying, int varModified);
         static vector<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
-        static vector<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
-		// Select s such that Modifies(w, "x")
-		// 1. go VarTable, GetIndexOf("x")
-		// 2. GetStmtModifyingVar(index of x)
-		// 3. StmtTypeTable, filter w
-
+        static vector<int> GetVarModifiedByStmt(int stmtModifying);		// Modifies (2, _)
+		
         static bool HasAnyModifies();
         static int SizeOfModifies();
+
 		static void ClearData();
 
         // APIs out of scope of assigment 4

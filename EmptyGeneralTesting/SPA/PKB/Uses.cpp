@@ -1,8 +1,8 @@
 #include <utility>
 #include <map>
-#include <vector>
-#include "Uses.h"
+//#include <vector>
 #include "Parent.h"
+#include "Uses.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ map <int, vector<int> > Uses::StmtToVarTable;
 map <int, vector<int> > Uses::VarToStmtTable;
 
 // empty constructor
-Uses::Uses() {}
+Uses::Uses() {};
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
@@ -19,30 +19,49 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
         VarToStmtTable[varUsed].push_back(stmtUsing);
     }
 
-    if (Parent::GetParentOf(stmtUsing) != -1)
+    if (Parent::GetParentOf(stmtUsing) != -1) {
         SetStmtUsesVar(Parent::GetParentOf(stmtUsing), varUsed);
+
+	}
 }
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-    if (StmtToVarTable.count(stmtUsing)!=0)
-        for (int i=0; i<StmtToVarTable.at(stmtUsing).size(); i++)
-            if (StmtToVarTable.at(stmtUsing).at(i) == varUsed)
+    if (StmtToVarTable.count(stmtUsing) != 0) {
+        for (int i = 0; i < StmtToVarTable.at(stmtUsing).size(); i++) {
+            if (StmtToVarTable.at(stmtUsing).at(i) == varUsed) {
                 return true;
+			}
+		}
+	}
+
     return false;
 }
 
 vector<int> Uses::GetStmtUsingVar(int varUsed) {
-    vector<int> ret;
-    if (VarToStmtTable.count(varUsed)==0)
-        return ret;
-    else return VarToStmtTable.at(varUsed);
+  
+    if (VarToStmtTable.count(varUsed) == 0) {
+		vector<int> stmtsUsingVarUsed;
+		return stmtsUsingVarUsed;
+	}
+
+    else {
+		return VarToStmtTable.at(varUsed);
+	}
 }
 
 vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
-    vector<int> ret;
-    if (StmtToVarTable.count(stmtUsing)==0)
-        return ret;
-    else return StmtToVarTable.at(stmtUsing);
+    
+	if (StmtToVarTable.count(stmtUsing) == 0) {
+		vector<int> varsUsedByStmtUsing;
+		return varsUsedByStmtUsing;
+
+	}
+		
+    else {
+		return StmtToVarTable.at(stmtUsing);
+
+	}
+
 }
 
 
@@ -54,15 +73,18 @@ bool Uses::HasAnyUses() {
 int Uses::SizeOfUses() {
     int sum = 0;
 
-    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end();        it++)
-    sum += it->second.size();
-    return sum;
+    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++) {
+		sum += it->second.size();
+
+	}
+    
+	return sum;
 }
 
-void Uses::ClearData() 
-{
+void Uses::ClearData() {
     StmtToVarTable.clear();
     VarToStmtTable.clear();
+
 }
 
 

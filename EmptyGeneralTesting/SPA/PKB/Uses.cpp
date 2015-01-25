@@ -1,13 +1,12 @@
 #include <utility>
 #include <map>
-//#include <vector>
 #include "Parent.h"
 #include "Uses.h"
 
 using namespace std;
 
-map <int, vector<int> > Uses::StmtToVarTable;
-map <int, vector<int> > Uses::VarToStmtTable;
+map <int, vector<int> > Uses::stmtToVarTable;
+map <int, vector<int> > Uses::varToStmtTable;
 
 // empty constructor
 Uses::Uses() {};
@@ -15,8 +14,8 @@ Uses::Uses() {};
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     if (!IsStmtUsingVar(stmtUsing, varUsed)) {
-        StmtToVarTable[stmtUsing].push_back(varUsed);
-        VarToStmtTable[varUsed].push_back(stmtUsing);
+        stmtToVarTable[stmtUsing].push_back(varUsed);
+        varToStmtTable[varUsed].push_back(stmtUsing);
     }
 
     if (Parent::GetParentOf(stmtUsing) != -1) {
@@ -26,9 +25,9 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 }
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-    if (StmtToVarTable.count(stmtUsing) != 0) {
-        for (int i = 0; i < StmtToVarTable.at(stmtUsing).size(); i++) {
-            if (StmtToVarTable.at(stmtUsing).at(i) == varUsed) {
+    if (stmtToVarTable.count(stmtUsing) != 0) {
+        for (int i = 0; i < stmtToVarTable.at(stmtUsing).size(); i++) {
+            if (stmtToVarTable.at(stmtUsing).at(i) == varUsed) {
                 return true;
 			}
 		}
@@ -39,26 +38,28 @@ bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
 
 vector<int> Uses::GetStmtUsingVar(int varUsed) {
   
-    if (VarToStmtTable.count(varUsed) == 0) {
+    if (varToStmtTable.count(varUsed) == 0) {
 		vector<int> stmtsUsingVarUsed;
 		return stmtsUsingVarUsed;
+
 	}
 
     else {
-		return VarToStmtTable.at(varUsed);
+		return varToStmtTable.at(varUsed);
+
 	}
 }
 
 vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
     
-	if (StmtToVarTable.count(stmtUsing) == 0) {
+	if (stmtToVarTable.count(stmtUsing) == 0) {
 		vector<int> varsUsedByStmtUsing;
 		return varsUsedByStmtUsing;
 
 	}
 		
     else {
-		return StmtToVarTable.at(stmtUsing);
+		return stmtToVarTable.at(stmtUsing);
 
 	}
 
@@ -66,14 +67,14 @@ vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
 
 
 bool Uses::HasAnyUses() {
-    return !StmtToVarTable.empty();
+    return !stmtToVarTable.empty();
 
 }
 
 int Uses::SizeOfUses() {
     int sum = 0;
 
-    for(map<int, vector<int> >::iterator it=StmtToVarTable.begin(); it!=StmtToVarTable.end(); it++) {
+    for(map<int, vector<int> >::iterator it=stmtToVarTable.begin(); it != stmtToVarTable.end(); it++) {
 		sum += it->second.size();
 
 	}
@@ -82,8 +83,8 @@ int Uses::SizeOfUses() {
 }
 
 void Uses::ClearData() {
-    StmtToVarTable.clear();
-    VarToStmtTable.clear();
+    stmtToVarTable.clear();
+    varToStmtTable.clear();
 
 }
 

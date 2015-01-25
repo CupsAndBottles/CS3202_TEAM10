@@ -32,8 +32,8 @@ class Modifies {
           vector<int> GetModifiedByProc(int procModifying);*/
 
     private:
-        static map <int, vector<int> > StmtToVarTable;
-        static map <int, vector<int> > VarToStmtTable;
+        static map <int, vector<int> > stmtToVarTable;
+        static map <int, vector<int> > varToStmtTable;
         // insert other private methods here
 
 };

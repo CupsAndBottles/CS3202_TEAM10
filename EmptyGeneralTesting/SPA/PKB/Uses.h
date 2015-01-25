@@ -32,8 +32,8 @@ public:
 	vector<int> GetUsedByProc(int procUsing);*/
 
 private:
-	static map <int, vector<int> > StmtToVarTable;
-    static map <int, vector<int> > VarToStmtTable;
+	static map <int, vector<int> > stmtToVarTable;
+    static map <int, vector<int> > varToStmtTable;
 
 };
 #endif

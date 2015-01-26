@@ -1,6 +1,7 @@
 #include <utility>
 #include <map>
 #include <vector>
+#include <algorithm>
 #include "ConstTable.h"
 #include "Parent.h"
 
@@ -52,13 +53,22 @@ bool ConstTable::HasAnyConst() {
 }
 
 vector<int> ConstTable::GetAllConst() {
-    vector<int> ret;
+    vector<int> listOfConstants;
 
-    for(map<int, vector<int> >::iterator it=StmtToConstTable.begin(); it!=StmtToConstTable.end(); it++)
-        for(int i=0; i<it->second.size(); i++)
-            ret.push_back(it->second.at(i));
+    for(map<int, vector<int> >::iterator it = StmtToConstTable.begin(); it != StmtToConstTable.end(); it++) {
+        for(int i = 0; i < it->second.size(); i++) {
+            listOfConstants.push_back(it->second.at(i));
+		}
+	}
 
-    return ret;
+	sort(listOfConstants.begin(), listOfConstants.end());
+	
+	vector<int>::iterator it;
+	it = unique (listOfConstants.begin(), listOfConstants.end()); 
+	listOfConstants.resize(distance(listOfConstants.begin(),it) ); // trims excess spaces in vector
+
+
+    return listOfConstants;
 }
 
 int ConstTable::SizeOfConstTable() {
@@ -69,8 +79,7 @@ int ConstTable::SizeOfConstTable() {
     return sum;
 }
 
-void ConstTable::ClearData() 
-{
+void ConstTable::ClearData() {
     StmtToConstTable.clear();
     ConstToStmtTable.clear();
 }

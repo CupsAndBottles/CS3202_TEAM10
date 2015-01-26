@@ -47,7 +47,7 @@ int Parent::GetParentOf(int childStmtIndex) {
 
 		}
 
-	}
+	};
 	return -1;
 }
 

@@ -10,8 +10,8 @@ using namespace std;
 
 class Modifies {
     public:
-       // methods
-       // Default constructor
+		// methods
+		// Default constructor
         Modifies();
 
         // API
@@ -21,8 +21,9 @@ class Modifies {
         static vector<int> GetVarModifiedByStmt(int stmtModifying);		// Modifies (2, _)
 		
         static bool HasAnyModifies();
-        static int SizeOfModifies();
-
+		
+		// helper methods for testing
+		static int SizeOfModifies();
 		static void ClearData();
 
         // APIs out of scope of assigment 4

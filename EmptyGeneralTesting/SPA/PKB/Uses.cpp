@@ -56,7 +56,6 @@ vector<int> Uses::GetStmtUsingVar(int varUsed) {
 }
 
 vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
-    
 	if (stmtToVarTable.count(stmtUsing) == 0) {
 		vector<int> varsUsedByStmtUsing;
 		return varsUsedByStmtUsing;

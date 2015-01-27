@@ -10,15 +10,19 @@ class QueryEvaluator
 	friend class QueryEvaluatorTest;
 
 protected:
-	vector<string> EvaluateSelect(SelectClause);
-	bool EvaluateParent(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
-	bool EvaluateFollows(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
-	bool EvaluateModifies(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
-	bool EvaluateUses(SelectClause, SuchThatClause, bool, vector<int>, Synonym, vector<string>&);
-	bool EvaluatePattern(SelectClause, PatternClause, vector<int>&, vector<string>&);
 
-	list<string> MergeResult(vector<string>, vector<string>, vector<string>);
-	list<string> MergeResult(vector<string>, vector<string>);
+	struct IntermediateResult {
+		Synonym synonym;
+		vector<int> resultInt;
+		vector<string> resultVar;
+
+		IntermediateResult(Synonym s) : synonym(s) , resultInt(), resultVar() {}
+	};
+
+	bool EvaluateModifies(SuchThatClause, vector<IntermediateResult>&);
+	bool EvaluateParent(SuchThatClause, vector<IntermediateResult>&);
+	bool EvaluateFollows(SuchThatClause, vector<IntermediateResult>&);
+	bool EvaluatePattern(PatternClause, vector<IntermediateResult>&);
 
 	string ToString(int);
 	Pattern CreatePatternObject(string);

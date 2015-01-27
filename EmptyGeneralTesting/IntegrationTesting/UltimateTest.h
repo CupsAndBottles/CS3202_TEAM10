@@ -14,8 +14,8 @@
 #include "..\SPA\QueryProcessor\QueryPreProcessor.h"
 #include "..\SPA\QueryProcessor\QueryEvaluator.h"
 
-class QueryEvaluatorToPKBTest : public CPPUNIT_NS::TestFixture {
-	CPPUNIT_TEST_SUITE(QueryEvaluatorToPKBTest);
+class UltimateTest : public CPPUNIT_NS::TestFixture {
+	CPPUNIT_TEST_SUITE(UltimateTest);
 	//CPPUNIT_TEST(TestSelectAll);
 	//CPPUNIT_TEST(TestParent);
 	//CPPUNIT_TEST(TestParentT);
@@ -23,7 +23,7 @@ class QueryEvaluatorToPKBTest : public CPPUNIT_NS::TestFixture {
 	//CPPUNIT_TEST(TestUses);
 	//CPPUNIT_TEST(TestModifies);
 	//CPPUNIT_TEST(TestPattern);
-	CPPUNIT_TEST(TestSuchThatPattern);
+	//CPPUNIT_TEST(TestCombination);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -40,6 +40,6 @@ public:
 
 	void TestPattern();
 
-	void TestSuchThatPattern();
+	void TestCombination();
 };
 

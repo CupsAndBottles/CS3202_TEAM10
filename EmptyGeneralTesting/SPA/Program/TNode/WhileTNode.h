@@ -6,7 +6,7 @@
 class WhileTNode :
 	public ConditionalTNode {
 public:
-	WhileTNode(int);
+	WhileTNode(unsigned int);
 
 	void BuildWhileNode(VariableTNode*, StmtListTNode*);
 

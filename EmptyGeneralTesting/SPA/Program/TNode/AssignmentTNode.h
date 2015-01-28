@@ -9,7 +9,7 @@ class AssignmentTNode :
 	public StmtTNode,
 	public BinaryTNode {
 public:
-	AssignmentTNode(int);
+	AssignmentTNode(unsigned int);
 
 	void BuildAssignmentNode(VariableTNode*, TNode*);
 	VariableTNode& GetLHS();

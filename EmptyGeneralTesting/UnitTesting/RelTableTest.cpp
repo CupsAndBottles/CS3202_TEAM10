@@ -13,7 +13,7 @@ RelTableTest::RelTableTest() {}
 
 void RelTableTest::TestGetRelTableData()
 {
-	int size = RelTable::GetTableSize();
+	unsigned int size = RelTable::GetTableSize();
 	CPPUNIT_ASSERT(size == 3);
 	
 	/*std::cout << "table size : " << RelTable::GetTableSize() << "\n";

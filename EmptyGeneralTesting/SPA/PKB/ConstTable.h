@@ -12,24 +12,24 @@ public:
 	ConstTable();
 
 	// API
-	static void SetStmtUsesConst(int stmtUsing, int constUsed);
-	static bool IsStmtUsingConst(int stmtUsing, int constUsed);
-    static vector<int> GetStmtUsingConst(int constUsed);
-    static vector<int> GetConstUsedByStmt(int stmtUsing);
+	static void SetStmtUsesConst(unsigned int stmtUsing, unsigned int constUsed);
+	static bool IsStmtUsingConst(unsigned int stmtUsing, unsigned int constUsed);
+    static vector<unsigned int> GetStmtUsingConst(unsigned int constUsed);
+    static vector<unsigned int> GetConstUsedByStmt(unsigned int stmtUsing);
 
 	static bool HasAnyConst();
-    static vector<int> GetAllConst();
-	static int SizeOfConstTable();
+    static vector<unsigned int> GetAllConst();
+	static unsigned int SizeOfConstTable();
     static void ClearData();
 
 	// APIs out of scope of assigment 4
-	/*void SetUsesProc(int procUsing, int varUsed);
-	bool IsUsesProc(int procUsing, int varUsed);
-	vector<int> GetUsesProc(int varUsed);
-	vector<int> GetUsedByProc(int procUsing);*/
+	/*void SetUsesProc(unsigned int procUsing, unsigned int varUsed);
+	bool IsUsesProc(unsigned int procUsing, unsigned int varUsed);
+	vector<unsigned int> GetUsesProc(unsigned int varUsed);
+	vector<unsigned int> GetUsedByProc(unsigned int procUsing);*/
 
 private:
-	static map <int, vector<int> > StmtToConstTable;
-    static map <int, vector<int> > ConstToStmtTable;
+	static map <unsigned int, vector<unsigned int> > StmtToConstTable;
+    static map <unsigned int, vector<unsigned int> > ConstToStmtTable;
 
 };

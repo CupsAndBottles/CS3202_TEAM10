@@ -1,6 +1,6 @@
 #include "ConditionalTNode.h"
 
-ConditionalTNode::ConditionalTNode(Type type, int lineNumber) 
+ConditionalTNode::ConditionalTNode(Type type, unsigned int lineNumber) 
 	: TNode(type) 
 	, StmtTNode(type, lineNumber) {
 }

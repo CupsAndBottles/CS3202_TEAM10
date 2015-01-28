@@ -1,6 +1,6 @@
 #include "StmtTNode.h"
 
-StmtTNode::StmtTNode(Type type, int lineNumber)
+StmtTNode::StmtTNode(Type type, unsigned int lineNumber)
 	: TNode(type)
 	, lineNumber(lineNumber) {
 }
@@ -17,7 +17,7 @@ StmtTNode* StmtTNode::GetFollows() {
 	return dynamic_cast<StmtTNode*>(rightSibling);
 }
 
-int StmtTNode::GetLineNumber() {
+unsigned int StmtTNode::GetLineNumber() {
 	return lineNumber;
 }
 

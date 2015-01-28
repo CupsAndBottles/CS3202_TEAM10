@@ -10,16 +10,16 @@ class Program {
 public:
 	friend class Parser;
 	static ProgramTNode& GetASTRootNode();
-	static StmtTNode& GetStmtFromNumber(int);
+	static StmtTNode& GetStmtFromNumber(unsigned int);
 	static void ClearData();
 
 protected:
-	static void InsertStmt(StmtTNode*, int);
+	static void InsertStmt(StmtTNode*, unsigned int);
 
 private:
 	Program();
 
 	static ProgramTNode program;
-	static map<int, StmtTNode*> stmtNumberMap;
+	static map<unsigned int, StmtTNode*> stmtNumberMap;
 };
 

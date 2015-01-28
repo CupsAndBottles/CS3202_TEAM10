@@ -6,7 +6,7 @@ StmtListTNode::StmtListTNode(string name)
 		BuildName(name.append(":").append(EnumToString(STMT_LIST)));
 }
 
-StmtTNode& StmtListTNode::GetChild(int index) {
+StmtTNode& StmtListTNode::GetChild(unsigned int index) {
 	return dynamic_cast<StmtTNode&>(TNode::GetChild(index));
 }
 
@@ -16,7 +16,7 @@ void StmtListTNode::AddChild(StmtTNode* child) {
 
 vector<StmtTNode*> StmtListTNode::GetStmtList() {
 	vector<StmtTNode*> result;
-	for (unsigned int i = 0; i < children.size(); i++) {
+	for (unsigned unsigned int i = 0; i < children.size(); i++) {
 		result.push_back(dynamic_cast<StmtTNode*>(children[i]));
 	}
 

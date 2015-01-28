@@ -8,6 +8,6 @@ ConstantTNode::ConstantTNode(string value)
 		BuildName(EnumToString(CONSTANT).append(":"));
 }
 
-int ConstantTNode::GetValue() {
+unsigned int ConstantTNode::GetValue() {
 	return value;
 }

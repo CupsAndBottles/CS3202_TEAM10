@@ -2,7 +2,6 @@
 #include <utility>
 #include <map>
 #include <vector>
-//#include <iostream>
 
 #include "Parent.h"
 
@@ -17,13 +16,9 @@ Parent::Parent() {
 
 // Methods
 void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
-	pair<int, int> newParentRelationship(parentStmtIndex, childStmtIndex);
-
 	if (!AlreadyInserted(parentStmtIndex, childStmtIndex) && HasNoParent(childStmtIndex)) {
 		parentToChildrenTable[parentStmtIndex].push_back(childStmtIndex);
 		childToParentTable[childStmtIndex] = parentStmtIndex;
-
-		sizeOfParent++;
 
 	}
 
@@ -82,20 +77,6 @@ vector<int> Parent::GetParentTOf(int childStmtIndex) {
 }
 
 vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
-	/*vector<int> childrenList = GetChildrenOf(parentStmtIndex);
-	vector<int> grandChildrenList, allDecendants;
-
-	for (unsigned int i = 0; i < childrenList.size(); i++) {
-		grandChildrenList = GetChildrenOf(childrenList.at(i));
-		if (grandChildrenList.size() > 0) {
-			allDecendants = GetChildrenTOf(childrenList.at(i));
-			childrenList.insert(childrenList.end(), allDecendants.begin(), allDecendants.end());
-
-		}
-	
-	}
-
-	return childrenList;*/
 	vector<int> allDescendants, 
 				childrenOfCurrNode, grandChildrenOfCurrChild;
 

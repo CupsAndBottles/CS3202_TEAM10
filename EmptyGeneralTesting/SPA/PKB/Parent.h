@@ -17,6 +17,7 @@ public:
 	static bool IsParent(int parentStmtIndex, int childStmtIndex);
 	static int GetParentOf(int childStmtIndex);
 	static vector<int> GetChildrenOf(int parentStmtIndex);
+	
 	static bool IsParentT(int parentStmtIndex, int childStmtIndex);
 	static vector<int> GetParentTOf(int childStmtIndex);
 	static vector<int> GetChildrenTOf(int parentStmtIndex);
@@ -28,17 +29,11 @@ public:
 	static void ClearData();
 
 private:
-	//previous data structure: static vector<pair<int, int>> parentTable;	
-	// List of Parent(s1, s2) relationships
-
 	static map <int, vector<int>> parentToChildrenTable;
 	static map <int, int> childToParentTable;
-	static int sizeOfParent;
 	
 	static bool AlreadyInserted(int parentStmtIndex, int childStmtIndex);
 	static bool HasNoParent(int childStmtIndex);
-	// insert other private methods here
-
-
+	
 };
 #endif

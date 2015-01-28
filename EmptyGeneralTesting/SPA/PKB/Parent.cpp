@@ -1,14 +1,15 @@
-#include "Parent.h"
-
 #include <algorithm>
 #include <utility>
+#include <map>
 #include <vector>
-#include <iostream>
+//#include <iostream>
 
-vector<pair<int, int>> Parent::parentTable;
+#include "Parent.h"
+
+map <int, vector<int>> Parent::parentToChildrenTable;
+map <int, int> Parent::childToParentTable;
 
 /** public methods **/
-// Default constructor
 Parent::Parent() {
 	// empty constructor
 
@@ -17,100 +18,71 @@ Parent::Parent() {
 // Methods
 void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
 	pair<int, int> newParentRelationship(parentStmtIndex, childStmtIndex);
-	
-	// check if the child has more than one parent?
-	if (!AlreadyInserted(newParentRelationship)) {
-		parentTable.push_back(newParentRelationship);
+
+	if (!AlreadyInserted(parentStmtIndex, childStmtIndex) && HasNoParent(childStmtIndex)) {
+		parentToChildrenTable[parentStmtIndex].push_back(childStmtIndex);
+		childToParentTable[childStmtIndex] = parentStmtIndex;
+
+		sizeOfParent++;
 
 	}
-	
-	// next time, check if children with > 1 parents are inserted
 
 }
 
 bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
-	pair<int, int> newParentRelationship(parentStmtIndex, childStmtIndex);
-
-	return AlreadyInserted(newParentRelationship);
+	return AlreadyInserted(parentStmtIndex, childStmtIndex);
 
 }
 
 int Parent::GetParentOf(int childStmtIndex) {
-	pair<int, int> checkParentRelationship;
+	if (!HasNoParent(childStmtIndex)) {
+		return childToParentTable[childStmtIndex];
 
-	// sequential search for now
-	for (unsigned int i = 0; i < parentTable.size(); i++) {
-		checkParentRelationship = parentTable.at(i);
-
-		if (checkParentRelationship.second == childStmtIndex) {
-			return checkParentRelationship.first;
-
-		}
-
-	};
-	return -1;
+	} else {
+		return -1;
+	
+	}
 }
 
 vector<int> Parent::GetChildrenOf(int parentStmtIndex) {
-	pair<int, int> checkParentRelationship;
-	vector<int> childrenList;
-	
-	// sequential search for now
-	for (int i = 0; i < parentTable.size(); i++) {
-		checkParentRelationship = parentTable.at(i);
+	return parentToChildrenTable[parentStmtIndex];
 
-		if (checkParentRelationship.first == parentStmtIndex) {
-			childrenList.push_back(checkParentRelationship.second);
-
-		}
-
-	}
-
-	return childrenList;
 }
 
 bool Parent::IsParentT(int parentStmtIndex, int childStmtIndex) {
-	vector<int> childrenList = GetChildrenOf(parentStmtIndex);	// this operation is very time-consuming
-	vector<int> grandChildrenList;
+	int currChild = childStmtIndex;
 
-	for (unsigned int i = 0; i < childrenList.size(); i++) {
-		if (childStmtIndex == childrenList.at(i)) {
+	while (!HasNoParent(currChild)) {
+		if (childToParentTable[currChild] == parentStmtIndex) {
 			return true;
 
-		} else {
-			grandChildrenList = GetChildrenOf(childrenList.at(i));
-			if (grandChildrenList.size() > 0) {
-				if (IsParentT(childrenList.at(i), childStmtIndex)) {
-					return true;
-				}
-
-			}
 		}
+
+		currChild = childToParentTable[currChild];
 
 	}
 
 	return false;
+
 }
 
 vector<int> Parent::GetParentTOf(int childStmtIndex) {
 	vector<int> parentList;
 	int currParent;
 
-	currParent = GetParentOf(childStmtIndex);
-
 	while (currParent != -1) {
+		currParent = GetParentOf(childStmtIndex);
 		parentList.push_back(currParent);
 
 		childStmtIndex = currParent;
-		currParent = GetParentOf(childStmtIndex);
-
+		
 	}
 
 	return parentList;
 }
 
 vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
-	vector<int> childrenList = GetChildrenOf(parentStmtIndex);
+	/*vector<int> childrenList = GetChildrenOf(parentStmtIndex);
 	vector<int> grandChildrenList, allDecendants;
 
 	for (unsigned int i = 0; i < childrenList.size(); i++) {
@@ -123,7 +95,22 @@ vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
 	
 	}
 
-	return childrenList;
+	return childrenList;*/
+	vector<int> allDescendants, 
+				childrenOfCurrNode, grandChildrenOfCurrChild;
+
+	childrenOfCurrNode = GetChildrenOf(parentStmtIndex);
+	allDescendants.push_back(parentStmtIndex);
+
+	for (unsigned int i = 0; i < childrenOfCurrNode.size(); i++) {
+		grandChildrenOfCurrChild = GetChildrenTOf(childrenOfCurrNode.at(i));
+		allDescendants.insert(allDescendants.end(), grandChildrenOfCurrChild.begin(), grandChildrenOfCurrChild.end());
+	
+	}
+	
+	return allDescendants;
+
+	// each recursive iteration inserts the subtree whose root is the currNode into allDescendants
 
 }
 
@@ -133,17 +120,19 @@ bool Parent::HasAnyParents() {
 }
 
 int Parent::SizeOfParent() {
-	return parentTable.size();
+	return childToParentTable.size();
 }
 
 void Parent::ClearData() {
-	parentTable.clear();
+	parentToChildrenTable.clear();
+	childToParentTable.clear();
 }
 
 /** private methods **/
-bool Parent::AlreadyInserted(pair<int, int> newPair) {
-	vector<pair<int, int> >::iterator newPairIterator = find(parentTable.begin(), parentTable.end(), newPair);
+bool Parent::AlreadyInserted(int parentStmtIndex, int childStmtIndex) {
+	return childToParentTable[childStmtIndex] == parentStmtIndex;
+}
 
-	return newPairIterator != parentTable.end();
-
+bool Parent::HasNoParent(int childStmtIndex) {
+	return childToParentTable.find(childStmtIndex) == childToParentTable.end();
 }

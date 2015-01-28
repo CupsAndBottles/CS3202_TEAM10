@@ -33,7 +33,8 @@ void ParentTest::testSetParent() {
 	Parent::SetParent(1, 2);
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("inserting a repeated relationship, size should remain the same", 1, Parent::SizeOfParent());
 
-	// try inserting setting a non-integer
+	Parent::SetParent(3, 2);
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("inserting a false relationship with one child having > 1 parent, size should remain the same", 1, Parent::SizeOfParent());
 
 }
 

@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -27,9 +28,15 @@ public:
 	static void ClearData();
 
 private:
-	static vector<pair<int, int>> parentTable;	// List of Parent(s1, s2) relationships
+	//previous data structure: static vector<pair<int, int>> parentTable;	
+	// List of Parent(s1, s2) relationships
+
+	static map <int, vector<int>> parentToChildrenTable;
+	static map <int, int> childToParentTable;
+	static int sizeOfParent;
 	
-	static bool AlreadyInserted(pair<int, int> newPair);
+	static bool AlreadyInserted(int parentStmtIndex, int childStmtIndex);
+	static bool HasNoParent(int childStmtIndex);
 	// insert other private methods here
 
 

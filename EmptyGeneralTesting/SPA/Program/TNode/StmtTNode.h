@@ -9,13 +9,13 @@ public:
 
 	StmtTNode* GetParent();
 	StmtTNode* GetFollows();
-	int GetLineNumber();
+	unsigned int GetLineNumber();
 	virtual string GetContent();
 
 protected:
-	StmtTNode(Type, int);
+	StmtTNode(Type, unsigned int);
 
-	int lineNumber;
+	unsigned int lineNumber;
 	StmtTNode* logicalParent;
 
 };

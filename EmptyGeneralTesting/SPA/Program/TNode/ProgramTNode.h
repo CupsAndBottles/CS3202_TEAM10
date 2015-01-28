@@ -8,7 +8,7 @@ class ProgramTNode :
 public:
 	ProgramTNode();
 
-	ProcedureTNode& GetChild(int);
+	ProcedureTNode& GetChild(unsigned int);
 	vector<ProcedureTNode*> GetBody();
 	TNode* GetDirectParent();
 	ContainerTNode* GetRightSibling();

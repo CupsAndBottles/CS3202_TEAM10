@@ -23,7 +23,7 @@ public:
 	virtual TNode* GetDirectParent();
 	virtual TNode* GetRightSibling();
 	virtual vector<TNode*> GetChildren();
-	virtual TNode& GetChild(int);
+	virtual TNode& GetChild(unsigned int);
 	Type GetType();
 	string GetName();
 	virtual string GetContent();

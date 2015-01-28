@@ -5,15 +5,15 @@
 
 using namespace std;
 
-map <int, vector<int> > Modifies::stmtToVarTable;
-map <int, vector<int> > Modifies::varToStmtTable;
-int Modifies::sizeOfModifies;
+map <unsigned int, vector<unsigned int> > Modifies::stmtToVarTable;
+map <unsigned int, vector<unsigned int> > Modifies::varToStmtTable;
+unsigned int Modifies::sizeOfModifies;
 
 // empty constructor
 Modifies::Modifies() {};
 
 // API
-void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
+void Modifies::SetStmtModifiesVar(unsigned int stmtModifying, unsigned int varModified) {
     if (!IsStmtModifyingVar(stmtModifying, varModified)) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
@@ -29,9 +29,9 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 
 }
 
-bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
+bool Modifies::IsStmtModifyingVar(unsigned int stmtModifying, unsigned int varModified) {
     if (stmtToVarTable.count(stmtModifying) != 0) {
-		for (int i = 0; i < stmtToVarTable.at(stmtModifying).size(); i++) {
+		for (unsigned int i = 0; i < stmtToVarTable.at(stmtModifying).size(); i++) {
             if (stmtToVarTable.at(stmtModifying).at(i) == varModified) {
                 return true;
 			}
@@ -44,10 +44,10 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
 	// it should be 1 all the time
 }
 
-vector<int> Modifies::GetStmtModifyingVar(int varModified) {
+vector<unsigned int> Modifies::GetStmtModifyingVar(unsigned int varModified) {
     
     if (varToStmtTable.count(varModified) == 0) {
-		vector<int> stmtsModifyingVarModified;
+		vector<unsigned int> stmtsModifyingVarModified;
 		return stmtsModifyingVarModified;
 
 	}
@@ -58,10 +58,10 @@ vector<int> Modifies::GetStmtModifyingVar(int varModified) {
 	}
 }
 
-vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
+vector<unsigned int> Modifies::GetVarModifiedByStmt(unsigned int stmtModifying) {
     
     if (stmtToVarTable.count(stmtModifying) == 0) {
-		vector<int> varsModifyiedByStmtModifying;
+		vector<unsigned int> varsModifyiedByStmtModifying;
 		return varsModifyiedByStmtModifying;
 
 	}
@@ -79,7 +79,7 @@ bool Modifies::HasAnyModifies() {
 
 }
 
-int Modifies::SizeOfModifies() {
+unsigned int Modifies::SizeOfModifies() {
 	return sizeOfModifies;
 
 }
@@ -93,38 +93,38 @@ void Modifies::ClearData() {
 
 // driver code to test out Modifies
 /*
-int main() {
+unsigned int main() {
     cout << "testing driver program\n";
     cout << "0 to stop\n1 to setModifies(stmt, var)\n2 to getModifiesByStmt(stmt)\n3 to getModifiesStmt(var)\n";
-    int action;
+    unsigned int action;
     cin >> action;
 
     Modifies obj = Modifies();
     while (action!=0) {
        if (action==1) {
-           int stmt, var;
+           unsigned int stmt, var;
            cin >> stmt >> var;
            obj.SetStmtModifiesVar(stmt,var);
        }
        else if (action==2) {
-           int stmt;
+           unsigned int stmt;
            cin >> stmt;
-           set<int> foo = obj.GetVarModifiedByStmt(stmt);
+           set<unsigned int> foo = obj.GetVarModifiedByStmt(stmt);
 
            //print out all elems in set
-           set<int>::iterator it;
+           set<unsigned int>::iterator it;
            for (it=foo.begin(); it!=foo.end(); it++) {
                cout << *it << " ";
            }
            cout << endl;
        }
        else if (action==3) {
-           int var;
+           unsigned int var;
            cin >> var;
-           set<int> foo = obj.GetStmtModifyingVar(var);
+           set<unsigned int> foo = obj.GetStmtModifyingVar(var);
 
            //print out all elems in set
-           set<int>::iterator it;
+           set<unsigned int>::iterator it;
            for (it=foo.begin(); it!=foo.end(); it++) {
                cout << *it << " ";
            }

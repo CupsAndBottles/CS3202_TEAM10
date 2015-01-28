@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-vector<pair<int, int>> Follows::followsTable;
+vector<pair<unsigned int, unsigned int>> Follows::followsTable;
 
 /** public methods **/
 // Default constructor
@@ -14,8 +14,8 @@ Follows::Follows() {
 }
 
 // Methods
-void Follows::SetFollows(int stmtBefore, int stmtAfter) {
-	pair<int, int> newFollowsRelationship(stmtBefore, stmtAfter);
+void Follows::SetFollows(unsigned int stmtBefore, unsigned int stmtAfter) {
+	pair<unsigned int, unsigned int> newFollowsRelationship(stmtBefore, stmtAfter);
 	
 	if (!AlreadyInserted(newFollowsRelationship)) {
 		followsTable.push_back(newFollowsRelationship);
@@ -26,18 +26,18 @@ void Follows::SetFollows(int stmtBefore, int stmtAfter) {
 
 }
 
-bool Follows::IsFollows (int stmtBefore, int stmtAfter) {
-	pair<int, int> newFollowsRelationship(stmtBefore, stmtAfter);
+bool Follows::IsFollows (unsigned int stmtBefore, unsigned int stmtAfter) {
+	pair<unsigned int, unsigned int> newFollowsRelationship(stmtBefore, stmtAfter);
 
 	return AlreadyInserted(newFollowsRelationship);
 
 }
 
-int Follows::GetFollowsBefore(int stmtAfter) {
-	pair<int, int> checkFollowsRelationship;
+unsigned int Follows::GetFollowsBefore(unsigned int stmtAfter) {
+	pair<unsigned int, unsigned int> checkFollowsRelationship;
 
 	// sequential search for now
-	for (unsigned int i = 0; i < followsTable.size(); i++) {
+	for (unsigned unsigned int i = 0; i < followsTable.size(); i++) {
 		checkFollowsRelationship = followsTable.at(i);
 
 		if (checkFollowsRelationship.second == stmtAfter) {
@@ -51,11 +51,11 @@ int Follows::GetFollowsBefore(int stmtAfter) {
 
 }
 
-int Follows::GetFollowsAfter(int stmtBefore) {
-	pair<int, int> checkFollowsRelationship;
+unsigned int Follows::GetFollowsAfter(unsigned int stmtBefore) {
+	pair<unsigned int, unsigned int> checkFollowsRelationship;
 
 	// sequential search for now
-	for (unsigned int i = 0; i < followsTable.size(); i++) {
+	for (unsigned unsigned int i = 0; i < followsTable.size(); i++) {
 		checkFollowsRelationship = followsTable.at(i);
 
 		if (checkFollowsRelationship.first == stmtBefore) {
@@ -69,12 +69,12 @@ int Follows::GetFollowsAfter(int stmtBefore) {
 
 }
 
-bool Follows::IsFollowsT(int stmtBefore, int stmtAfter) {
+bool Follows::IsFollowsT(unsigned int stmtBefore, unsigned int stmtAfter) {
 	if (IsFollows(stmtBefore, stmtAfter)) {
 		return true;
 
 	} else {
-		int stmtAfterBefore = GetFollowsAfter(stmtBefore);	// very time-consuming
+		unsigned int stmtAfterBefore = GetFollowsAfter(stmtBefore);	// very time-consuming
 
 		while (stmtAfterBefore != -1) {
 			if (stmtAfterBefore == stmtAfter) {
@@ -92,10 +92,10 @@ bool Follows::IsFollowsT(int stmtBefore, int stmtAfter) {
 
 }
 
-vector<int> Follows::GetFollowsTBefore(int stmtAfter) {
-	vector<int> beforeList;
+vector<unsigned int> Follows::GetFollowsTBefore(unsigned int stmtAfter) {
+	vector<unsigned int> beforeList;
 
-	int stmtBefore = GetFollowsBefore(stmtAfter);
+	unsigned int stmtBefore = GetFollowsBefore(stmtAfter);
 	while (stmtBefore != -1) {
 		beforeList.push_back(stmtBefore);
 
@@ -107,10 +107,10 @@ vector<int> Follows::GetFollowsTBefore(int stmtAfter) {
 	return beforeList;
 }
 
-vector<int> Follows::GetFollowsTAfter(int stmtBefore) {
-	vector<int> afterList;
+vector<unsigned int> Follows::GetFollowsTAfter(unsigned int stmtBefore) {
+	vector<unsigned int> afterList;
 
-	int stmtAfter = GetFollowsAfter(stmtBefore);
+	unsigned int stmtAfter = GetFollowsAfter(stmtBefore);
 	while (stmtAfter != -1) {
 		afterList.push_back(stmtAfter);
 
@@ -127,13 +127,13 @@ bool Follows::HasAnyFollows() {
 	return SizeOfFollows() > 0;
 }
 
-int Follows::SizeOfFollows() {
+unsigned int Follows::SizeOfFollows() {
 	return followsTable.size();
 }
 
 /** private methods **/
-bool Follows::AlreadyInserted(pair<int, int> newPair) {
-	vector<pair<int, int>>::iterator newPairIterator = find(followsTable.begin(), followsTable.end(), newPair);
+bool Follows::AlreadyInserted(pair<unsigned int, unsigned int> newPair) {
+	vector<pair<unsigned int, unsigned int>>::iterator newPairIterator = find(followsTable.begin(), followsTable.end(), newPair);
 
 	return newPairIterator != followsTable.end();
 

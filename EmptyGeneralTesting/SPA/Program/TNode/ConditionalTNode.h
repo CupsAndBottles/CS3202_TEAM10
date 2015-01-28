@@ -10,7 +10,7 @@ public:
 	VariableTNode GetCondition();
 
 protected:
-	ConditionalTNode(Type, int);
+	ConditionalTNode(Type, unsigned int);
 
 	void SetCondition(VariableTNode*);
 

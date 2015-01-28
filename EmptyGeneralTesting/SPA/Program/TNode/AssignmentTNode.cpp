@@ -1,6 +1,6 @@
 #include "AssignmentTNode.h"
 
-AssignmentTNode::AssignmentTNode(int lineNumber)
+AssignmentTNode::AssignmentTNode(unsigned int lineNumber)
 	: TNode(ASSIGNMENT, "=")
 	, StmtTNode(ASSIGNMENT, lineNumber)
 	, BinaryTNode("=") {

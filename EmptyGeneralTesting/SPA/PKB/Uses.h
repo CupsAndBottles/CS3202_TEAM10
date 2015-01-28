@@ -15,26 +15,26 @@ public:
 	Uses();
 
 	// API
-	static void SetStmtUsesVar(int stmtUsing, int varUsed);
-	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
-    static vector<int> GetStmtUsingVar(int varUsed);
-    static vector<int> GetVarUsedByStmt(int stmtUsing);
+	static void SetStmtUsesVar(unsigned int stmtUsing, unsigned int varUsed);
+	static bool IsStmtUsingVar(unsigned int stmtUsing, unsigned int varUsed);
+    static vector<unsigned int> GetStmtUsingVar(unsigned int varUsed);
+    static vector<unsigned int> GetVarUsedByStmt(unsigned int stmtUsing);
 
 	static bool HasAnyUses();
-	static int SizeOfUses();
+	static unsigned int SizeOfUses();
 
 	static void ClearData();
 
 	// APIs out of scope of assigment 4
-	/*void SetUsesProc(int procUsing, int varUsed);
-	bool IsUsesProc(int procUsing, int varUsed);
-	vector<int> GetUsesProc(int varUsed);
-	vector<int> GetUsedByProc(int procUsing);*/
+	/*void SetUsesProc(unsigned int procUsing, unsigned int varUsed);
+	bool IsUsesProc(unsigned int procUsing, unsigned int varUsed);
+	vector<unsigned int> GetUsesProc(unsigned int varUsed);
+	vector<unsigned int> GetUsedByProc(unsigned int procUsing);*/
 
 private:
-	static map <int, vector<int> > stmtToVarTable;
-    static map <int, vector<int> > varToStmtTable;
-	static int sizeOfUses;
+	static map <unsigned int, vector<unsigned int> > stmtToVarTable;
+    static map <unsigned int, vector<unsigned int> > varToStmtTable;
+	static unsigned int sizeOfUses;
 
 };
 #endif

@@ -13,7 +13,7 @@ protected:
 
 	struct IntermediateResult {
 		Synonym synonym;
-		vector<int> resultInt;
+		vector<unsigned int> resultInt;
 		vector<string> resultVar;
 
 		IntermediateResult(Synonym s) : synonym(s) , resultInt(), resultVar() {}
@@ -24,7 +24,7 @@ protected:
 	bool EvaluateFollows(SuchThatClause, vector<IntermediateResult>&);
 	bool EvaluatePattern(PatternClause, vector<IntermediateResult>&);
 
-	string ToString(int);
+	string ToString(unsigned int);
 	Pattern CreatePatternObject(string);
 
 public:

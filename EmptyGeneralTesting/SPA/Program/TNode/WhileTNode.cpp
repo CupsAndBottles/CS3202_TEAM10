@@ -1,6 +1,6 @@
 #include "WhileTNode.h"
 
-WhileTNode::WhileTNode(int lineNumber) 
+WhileTNode::WhileTNode(unsigned int lineNumber) 
 	: TNode(WHILE)
 	, ConditionalTNode(WHILE, lineNumber) {
 }

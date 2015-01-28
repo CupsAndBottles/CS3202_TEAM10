@@ -12,24 +12,24 @@ public:
 	Parent();
 
     // API
-	static void SetParent(int parentStmtIndex, int childStmtIndex);
-	static bool IsParent(int parentStmtIndex, int childStmtIndex);
-	static int GetParentOf(int childStmtIndex);
-	static vector<int> GetChildrenOf(int parentStmtIndex);
-	static bool IsParentT(int parentStmtIndex, int childStmtIndex);
-	static vector<int> GetParentTOf(int childStmtIndex);
-	static vector<int> GetChildrenTOf(int parentStmtIndex);
+	static void SetParent(unsigned int parentStmtIndex, unsigned int childStmtIndex);
+	static bool IsParent(unsigned int parentStmtIndex, unsigned int childStmtIndex);
+	static unsigned int GetParentOf(unsigned int childStmtIndex);
+	static vector<unsigned int> GetChildrenOf(unsigned int parentStmtIndex);
+	static bool IsParentT(unsigned int parentStmtIndex, unsigned int childStmtIndex);
+	static vector<unsigned int> GetParentTOf(unsigned int childStmtIndex);
+	static vector<unsigned int> GetChildrenTOf(unsigned int parentStmtIndex);
 	
 	static bool HasAnyParents();
 
 	// helper methods for testing
-	static int SizeOfParent();
+	static unsigned int SizeOfParent();
 	static void ClearData();
 
 private:
-	static vector<pair<int, int>> parentTable;	// List of Parent(s1, s2) relationships
+	static vector<pair<unsigned int, unsigned int>> parentTable;	// List of Parent(s1, s2) relationships
 	
-	static bool AlreadyInserted(pair<int, int> newPair);
+	static bool AlreadyInserted(pair<unsigned int, unsigned int> newPair);
 	// insert other private methods here
 
 

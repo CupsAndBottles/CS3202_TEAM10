@@ -8,7 +8,7 @@
 #include "TNode\WhileTNode.h"
 
 ProgramTNode Program::program;
-map<int, StmtTNode*> Program::stmtNumberMap;
+map<unsigned int, StmtTNode*> Program::stmtNumberMap;
 
 Program::Program() {}
 
@@ -16,11 +16,11 @@ ProgramTNode& Program::GetASTRootNode() {
 	return program;
 }
 
-StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
+StmtTNode& Program::GetStmtFromNumber(unsigned int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(StmtTNode* stmt, int stmtNum) {
+void Program::InsertStmt(StmtTNode* stmt, unsigned int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }
 

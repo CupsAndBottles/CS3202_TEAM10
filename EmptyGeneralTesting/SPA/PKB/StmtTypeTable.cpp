@@ -6,17 +6,17 @@
 
 using namespace std;
 
-map<int, SynonymType> StmtTypeTable::IndexTypeTable;
-map<SynonymType, vector<int> > StmtTypeTable::TypeIndexTable;
+map<unsigned int, SynonymType> StmtTypeTable::IndexTypeTable;
+map<SynonymType, vector<unsigned int> > StmtTypeTable::TypeIndexTable;
 
 // constructor
 StmtTypeTable::StmtTypeTable() {};
 
-vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
+vector<unsigned int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 	if(type == STMT || type == PROG_LINE)
 	{ 
-		vector<int> stmts;
-		for(map<int,SynonymType>::iterator it = IndexTypeTable.begin(); it != IndexTypeTable.end(); ++it)
+		vector<unsigned int> stmts;
+		for(map<unsigned int,SynonymType>::iterator it = IndexTypeTable.begin(); it != IndexTypeTable.end(); ++it)
 			stmts.push_back(it->first);
 
 		return stmts;
@@ -28,13 +28,13 @@ vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 
 		//should throw exception
 		else {
-			vector<int> empty;
+			vector<unsigned int> empty;
 			return empty;
 		}
 	}
 }
 
-bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
+bool StmtTypeTable::CheckIfStmtOfType(unsigned int stmtIndex, SynonymType type) {
 	if(type == STMT || type == PROG_LINE) {
 		if(IndexTypeTable.at(stmtIndex) == ASSIGN || IndexTypeTable.at(stmtIndex) == WHILE)
 			return true;
@@ -44,7 +44,7 @@ bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
 }
 
 //API-PKB and DE
-void StmtTypeTable::Insert(int stmtIndex, SynonymType type) {
+void StmtTypeTable::Insert(unsigned int stmtIndex, SynonymType type) {
     IndexTypeTable[stmtIndex] = type;
     TypeIndexTable[type].push_back(stmtIndex);
 }

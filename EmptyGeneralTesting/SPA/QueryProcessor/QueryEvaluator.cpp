@@ -43,7 +43,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	if(!selectAllFlag)
 	{
 		//evaluate pattern in a loop
-		for(unsigned int i = patterns.size()-1; i >= 0; i--)
+		for(int i = patterns.size()-1; i >= 0; i--)
 		{
 			//cout << "here";
 			PatternClause pattern = patterns.at(i);
@@ -66,7 +66,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 
 
 		//evaluate such that in a loop
-		for(unsigned int i = suchThats.size()-1; i >= 0; i--)
+		for(int i = suchThats.size()-1; i >= 0; i--)
 		{
 			SuchThatClause suchThat = suchThats.at(i);
 
@@ -128,7 +128,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 			//cout << "\nsynonym value: " << (*it).resultInt.size();
 			if((*it).synonym.type != VARIABLE/* && (*it).synonym.type != PROCEDURE*/) 
 			{
-				vector<unsigned int> result;
+				vector<int> result;
 
 				if(!(*it).resultInt.empty()) 
 				{	
@@ -151,7 +151,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 						{
 							result = ConstTable::GetAllConst();
 
-							set<unsigned int> s( result.begin(), result.end() );
+							set<int> s( result.begin(), result.end() );
 							result.assign( s.begin(), s.end() );
 						}
 					//}
@@ -164,7 +164,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					}*/
 				}
 
-				for(vector<unsigned int>::iterator it = result.begin(); it != result.end(); ++it) 
+				for(vector<int>::iterator it = result.begin(); it != result.end(); ++it) 
 						resultList.push_back(ToString(*it));
 			}
 
@@ -222,9 +222,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 				return false;
 			}
 
-			vector<unsigned int>* parent, *child;
-			vector<unsigned int> tempResultParent, tempResultChild;
-			vector<unsigned int> tempParent, tempChild;
+			vector<int>* parent, *child;
+			vector<int> tempResultParent, tempResultChild;
+			vector<int> tempParent, tempChild;
 			
 			//get appropriate a/w/s/n
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
@@ -248,8 +248,8 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 			//cout << "\nvars size: " << tempVars.size();
 				
-			for(vector<unsigned int>::iterator it_parent = tempParent.begin(); it_parent != tempParent.end(); ++it_parent) {
-				for(vector<unsigned int>::iterator it_child = tempChild.begin(); it_child != tempChild.end(); ++it_child) {
+			for(vector<int>::iterator it_parent = tempParent.begin(); it_parent != tempParent.end(); ++it_parent) {
+				for(vector<int>::iterator it_child = tempChild.begin(); it_child != tempChild.end(); ++it_child) {
 					bool isParent = false;
 		
 					if(rel == PARENT)	isParent = Parent::IsParent(*it_parent, *it_child);
@@ -263,10 +263,10 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 			}
 
 			//remove duplicates
-			set<unsigned int> s( tempResultParent.begin(), tempResultParent.end() );
+			set<int> s( tempResultParent.begin(), tempResultParent.end() );
 			tempResultParent.assign( s.begin(), s.end() );
 
-			set<unsigned int> t( tempResultChild.begin(), tempResultChild.end() );
+			set<int> t( tempResultChild.begin(), tempResultChild.end() );
 			tempResultChild.assign( t.begin(), t.end() );
 
 			cout << "\ntempResultStmts size: " << tempResultParent.size();
@@ -281,9 +281,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 		else if(arg2.type == INTEGER)
 		{
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempStmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempStmts;
+			vector<int> tempResult;
 
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 				if((*it).synonym.value == arg1.value)
@@ -293,9 +293,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
 			{
-				unsigned int arg2Value = atoi(arg2.value.c_str());
+				int arg2Value = atoi(arg2.value.c_str());
 				bool isParent = false;
 
 				if(rel == PARENT)	isParent = Parent::IsParent(*it, arg2Value);
@@ -312,9 +312,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 		else if(arg2.type == UNDERSCORE)
 		{
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempStmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempStmts;
+			vector<int> tempResult;
 
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 				if((*it).synonym.value == arg1.value)
@@ -324,8 +324,8 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
-				vector<unsigned int> children;
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+				vector<int> children;
 			
 				if(rel == PARENT)	children = Parent::GetChildrenOf(*it);
 				else				children = Parent::GetChildrenTOf(*it);
@@ -349,9 +349,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 	else if(arg2.type == SYNONYM)
 	{
-		vector<unsigned int>* stmts;
-		vector<unsigned int> tempStmts;
-		vector<unsigned int> tempResult;
+		vector<int>* stmts;
+		vector<int> tempStmts;
+		vector<int> tempResult;
 
 		for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 			if((*it).synonym.value == arg2.value)
@@ -361,10 +361,10 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 		if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 		else				tempStmts = *stmts;
 
-		for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+		for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
 			if(arg1.type == INTEGER)
 			{
-				unsigned int arg1Value = atoi(arg1.value.c_str());
+				int arg1Value = atoi(arg1.value.c_str());
 				bool isParent = false;
 
 				if(rel == PARENT)	isParent = Parent::IsParent(arg1Value, *it);
@@ -376,13 +376,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 			else if(arg1.type == UNDERSCORE)
 			{
 				if(rel == PARENT) {
-					unsigned int parent = Parent::GetParentOf(*it);
+					int parent = Parent::GetParentOf(*it);
 					if(parent != -1)
 						tempResult.push_back(*it);
 				}
 
 				else {
-					vector<unsigned int> parent = Parent::GetParentTOf(*it);
+					vector<int> parent = Parent::GetParentTOf(*it);
 					if(!parent.empty())	
 						tempResult.push_back(*it);
 				}
@@ -403,7 +403,7 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 	else if(arg1.type == UNDERSCORE && arg2.type == INTEGER)
 	{
-		unsigned int arg2Value = atoi(arg2.value.c_str());
+		int arg2Value = atoi(arg2.value.c_str());
 
 		if(rel == PARENT) {
 			if(Parent::GetParentOf(arg2Value) == -1)
@@ -413,7 +413,7 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 		}
 
 		else {
-			vector<unsigned int> parent = Parent::GetParentTOf(arg2Value);
+			vector<int> parent = Parent::GetParentTOf(arg2Value);
 			if(parent.empty())	return false;
 			else return true;
 		}
@@ -421,9 +421,9 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 	else if(arg1.type == INTEGER && arg2.type == UNDERSCORE)
 	{
-		unsigned int arg1Value = atoi(arg1.value.c_str());
+		int arg1Value = atoi(arg1.value.c_str());
 
-		vector<unsigned int> children;
+		vector<int> children;
 		if(rel == PARENT)	children = Parent::GetChildrenOf(arg1Value);
 		else				children = Parent::GetChildrenTOf(arg1Value);
 
@@ -434,8 +434,8 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat, vector<Intermediate
 
 	else if(arg1.type == INTEGER && arg2.type == INTEGER)
 	{
-		unsigned int arg1Value = atoi(arg1.value.c_str());
-		unsigned int arg2Value = atoi(arg2.value.c_str());
+		int arg1Value = atoi(arg1.value.c_str());
+		int arg2Value = atoi(arg2.value.c_str());
 		
 		if(rel == PARENT)	return Parent::IsParent(arg1Value, arg2Value);
 		else				return Parent::IsParentT(arg1Value, arg2Value);
@@ -471,9 +471,9 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 				return false;
 			}
 
-			vector<unsigned int>* parent, *child;
-			vector<unsigned int> tempResultParent, tempResultChild;
-			vector<unsigned int> tempParent, tempChild;
+			vector<int>* parent, *child;
+			vector<int> tempResultParent, tempResultChild;
+			vector<int> tempParent, tempChild;
 			
 			//get appropriate a/w/s/n
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
@@ -497,8 +497,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 			//cout << "\nvars size: " << tempVars.size();
 				
-			for(vector<unsigned int>::iterator it_parent = tempParent.begin(); it_parent != tempParent.end(); ++it_parent) {
-				for(vector<unsigned int>::iterator it_child = tempChild.begin(); it_child != tempChild.end(); ++it_child) {
+			for(vector<int>::iterator it_parent = tempParent.begin(); it_parent != tempParent.end(); ++it_parent) {
+				for(vector<int>::iterator it_child = tempChild.begin(); it_child != tempChild.end(); ++it_child) {
 					bool isParent = false;
 		
 					if(rel == FOLLOWS)	isParent = Follows::IsFollows(*it_parent, *it_child);
@@ -512,10 +512,10 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 			}
 
 			//remove duplicates
-			set<unsigned int> s( tempResultParent.begin(), tempResultParent.end() );
+			set<int> s( tempResultParent.begin(), tempResultParent.end() );
 			tempResultParent.assign( s.begin(), s.end() );
 
-			set<unsigned int> t( tempResultChild.begin(), tempResultChild.end() );
+			set<int> t( tempResultChild.begin(), tempResultChild.end() );
 			tempResultChild.assign( t.begin(), t.end() );
 
 			cout << "\ntempResultStmts size: " << tempResultParent.size();
@@ -530,9 +530,9 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 		else if(arg2.type == INTEGER)
 		{
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempStmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempStmts;
+			vector<int> tempResult;
 
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 				if((*it).synonym.value == arg1.value)
@@ -542,9 +542,9 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
 			{
-				unsigned int arg2Value = atoi(arg2.value.c_str());
+				int arg2Value = atoi(arg2.value.c_str());
 				bool isFollows = false;
 
 				if(rel == FOLLOWS)	isFollows = Follows::IsFollows(*it, arg2Value);
@@ -561,9 +561,9 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 		else if(arg2.type == UNDERSCORE)
 		{
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempStmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempStmts;
+			vector<int> tempResult;
 
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 				if((*it).synonym.value == arg1.value)
@@ -573,15 +573,15 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
 				if(rel == FOLLOWS) {
-					unsigned int followsAfter = Follows::GetFollowsAfter(*it);
+					int followsAfter = Follows::GetFollowsAfter(*it);
 					if(followsAfter != -1)
 						tempResult.push_back(*it);
 				}
 
 				else {
-					vector<unsigned int> followsAfter = Follows::GetFollowsTAfter(*it);
+					vector<int> followsAfter = Follows::GetFollowsTAfter(*it);
 					if(!followsAfter.empty())	
 						tempResult.push_back(*it);
 				}
@@ -602,9 +602,9 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 	else if(arg2.type == SYNONYM)
 	{
-		vector<unsigned int>* stmts;
-		vector<unsigned int> tempStmts;
-		vector<unsigned int> tempResult;
+		vector<int>* stmts;
+		vector<int> tempStmts;
+		vector<int> tempResult;
 
 		for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
 			if((*it).synonym.value == arg2.value)
@@ -614,10 +614,10 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 		if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 		else				tempStmts = *stmts;
 
-		for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+		for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
 			if(arg1.type == INTEGER)
 			{
-				unsigned int arg1Value = atoi(arg1.value.c_str());
+				int arg1Value = atoi(arg1.value.c_str());
 				bool isFollows = false;
 
 				if(rel == FOLLOWS)	isFollows = Follows::IsFollows(arg1Value, *it);
@@ -629,13 +629,13 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 			else if(arg1.type == UNDERSCORE)
 			{
 				if(rel == FOLLOWS) {
-					unsigned int followsBefore = Follows::GetFollowsBefore(*it);
+					int followsBefore = Follows::GetFollowsBefore(*it);
 					if(followsBefore != -1)
 						tempResult.push_back(*it);
 				}
 
 				else {
-					vector<unsigned int> followsBefore = Follows::GetFollowsTBefore(*it);
+					vector<int> followsBefore = Follows::GetFollowsTBefore(*it);
 					if(!followsBefore.empty())	
 						tempResult.push_back(*it);
 				}
@@ -656,16 +656,16 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 	else if(arg1.type == UNDERSCORE && arg2.type == INTEGER)
 	{
-		unsigned int arg2Value = atoi(arg2.value.c_str());
+		int arg2Value = atoi(arg2.value.c_str());
 
 		if(rel == FOLLOWS)	
 		{
-			unsigned int followsBefore = Follows::GetFollowsBefore(arg2Value);
+			int followsBefore = Follows::GetFollowsBefore(arg2Value);
 			if(followsBefore == -1) return false;
 		}
 		else 
 		{
-			vector<unsigned int> followsBefore = Follows::GetFollowsTBefore(arg2Value);
+			vector<int> followsBefore = Follows::GetFollowsTBefore(arg2Value);
 			if(followsBefore.empty()) return false;
 		}
 
@@ -674,16 +674,16 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 	else if(arg1.type == INTEGER && arg2.type == UNDERSCORE)
 	{
-		unsigned int arg1Value = atoi(arg1.value.c_str());
+		int arg1Value = atoi(arg1.value.c_str());
 
 		if(rel == FOLLOWS)	
 		{
-			unsigned int followsAfter = Follows::GetFollowsAfter(arg1Value);
+			int followsAfter = Follows::GetFollowsAfter(arg1Value);
 			if(followsAfter == -1) return false;
 		}
 		else 
 		{
-			vector<unsigned int> followsAfter = Follows::GetFollowsTAfter(arg1Value);
+			vector<int> followsAfter = Follows::GetFollowsTAfter(arg1Value);
 			if(followsAfter.empty()) return false;
 		}
 
@@ -692,8 +692,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat, vector<Intermediat
 
 	else if(arg1.type == INTEGER && arg2.type == INTEGER)
 	{
-		unsigned int arg1Value = atoi(arg1.value.c_str());
-		unsigned int arg2Value = atoi(arg2.value.c_str());
+		int arg1Value = atoi(arg1.value.c_str());
+		int arg2Value = atoi(arg2.value.c_str());
 		
 		if(rel == FOLLOWS)	return Follows::IsFollows(arg1Value, arg2Value);
 		else				return Follows::IsFollowsT(arg1Value, arg2Value);
@@ -723,7 +723,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 	
 	if(patternSyn.type == ASSIGN)
 	{
-		vector<unsigned int>* stmts;
+		vector<int>* stmts;
 
 		//pointer points to pattern synonym intermediate result, it is used by all cases below, e.g. the "a" in pattern a(_,_)
 		for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
@@ -733,7 +733,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 		if(arg2Type == UNDERSCORE)
 		{
-			vector<unsigned int> tempResult;
+			vector<int> tempResult;
 
 			//pattern a(_,_)
 			if(arg1Type == UNDERSCORE)
@@ -742,7 +742,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				if(stmts->empty()) {
 					tempResult = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 					
-					for(vector<unsigned int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it)
+					for(vector<int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it)
 						stmts->push_back(*it);
 
 					cout << "\nsize: " << stmts->size();
@@ -759,7 +759,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				if(stmts->empty()) {
 					tempResult = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 					
-					for(vector<unsigned int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it)
+					for(vector<int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it)
 						stmts->push_back(*it);
 
 					//cout << "\nsize: " << stmts->size();
@@ -776,8 +776,8 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				if(vars->empty())
 				{	
 					//foreach a, add corresponding v in interResult
-					for(vector<unsigned int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
-						vector<unsigned int> var = Modifies::GetVarModifiedByStmt(*it);		//GetVarModifiedByStmt should return a single unsigned int
+					for(vector<int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
+						vector<int> var = Modifies::GetVarModifiedByStmt(*it);		//GetVarModifiedByStmt should return a single int
 
 						if(!var.empty()) 
 							vars->push_back(VarTable::GetVarName(var.at(0)));
@@ -788,9 +788,9 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				{
 					vector<string> tempVarResult;
 					//foreach a, check if v in interResult is modified by a
-					for(vector<unsigned int>::iterator it_stmts = stmts->begin(); it_stmts != stmts->end(); ++it_stmts) {
+					for(vector<int>::iterator it_stmts = stmts->begin(); it_stmts != stmts->end(); ++it_stmts) {
 						for(vector<string>::iterator it_vars = vars->begin(); it_vars != vars->end(); ++it_vars) {
-							vector<unsigned int> var = Modifies::GetVarModifiedByStmt(*it_stmts);
+							vector<int> var = Modifies::GetVarModifiedByStmt(*it_stmts);
 
 							if(!var.empty()) {
 								string curVar = VarTable::GetVarName(var.at(0));
@@ -816,7 +816,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 				ident = ident.substr(1, ident.length()-2);
 
-				unsigned int varIndex = VarTable::GetIndexOf(ident);
+				int varIndex = VarTable::GetIndexOf(ident);
 				
 				if(varIndex != -1)
 				{
@@ -824,7 +824,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 					if(stmts->empty()) {
 						tempResult = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 					
-						for(vector<unsigned int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it) {
+						for(vector<int>::iterator it = tempResult.begin(); it != tempResult.end(); ++it) {
 							if(Modifies::IsStmtModifyingVar((*it), varIndex))
 								stmts->push_back(*it);
 						}
@@ -834,9 +834,9 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 					//if a is not empty, foreach a check if it modiy the ident, if yes replace existing interResult
 					else {
-						vector<unsigned int> tempStmtResult;
+						vector<int> tempStmtResult;
 
-						for(vector<unsigned int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
+						for(vector<int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
 							if(Modifies::IsStmtModifyingVar((*it), varIndex))
 								tempStmtResult.push_back(*it);
 						}
@@ -864,16 +864,16 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 		else if(arg2Type == EXPRESSION)
 		{
-			vector<unsigned int> tempResult;
+			vector<int> tempResult;
 
 			Pattern patternObj = CreatePatternObject(arg2Value);
 			if(patternObj.expr == "")	return false;
 			cout << "here";
-			vector<unsigned int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,true);
+			vector<int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,true);
 			if(rightResult.empty())		return false;
 			cout << "here";
 			//vector<string> rightResult;
-			//for(vector<unsigned int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
+			//for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
 				//rightResult.push_back(*it);
 			
 			if(arg1Type == UNDERSCORE)
@@ -886,10 +886,10 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				}
 
 				else {
-					vector<unsigned int> tempStmtResult;
+					vector<int> tempStmtResult;
 
-					for(vector<unsigned int>::iterator it_cur = rightResult.begin(); it_cur != rightResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
-						for(vector<unsigned int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
+					for(vector<int>::iterator it_cur = rightResult.begin(); it_cur != rightResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
+						for(vector<int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
 							if((*it_cur) == (*it_prev))
 								tempStmtResult.push_back(*it_cur);
 						}
@@ -900,7 +900,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 				cout << "\nstmts size: " << stmts->size();
 				cout << "\nstmts: ";
-				for(vector<unsigned int>::iterator it = stmts->begin(); it != stmts->end(); ++it) 
+				for(vector<int>::iterator it = stmts->begin(); it != stmts->end(); ++it) 
 					cout << *it << " ";
 				cout << endl;
 
@@ -920,10 +920,10 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 				//if a is not empty, find intersection of a and rightresult
 				else {
-					vector<unsigned int> tempStmtResult;
+					vector<int> tempStmtResult;
 
-					for(vector<unsigned int>::iterator it_cur = rightResult.begin(); it_cur != rightResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
-						for(vector<unsigned int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
+					for(vector<int>::iterator it_cur = rightResult.begin(); it_cur != rightResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
+						for(vector<int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
 							if((*it_cur) == (*it_prev))
 								tempStmtResult.push_back(*it_cur);
 						}
@@ -942,8 +942,8 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				if(vars->empty())
 				{	
 					//foreach a, add corresponding v in interResult
-					for(vector<unsigned int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
-						vector<unsigned int> var = Modifies::GetVarModifiedByStmt(*it);		//GetVarModifiedByStmt should return a single unsigned int
+					for(vector<int>::iterator it = stmts->begin(); it != stmts->end(); ++it) {
+						vector<int> var = Modifies::GetVarModifiedByStmt(*it);		//GetVarModifiedByStmt should return a single int
 
 						if(!var.empty()) 
 							vars->push_back(VarTable::GetVarName(var.at(0)));
@@ -954,7 +954,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				{
 					vector<string> tempVarResult;
 					//foreach a, check if v in interResult is modified by a
-					for(vector<unsigned int>::iterator it_stmts = stmts->begin(); it_stmts != stmts->end(); ++it_stmts) {
+					for(vector<int>::iterator it_stmts = stmts->begin(); it_stmts != stmts->end(); ++it_stmts) {
 						for(vector<string>::iterator it_vars = vars->begin(); it_vars != vars->end(); ++it_vars) {
 							if(Modifies::IsStmtModifyingVar((*it_stmts),VarTable::GetIndexOf((*it_vars))))
 								tempVarResult.push_back(*it_vars);
@@ -972,21 +972,21 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 			else if(arg1Type == IDENT)
 			{
-				vector<unsigned int> leftResult;
+				vector<int> leftResult;
 
 				string ident = arg1Value;
 				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 				ident = ident.substr(1, ident.length()-2);
 
-				unsigned int varIndex = VarTable::GetIndexOf(ident);
+				int varIndex = VarTable::GetIndexOf(ident);
 				
 				if(varIndex != -1)
 				{
-					vector<unsigned int> temp = Modifies::GetStmtModifyingVar(varIndex);
+					vector<int> temp = Modifies::GetStmtModifyingVar(varIndex);
 
 					if(!temp.empty())
 					{
-						for(vector<unsigned int>::iterator it = temp.begin(); it != temp.end(); ++it)
+						for(vector<int>::iterator it = temp.begin(); it != temp.end(); ++it)
 						{
 							if(StmtTypeTable::CheckIfStmtOfType(*it,ASSIGN))
 								leftResult.push_back(*it);
@@ -1007,10 +1007,10 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 
 					//if a is not empty, foreach a check if it modiy the ident, if yes replace existing interResult
 					else {
-						vector<unsigned int> tempStmtResult;
+						vector<int> tempStmtResult;
 
-						for(vector<unsigned int>::iterator it_cur = tempResult.begin(); it_cur != tempResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
-							for(vector<unsigned int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
+						for(vector<int>::iterator it_cur = tempResult.begin(); it_cur != tempResult.end(); ++it_cur) {		//a function to get intersection between two vectors?
+							for(vector<int>::iterator it_prev = stmts->begin(); it_prev != stmts->end(); ++it_prev) {
 								if((*it_cur) == (*it_prev))
 									tempStmtResult.push_back(*it_cur);
 							}
@@ -1071,11 +1071,11 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			cout << "\nhere2";
 			//check if a is empty, if yes, get all awsn. check if v is empty, if yes, foreach a add v modified by a. if no, for each a, foreach v,check if a modify v
 			//if a is not empty, use current a. check if v is empty, if yes, foreach a add v modified by a. if no, for each a, foreach v,check if a modify v
-			vector<unsigned int>* stmts;
+			vector<int>* stmts;
 			vector<string>* vars;
-			vector<unsigned int> tempResultStmts;
+			vector<int> tempResultStmts;
 			vector<string> tempResultVars;
-			vector<unsigned int> tempStmts;
+			vector<int> tempStmts;
 			vector<string> tempVars;
 
 			//get appropriate a/w/s/n
@@ -1100,9 +1100,9 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 
 			//cout << "\nvars size: " << tempVars.size();
 				
-			for(vector<unsigned int>::iterator it_stmts = tempStmts.begin(); it_stmts != tempStmts.end(); ++it_stmts) {
+			for(vector<int>::iterator it_stmts = tempStmts.begin(); it_stmts != tempStmts.end(); ++it_stmts) {
 				for(vector<string>::iterator it_vars = tempVars.begin(); it_vars != tempVars.end(); ++it_vars) {
-					unsigned int varIndex = VarTable::GetIndexOf(*it_vars);
+					int varIndex = VarTable::GetIndexOf(*it_vars);
 
 					bool doesModifiesOrUses = false;
 		
@@ -1117,7 +1117,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			}
 
 			//remove duplicates
-			set<unsigned int> s( tempResultStmts.begin(), tempResultStmts.end() );
+			set<int> s( tempResultStmts.begin(), tempResultStmts.end() );
 			tempResultStmts.assign( s.begin(), s.end() );
 
 			set<string> t( tempResultVars.begin(), tempResultVars.end() );
@@ -1139,13 +1139,13 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 			ident = ident.substr(1, ident.length()-2);
 
-			unsigned int varIndex = VarTable::GetIndexOf(ident);
+			int varIndex = VarTable::GetIndexOf(ident);
 			
 			if(varIndex == -1) return false;
 
 
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempResult;
 
 			//get pointer to interResultList synonym
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
@@ -1153,12 +1153,12 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 					stmts = &((*it).resultInt);
 			}
 
-			vector<unsigned int> tempStmts;
+			vector<int> tempStmts;
 
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
 			{
 				bool doesModifiesOrUses = false;
 
@@ -1176,8 +1176,8 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 
 		if(arg2.type == UNDERSCORE)
 		{
-			vector<unsigned int>* stmts;
-			vector<unsigned int> tempResult;
+			vector<int>* stmts;
+			vector<int> tempResult;
 
 			//get pointer to interResultList synonym
 			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
@@ -1185,13 +1185,13 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 					stmts = &((*it).resultInt);
 			}
 
-			vector<unsigned int> tempStmts;
+			vector<int> tempStmts;
 
 			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			else				tempStmts = *stmts;
 			
-			for(vector<unsigned int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
-				vector<unsigned int> var;
+			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+				vector<int> var;
 			
 				if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(*it);
 				else				var = Uses::GetVarUsedByStmt(*it);
@@ -1244,14 +1244,14 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 					vars = &((*it).resultVar);
 			}
 
-			unsigned int arg1Value = atoi(arg1.value.c_str());
+			int arg1Value = atoi(arg1.value.c_str());
 			vector<string> tempVars;
 
 			if(vars->empty())	tempVars = VarTable::GetAllVar();
 			else				tempVars = *vars;
 				
 			for(vector<string>::iterator it = tempVars.begin(); it != tempVars.end(); ++it) {
-				unsigned int varIndex = VarTable::GetIndexOf(*it);
+				int varIndex = VarTable::GetIndexOf(*it);
 
 				bool doesModifiesOrUses = false;
 		
@@ -1276,9 +1276,9 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			ident = ident.substr(1, ident.length()-2);
 
 			//get index of ident
-			unsigned int varIndex = VarTable::GetIndexOf(ident);
+			int varIndex = VarTable::GetIndexOf(ident);
 
-			unsigned int arg1Value = atoi(arg1.value.c_str());
+			int arg1Value = atoi(arg1.value.c_str());
 			bool doesModifiesOrUses = false;
 
 			if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifyingVar(arg1Value, varIndex);
@@ -1291,9 +1291,9 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 
 		if(arg2.type == UNDERSCORE)
 		{
-			unsigned int arg1Value = atoi(arg1.value.c_str());
+			int arg1Value = atoi(arg1.value.c_str());
 
-			vector<unsigned int> var;
+			vector<int> var;
 			if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(arg1Value);
 			else				var = Uses::GetVarUsedByStmt(arg1Value);
 
@@ -1341,7 +1341,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 }
 
 //Convert interger to string
-string QueryEvaluator::ToString(unsigned int i)
+string QueryEvaluator::ToString(int i)
 {
 	string s;
 	stringstream out;
@@ -1356,7 +1356,7 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 {
 	//remove white spaces and get expression content
 	expr.erase(remove_if(expr.begin(), expr.end(), [](char x){return isspace(x);}), expr.end());
-	unsigned int length = expr.length() - 4;
+	int length = expr.length() - 4;
 	expr = expr.substr(2, length);
 
 	vector<string> tokenList;

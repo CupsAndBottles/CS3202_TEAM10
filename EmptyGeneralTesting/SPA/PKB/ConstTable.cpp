@@ -7,14 +7,14 @@
 
 using namespace std;
 
-map <unsigned int, vector<unsigned int> > ConstTable::StmtToConstTable;
-map <unsigned int, vector<unsigned int> > ConstTable::ConstToStmtTable;
+map <int, vector<int> > ConstTable::StmtToConstTable;
+map <int, vector<int> > ConstTable::ConstToStmtTable;
 
 // empty constructor
 ConstTable::ConstTable() {}
 
 // API
-void ConstTable::SetStmtUsesConst(unsigned int stmtUsing, unsigned int constUsed) {
+void ConstTable::SetStmtUsesConst(int stmtUsing, int constUsed) {
     if (!IsStmtUsingConst(stmtUsing, constUsed)) {
         StmtToConstTable[stmtUsing].push_back(constUsed);
         ConstToStmtTable[constUsed].push_back(stmtUsing);
@@ -24,7 +24,7 @@ void ConstTable::SetStmtUsesConst(unsigned int stmtUsing, unsigned int constUsed
         SetStmtUsesConst(Parent::GetParentOf(stmtUsing), constUsed);
 }
 
-bool ConstTable::IsStmtUsingConst(unsigned int stmtUsing, unsigned int constUsed) {
+bool ConstTable::IsStmtUsingConst(int stmtUsing, int constUsed) {
     if (StmtToConstTable.count(stmtUsing)!=0)
         for (unsigned int i=0; i<StmtToConstTable.at(stmtUsing).size(); i++)
             if (StmtToConstTable.at(stmtUsing).at(i) == constUsed)
@@ -32,15 +32,15 @@ bool ConstTable::IsStmtUsingConst(unsigned int stmtUsing, unsigned int constUsed
     return false;
 }
 
-vector<unsigned int> ConstTable::GetStmtUsingConst(unsigned int constUsed) {
-    vector<unsigned int> ret;
+vector<int> ConstTable::GetStmtUsingConst(int constUsed) {
+    vector<int> ret;
     if (ConstToStmtTable.count(constUsed)==0)
         return ret;
     else return ConstToStmtTable.at(constUsed);
 }
 
-vector<unsigned int> ConstTable::GetConstUsedByStmt(unsigned int stmtUsing) {
-    vector<unsigned int> ret;
+vector<int> ConstTable::GetConstUsedByStmt(int stmtUsing) {
+    vector<int> ret;
     if (StmtToConstTable.count(stmtUsing)==0)
         return ret;
     else return StmtToConstTable.at(stmtUsing);
@@ -52,12 +52,11 @@ bool ConstTable::HasAnyConst() {
 
 }
 
-<<<<<<< HEAD
 vector<int> ConstTable::GetAllConst() {
     vector<int> listOfConstants;
 
     for(map<int, vector<int> >::iterator it = StmtToConstTable.begin(); it != StmtToConstTable.end(); it++) {
-        for(int i = 0; i < it->second.size(); i++) {
+        for(unsigned int i = 0; i < it->second.size(); i++) {
             listOfConstants.push_back(it->second.at(i));
 		}
 	}
@@ -68,24 +67,16 @@ vector<int> ConstTable::GetAllConst() {
 	it = unique (listOfConstants.begin(), listOfConstants.end()); 
 	listOfConstants.resize(distance(listOfConstants.begin(),it) ); // trims excess spaces in vector
 
-=======
-vector<unsigned int> ConstTable::GetAllConst() {
-    vector<unsigned int> ret;
-
-    for(map<unsigned int, vector<unsigned int> >::iterator it=StmtToConstTable.begin(); it!=StmtToConstTable.end(); it++)
-        for(unsigned int i=0; i<it->second.size(); i++)
-            ret.push_back(it->second.at(i));
->>>>>>> bbe6fe90522bfe645f1f6114866d0fb778b4dde8
-
     return listOfConstants;
 }
 
-unsigned int ConstTable::SizeOfConstTable() {
-    unsigned int sum = 0;
+int ConstTable::SizeOfConstTable() {
+    int sum = 0;
 
-    for(map<unsigned int, vector<unsigned int> >::iterator it=StmtToConstTable.begin(); it!=StmtToConstTable.end();        it++)
+    for(map<int, vector<int> >::iterator it=StmtToConstTable.begin(); it!=StmtToConstTable.end();        it++)
     sum += it->second.size();
-    return sum;
+    
+	return sum;
 }
 
 void ConstTable::ClearData() {

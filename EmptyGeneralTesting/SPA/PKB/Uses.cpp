@@ -5,15 +5,15 @@
 
 using namespace std;
 
-map <unsigned int, vector<unsigned int> > Uses::stmtToVarTable;
-map <unsigned int, vector<unsigned int> > Uses::varToStmtTable;
-unsigned int Uses::sizeOfUses;
+map <int, vector<int> > Uses::stmtToVarTable;
+map <int, vector<int> > Uses::varToStmtTable;
+int Uses::sizeOfUses;
 
 // empty constructor
 Uses::Uses() {};
 
 // API
-void Uses::SetStmtUsesVar(unsigned int stmtUsing, unsigned int varUsed) {
+void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     if (!IsStmtUsingVar(stmtUsing, varUsed)) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
@@ -29,7 +29,7 @@ void Uses::SetStmtUsesVar(unsigned int stmtUsing, unsigned int varUsed) {
 
 }
 
-bool Uses::IsStmtUsingVar(unsigned int stmtUsing, unsigned int varUsed) {
+bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
     if (stmtToVarTable.count(stmtUsing) != 0) {
         for (unsigned int i = 0; i < stmtToVarTable.at(stmtUsing).size(); i++) {
             if (stmtToVarTable.at(stmtUsing).at(i) == varUsed) {
@@ -41,10 +41,10 @@ bool Uses::IsStmtUsingVar(unsigned int stmtUsing, unsigned int varUsed) {
     return false;
 }
 
-vector<unsigned int> Uses::GetStmtUsingVar(unsigned int varUsed) {
+vector<int> Uses::GetStmtUsingVar(int varUsed) {
   
     if (varToStmtTable.count(varUsed) == 0) {
-		vector<unsigned int> stmtsUsingVarUsed;
+		vector<int> stmtsUsingVarUsed;
 		return stmtsUsingVarUsed;
 
 	}
@@ -55,14 +55,10 @@ vector<unsigned int> Uses::GetStmtUsingVar(unsigned int varUsed) {
 	}
 }
 
-<<<<<<< HEAD
+
 vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
-=======
-vector<unsigned int> Uses::GetVarUsedByStmt(unsigned int stmtUsing) {
-    
->>>>>>> bbe6fe90522bfe645f1f6114866d0fb778b4dde8
-	if (stmtToVarTable.count(stmtUsing) == 0) {
-		vector<unsigned int> varsUsedByStmtUsing;
+ 	if (stmtToVarTable.count(stmtUsing) == 0) {
+		vector<int> varsUsedByStmtUsing;
 		return varsUsedByStmtUsing;
 
 	}
@@ -80,7 +76,7 @@ bool Uses::HasAnyUses() {
 
 }
 
-unsigned int Uses::SizeOfUses() {
+int Uses::SizeOfUses() {
      return sizeOfUses;
 
 }
@@ -95,38 +91,38 @@ void Uses::ClearData() {
 
 // driver code to test out Uses
 /*
-   unsigned int main() {
+   int main() {
    cout << "testing driver program\n";
    cout << "0 to stop\n1 to setUses(stmt, var)\n2 to getUsesByStmt(stmt)\n3 to getUsesStmt(var)\n";
-   unsigned int action;
+   int action;
    cin >> action;
 
    Uses obj = Uses();
    while (action!=0) {
    if (action==1) {
-   unsigned int stmt, var;
+   int stmt, var;
    cin >> stmt >> var;
    obj.SetStmtUsesVar(stmt,var);
    }
    else if (action==2) {
-   unsigned int stmt;
+   int stmt;
    cin >> stmt;
-   set<unsigned int> foo = obj.GetVarUsedByStmt(stmt);
+   set<int> foo = obj.GetVarUsedByStmt(stmt);
 
 //print out all elems in set
-set<unsigned int>::iterator it;
+set<int>::iterator it;
 for (it=foo.begin(); it!=foo.end(); it++) {
 cout << *it << " ";
 }
 cout << endl;
 }
 else if (action==3) {
-unsigned int var;
+int var;
 cin >> var;
-set<unsigned int> foo = obj.GetStmtUsingVar(var);
+set<int> foo = obj.GetStmtUsingVar(var);
 
 //print out all elems in set
-set<unsigned int>::iterator it;
+set<int>::iterator it;
 for (it=foo.begin(); it!=foo.end(); it++) {
 cout << *it << " ";
 }

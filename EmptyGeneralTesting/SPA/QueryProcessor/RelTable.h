@@ -61,5 +61,5 @@ public:
 
 	static std::vector<ArgumentType> GetRelArgType(RelationshipType, ArgumentNumber);
 	static std::vector<SynonymType> GetRelArgSynonymType(RelationshipType, ArgumentNumber);
-	static int GetTableSize();
+	static unsigned int GetTableSize();
 };

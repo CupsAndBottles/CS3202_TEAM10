@@ -4,27 +4,25 @@
 #include <utility>
 #include <vector>
 #include <map>
-#include <set>
+//#include <set>
 
 using namespace std;
 
 class Modifies {
     public:
-       // methods
-       // Default constructor
+		// methods
+		// Default constructor
         Modifies();
 
         // API
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
         static bool IsStmtModifyingVar(int stmtModifying, int varModified);
         static vector<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
-        static vector<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
-		// Select s such that Modifies(w, "x")
-		// 1. go VarTable, GetIndexOf("x")
-		// 2. GetStmtModifyingVar(index of x)
-		// 3. StmtTypeTable, filter w
-
+        static vector<int> GetVarModifiedByStmt(int stmtModifying);		// Modifies (2, _)
+		
         static bool HasAnyModifies();
+		
+		// helper methods for testing
         static int SizeOfModifies();
 		static void ClearData();
 
@@ -35,9 +33,9 @@ class Modifies {
           vector<int> GetModifiedByProc(int procModifying);*/
 
     private:
-        static map <int, vector<int> > StmtToVarTable;
-        static map <int, vector<int> > VarToStmtTable;
-        // insert other private methods here
+        static map <int, vector<int> > stmtToVarTable;
+        static map <int, vector<int> > varToStmtTable;
+		static int sizeOfModifies;
 
 };
 #endif

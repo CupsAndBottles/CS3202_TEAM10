@@ -19,7 +19,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(VarTableTest);
 void VarTableTest::testInsert() {
 	VarTable::ClearData();
 
-	int size = 0, varIndex = 0; 
+	unsigned int size = 0, varIndex = 0; 
 	string varName;
 
 	// insert a new variable to a new VarTable
@@ -42,7 +42,7 @@ void VarTableTest::testInsert() {
 	CPPUNIT_ASSERT(varName == "x1");
 	
 	// insert a variable that already exists in the VarTable
-	int newIndex;
+	unsigned int newIndex;
 	newIndex = VarTable::InsertVar("x2");
 	CPPUNIT_ASSERT_EQUAL(0, newIndex);
 	CPPUNIT_ASSERT_EQUAL(3, size);
@@ -57,7 +57,7 @@ void VarTableTest::testInsert() {
 
 void VarTableTest::testGetIndexOf() {
 	VarTable::ClearData();
-	int varIndex;
+	unsigned int varIndex;
 
 	// test for repeated insertions 
 	// test that indexes are assigned based on the order variables are inserted
@@ -84,7 +84,7 @@ void VarTableTest::testGetIndexOf() {
 
 void VarTableTest::testGetSize() {
 	VarTable::ClearData();
-	int size;
+	unsigned int size;
 
 	// test for empty varTable
 	size =  VarTable::GetSize();

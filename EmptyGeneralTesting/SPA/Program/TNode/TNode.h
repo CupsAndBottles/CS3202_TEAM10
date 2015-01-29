@@ -25,7 +25,7 @@ public:
 	TNode* GetLogicalParent();
 	TNode* GetRightSibling();
 	vector<TNode*> GetChildren();
-	TNode& GetChild(int);
+	TNode& GetChild(unsigned int);
 	Type GetType();
 	string GetName();
 	string GetContent();

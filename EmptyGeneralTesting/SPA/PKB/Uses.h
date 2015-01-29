@@ -2,7 +2,7 @@
 #define USES_H
 
 #include <utility>
-#include <vector>
+//#include <vector>
 #include <map>
 #include <set>
 
@@ -14,7 +14,7 @@ public:
 	// Default constructor
 	Uses();
 
-	// APIu
+	// API
 	static void SetStmtUsesVar(int stmtUsing, int varUsed);
 	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
     static vector<int> GetStmtUsingVar(int varUsed);
@@ -32,8 +32,9 @@ public:
 	vector<int> GetUsedByProc(int procUsing);*/
 
 private:
-	static map <int, vector<int> > StmtToVarTable;
-    static map <int, vector<int> > VarToStmtTable;
+	static map <int, vector<int> > stmtToVarTable;
+    static map <int, vector<int> > varToStmtTable;
+	static int sizeOfUses;
 
 };
 #endif

@@ -1,101 +1,76 @@
-#include "Follows.h"
-
-#include <iostream>
 #include <algorithm>
 #include <utility>
+#include <map>
 #include <vector>
 
-vector<pair<int, int>> Follows::followsTable;
+#include "Follows.h"
+
+map <int, int> Follows::beforeToAfterTable;
+map <int, int> Follows::afterToBeforeTable;
 
 /** public methods **/
-// Default constructor
 Follows::Follows() {
 	// empty constructor
 }
 
 // Methods
 void Follows::SetFollows(int stmtBefore, int stmtAfter) {
-	pair<int, int> newFollowsRelationship(stmtBefore, stmtAfter);
-	
-	if (!AlreadyInserted(newFollowsRelationship)) {
-		followsTable.push_back(newFollowsRelationship);
+	if (NoRelationshipConflicts(stmtBefore, stmtAfter)) {
+		beforeToAfterTable[stmtBefore] = stmtAfter;
+		afterToBeforeTable[stmtAfter] = stmtBefore;
 
 	}
 
-	// next time check also that no 2 stmts have >1 follows before and >1 follows after
-
 }
 
-bool Follows::IsFollows (int stmtBefore, int stmtAfter) {
-	pair<int, int> newFollowsRelationship(stmtBefore, stmtAfter);
-
-	return AlreadyInserted(newFollowsRelationship);
+bool Follows::IsFollows(int stmtBefore, int stmtAfter) {
+	return beforeToAfterTable[stmtBefore] == stmtAfter;
 
 }
 
 int Follows::GetFollowsBefore(int stmtAfter) {
-	pair<int, int> checkFollowsRelationship;
+	if(!HasNoStmtBefore(stmtAfter)) {
+		return afterToBeforeTable[stmtAfter];
 
-	// sequential search for now
-	for (unsigned int i = 0; i < followsTable.size(); i++) {
-		checkFollowsRelationship = followsTable.at(i);
-
-		if (checkFollowsRelationship.second == stmtAfter) {
-			return checkFollowsRelationship.first;
-		
-		}
+	} else {
+		return -1;
 
 	}
-
-	return -1;
 
 }
 
 int Follows::GetFollowsAfter(int stmtBefore) {
-	pair<int, int> checkFollowsRelationship;
+	if(!HasNoStmtAfter(stmtBefore)) {
+		return beforeToAfterTable[stmtBefore];
 
-	// sequential search for now
-	for (unsigned int i = 0; i < followsTable.size(); i++) {
-		checkFollowsRelationship = followsTable.at(i);
-
-		if (checkFollowsRelationship.first == stmtBefore) {
-			return checkFollowsRelationship.second;
-		
-		}
+	} else {
+		return -1;
 
 	}
-
-	return -1;
 
 }
 
 bool Follows::IsFollowsT(int stmtBefore, int stmtAfter) {
-	if (IsFollows(stmtBefore, stmtAfter)) {
-		return true;
+	int currBefore = stmtBefore;
 
-	} else {
-		int stmtAfterBefore = GetFollowsAfter(stmtBefore);	// very time-consuming
-
-		while (stmtAfterBefore != -1) {
-			if (stmtAfterBefore == stmtAfter) {
-				return true;
-			}
-
-			stmtBefore = stmtAfterBefore;
-			stmtAfterBefore = GetFollowsAfter(stmtBefore);
+	while (!HasNoStmtAfter(currBefore)) {
+		if (beforeToAfterTable[currBefore] == stmtAfter) {
+			return true;
 
 		}
 
-		return false;
+		currBefore = beforeToAfterTable[currBefore];
 	
 	}
+
+	return false;
 
 }
 
 vector<int> Follows::GetFollowsTBefore(int stmtAfter) {
 	vector<int> beforeList;
-
 	int stmtBefore = GetFollowsBefore(stmtAfter);
+
 	while (stmtBefore != -1) {
 		beforeList.push_back(stmtBefore);
 
@@ -128,18 +103,24 @@ bool Follows::HasAnyFollows() {
 }
 
 int Follows::SizeOfFollows() {
-	return followsTable.size();
-}
-
-/** private methods **/
-bool Follows::AlreadyInserted(pair<int, int> newPair) {
-	vector<pair<int, int>>::iterator newPairIterator = find(followsTable.begin(), followsTable.end(), newPair);
-
-	return newPairIterator != followsTable.end();
-
+	return beforeToAfterTable.size();
 }
 
 void Follows::ClearData() {
-	followsTable.clear();
+	beforeToAfterTable.clear();
+	afterToBeforeTable.clear();
+}
 
+/** private methods **/
+bool Follows::NoRelationshipConflicts(int stmtBefore, int stmtAfter) {
+	return HasNoStmtAfter(stmtBefore) && HasNoStmtBefore(stmtAfter);
+
+}
+
+bool Follows::HasNoStmtAfter(int stmtBefore) {
+	return beforeToAfterTable.find(stmtBefore) == beforeToAfterTable.end();
+}
+
+bool Follows::HasNoStmtBefore(int stmtAfter) {
+	return afterToBeforeTable.find(stmtAfter) == afterToBeforeTable.end();
 }

@@ -18,7 +18,7 @@ vector<Token> Tokenizer::Tokenize(string source) {
 	string integer = "";
 	string alphaString = "";
 
-	for (unsigned int pos = 0; pos < source.length(); pos++) { // loop through string
+	for (unsigned unsigned int pos = 0; pos < source.length(); pos++) { // loop through string
 		char currentChar = source[pos];
 
 
@@ -38,7 +38,7 @@ vector<Token> Tokenizer::Tokenize(string source) {
 
 		} else { // symbol, whitespace or endline
 			if (integer != "") { // previous substring is integer
-				unsigned int numOfPrecedingZeroes = 0; // remove preceding zeroes
+				unsigned unsigned int numOfPrecedingZeroes = 0; // remove preceding zeroes
 				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < integer.size() - 1) {
 					numOfPrecedingZeroes++;
 				}

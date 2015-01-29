@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -16,10 +17,11 @@ public:
 	static bool IsParent(int parentStmtIndex, int childStmtIndex);
 	static int GetParentOf(int childStmtIndex);
 	static vector<int> GetChildrenOf(int parentStmtIndex);
+	
 	static bool IsParentT(int parentStmtIndex, int childStmtIndex);
 	static vector<int> GetParentTOf(int childStmtIndex);
 	static vector<int> GetChildrenTOf(int parentStmtIndex);
-	
+
 	static bool HasAnyParents();
 
 	// helper methods for testing
@@ -27,11 +29,11 @@ public:
 	static void ClearData();
 
 private:
-	static vector<pair<int, int>> parentTable;	// List of Parent(s1, s2) relationships
+	static map <int, vector<int>> parentToChildrenTable;
+	static map <int, int> childToParentTable;
 	
-	static bool AlreadyInserted(pair<int, int> newPair);
-	// insert other private methods here
-
-
+	static bool AlreadyInserted(int parentStmtIndex, int childStmtIndex);
+	static bool HasNoParent(int childStmtIndex);
+	
 };
 #endif

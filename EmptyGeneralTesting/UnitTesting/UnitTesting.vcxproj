@@ -72,6 +72,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ModifiesTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="VarTableTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ModifiesTest.h" />
     <ClInclude Include="ParentTest.h" />

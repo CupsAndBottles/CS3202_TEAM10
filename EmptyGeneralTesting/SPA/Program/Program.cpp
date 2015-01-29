@@ -12,11 +12,11 @@ TNode& Program::GetASTRootNode() {
 	return program;
 }
 
-TNode& Program::GetStmtFromNumber(int stmtNum) {
+TNode& Program::GetStmtFromNumber(unsigned int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(TNode* stmt, int stmtNum) {
+void Program::InsertStmt(TNode* stmt, unsigned int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }
 

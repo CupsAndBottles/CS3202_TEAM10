@@ -16,12 +16,10 @@ Parent::Parent() {
 
 // Methods
 void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
-	if (!AlreadyInserted(parentStmtIndex, childStmtIndex) && HasNoParent(childStmtIndex)) {
+	if (!AlreadyInserted(parentStmtIndex, childStmtIndex) && HasNoParent(childStmtIndex) {
 		parentToChildrenTable[parentStmtIndex].push_back(childStmtIndex);
 		childToParentTable[childStmtIndex] = parentStmtIndex;
-
 	}
-
 }
 
 bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
@@ -32,16 +30,13 @@ bool Parent::IsParent(int parentStmtIndex, int childStmtIndex) {
 int Parent::GetParentOf(int childStmtIndex) {
 	if (!HasNoParent(childStmtIndex)) {
 		return childToParentTable[childStmtIndex];
-
 	} else {
 		return -1;
-	
 	}
 }
 
 vector<int> Parent::GetChildrenOf(int parentStmtIndex) {
 	return parentToChildrenTable[parentStmtIndex];
-
 }
 
 bool Parent::IsParentT(int parentStmtIndex, int childStmtIndex) {
@@ -86,7 +81,6 @@ vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
 	for (unsigned int i = 0; i < childrenOfCurrNode.size(); i++) {
 		grandChildrenOfCurrChild = GetChildrenTOf(childrenOfCurrNode.at(i));
 		allDescendants.insert(allDescendants.end(), grandChildrenOfCurrChild.begin(), grandChildrenOfCurrChild.end());
-	
 	}
 	
 	return allDescendants;
@@ -115,5 +109,6 @@ bool Parent::AlreadyInserted(int parentStmtIndex, int childStmtIndex) {
 }
 
 bool Parent::HasNoParent(int childStmtIndex) {
-	return childToParentTable.find(childStmtIndex) == childToParentTable.end();
+	// map.find() == map.end() was buggy, used count method cos no need to worry about iterator equality
+	return childToParentTable.count(childStmtIndex) == 0;
 }

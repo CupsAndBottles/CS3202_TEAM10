@@ -93,4 +93,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ParserTestFiles\additionTest.txt" />
+    <None Include="ParserTestFiles\whileTest.txt" />
+    <None Include="ParserTestFiles\nestedWhileTest.txt" />
+    <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
+    <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+  </ItemGroup>
 </Project>

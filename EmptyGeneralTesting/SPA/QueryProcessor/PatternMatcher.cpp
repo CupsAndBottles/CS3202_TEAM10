@@ -2,9 +2,6 @@
 #include <vector>
 #include "PatternMatcher.h"
 #include "..\Program\TNode\TNode.h"
-#include "..\Program\TNode\ProcedureTNode.h"
-#include "..\Program\TNode\AssignmentTNode.h"
-#include "..\Program\TNode\WhileTNode.h"
 #include "..\Program\Program.h"
 #include "..\PKB\StmtTypeTable.h"
 
@@ -78,8 +75,9 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMat
 	vector<int> results;
 
 	for (unsigned int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {
-		AssignmentTNode& currentStmtTNode = dynamic_cast<AssignmentTNode&>(Program::GetStmtFromNumber(assignmentStmts[currentStmt]));
-		if (MatchPatternAtLeaves(&currentStmtTNode.GetRHS(), object, partialMatch)) {
+		TNode& currentStmtTNode = Program::GetStmtFromNumber(assignmentStmts[currentStmt]);
+		// go to RHS (ignore left of assignment statement. Match expression)
+		if (MatchPatternAtLeaves(&currentStmtTNode.GetChild(1), object, partialMatch)) {
 			results.push_back(assignmentStmts[currentStmt]);
 		}
 	}

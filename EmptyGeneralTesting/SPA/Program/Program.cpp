@@ -2,30 +2,25 @@
 
 #include "Program.h"
 #include "..\Parser\Token.h"
-#include "TNode\ProcedureTNode.h"
-#include "TNode\AssignmentTNode.h"
-#include "TNode\ConstantTNode.h"
-#include "TNode\WhileTNode.h"
-
-ProgramTNode Program::program;
-map<int, StmtTNode*> Program::stmtNumberMap;
 
 Program::Program() {}
 
-ProgramTNode& Program::GetASTRootNode() {
+TNode Program::program = TNode::ConstructProgramTNode("");
+map<int, TNode*> Program::stmtNumberMap = map<int, TNode*>();
+
+TNode& Program::GetASTRootNode() {
 	return program;
 }
 
-StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
+TNode& Program::GetStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(StmtTNode* stmt, int stmtNum) {
+void Program::InsertStmt(TNode* stmt, int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }
 
 void Program::ClearData() { // leaky method
-	program = ProgramTNode();
-	stmtNumberMap.clear();
+	Program::program = TNode::ConstructProgramTNode("");
+	Program::stmtNumberMap = map<int, TNode*>();
 }
-

@@ -2,7 +2,7 @@
 #include <cppunit\extensions\TestFactoryRegistry.h>
 #include <cppunit\ui\text\TestRunner.h>
 
-unsigned int main (unsigned int arc, char* argv[]) {
+int main (int arc, char* argv[]) {
 	// Get the top level suite from the registry
 	CPPUNIT_NS::Test *suite = CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest();
 

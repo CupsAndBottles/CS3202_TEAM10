@@ -234,7 +234,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 
 	query += " ";	//add a whitespace behind, to handle case like assign a;Select a, if not the a will not get push back
 
-	for (unsigned unsigned int pos = 0; pos < query.length(); pos++) { // loop through string
+	for (int pos = 0; pos < query.length(); pos++) { // loop through string
 		char currentChar = query[pos];
 		static std::string integer = "";
 		static std::string alphaString = "";
@@ -639,7 +639,7 @@ bool QueryPreProcessor::IsExpression(std::string str)
 	{
 		if(str.at(1) == '\"' && str.at(str.length()-2) == '\"')	//_"..."_
 		{
-			unsigned int length = str.length() - 4;
+			int length = str.length() - 4;
 			str = str.substr(2, length);
 		}
 

@@ -101,7 +101,7 @@ Token Parser::ConsumeTopTokenOfType(Token::Type type) {
 	return ConsumeTopToken();
 }
 
-unsigned int getPrecedenceValue(Token::Type type) {
+int getPrecedenceValue(Token::Type type) {
 	switch (type) {
 		case Token::END_OF_STMT:
 			return -1;
@@ -112,9 +112,9 @@ unsigned int getPrecedenceValue(Token::Type type) {
 	}
 }
 
-unsigned int Parser::compare(Token::Type first, Token::Type second) {
-	unsigned int valFirst = getPrecedenceValue(first);
-	unsigned int valSecond = getPrecedenceValue(second);
+int Parser::compare(Token::Type first, Token::Type second) {
+	int valFirst = getPrecedenceValue(first);
+	int valSecond = getPrecedenceValue(second);
 	return (valFirst - valSecond);
 }
 
@@ -239,7 +239,7 @@ TNode* Parser::ParseExpr(TNode* LHS, bool isBracket) {
 	Token op1 = ConsumeTopToken();
 	TNode* RHS = ParseAtomicToken();
 	Token nextOp = PeekAtTopToken(); // peek
-	unsigned int comparison = compare(op1.type, nextOp.type);
+	int comparison = compare(op1.type, nextOp.type);
 
 	if (comparison < 0) { // nextOp is of lower precedence than currentOp
 		RHS = ParseExpr(RHS, isBracket);

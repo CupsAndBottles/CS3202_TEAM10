@@ -20,13 +20,13 @@ class Parser {
 
 public:
 	static void Parse(string);
-	static unsigned int compare(Token::Type, Token::Type);
+	static int compare(Token::Type, Token::Type);
 
 protected:
 	Parser(vector<Token>);
 
 	deque<Token> tokens;
-	unsigned int currentLineNumber;
+	int currentLineNumber;
 
 	Token ConsumeTopToken();
 	Token PeekAtTopToken();

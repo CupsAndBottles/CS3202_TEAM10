@@ -36,7 +36,7 @@ vector<TNode*> TNode::GetChildren() {
 	return children;
 }
 
-TNode& TNode::GetChild(unsigned int index) {
+TNode& TNode::GetChild(int index) {
 	return *children[index];
 }
 

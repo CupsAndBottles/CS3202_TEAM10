@@ -23,7 +23,7 @@ void QueryPreProcessorTest::ActualValidationTest()
 	bool valid = qv.ValidateQuery(query, qd);
 	CPPUNIT_ASSERT(valid == true);
 	
-	unsigned int size = qd.GetDeclarations().size();
+	int size = qd.GetDeclarations().size();
 	CPPUNIT_ASSERT(size == 2);
 
 	CPPUNIT_ASSERT(qd.GetDeclarations().at(0).synonym.value == "a");
@@ -176,7 +176,7 @@ void QueryPreProcessorTest::TokenizeTest()
 	//tokenize query
 	qv.Tokenize(query,tokenList);
 
-	unsigned int size = tokenList.size();
+	int size = tokenList.size();
 
 	CPPUNIT_ASSERT(size == 13);
 	CPPUNIT_ASSERT(tokenList.at(0) == "assign");

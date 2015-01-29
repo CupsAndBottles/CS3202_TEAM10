@@ -6,21 +6,21 @@
 Program::Program() {}
 
 TNode Program::program = TNode::ConstructProgramTNode("");
-map<unsigned int, TNode*> Program::stmtNumberMap = map<unsigned int, TNode*>();
+map<int, TNode*> Program::stmtNumberMap = map<int, TNode*>();
 
 TNode& Program::GetASTRootNode() {
 	return program;
 }
 
-TNode& Program::GetStmtFromNumber(unsigned int stmtNum) {
+TNode& Program::GetStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(TNode* stmt, unsigned int stmtNum) {
+void Program::InsertStmt(TNode* stmt, int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }
 
 void Program::ClearData() { // leaky method
 	Program::program = TNode::ConstructProgramTNode("");
-	Program::stmtNumberMap = map<unsigned int, TNode*>();
+	Program::stmtNumberMap = map<int, TNode*>();
 }

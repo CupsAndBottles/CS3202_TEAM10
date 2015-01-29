@@ -8,7 +8,7 @@
  vector<string>  VarTable::varNames;
 
 /* Public Methods*/
-unsigned int VarTable::InsertVar(string varName) {
+int VarTable::InsertVar(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
 	if (searchResult != varNames.end()) {
@@ -22,7 +22,7 @@ unsigned int VarTable::InsertVar(string varName) {
 
 }
 
-unsigned int VarTable::GetIndexOf(string varName) {
+int VarTable::GetIndexOf(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
 	if (searchResult != varNames.end()) {
@@ -35,8 +35,8 @@ unsigned int VarTable::GetIndexOf(string varName) {
 
 }
 
-string VarTable::GetVarName(unsigned int varIndex) {
-	if (varIndex >= 0 && varIndex < varNames.size()) {
+string VarTable::GetVarName(int varIndex) {
+	if (varIndex >= 0 && (unsigned int)varIndex < varNames.size()) {
 		return varNames[varIndex];
 	} else {
 		throw IndexNotFoundException();
@@ -45,7 +45,7 @@ string VarTable::GetVarName(unsigned int varIndex) {
 }
 
 // methods to aid testing
-unsigned int VarTable::GetSize() {
+int VarTable::GetSize() {
 	return varNames.size();
 
 }

@@ -81,12 +81,14 @@ vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
 				childrenOfCurrNode, grandChildrenOfCurrChild;
 
 	childrenOfCurrNode = GetChildrenOf(parentStmtIndex);
-	allDescendants.push_back(parentStmtIndex);
 
-	for (unsigned int i = 0; i < childrenOfCurrNode.size(); i++) {
+	// only enter for loop if parentStmtIndex has at least 1 child
+	for (unsigned int i = 1; i < childrenOfCurrNode.size(); i++) {
+		allDescendants.push_back(childrenOfCurrNode.at(i));
+
 		grandChildrenOfCurrChild = GetChildrenTOf(childrenOfCurrNode.at(i));
 		allDescendants.insert(allDescendants.end(), grandChildrenOfCurrChild.begin(), grandChildrenOfCurrChild.end());
-	
+
 	}
 	
 	return allDescendants;

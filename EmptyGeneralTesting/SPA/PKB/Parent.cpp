@@ -16,7 +16,7 @@ Parent::Parent() {
 
 // Methods
 void Parent::SetParent(int parentStmtIndex, int childStmtIndex) {
-	if (!AlreadyInserted(parentStmtIndex, childStmtIndex) && HasNoParent(childStmtIndex)) {
+	if (HasNoParent(childStmtIndex) && !AlreadyInserted(parentStmtIndex, childStmtIndex) ) {
 		parentToChildrenTable[parentStmtIndex].push_back(childStmtIndex);
 		childToParentTable[childStmtIndex] = parentStmtIndex;
 
@@ -80,12 +80,13 @@ vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
 	vector<int> allDescendants, 
 				childrenOfCurrNode, grandChildrenOfCurrChild;
 
+	// add this's children
 	childrenOfCurrNode = GetChildrenOf(parentStmtIndex);
+	allDescendants.insert(allDescendants.end(), childrenOfCurrNode.begin(), childrenOfCurrNode.end());
 
+	// add this's children's children
 	// only enter for loop if parentStmtIndex has at least 1 child
-	for (unsigned int i = 1; i < childrenOfCurrNode.size(); i++) {
-		allDescendants.push_back(childrenOfCurrNode.at(i));
-
+	for (unsigned int i = 0; i < childrenOfCurrNode.size(); i++) {
 		grandChildrenOfCurrChild = GetChildrenTOf(childrenOfCurrNode.at(i));
 		allDescendants.insert(allDescendants.end(), grandChildrenOfCurrChild.begin(), grandChildrenOfCurrChild.end());
 

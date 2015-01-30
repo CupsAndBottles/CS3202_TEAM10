@@ -82,8 +82,8 @@ void FollowsTest::testIsFollowsT() {
 
 void FollowsTest::testGetFollowsTBefore() {
 	Follows::ClearData();
-	vector<unsigned int> resultTestFollows;
-	unsigned int resultSize;
+	vector<int> resultTestFollows;
+	int resultSize;
 
 	Follows::SetFollows(3, 4);
 	Follows::SetFollows(4, 6);
@@ -111,8 +111,8 @@ void FollowsTest::testGetFollowsTBefore() {
 
 void FollowsTest::testGetFollowsTAfter() {
 	Follows::ClearData();
-	vector<unsigned int> resultTestFollows;
-	unsigned int resultSize;
+	vector<int> resultTestFollows;
+	int resultSize;
 
 	Follows::SetFollows(3, 5);
 	Follows::SetFollows(5, 7);

@@ -12,7 +12,7 @@ ProcedureTNode& ProgramTNode::GetChild(unsigned int index) {
 
 vector<ProcedureTNode*> ProgramTNode::GetBody() {
 	vector<ProcedureTNode*> result;
-	for (unsigned unsigned int i = 0; i < children.size(); i++) {
+	for (unsigned int i = 0; i < children.size(); i++) {
 		result.push_back(dynamic_cast<ProcedureTNode*>(children[i]));
 	}
 

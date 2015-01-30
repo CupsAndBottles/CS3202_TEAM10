@@ -36,7 +36,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	std::list<std::string> actualResultList;  
 	actualResultList.push_back("1");
@@ -58,7 +58,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("0");
@@ -78,7 +78,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -98,7 +98,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -124,7 +124,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -150,7 +150,7 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 8, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 8);
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -181,7 +181,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));	
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	std::list<std::string> actualResultList;  
 	actualResultList.push_back("4");
@@ -203,7 +203,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -220,7 +220,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -240,7 +240,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -263,7 +263,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -283,7 +283,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -306,7 +306,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -324,7 +324,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -345,7 +345,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -371,7 +371,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -387,7 +387,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -407,7 +407,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -432,7 +432,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	std::list<std::string> actualResultList;  
 	actualResultList.push_back("4");
@@ -453,7 +453,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -469,7 +469,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -489,7 +489,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -512,7 +512,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -532,7 +532,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -555,7 +555,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -574,7 +574,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -595,7 +595,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -621,7 +621,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -637,7 +637,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -657,7 +657,7 @@ void QueryEvaluatorToPKBTest::TestParentT()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -682,7 +682,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	std::list<std::string> actualResultList;
 	actualResultList.push_back("7");
@@ -700,7 +700,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -716,7 +716,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList;
 	actualResultList.push_back("1");
@@ -733,7 +733,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();  
 	actualResultList.push_back("1");
@@ -755,7 +755,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 5, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 5);
 
 	actualResultList.clear();  
 	actualResultList.push_back("1");
@@ -777,7 +777,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 5, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 5);
 
 	actualResultList.clear();  
 	actualResultList.push_back("2");
@@ -799,7 +799,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();  
 	actualResultList.push_back("1");
@@ -816,7 +816,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();  
 
@@ -832,7 +832,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();  
 
@@ -848,7 +848,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();  
 	actualResultList.push_back("3");
@@ -868,7 +868,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();  
 
@@ -884,7 +884,7 @@ void QueryEvaluatorToPKBTest::TestFollows()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();  
 	actualResultList.push_back("3");
@@ -909,7 +909,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	std::list<std::string> actualResultList; 
 	actualResultList.push_back("1");
@@ -931,7 +931,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	actualResultList.clear();  
 	actualResultList.push_back("a");
@@ -952,7 +952,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -978,7 +978,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -998,7 +998,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1015,7 +1015,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1034,7 +1034,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();  
 	actualResultList.push_back("a");
@@ -1054,7 +1054,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1074,7 +1074,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1093,7 +1093,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("y");
@@ -1110,7 +1110,7 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1135,7 +1135,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	std::list<std::string> actualResultList; 
 	actualResultList.push_back("2");
@@ -1155,7 +1155,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -1178,7 +1178,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 9);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1204,7 +1204,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 7, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 7);
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1227,7 +1227,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1244,7 +1244,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("9");
@@ -1261,7 +1261,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1280,7 +1280,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -1295,7 +1295,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1315,7 +1315,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -1336,7 +1336,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	std::list<std::string> actualResultList; 
 	actualResultList.push_back("1");
@@ -1358,7 +1358,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 8, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 8);
 
 	actualResultList.clear();
 	actualResultList.push_back("a");
@@ -1380,7 +1380,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1401,7 +1401,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1423,7 +1423,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 4);
 
 	actualResultList.clear();
 	actualResultList.push_back("a");
@@ -1442,7 +1442,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 6);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1463,7 +1463,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -1480,7 +1480,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1497,7 +1497,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 8, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 8);
 
 	actualResultList.clear();
 	actualResultList.push_back("a");
@@ -1519,7 +1519,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -1534,7 +1534,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1551,7 +1551,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1570,7 +1570,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("6");
@@ -1586,7 +1586,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -1602,7 +1602,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("9");
@@ -1618,7 +1618,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("8");
@@ -1634,7 +1634,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("tEst");
@@ -1652,7 +1652,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("tEst");
@@ -1669,7 +1669,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -1685,7 +1685,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -1700,7 +1700,7 @@ void QueryEvaluatorToPKBTest::TestPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("6");
@@ -1723,7 +1723,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	std::list<std::string> actualResultList; 
 	actualResultList.push_back("4");
@@ -1739,7 +1739,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("8");
@@ -1756,7 +1756,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -1772,7 +1772,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("tEst");
@@ -1789,7 +1789,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("tEst");
@@ -1807,7 +1807,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); 
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("6");
@@ -1823,7 +1823,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -1839,7 +1839,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -1856,7 +1856,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -1871,7 +1871,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -1887,7 +1887,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("tEst");
@@ -1904,7 +1904,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1920,7 +1920,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -1934,7 +1934,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("5");
@@ -1949,7 +1949,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1965,7 +1965,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("5");
@@ -1980,7 +1980,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("8");
@@ -1995,7 +1995,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); 
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("7");
@@ -2011,7 +2011,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 0);
 
 	actualResultList.clear();
 
@@ -2026,7 +2026,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 3);
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -2044,7 +2044,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("9");
@@ -2060,7 +2060,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("4");
@@ -2076,7 +2076,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 2);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -2093,7 +2093,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 5, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 5);
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -2113,7 +2113,7 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, unsigned int(resultList.size()));
+	CPPUNIT_ASSERT_MESSAGE("Number of results is correct", resultList.size() == 1);
 
 	actualResultList.clear();
 	actualResultList.push_back("1");

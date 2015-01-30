@@ -16,7 +16,7 @@ void StmtListTNode::AddChild(StmtTNode* child) {
 
 vector<StmtTNode*> StmtListTNode::GetStmtList() {
 	vector<StmtTNode*> result;
-	for (unsigned unsigned int i = 0; i < children.size(); i++) {
+	for (unsigned int i = 0; i < children.size(); i++) {
 		result.push_back(dynamic_cast<StmtTNode*>(children[i]));
 	}
 

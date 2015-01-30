@@ -21,7 +21,7 @@ void QueryEvaluatorTest::TestHelperFunction()
 
 
 
-	expr = "_\"\ 111 \"_";
+	expr = "_\" 111 \"_";
 	patternObj = qe.CreatePatternObject(expr); 
 
 	CPPUNIT_ASSERT(patternObj.expr == "111");

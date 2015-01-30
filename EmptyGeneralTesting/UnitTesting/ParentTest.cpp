@@ -62,8 +62,8 @@ void ParentTest::testGetParentOf() {
 
 void ParentTest::testGetChildrenOf() {
 	Parent::ClearData();
-	vector<unsigned int> resultTestParent;
-	unsigned int resultSize;
+	vector<int> resultTestParent;
+	int resultSize;
 
 	Parent::SetParent(3, 4);
 	Parent::SetParent(3, 5);
@@ -99,8 +99,8 @@ void ParentTest::testIsParentT() {
 
 void ParentTest::testGetParentTOf() {
 	Parent::ClearData();
-	vector<unsigned int> resultTestParent;
-	unsigned int resultSize;
+	vector<int> resultTestParent;
+	int resultSize;
 
 	Parent::SetParent(3, 4);
 	Parent::SetParent(3, 5);
@@ -132,8 +132,8 @@ void ParentTest::testGetParentTOf() {
 
 void ParentTest::testGetChildrenTOf() {
 	Parent::ClearData();
-	vector<unsigned int> resultTestParent;
-	unsigned int resultSize;
+	vector<int> resultTestParent;
+	int resultSize;
 
 	Parent::SetParent(3, 4);
 	Parent::SetParent(3, 5);

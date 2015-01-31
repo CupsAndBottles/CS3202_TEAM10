@@ -2,9 +2,8 @@
 #define USES_H
 
 #include <utility>
-//#include <vector>
+#include <vector>
 #include <map>
-#include <set>
 
 using namespace std;
 
@@ -34,6 +33,9 @@ public:
 private:
 	static map <int, vector<int> > stmtToVarTable;
     static map <int, vector<int> > varToStmtTable;
+	static map <int, unsigned int> stmtToVarBitVector;
+	// least significant bit will represent index 0
+
 	static int sizeOfUses;
 
 };

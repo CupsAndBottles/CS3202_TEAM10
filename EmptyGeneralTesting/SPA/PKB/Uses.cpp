@@ -7,6 +7,7 @@ using namespace std;
 
 map <int, vector<int> > Uses::stmtToVarTable;
 map <int, vector<int> > Uses::varToStmtTable;
+map <int, unsigned int> Uses::stmtToVarBitVector;
 int Uses::sizeOfUses;
 
 // empty constructor
@@ -18,6 +19,9 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
 
+		unsigned int newVar = 1 << varUsed;
+		stmtToVarBitVector[stmtUsing] = newVar | stmtToVarBitVector[stmtUsing];
+		
 		sizeOfUses++;
 
     }
@@ -30,15 +34,13 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 }
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-    if (stmtToVarTable.count(stmtUsing) != 0) {
-        for (unsigned int i = 0; i < stmtToVarTable.at(stmtUsing).size(); i++) {
-            if (stmtToVarTable.at(stmtUsing).at(i) == varUsed) {
-                return true;
-			}
-		}
+    if (stmtToVarBitVector.count(stmtUsing) != 0) {
+		unsigned int check = (1 << varUsed) & stmtToVarBitVector[stmtUsing];
+		return check != 0;
 	}
+	
+	return false;
 
-    return false;
 }
 
 vector<int> Uses::GetStmtUsingVar(int varUsed) {
@@ -84,6 +86,7 @@ int Uses::SizeOfUses() {
 void Uses::ClearData() {
     stmtToVarTable.clear();
     varToStmtTable.clear();
+	stmtToVarBitVector.clear();
 	sizeOfUses = 0;
 
 }

@@ -26,9 +26,8 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 
     }
 
-	int parentOfStmtModifying = Parent::GetParentOf(stmtModifying);
-    if (parentOfStmtModifying != -1) {
-           SetStmtModifiesVar(parentOfStmtModifying, varModified);
+    if (Parent::GetParentOf(stmtModifying) != -1) {
+           SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
 
 	}
 

@@ -90,7 +90,7 @@ std::map<RelationshipType,Relationship> RelTable::CreateTable()
 	return table;
 }
 
-unsigned int RelTable::GetTableSize()
+int RelTable::GetTableSize()
 {
 	return relationshipTable.size();
 }

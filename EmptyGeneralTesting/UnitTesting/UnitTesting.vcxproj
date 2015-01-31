@@ -102,6 +102,13 @@
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ParserTestFiles\additionTest.txt" />
+    <None Include="ParserTestFiles\nestedWhileTest.txt" />
+    <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
+    <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+    <None Include="ParserTestFiles\whileTest.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

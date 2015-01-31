@@ -38,8 +38,9 @@ vector<Token> Tokenizer::Tokenize(string source) {
 
 		} else { // symbol, whitespace or endline
 			if (integer != "") { // previous substring is integer
-				unsigned int numOfPrecedingZeroes = 0; // remove preceding zeroes
-				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < integer.size() - 1) {
+				int numOfPrecedingZeroes = 0; // remove preceding zeroes
+
+				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < (integer.size() - 1)) {
 					numOfPrecedingZeroes++;
 				}
 				integer.erase(0, numOfPrecedingZeroes);

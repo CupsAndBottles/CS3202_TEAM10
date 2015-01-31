@@ -36,7 +36,7 @@ int VarTable::GetIndexOf(string varName) {
 }
 
 string VarTable::GetVarName(int varIndex) {
-	if (varIndex >= 0 && varIndex < varNames.size()) {
+	if (varIndex >= 0 && (unsigned int)varIndex < varNames.size()) {
 		return varNames[varIndex];
 	} else {
 		throw IndexNotFoundException();

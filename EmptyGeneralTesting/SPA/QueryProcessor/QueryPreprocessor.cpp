@@ -639,7 +639,7 @@ bool QueryPreProcessor::IsExpression(std::string str)
 	{
 		if(str.at(1) == '\"' && str.at(str.length()-2) == '\"')	//_"..."_
 		{
-			unsigned int length = str.length() - 4;
+			int length = str.length() - 4;
 			str = str.substr(2, length);
 		}
 

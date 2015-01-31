@@ -56,11 +56,12 @@ void UsesTest::TestMultipleStmts() {
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(4, 3));
 
 	vector<int> stmtsUsingVar0 = Uses::GetStmtUsingVar(0);
-	CPPUNIT_ASSERT(stmtsUsingVar0.size() == 1);
-	CPPUNIT_ASSERT(stmtsUsingVar0[0] == 1);
+
+	CPPUNIT_ASSERT_EQUAL(1, (int)stmtsUsingVar0.size());
+	CPPUNIT_ASSERT_EQUAL(1, stmtsUsingVar0[0]);
 
 	vector<int> stmtsUsingVar1 = Uses::GetStmtUsingVar(1);
-	CPPUNIT_ASSERT(stmtsUsingVar1.size() == 1);
+	CPPUNIT_ASSERT_EQUAL(1, (int)stmtsUsingVar1.size());
 	CPPUNIT_ASSERT(stmtsUsingVar1[0] == 2);
 
 	vector<int> stmtsUsingVar2 = Uses::GetStmtUsingVar(2);

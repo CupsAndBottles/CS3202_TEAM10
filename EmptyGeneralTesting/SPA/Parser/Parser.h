@@ -2,8 +2,6 @@
 
 #include "Token.h"
 #include "..\Program\Program.h"
-#include "..\Program\TNode\AssignmentTNode.h"
-#include "..\Program\TNode\WhileTNode.h"
 #include "..\PKB\Follows.h"
 #include "..\PKB\Modifies.h"
 #include "..\PKB\Uses.h"
@@ -22,13 +20,13 @@ class Parser {
 
 public:
 	static void Parse(string);
-	static unsigned int compare(Token::Type, Token::Type);
+	static int compare(Token::Type, Token::Type);
 
 protected:
 	Parser(vector<Token>);
 
 	deque<Token> tokens;
-	unsigned int currentLineNumber;
+	int currentLineNumber;
 
 	Token ConsumeTopToken();
 	Token PeekAtTopToken();
@@ -38,12 +36,12 @@ protected:
 
 	void Parse();
 
-	StmtListTNode* ParseStmtList(string, StmtTNode*);
-	StmtTNode* ParseStmt();
-	StmtTNode* ParseStmt(StmtTNode*);
-	AssignmentTNode* ParseAssignmentStmt();
-	WhileTNode* ParseWhileStmt();
+	TNode* ParseStmtList(string, TNode*);
+	TNode* ParseStmt();
+	TNode* ParseStmt(TNode*);
+	TNode* ParseAssignmentStmt();
+	TNode* ParseWhileStmt();
 	TNode* ParseExpr();
 	TNode* ParseExpr(TNode*, bool);
-	AtomicTNode* ParseAtomicToken();
+	TNode* ParseAtomicToken();
 };

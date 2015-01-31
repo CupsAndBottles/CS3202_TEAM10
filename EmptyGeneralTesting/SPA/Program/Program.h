@@ -1,25 +1,24 @@
 #pragma once
 
 #include "..\Parser\Token.h"
-#include "TNode\StmtTNode.h"
-#include "TNode\ProgramTNode.h"
+#include "TNode\TNode.h"
 
 #include <map>
 
 class Program {
 public:
 	friend class Parser;
-	static ProgramTNode& GetASTRootNode();
-	static StmtTNode& GetStmtFromNumber(unsigned int);
+	static TNode& GetASTRootNode();
+	static TNode& GetStmtFromNumber(int);
 	static void ClearData();
 
 protected:
-	static void InsertStmt(StmtTNode*, unsigned int);
+	static void InsertStmt(TNode*, int);
 
 private:
 	Program();
 
-	static ProgramTNode program;
-	static map<unsigned int, StmtTNode*> stmtNumberMap;
+	static TNode program;
+	static map<int, TNode*> stmtNumberMap;
 };
 

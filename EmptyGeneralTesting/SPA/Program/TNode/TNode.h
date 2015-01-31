@@ -12,43 +12,59 @@ public:
 		ASSIGNMENT,
 		VARIABLE,
 		CONSTANT,
-		BINARY_OPERATOR,
+		OPERATOR,
 		STMT_LIST,
 		WHILE,
+		CALL,
+		IF
 	};
 
-	TNode(Type);
-	TNode(Type, string);
+	static const string enumStringDeclarations[];
 
-	virtual TNode* GetDirectParent();
-	virtual TNode* GetRightSibling();
-	virtual vector<TNode*> GetChildren();
-	virtual TNode& GetChild(unsigned int);
+	TNode* GetDirectParent();
+	TNode* GetLogicalParent();
+	TNode* GetRightSibling();
+	vector<TNode*> GetChildren();
+	TNode& GetChild(int);
 	Type GetType();
 	string GetName();
-	virtual string GetContent();
+	string GetContent();
+	int GetLineNumber();
 	bool IsType(Type);
 	bool HasChildren();
 	
-	virtual void SetRightSibling(TNode*);
-	virtual void AddChild(TNode*);
+	void SetRightSibling(TNode*);
+	void SetLogicalParent(TNode*);
+	void AddChild(TNode*);
 
 	static string EnumToString(Type);
 
-protected:	
+	static TNode ConstructIfTNode(int lineNumber);
+	static TNode ConstructWhileTNode(int lineNumber);
+	static TNode ConstructCallTNode(int lineNumber);
+	static TNode ConstructAssignmentTNode(int lineNumber);
+	static TNode ConstructConstTNode(string value);
+	static TNode ConstructVarTNode(string symbol);
+	static TNode ConstructOperatorTNode(string symbol);
+	static TNode ConstructStmtListTNode(string name);
+	static TNode ConstructProcedureTNode(string name);
+	static TNode ConstructProgramTNode(string name);
+	static TNode ConstructStmtTNode(Type type, int lineNumber);
+
+private:
+	TNode(Type type, string name);
+
 	Type type;
 	TNode* directParent;
 	vector<TNode*> children;
 	TNode* rightSibling;
+	TNode* logicalParent;
 	string name;
 	string content;
+	int lineNumber;
 
 	void ThrowUnsupportedOperationException();
 
 	virtual void SetDirectParent(TNode*);
-	void BuildName(string);
-
-private:
-	static const string enumStringDeclarations[];
 
 };

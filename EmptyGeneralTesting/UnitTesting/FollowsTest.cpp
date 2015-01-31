@@ -89,22 +89,22 @@ void FollowsTest::testGetFollowsTBefore() {
 	Follows::SetFollows(4, 6);
 
 	resultTestFollows = Follows::GetFollowsTBefore(4);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows before for 1 layer", 1, resultSize);
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows beforefor 1 layer", 3, resultTestFollows.at(0));
 
 	resultTestFollows = Follows::GetFollowsTBefore(6);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows before for more than 1 layers", 2, resultSize);
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows before for more than 1 layers", 4, resultTestFollows.at(0));
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows before for more than 1 layers", 3, resultTestFollows.at(1));
 
 	resultTestFollows = Follows::GetFollowsTBefore(3);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("no stmt following before", 0, resultSize);
 
 	resultTestFollows = Follows::GetFollowsTBefore(2);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("get stmt following before an element that doesn't exist", 0, resultSize);
 	
 }
@@ -124,17 +124,17 @@ void FollowsTest::testGetFollowsTAfter() {
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows after for 1 layer", 4, resultTestFollows.at(0));
 
 	resultTestFollows = Follows::GetFollowsTAfter(3);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows after for more than 1 layers", 2, resultSize);
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows after for more than 1 layers", 5, resultTestFollows.at(0));
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("regular follows after for more than 1 layers", 7, resultTestFollows.at(1));
 
 	resultTestFollows = Follows::GetFollowsTAfter(7);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("no stmt following after", 0, resultSize);
 
 	resultTestFollows = Follows::GetFollowsTAfter(6);
-	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit unsigned int
+	resultSize = (int16_t) resultTestFollows.size();	// assumes 16-bit int
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("get stmt following after an element that doesn't exist", 0, resultSize);
 
 }

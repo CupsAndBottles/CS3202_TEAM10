@@ -55,14 +55,14 @@ void ParserToPKBTest::TestNothing() {
 void ParserToPKBTest::TestVarTable() {
 	// check if VarTable has correct number of variables
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 8, VarTable::GetSize());
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("1st variable of VarTable", 0, VarTable::GetIndexOf("x"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("2nd variable of VarTable", 1, VarTable::GetIndexOf("y"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("3rd variable of VarTable", 2, VarTable::GetIndexOf("z"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("4th variable of VarTable", 3, VarTable::GetIndexOf("tEst"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("5th variable of VarTable", 4, VarTable::GetIndexOf("newVar"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("6th variable of VarTable", 5, VarTable::GetIndexOf("a"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("7th variable of VarTable", 6, VarTable::GetIndexOf("b"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("8th variable of VarTable", 7, VarTable::GetIndexOf("c"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("1st variable of VarTable", 0, VarTable::GetIndexOfVar("x"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("2nd variable of VarTable", 1, VarTable::GetIndexOfVar("y"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("3rd variable of VarTable", 2, VarTable::GetIndexOfVar("z"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("4th variable of VarTable", 3, VarTable::GetIndexOfVar("tEst"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("5th variable of VarTable", 4, VarTable::GetIndexOfVar("newVar"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("6th variable of VarTable", 5, VarTable::GetIndexOfVar("a"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("7th variable of VarTable", 6, VarTable::GetIndexOfVar("b"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("8th variable of VarTable", 7, VarTable::GetIndexOfVar("c"));
 }
 
 void ParserToPKBTest::TestModifies() {

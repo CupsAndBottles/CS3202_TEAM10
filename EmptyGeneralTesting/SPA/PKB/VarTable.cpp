@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
- vector<string>  VarTable::varNames;
+vector<string>  VarTable::varNames;
 
 /* Public Methods*/
 int VarTable::InsertVar(string varName) {
@@ -22,7 +22,7 @@ int VarTable::InsertVar(string varName) {
 
 }
 
-int VarTable::GetIndexOf(string varName) {
+int VarTable::GetIndexOfVar(string varName) {
 	vector<string>::iterator searchResult = SearchFor(varName);
 
 	if (searchResult != varNames.end()) {
@@ -44,6 +44,10 @@ string VarTable::GetVarName(int varIndex) {
 
 }
 
+vector<string> VarTable::GetAllVarNames() {
+	return varNames;
+}
+
 // methods to aid testing
 int VarTable::GetSize() {
 	return varNames.size();
@@ -59,8 +63,4 @@ void VarTable::ClearData() {
 vector<string>::iterator VarTable::SearchFor(string varName) {
 	return find(varNames.begin(), varNames.end(), varName);
 
-}
-
-vector<string> VarTable::GetAllVar() {
-	return varNames;
 }

@@ -19,6 +19,7 @@
     <ClInclude Include="PKB\Follows.h" />
     <ClInclude Include="PKB\Modifies.h" />
     <ClInclude Include="PKB\Parent.h" />
+    <ClInclude Include="PKB\ProcTable.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />
     <ClInclude Include="PKB\Uses.h" />
     <ClInclude Include="PKB\VarTable.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="PKB\Follows.cpp" />
     <ClCompile Include="PKB\Modifies.cpp" />
     <ClCompile Include="PKB\Parent.cpp" />
+    <ClCompile Include="PKB\ProcTable.cpp" />
     <ClCompile Include="PKB\StmtTypeTable.cpp" />
     <ClCompile Include="PKB\Uses.cpp" />
     <ClCompile Include="PKB\VarTable.cpp" />

@@ -1,85 +1,80 @@
-#include <utility>
-#include <map>
+#pragma once
+
 #include <vector>
 #include <algorithm>
 #include "ProcTable.h"
-#include "Parent.h"
+#include "..\Exception\IndexNotFoundException.h"
 
 using namespace std;
 
-map <int, vector<int> > ProcTable::StmtToProcTable;
-map <int, vector<int> > ProcTable::ProcToStmtTable;
+vector<string>  ProcTable::procNames;
+vector<int> ProcTable::firstStmtNo;
+vector<int> ProcTable::lastStmtNo;
 
 // empty constructor
 ProcTable::ProcTable() {}
 
 // API
-void ProcTable::SetStmtUsesProc(int stmtUsing, int procUsed) {
-    if (!IsStmtUsingConst(stmtUsing, procUsed)) {
-        StmtToProcTable[stmtUsing].push_back(procUsed);
-        ProcToStmtTable[procUsed].push_back(stmtUsing);
-    }
+int ProcTable::InsertProc(string procName) {
+	vector<string>::iterator searchResult = SearchFor(procName);
 
-    if (Parent::GetParentOf(stmtUsing) != -1)
-        SetStmtUsesProc(Parent::GetParentOf(stmtUsing), procUsed);
+	if (searchResult != procNames.end()) {
+		return distance(procNames.begin(), searchResult);
+
+	} else {
+		procNames.push_back(procName);
+		return procNames.size() - 1;
+
+	}
 }
 
-bool ProcTable::IsStmtUsingProc(int stmtUsing, int procUsed) {
-    if (StmtToProcTable.count(stmtUsing)!=0)
-        for (unsigned int i=0; i<StmtToProcTable.at(stmtUsing).size(); i++)
-            if (StmtToProcTable.at(stmtUsing).at(i) == procUsed)
-                return true;
-    return false;
-}
+int ProcTable::GetIndexOfProc(string procName) {
+	vector<string>::iterator searchResult = SearchFor(procName);
 
-vector<int> ProcTable::GetStmtUsingProc(int procUsed) {
-    vector<int> ret;
-    if (ProcToStmtTable.count(procUsed)==0)
-        return ret;
-    else return ProcToStmtTable.at(procUsed);
-}
+	if (searchResult != procNames.end()) {
+		return distance(procNames.begin(), searchResult);
 
-vector<int> ProcTable::GetProcUsedByStmt(int stmtUsing) {
-    vector<int> ret;
-    if (StmtToProcTable.count(stmtUsing)==0)
-        return ret;
-    else return StmtToProcTable.at(stmtUsing);
-}
+	} else {
+		return -1;
 
-
-bool ProcTable::HasAnyProc() {
-    return !StmtToProcTable.empty();
-
-}
-
-vector<int> ProcTable::GetAllProc() {
-    vector<int> listOfProcedures;
-
-    for(map<int, vector<int> >::iterator it = StmtToProcTable.begin(); it != StmtToProcTable.end(); it++) {
-        for(unsigned int i = 0; i < it->second.size(); i++) {
-            listOfProcedures.push_back(it->second.at(i));
-		}
 	}
 
-	sort(listOfProcedures.begin(), listOfProcedures.end());
-	
-	vector<int>::iterator it;
-	it = unique (listOfProcedures.begin(), listOfProcedures.end()); 
-	listOfProcedures.resize(distance(listOfProcedures.begin(),it) ); // trims excess spaces in vector
-
-    return listOfProcedures;
 }
 
-int ProcTable::SizeOfProcTable() {
-    int sum = 0;
+string ProcTable::GetProcName(int procIndex) {
+	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+		return procNames[procIndex];
+	} else {
+		throw IndexNotFoundException();
+	}
 
-    for(map<int, vector<int> >::iterator it=StmtToProcTable.begin(); it!=StmtToProcTable.end();        it++)
-    sum += it->second.size();
-    
-	return sum;
+}
+
+vector<string> ProcTable::GetAllProcNames() {
+	return procNames;
+}
+
+int ProcTable::getFirstStmtNoOfProc(int procIndex) {
+	return firstStmtNo.at(procIndex);
+}
+
+int ProcTable::getLastStmtNoOfProc(int procIndex) {
+	return lastStmtNo.at(procIndex);
+}
+
+// methods to aid testing
+int ProcTable::GetSize() {
+	return procNames.size();
+
 }
 
 void ProcTable::ClearData() {
-    StmtToProcTable.clear();
-    ProcToStmtTable.clear();
+	procNames.clear();
+
+}
+
+/*Private Methods*/
+vector<string>::iterator ProcTable::SearchFor(string procName) {
+	return find(procNames.begin(), procNames.end(), procName);
+
 }

@@ -40,8 +40,6 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
     
 	return false;
 
-	// try printing out # of variables that 'stmtModifying' has, 
-	// it should be 1 all the time
 }
 
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {

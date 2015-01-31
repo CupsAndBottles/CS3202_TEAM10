@@ -1,35 +1,37 @@
-#include <utility>
-#include <vector>
-#include <map>
-#include <set>
+#pragma once
+
+#include<string>
+#include<vector>
 
 using namespace std;
 
+/** to store a mapping of all processes, and
+	- their indexes
+	- the stmts they contain **/
+
 class ProcTable {
 public:
-	// methods\
+	// methods
 	// Default constructor
 	ProcTable();
 
-	// API
-	static void SetStmtUsesProc(int stmtUsing, int procUsed);
-	static bool IsStmtUsingProc(int stmtUsing, int procUsed);
-    static vector<int> GetStmtUsingProc(int procUsed);
-    static vector<int> GetProcUsedByStmt(int stmtUsing);
-
-	static bool HasAnyProc();
-    static vector<int> GetAllProc();
-	static int SizeOfProcTable();
-    static void ClearData();
-
-	// APIs out of scope of assigment 4
-	/*void SetUsesProc(int procUsing, int varUsed);
-	bool IsUsesProc(int procUsing, int varUsed);
-	vector<int> GetUsesProc(int varUsed);
-	vector<int> GetUsedByProc(int procUsing);*/
+	// Methods
+	static int InsertProc(string procName);
+	static int GetIndexOfProc(string procName); 
+	static string GetProcName(int varIndex);
+	static vector<string> GetAllProcNames();
+	static int getFirstStmtNoOfProc(int procIndex);
+	static int getLastStmtNoOfProc(int procIndex);
+	
+	// methods to aid testing
+	static int GetSize();
+	static void ClearData();
 
 private:
-	static map <int, vector<int> > StmtToProcTable;
-    static map <int, vector<int> > ProcToStmtTable;
+	static vector<string>  procNames;
+	static vector<int> firstStmtNo;
+	static vector<int> lastStmtNo;
+
+	static vector<string>::iterator SearchFor(string procName);
 
 };

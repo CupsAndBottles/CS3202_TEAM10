@@ -67,15 +67,15 @@ void VarTableTest::testGetIndexOf() {
 	VarTable::InsertVar("c");
 	VarTable::InsertVar("123");
 
-	varIndex = VarTable::GetIndexOf("b");
+	varIndex = VarTable::GetIndexOfVar("b");
 	CPPUNIT_ASSERT_EQUAL(0, varIndex);
-	varIndex = VarTable::GetIndexOf("a");
+	varIndex = VarTable::GetIndexOfVar("a");
 	CPPUNIT_ASSERT_EQUAL(1, varIndex);
-	varIndex = VarTable::GetIndexOf("123");
+	varIndex = VarTable::GetIndexOfVar("123");
 	CPPUNIT_ASSERT_EQUAL(3, varIndex);
 
 	// test for variables that do not exist
-	varIndex = VarTable::GetIndexOf("z");
+	varIndex = VarTable::GetIndexOfVar("z");
 	CPPUNIT_ASSERT_EQUAL(-1, varIndex);
 	
 	// test white spaces...

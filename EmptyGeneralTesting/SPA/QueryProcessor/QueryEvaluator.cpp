@@ -176,7 +176,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					copy((*it).resultVar.begin(), (*it).resultVar.end(), back_inserter(resultList));
 
 				else {
-					result = VarTable::GetAllVar(); // need to extend to get procedure, GetAllProc
+					result = VarTable::GetAllVarNames(); // need to extend to get procedure, GetAllProc
 
 					copy(result.begin(), result.end(), back_inserter(resultList));
 				}
@@ -816,7 +816,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 				ident = ident.substr(1, ident.length()-2);
 
-				int varIndex = VarTable::GetIndexOf(ident);
+				int varIndex = VarTable::GetIndexOfVar(ident);
 				
 				if(varIndex != -1)
 				{
@@ -956,7 +956,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 					//foreach a, check if v in interResult is modified by a
 					for(vector<int>::iterator it_stmts = stmts->begin(); it_stmts != stmts->end(); ++it_stmts) {
 						for(vector<string>::iterator it_vars = vars->begin(); it_vars != vars->end(); ++it_vars) {
-							if(Modifies::IsStmtModifyingVar((*it_stmts),VarTable::GetIndexOf((*it_vars))))
+							if(Modifies::IsStmtModifyingVar((*it_stmts),VarTable::GetIndexOfVar((*it_vars))))
 								tempVarResult.push_back(*it_vars);
 						}
 					}
@@ -978,7 +978,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 				ident = ident.substr(1, ident.length()-2);
 
-				int varIndex = VarTable::GetIndexOf(ident);
+				int varIndex = VarTable::GetIndexOfVar(ident);
 				
 				if(varIndex != -1)
 				{
@@ -1095,14 +1095,14 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 					vars = &((*it).resultVar);
 			}
 
-			if(vars->empty())	tempVars = VarTable::GetAllVar();
+			if(vars->empty())	tempVars = VarTable::GetAllVarNames();
 			else				tempVars = *vars;
 
 			//cout << "\nvars size: " << tempVars.size();
 				
 			for(vector<int>::iterator it_stmts = tempStmts.begin(); it_stmts != tempStmts.end(); ++it_stmts) {
 				for(vector<string>::iterator it_vars = tempVars.begin(); it_vars != tempVars.end(); ++it_vars) {
-					int varIndex = VarTable::GetIndexOf(*it_vars);
+					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 					bool doesModifiesOrUses = false;
 		
@@ -1139,7 +1139,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 			ident = ident.substr(1, ident.length()-2);
 
-			int varIndex = VarTable::GetIndexOf(ident);
+			int varIndex = VarTable::GetIndexOfVar(ident);
 			
 			if(varIndex == -1) return false;
 
@@ -1247,11 +1247,11 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			int arg1Value = atoi(arg1.value.c_str());
 			vector<string> tempVars;
 
-			if(vars->empty())	tempVars = VarTable::GetAllVar();
+			if(vars->empty())	tempVars = VarTable::GetAllVarNames();
 			else				tempVars = *vars;
 				
 			for(vector<string>::iterator it = tempVars.begin(); it != tempVars.end(); ++it) {
-				int varIndex = VarTable::GetIndexOf(*it);
+				int varIndex = VarTable::GetIndexOfVar(*it);
 
 				bool doesModifiesOrUses = false;
 		
@@ -1276,7 +1276,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat, vector<Intermedia
 			ident = ident.substr(1, ident.length()-2);
 
 			//get index of ident
-			int varIndex = VarTable::GetIndexOf(ident);
+			int varIndex = VarTable::GetIndexOfVar(ident);
 
 			int arg1Value = atoi(arg1.value.c_str());
 			bool doesModifiesOrUses = false;

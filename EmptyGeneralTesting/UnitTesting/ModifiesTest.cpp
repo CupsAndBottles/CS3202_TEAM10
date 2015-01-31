@@ -1,4 +1,3 @@
-#include <iostream>
 #include "ModifiesTest.h"
 #include "..\SPA\PKB\Modifies.h"
 
@@ -18,6 +17,7 @@ void ModifiesTest::TestNoStmt() {
 	Modifies::ClearData();
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
 	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(1, 3));
+	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 0);
 
 }
 

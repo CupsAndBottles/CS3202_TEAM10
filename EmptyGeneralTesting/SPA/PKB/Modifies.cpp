@@ -7,6 +7,7 @@ using namespace std;
 
 map <int, vector<int> > Modifies::stmtToVarTable;
 map <int, vector<int> > Modifies::varToStmtTable;
+map <int, unsigned int> Modifies::stmtToVarBitVector;
 int Modifies::sizeOfModifies;
 
 // empty constructor
@@ -18,26 +19,27 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
 
+		unsigned int newVar = 1 << varModified;
+		stmtToVarBitVector[stmtModifying] = newVar | stmtToVarBitVector[stmtModifying];
+
 		sizeOfModifies++;
 
     }
 
-    if (Parent::GetParentOf(stmtModifying) != -1) {
-           SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
+	int parentOfStmtModifying = Parent::GetParentOf(stmtModifying);
+    if (parentOfStmtModifying != -1) {
+           SetStmtModifiesVar(parentOfStmtModifying, varModified);
 
 	}
 
 }
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-    if (stmtToVarTable.count(stmtModifying) != 0) {
-		for (unsigned int i = 0; i < stmtToVarTable.at(stmtModifying).size(); i++) {
-            if (stmtToVarTable.at(stmtModifying).at(i) == varModified) {
-                return true;
-			}
-		}
+    if (stmtToVarBitVector.count(stmtModifying) != 0) {
+		unsigned int check = (1 << varModified) & stmtToVarBitVector[stmtModifying];
+		return check != 0;
 	}
-    
+	
 	return false;
 
 }
@@ -85,6 +87,7 @@ int Modifies::SizeOfModifies() {
 void Modifies::ClearData() {
 	stmtToVarTable.clear();
 	varToStmtTable.clear();
+	stmtToVarBitVector.clear();
 	sizeOfModifies = 0;
 
 }

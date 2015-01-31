@@ -40,7 +40,7 @@ vector<Token> Tokenizer::Tokenize(string source) {
 			if (integer != "") { // previous substring is integer
 				int numOfPrecedingZeroes = 0; // remove preceding zeroes
 
-				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < (integer.size() - 1)) {
+				while (integer[numOfPrecedingZeroes] == '0' && numOfPrecedingZeroes < (int)(integer.size() - 1)) {
 					numOfPrecedingZeroes++;
 				}
 				integer.erase(0, numOfPrecedingZeroes);

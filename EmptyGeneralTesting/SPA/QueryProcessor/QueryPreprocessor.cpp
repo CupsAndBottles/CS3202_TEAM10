@@ -100,6 +100,8 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 		else queryData.InsertSelect(synonym);
 	}
 
+
+
 	//no select
 	else return false;
 
@@ -110,9 +112,9 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 	token = *it;
 
 	//validate such that, pattern
-	while(IsSuchThat(token) || IsPattern(token)) 
+	while(IsSuchThat(token) || IsPattern(token) || IsWith(token)) 
 	{
-		bool endOfQuery = false, hasSuchThat = false, hasPattern = false;
+		bool endOfQuery = false, hasSuchThat = false, hasPattern = false, hasWith = false;
 
 		if(IsSuchThat(token))	//such that or and
 		{
@@ -157,7 +159,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 		}
 
 		//to ensure maximum 1 such that and 1 pattern in query
-		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
+		if(endOfQuery || (hasSuchThat && hasPattern && hasWith))	return true;
 
 		if(IsPattern(token))	//pattern or and
 		{		
@@ -200,9 +202,37 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 			else token = *it;
 		}
 
-		//std::cout << "After Pattern\n";
+		if(endOfQuery || (hasSuchThat && hasPattern && hasWith))	return true;
 
-		if(endOfQuery || (hasSuchThat && hasPattern))	return true;
+		if(IsWith(token))	//with or and
+		{		
+	
+			Argument arg1, arg2;
+
+			if(++it == tokenList.end())	return false;	//get arg1
+			token = *it;
+			arg1.value = token;
+
+			
+			if(++it == tokenList.end())	return false;	
+			token = *it; // jump "="
+			if(token != "=") return false;
+
+			if(++it == tokenList.end())	return false;	//get arg2
+			token = *it;
+			arg2.value = token;
+
+			queryData.InsertWith(arg1, arg2);
+
+			hasWith = true;
+
+			if(++it == tokenList.end())
+				endOfQuery = true;	//if no more token = end of query
+
+			else token = *it;
+		}
+
+		if(endOfQuery || (hasSuchThat && hasPattern && hasWith))	return true;
 
 		if(AbstractWrapper::GlobalStop)	return false;
 	}
@@ -791,6 +821,12 @@ bool QueryPreProcessor::IsPattern(std::string str)
 bool QueryPreProcessor::IsUnderscore(std::string str)
 {
 	if(str == "_")	return true;
+	return false;
+}
+
+bool QueryPreProcessor::IsWith(std::string str)
+{
+	if(str == "with")	return true;
 	return false;
 }
 

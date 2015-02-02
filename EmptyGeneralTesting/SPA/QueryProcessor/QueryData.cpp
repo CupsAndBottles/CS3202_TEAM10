@@ -5,6 +5,7 @@ std::vector<Declaration> QueryData::declarations;
 std::vector<SelectClause> QueryData::selectClauses;	
 std::vector<SuchThatClause> QueryData::suchThatClauses;
 std::vector<PatternClause>QueryData::patternClauses;
+std::vector<WithClause>QueryData::withClauses;
 
 void QueryData::InsertDeclaration(Synonym synonym)
 {
@@ -26,6 +27,11 @@ void QueryData::InsertSuchThat(RelationshipType rel, Argument arg1, Argument arg
 	suchThatClauses.push_back(SuchThatClause(rel, arg1, arg2));
 }
 
+void QueryData::InsertWith(Argument arg1, Argument arg2)
+{
+	withClauses.push_back(WithClause(arg1, arg2));
+}
+
 std::vector<Declaration> QueryData::GetDeclarations()
 {
 	return declarations;
@@ -44,6 +50,11 @@ std::vector<PatternClause> QueryData::GetPatterns()
 std::vector<SuchThatClause> QueryData::GetSuchThats()
 {
 	return suchThatClauses;
+}
+
+std::vector<WithClause> QueryData::GetWiths()
+{
+	return withClauses;
 }
 
 void QueryData::ClearData()

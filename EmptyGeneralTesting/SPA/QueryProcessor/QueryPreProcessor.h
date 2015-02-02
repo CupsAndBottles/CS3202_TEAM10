@@ -33,6 +33,7 @@ protected:
 	bool IsSuchThat(std::string);
 	bool IsPattern(std::string);
 	bool IsUnderscore(std::string);
+	bool IsWith(std::string);
 
 	//Convert string to enum
 	bool GetEnumSynonymType(std::string, SynonymType&); 

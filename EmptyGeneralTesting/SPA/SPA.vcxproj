@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PKB\Calls.h" />
     <ClInclude Include="Exception\IndexNotFoundException.h" />
     <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="Parser\Token.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="QueryProcessor\RelTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="Parser\Token.cpp" />
     <ClCompile Include="Parser\Tokenizer.cpp" />

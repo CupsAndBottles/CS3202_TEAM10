@@ -38,6 +38,11 @@ class Modifies {
 		static map <int, unsigned int> stmtToVarBitVector;
 		// least significant bit will represent index 0
 
+		// args out of assigment 4
+		/*static map <int, vector<int>> stmtToProcTable;
+		static map <int, vector<int>> procToStmtTable;
+		static map <int, unsigned int> stmtToProcBitVector;*/
+
 		static int sizeOfModifies;
 
 };

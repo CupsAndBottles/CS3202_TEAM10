@@ -1,0 +1,42 @@
+#ifndef CALLS_H
+#define CALLS_H
+
+#include <vector>
+#include <map>
+#include <queue>
+
+using namespace std;
+
+class Calls {
+public:
+	// Default constructor
+	Calls();
+
+	// API
+	static void SetCalls(int procCalling, int procCalled);
+	static bool IsCalls(int procCalling, int procCalled);
+	static vector<int> GetProcsCalledBy(int procCalling);
+	static vector<int> GetProcsCalling(int procCalled);
+	
+	static bool IsCallsT(int procCalling, int procCalled);
+	static vector<int> GetProcsCalledTBy(int procCalling);
+	static vector<int> GetProcsCallingT(int procCalled);
+
+	static bool HasAnyCalls();
+
+	// helper methods for testing
+	static int SizeOfCalls();
+	static void ClearData();
+
+private:
+	static map<int, vector<int>> callingToCalledTable;
+	static map<int, vector<int>> calledToCallingTable;
+	static map<int, unsigned int> callingToCalledBitVector;
+
+	static int noOfCallsRelationships;
+
+	static bool AlreadyChecked(int currProc, unsigned int checkedProcs);
+	static queue<int> AddToQueue(queue<int> procsToCheck, vector<int> additions);
+
+};
+#endif

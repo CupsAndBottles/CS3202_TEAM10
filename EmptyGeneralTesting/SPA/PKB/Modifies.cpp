@@ -1,6 +1,8 @@
 #include <vector>
 #include <map>
+#include <iostream>
 #include "Parent.h"
+#include "Calls.h"
 #include "Modifies.h"
 
 using namespace std;
@@ -8,6 +10,9 @@ using namespace std;
 map <int, vector<int> > Modifies::stmtToVarTable;
 map <int, vector<int> > Modifies::varToStmtTable;
 map <int, unsigned int> Modifies::stmtToVarBitVector;
+map <int, vector<int>> Modifies::procToVarTable;
+map <int, vector<int>> Modifies::varToProcTable;
+map <int, vector<bool>> Modifies::procToVarBitVector;
 int Modifies::sizeOfModifies;
 
 // empty constructor
@@ -15,7 +20,7 @@ Modifies::Modifies() {};
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
-    if (!IsStmtModifyingVar(stmtModifying, varModified)) {
+	if (!IsStmtModifyingVar(stmtModifying, varModified)) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
 
@@ -43,35 +48,95 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
 
 }
 
-vector<int> Modifies::GetStmtModifyingVar(int varModified) {
-    
+vector<int> Modifies::GetStmtModifyingVar(int varModified) {    
     if (varToStmtTable.count(varModified) == 0) {
 		vector<int> stmtsModifyingVarModified;
 		return stmtsModifyingVarModified;
 
-	}
-
-    else { 
+	} else { 
 		return varToStmtTable.at(varModified);
 
 	}
 }
 
 vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
-    
     if (stmtToVarTable.count(stmtModifying) == 0) {
 		vector<int> varsModifyiedByStmtModifying;
 		return varsModifyiedByStmtModifying;
 
-	}
-    
-	else {
+	} else {
 		return stmtToVarTable.at(stmtModifying);
 
 	}
 
 }
 
+void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
+	if (!IsProcModifyingVar(procModifying, varModified)) {
+        procToVarTable[procModifying].push_back(varModified);
+        varToProcTable[varModified].push_back(procModifying);
+
+		SetProcToVarBitVector(procModifying, varModified);
+
+		sizeOfModifies++;
+
+    }
+
+	vector<int> procsCalling = Calls::GetProcsCalling(procModifying);
+	if (procsCalling.size() > 0) {
+		for (unsigned int i = 0; i < procsCalling.size(); i++)
+			SetProcModifiesVar(procsCalling.at(i), varModified);
+
+	}
+
+}
+
+void Modifies::SetProcToVarBitVector(int procModifying, int varModified) {
+	cout << "\nTest1\n";
+	if (varModified <= (procToVarBitVector[procModifying].size() - 1)) {
+		cout << "\nTest2\n";
+		for (int i = 0; i < (varModified * 2); i++) {
+			cout << "\nTest3\n";
+			procToVarBitVector[procModifying].push_back(false);
+		}
+	} 
+	
+	procToVarBitVector[procModifying].at(varModified) = true;
+
+}
+
+bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
+	if (procToVarBitVector.count(procModifying) != 0 && varModified <= (procToVarBitVector[procModifying].size() - 1)) {
+		return procToVarBitVector[procModifying].at(varModified);
+	}
+	
+	return false;
+
+}
+
+vector<int> Modifies::GetProcModifyingVar(int varModified) {
+	if (varToProcTable.count(varModified) == 0) {
+		vector<int> procsModifyingVarModified;
+		return procsModifyingVarModified;
+
+	} else { 
+		return varToProcTable.at(varModified);
+
+	}
+
+}
+
+vector<int> Modifies::GetVarModifiedByProc(int procModifying) {
+	if (procToVarTable.count(procModifying) == 0) {
+		vector<int> varsModifyiedByProcModifying;
+		return varsModifyiedByProcModifying;
+
+	} else {
+		return procToVarTable.at(procModifying);
+
+	}
+
+}
 
 bool Modifies::HasAnyModifies() {
     return !stmtToVarTable.empty();
@@ -87,6 +152,9 @@ void Modifies::ClearData() {
 	stmtToVarTable.clear();
 	varToStmtTable.clear();
 	stmtToVarBitVector.clear();
+	procToVarTable.clear();
+	varToProcTable.clear();
+	procToVarBitVector.clear();
 	sizeOfModifies = 0;
 
 }

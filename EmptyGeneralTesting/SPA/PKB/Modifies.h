@@ -4,7 +4,6 @@
 #include <utility>
 #include <vector>
 #include <map>
-//#include <set>
 
 using namespace std;
 
@@ -17,20 +16,19 @@ class Modifies {
         // API
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
         static bool IsStmtModifyingVar(int stmtModifying, int varModified);
-        static vector<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
-        static vector<int> GetVarModifiedByStmt(int stmtModifying);		// Modifies (2, _)
-		
+        static vector<int> GetStmtModifyingVar(int varModified);
+		static vector<int> GetVarModifiedByStmt(int stmtModifying);
+
+		static void SetProcModifiesVar(int procModifying, int varModified);
+		static bool IsProcModifyingVar(int procModifying, int varModified);
+		static vector<int> GetProcModifyingVar(int varModified);
+		static vector<int> GetVarModifiedByProc(int procModifying);
+
         static bool HasAnyModifies();
 		
 		// helper methods for testing
         static int SizeOfModifies();
 		static void ClearData();
-
-        // APIs out of scope of assigment 4
-        /*void SetModifiesProc(int procModifying, int varModified);
-          bool IsModifiesProc(int procModifying, int varModified);
-          vector<int> GetModifiesProc(int varModified);
-          vector<int> GetModifiedByProc(int procModifying);*/
 
     private:
         static map <int, vector<int> > stmtToVarTable;
@@ -38,12 +36,14 @@ class Modifies {
 		static map <int, unsigned int> stmtToVarBitVector;
 		// least significant bit will represent index 0
 
-		// args out of assigment 4
-		/*static map <int, vector<int>> stmtToProcTable;
-		static map <int, vector<int>> procToStmtTable;
-		static map <int, unsigned int> stmtToProcBitVector;*/
+		static map <int, vector<int>> procToVarTable;
+		static map <int, vector<int>> varToProcTable;
+		static map <int, vector<bool>> procToVarBitVector;
+		// initailise to size 32
 
 		static int sizeOfModifies;
+
+		static void SetProcToVarBitVector(int procModifying, int varModified);
 
 };
 #endif

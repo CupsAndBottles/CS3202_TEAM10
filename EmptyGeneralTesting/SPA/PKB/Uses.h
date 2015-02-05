@@ -19,16 +19,16 @@ public:
     static vector<int> GetStmtUsingVar(int varUsed);
     static vector<int> GetVarUsedByStmt(int stmtUsing);
 
+	static void SetProcUsesVar(int procUsing, int varUsed);
+	static bool IsProcUsingVar(int procUsing, int varUsed);
+	static vector<int> GetProcUsingVar(int varUsed);
+	static vector<int> GetVarUsedByProc(int procUsing);
+
 	static bool HasAnyUses();
+
+	// helper methods for testing
 	static int SizeOfUses();
-
 	static void ClearData();
-
-	// APIs out of scope of assigment 4
-	/*void SetUsesProc(int procUsing, int varUsed);
-	bool IsUsesProc(int procUsing, int varUsed);
-	vector<int> GetUsesProc(int varUsed);
-	vector<int> GetUsedByProc(int procUsing);*/
 
 private:
 	static map <int, vector<int> > stmtToVarTable;
@@ -36,7 +36,13 @@ private:
 	static map <int, unsigned int> stmtToVarBitVector;
 	// least significant bit will represent index 0
 
+	static map <int, vector<int>> procToVarTable;
+	static map <int, vector<int>> varToProcTable;
+	static map <int, vector<bool>> procToVarBitVector;
+
 	static int sizeOfUses;
+
+	static void SetProcToVarBitVector(int procUsing, int varUsed);
 
 };
 #endif

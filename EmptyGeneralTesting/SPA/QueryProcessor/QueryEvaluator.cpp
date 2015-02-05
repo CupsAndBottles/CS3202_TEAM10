@@ -7,6 +7,7 @@
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\VarTable.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
+#include "..\QueryProcessor\QueryData.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 

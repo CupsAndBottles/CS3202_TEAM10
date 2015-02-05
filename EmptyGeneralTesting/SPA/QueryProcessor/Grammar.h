@@ -97,4 +97,4 @@ struct WithClause {
 	Argument arg1,arg2;
 
 	WithClause(Argument a1, Argument a2) : arg1(a1), arg2(a2) {}
-}
+};

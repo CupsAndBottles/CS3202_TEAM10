@@ -9,11 +9,20 @@ class UsesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestMultipleStmtsUsingSingleVar);
 	CPPUNIT_TEST(TestSingleStmtUsingMultipleVars);
 	CPPUNIT_TEST(TestUses);
+
+	CPPUNIT_TEST(TestNoProc);
+	CPPUNIT_TEST(TestSingleProc);
+	CPPUNIT_TEST(TestMultipleProcs);
+	CPPUNIT_TEST(TestMultipleProcsUsingSingleVar);
+	CPPUNIT_TEST(TestSingleProcUsingMultipleVars);
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
 	void setUp();
 	void tearDown();
+	
+	UsesTest();
 
 	void TestSingleStmt();
 	void TestMultipleStmts();
@@ -21,6 +30,11 @@ public:
 	void TestSingleStmtUsingMultipleVars();
 	void TestUses();
 
-	UsesTest();
+	void TestNoProc();
+	void TestSingleProc();
+	void TestMultipleProcs();
+	void TestMultipleProcsUsingSingleVar();
+	void TestSingleProcUsingMultipleVars();
+
 };
 

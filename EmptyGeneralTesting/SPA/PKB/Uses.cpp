@@ -1,6 +1,7 @@
 #include <utility>
 #include <map>
 #include "Parent.h"
+#include "Calls.h"
 #include "Uses.h"
 
 using namespace std;
@@ -8,6 +9,9 @@ using namespace std;
 map <int, vector<int> > Uses::stmtToVarTable;
 map <int, vector<int> > Uses::varToStmtTable;
 map <int, unsigned int> Uses::stmtToVarBitVector;
+map <int, vector<int>> Uses::procToVarTable;
+map <int, vector<int>> Uses::varToProcTable;
+map <int, vector<bool>> Uses::procToVarBitVector;
 int Uses::sizeOfUses;
 
 // empty constructor
@@ -57,40 +61,101 @@ vector<int> Uses::GetStmtUsingVar(int varUsed) {
 	}
 }
 
-
 vector<int> Uses::GetVarUsedByStmt(int stmtUsing) {
  	if (stmtToVarTable.count(stmtUsing) == 0) {
 		vector<int> varsUsedByStmtUsing;
 		return varsUsedByStmtUsing;
 
-	}
-		
-    else {
+	} else {
 		return stmtToVarTable.at(stmtUsing);
 
 	}
 
 }
 
+void Uses::SetProcUsesVar(int procUsing, int varUsed) {
+	if (!IsProcUsingVar(procUsing, varUsed)) {
+        procToVarTable[procUsing].push_back(varUsed);
+        varToProcTable[varUsed].push_back(procUsing);
+		
+		SetProcToVarBitVector(procUsing, varUsed);
+
+		sizeOfUses++;
+
+    }
+
+	vector<int> procsCalling = Calls::GetProcsCalling(procUsing);
+	if (procsCalling.size() > 0) {
+		for (unsigned int i = 0; i < procsCalling.size(); i++)
+			SetProcUsesVar(procsCalling.at(i), varUsed);
+
+	}
+
+}
+
+void Uses::SetProcToVarBitVector(int procUsing, int varused) {
+	if (varused <= (procToVarBitVector[procUsing].size() - 1)) {
+		for (int i = 0; i < (varused * 2); i++) {
+			procToVarBitVector[procUsing].push_back(false);
+		}
+		
+	} 
+	
+	procToVarBitVector[procUsing].at(varused) = true;
+
+}
+
+bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
+	if (procToVarBitVector.count(procUsing) != 0 && varUsed <= (procToVarBitVector[procUsing].size() - 1)) {
+		return procToVarBitVector[procUsing].at(varUsed);
+	}
+	
+	return false;
+
+}
+
+vector<int> Uses::GetProcUsingVar(int varUsed) {
+	if (varToProcTable.count(varUsed) == 0) {
+		vector<int> procsUsingVarUsed;
+		return procsUsingVarUsed;
+
+	} else { 
+		return varToProcTable.at(varUsed);
+
+	}
+
+}
+
+vector<int> Uses::GetVarUsedByProc(int procUsing) {
+	if (procToVarTable.count(procUsing) == 0) {
+		vector<int> varsUsedByProcUsing;
+		return varsUsedByProcUsing;
+
+	} else {
+		return procToVarTable.at(procUsing);
+
+	}
+
+}
 
 bool Uses::HasAnyUses() {
     return !stmtToVarTable.empty();
-
 }
 
 int Uses::SizeOfUses() {
      return sizeOfUses;
-
 }
 
 void Uses::ClearData() {
     stmtToVarTable.clear();
     varToStmtTable.clear();
 	stmtToVarBitVector.clear();
+	procToVarTable.clear();
+	varToProcTable.clear();
+	procToVarBitVector.clear();
 	sizeOfUses = 0;
 
 }
-
 
 // driver code to test out Uses
 /*

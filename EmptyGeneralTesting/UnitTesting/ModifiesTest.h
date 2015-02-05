@@ -10,6 +10,13 @@ class ModifiesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestMultipleStmtsModifyingSingleVar);
 	CPPUNIT_TEST(TestSingleStmtModifyingMultipleVars);
 	CPPUNIT_TEST(TestModifies);
+
+	CPPUNIT_TEST(TestNoProc);
+	CPPUNIT_TEST(TestSingleProc);
+	CPPUNIT_TEST(TestMultipleProcs);
+	CPPUNIT_TEST(TestMultipleProcsModifyingSingleVar);
+	CPPUNIT_TEST(TestSingleProcModifyingMultipleVars);
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,5 +31,11 @@ public:
 	void TestMultipleStmtsModifyingSingleVar();
 	void TestSingleStmtModifyingMultipleVars();
 	void TestModifies();
+
+	void TestNoProc();
+	void TestSingleProc();
+	void TestMultipleProcs();
+	void TestMultipleProcsModifyingSingleVar();
+	void TestSingleProcModifyingMultipleVars();
 };
 

@@ -6,7 +6,7 @@
 /*
 Class for storing query string data, accessed by QueryPreProcessor and QueryEvaluator
 */
-class QueryData
+class QueryData 
 {
 private:
 	static std::vector<Declaration> declarations;

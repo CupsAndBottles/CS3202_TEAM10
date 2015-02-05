@@ -31,9 +31,9 @@ class Modifies {
 		static void ClearData();
 
     private:
-        static map <int, vector<int> > stmtToVarTable;
-        static map <int, vector<int> > varToStmtTable;
-		static map <int, unsigned int> stmtToVarBitVector;
+        static map <int, vector<int>> stmtToVarTable;
+        static map <int, vector<int>> varToStmtTable;
+		static map <int, vector<bool>> stmtToVarBitVector;
 		// least significant bit will represent index 0
 
 		static map <int, vector<int>> procToVarTable;
@@ -43,6 +43,7 @@ class Modifies {
 
 		static int sizeOfModifies;
 
+		static void SetStmtToVarBitVector(int stmtModifying, int varModified);
 		static void SetProcToVarBitVector(int procModifying, int varModified);
 
 };

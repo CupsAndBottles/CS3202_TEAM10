@@ -6,7 +6,7 @@
 
 map<int, vector<int>> Calls::callingToCalledTable;
 map<int, vector<int>> Calls::calledToCallingTable;
-map<int, unsigned int> Calls::callingToCalledBitVector;
+map<int, vector<bool>> Calls::callingToCalledBitVector;
 int Calls::noOfCallsRelationships;
 
 // empty constructor
@@ -18,8 +18,7 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 		callingToCalledTable[procCalling].push_back(procCalled);
 		calledToCallingTable[procCalled].push_back(procCalling);
 
-		unsigned int newVar = 1 << procCalled;
-		callingToCalledBitVector[procCalling] = newVar | callingToCalledBitVector[procCalling];
+		SetCallingToCalledBitVector(procCalling, procCalled);
 
 		noOfCallsRelationships++;
 
@@ -27,10 +26,21 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 
 }
 
+void Calls::SetCallingToCalledBitVector(int procCalling, int procCalled) {
+	if ((procCalled + 1) > (int) callingToCalledBitVector[procCalling].size()) {
+		for (int i = 0; i < ((procCalled + 1) * 2); i++) {
+			callingToCalledBitVector[procCalling].push_back(false);
+		}
+	}
+
+	callingToCalledBitVector[procCalling].at(procCalled) = true;
+
+}
+
 bool Calls::IsCalls(int stmtCalling, int procCalled) {
 	if (callingToCalledBitVector.count(stmtCalling) != 0) {
-		unsigned int check = (1 << procCalled) & callingToCalledBitVector[stmtCalling];
-		return check != 0;
+		if ((procCalled + 1) <= (int) callingToCalledBitVector[stmtCalling].size())
+			return callingToCalledBitVector[stmtCalling].at(procCalled);
 	}
 
 	return false;

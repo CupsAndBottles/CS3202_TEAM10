@@ -1,6 +1,6 @@
 #include <vector>
 #include <map>
-#include <iostream>
+
 #include "Parent.h"
 #include "Calls.h"
 #include "Modifies.h"
@@ -9,7 +9,7 @@ using namespace std;
 
 map <int, vector<int> > Modifies::stmtToVarTable;
 map <int, vector<int> > Modifies::varToStmtTable;
-map <int, unsigned int> Modifies::stmtToVarBitVector;
+map <int, vector<bool>> Modifies::stmtToVarBitVector;
 map <int, vector<int>> Modifies::procToVarTable;
 map <int, vector<int>> Modifies::varToProcTable;
 map <int, vector<bool>> Modifies::procToVarBitVector;
@@ -24,8 +24,7 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
 
-		unsigned int newVar = 1 << varModified;
-		stmtToVarBitVector[stmtModifying] = newVar | stmtToVarBitVector[stmtModifying];
+		SetStmtToVarBitVector(stmtModifying, varModified);
 
 		sizeOfModifies++;
 
@@ -38,11 +37,21 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 
 }
 
+void Modifies::SetStmtToVarBitVector(int stmtModifying, int varModified) {
+	if ((varModified + 1) > (int) stmtToVarBitVector[stmtModifying].size()) {
+		for (int i = 0; i < ((varModified + 1) * 2); i++) {
+			stmtToVarBitVector[stmtModifying].push_back(false);
+		}
+	} 
+	
+	stmtToVarBitVector[stmtModifying].at(varModified) = true;
+
+}
+
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-    if (stmtToVarBitVector.count(stmtModifying) != 0) {
-		unsigned int check = (1 << varModified) & stmtToVarBitVector[stmtModifying];
-		return check != 0;
-	}
+    if (stmtToVarBitVector.count(stmtModifying) != 0)
+		if ((varModified + 1) <= (int) stmtToVarBitVector[stmtModifying].size())
+			return stmtToVarBitVector[stmtModifying].at(varModified);
 	
 	return false;
 

@@ -142,7 +142,6 @@ void ModifiesTest::TestMultipleStmtsModifyingSingleVar() {
 }
 
 void ModifiesTest::TestSingleStmtModifyingMultipleVars() {
-
 	Modifies::ClearData();
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
 
@@ -150,7 +149,6 @@ void ModifiesTest::TestSingleStmtModifyingMultipleVars() {
 	Modifies::SetStmtModifiesVar(1, 1);
 	Modifies::SetStmtModifiesVar(1, 2);
 	Modifies::SetStmtModifiesVar(1, 3);
-
 
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == true);
 	CPPUNIT_ASSERT(Modifies::SizeOfModifies() == 4);
@@ -318,15 +316,15 @@ void ModifiesTest::TestModifies() {
 }
 
 void ModifiesTest::TestNoProc() {
-/*	Modifies::ClearData();
+	Modifies::ClearData();
 	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
 	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(4, 3));
-	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::SizeOfModifies());*/
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::SizeOfModifies());
 
 }
 
 void ModifiesTest::TestSingleProc() {
-/*	Modifies::ClearData();
+	Modifies::ClearData();
 	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
 
 	//Modifies::SetProcModifiesVar
@@ -348,7 +346,7 @@ void ModifiesTest::TestSingleProc() {
 	vector<int> varsModifiedByProc2 = Modifies::GetVarModifiedByProc(2);
 	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc2.size());
 	CPPUNIT_ASSERT(varsModifiedByProc2[0] == 3);
-	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByStmt(2).size());*/
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByStmt(2).size());
 }
 
 void ModifiesTest::TestMultipleProcs() {

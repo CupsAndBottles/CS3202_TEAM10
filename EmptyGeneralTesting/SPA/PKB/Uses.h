@@ -31,9 +31,9 @@ public:
 	static void ClearData();
 
 private:
-	static map <int, vector<int> > stmtToVarTable;
-    static map <int, vector<int> > varToStmtTable;
-	static map <int, unsigned int> stmtToVarBitVector;
+	static map <int, vector<int>> stmtToVarTable;
+    static map <int, vector<int>> varToStmtTable;
+	static map <int, vector<bool>> stmtToVarBitVector;
 	// least significant bit will represent index 0
 
 	static map <int, vector<int>> procToVarTable;
@@ -42,6 +42,7 @@ private:
 
 	static int sizeOfUses;
 
+	static void SetStmtToVarBitVector(int stmtUsing, int varUsed);
 	static void SetProcToVarBitVector(int procUsing, int varUsed);
 
 };

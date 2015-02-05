@@ -31,10 +31,11 @@ public:
 private:
 	static map<int, vector<int>> callingToCalledTable;
 	static map<int, vector<int>> calledToCallingTable;
-	static map<int, unsigned int> callingToCalledBitVector;
+	static map<int, vector<bool>> callingToCalledBitVector;
 
 	static int noOfCallsRelationships;
 
+	static void SetCallingToCalledBitVector(int procCalling, int procCalled);
 	static bool AlreadyChecked(int currProc, unsigned int checkedProcs);
 	static queue<int> AddToQueue(queue<int> procsToCheck, vector<int> additions);
 

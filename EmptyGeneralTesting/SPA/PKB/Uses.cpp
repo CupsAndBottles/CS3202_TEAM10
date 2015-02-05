@@ -6,9 +6,9 @@
 
 using namespace std;
 
-map <int, vector<int> > Uses::stmtToVarTable;
-map <int, vector<int> > Uses::varToStmtTable;
-map <int, unsigned int> Uses::stmtToVarBitVector;
+map <int, vector<int>> Uses::stmtToVarTable;
+map <int, vector<int>> Uses::varToStmtTable;
+map <int, vector<bool>> Uses::stmtToVarBitVector;
 map <int, vector<int>> Uses::procToVarTable;
 map <int, vector<int>> Uses::varToProcTable;
 map <int, vector<bool>> Uses::procToVarBitVector;
@@ -23,8 +23,7 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
 
-		unsigned int newVar = 1 << varUsed;
-		stmtToVarBitVector[stmtUsing] = newVar | stmtToVarBitVector[stmtUsing];
+		SetStmtToVarBitVector(stmtUsing, varUsed);
 		
 		sizeOfUses++;
 
@@ -37,11 +36,21 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 
 }
 
+void Uses::SetStmtToVarBitVector(int stmtUsing, int varUsed) {
+	if ((varUsed + 1) > (int) stmtToVarBitVector[stmtUsing].size()) {
+		for (int i = 0; i < ((varUsed + 1) * 2); i++) {
+			stmtToVarBitVector[stmtUsing].push_back(false);
+		}
+	} 
+	
+	stmtToVarBitVector[stmtUsing].at(varUsed) = true;
+
+}
+
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-    if (stmtToVarBitVector.count(stmtUsing) != 0) {
-		unsigned int check = (1 << varUsed) & stmtToVarBitVector[stmtUsing];
-		return check != 0;
-	}
+   if (stmtToVarBitVector.count(stmtUsing) != 0)
+		if ((varUsed + 1) <= (int) stmtToVarBitVector[stmtUsing].size())
+		return stmtToVarBitVector[stmtUsing].at(varUsed);
 	
 	return false;
 

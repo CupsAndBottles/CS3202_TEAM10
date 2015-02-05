@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cppunit\extensions\HelperMacros.h"
+#include <cppunit\extensions\HelperMacros.h>
 
 class ModifiesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(ModifiesTest);

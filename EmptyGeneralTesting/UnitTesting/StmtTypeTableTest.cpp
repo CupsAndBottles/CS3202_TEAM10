@@ -18,7 +18,7 @@ void StmtTypeTableTest::tearDown() {
 
 CPPUNIT_TEST_SUITE_REGISTRATION(StmtTypeTableTest);
 
-void GetAllStmtsOfTypeTest() {
+void StmtTypeTableTest::GetAllStmtsOfTypeTest() {
 	StmtTypeTable::ClearData();
 
 	StmtTypeTable::Insert(1, ASSIGN);
@@ -28,7 +28,7 @@ void GetAllStmtsOfTypeTest() {
 	CPPUNIT_ASSERT_EQUAL(1, resultTest[0]);
 }
 
-void CheckIfStmtOfTypeTest() {
+void StmtTypeTableTest::CheckIfStmtOfTypeTest() {
 	StmtTypeTable::ClearData();
 
 	StmtTypeTable::Insert(1, ASSIGN);
@@ -38,7 +38,7 @@ void CheckIfStmtOfTypeTest() {
 	CPPUNIT_ASSERT(StmtTypeTable::CheckIfStmtOfType(2, WHILE)); 
 }
 
-void InsertTest() {
+void StmtTypeTableTest::InsertTest() {
 	StmtTypeTable::ClearData();
 	
 	StmtTypeTable::Insert(1, ASSIGN);

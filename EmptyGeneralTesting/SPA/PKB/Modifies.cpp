@@ -92,11 +92,8 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 }
 
 void Modifies::SetProcToVarBitVector(int procModifying, int varModified) {
-	cout << "\nTest1\n";
-	if (varModified <= (procToVarBitVector[procModifying].size() - 1)) {
-		cout << "\nTest2\n";
-		for (int i = 0; i < (varModified * 2); i++) {
-			cout << "\nTest3\n";
+	if ((varModified + 1) > (int) procToVarBitVector[procModifying].size()) {
+		for (int i = 0; i < ((varModified + 1) * 2); i++) {
 			procToVarBitVector[procModifying].push_back(false);
 		}
 	} 
@@ -106,9 +103,9 @@ void Modifies::SetProcToVarBitVector(int procModifying, int varModified) {
 }
 
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
-	if (procToVarBitVector.count(procModifying) != 0 && varModified <= (procToVarBitVector[procModifying].size() - 1)) {
+	if (procToVarBitVector.count(procModifying) != 0)
+		if ((varModified + 1) <= (int) procToVarBitVector[procModifying].size())
 		return procToVarBitVector[procModifying].at(varModified);
-	}
 	
 	return false;
 

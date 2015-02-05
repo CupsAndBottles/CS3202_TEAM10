@@ -489,6 +489,6 @@ void UsesTest::TestSingleProcUsingMultipleVars() {
 	CPPUNIT_ASSERT(varsUsedByProc1[3] == 3);
 	
 	// empty results
-	CPPUNIT_ASSERT_EQUAL(4, (int) Uses::GetVarUsedByProc(0).size());
-	CPPUNIT_ASSERT_EQUAL(4, (int) Uses::GetVarUsedByStmt(0).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByProc(0).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByStmt(0).size());
 }

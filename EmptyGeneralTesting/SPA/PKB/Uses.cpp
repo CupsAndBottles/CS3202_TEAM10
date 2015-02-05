@@ -94,8 +94,8 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 }
 
 void Uses::SetProcToVarBitVector(int procUsing, int varused) {
-	if (varused <= (procToVarBitVector[procUsing].size() - 1)) {
-		for (int i = 0; i < (varused * 2); i++) {
+	if ((varused + 1) > (int) procToVarBitVector[procUsing].size()) {
+		for (int i = 0; i < ((varused + 1) * 2); i++) {
 			procToVarBitVector[procUsing].push_back(false);
 		}
 		
@@ -106,9 +106,9 @@ void Uses::SetProcToVarBitVector(int procUsing, int varused) {
 }
 
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
-	if (procToVarBitVector.count(procUsing) != 0 && varUsed <= (procToVarBitVector[procUsing].size() - 1)) {
-		return procToVarBitVector[procUsing].at(varUsed);
-	}
+	if (procToVarBitVector.count(procUsing) != 0)
+		if ((varUsed + 1) <= (int) procToVarBitVector[procUsing].size())
+			return procToVarBitVector[procUsing].at(varUsed);
 	
 	return false;
 

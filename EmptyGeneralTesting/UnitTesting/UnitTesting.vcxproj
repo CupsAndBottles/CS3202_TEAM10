@@ -83,6 +83,7 @@
     <ClCompile Include="QueryEvaluatorTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
+    <ClCompile Include="StmtTypeTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
     <ClCompile Include="UsesTest.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="QueryEvaluatorTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="StmtTypeTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />

@@ -109,7 +109,10 @@ void Parent::ClearData() {
 
 /** private methods **/
 bool Parent::AlreadyInserted(int parentStmtIndex, int childStmtIndex) {
-	return childToParentTable[childStmtIndex] == parentStmtIndex;
+	if (childToParentTable.count(childStmtIndex) != 0)
+		return childToParentTable[childStmtIndex] == parentStmtIndex;
+	else
+		return false;
 }
 
 bool Parent::HasNoParent(int childStmtIndex) {

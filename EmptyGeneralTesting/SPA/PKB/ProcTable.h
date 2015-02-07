@@ -1,7 +1,8 @@
 #pragma once
 
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -20,8 +21,11 @@ public:
 	static int GetIndexOfProc(string procName); 
 	static string GetProcName(int varIndex);
 	static vector<string> GetAllProcNames();
-	static int getFirstStmtNoOfProc(int procIndex);
-	static int getLastStmtNoOfProc(int procIndex);
+	static void SetFirstStmtNoOfProc(int procIndex, int firstStmtNo);
+	static void SetLastStmtNoOfProc(int procIndex, int lastStmtNo);
+	static int GetFirstStmtNoOfProc(int procIndex);
+	static int GetLastStmtNoOfProc(int procIndex);
+	static int GetProcOfStmt(int stmtNo);
 	
 	// methods to aid testing
 	static int GetSize();
@@ -29,8 +33,8 @@ public:
 
 private:
 	static vector<string>  procNames;
-	static vector<int> firstStmtNo;
-	static vector<int> lastStmtNo;
+	static map<int, int> firstStmtNosList;
+	static map<int, int> lastStmtNosList;
 
 	static vector<string>::iterator SearchFor(string procName);
 

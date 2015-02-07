@@ -1,15 +1,18 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <algorithm>
+#include <iostream>
+
 #include "ProcTable.h"
 #include "..\Exception\IndexNotFoundException.h"
 
 using namespace std;
 
 vector<string>  ProcTable::procNames;
-vector<int> ProcTable::firstStmtNo;
-vector<int> ProcTable::lastStmtNo;
+map<int, int> ProcTable::firstStmtNosList;
+map<int, int> ProcTable::lastStmtNosList;
 
 // empty constructor
 ProcTable::ProcTable() {}
@@ -54,22 +57,74 @@ vector<string> ProcTable::GetAllProcNames() {
 	return procNames;
 }
 
-int ProcTable::getFirstStmtNoOfProc(int procIndex) {
-	return firstStmtNo.at(procIndex);
+void ProcTable::SetFirstStmtNoOfProc(int procIndex, int firstStmtNo) {
+	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+		// assumes that stmt#s are inserted in order
+		if (GetProcOfStmt(firstStmtNo) == -1) {
+			firstStmtNosList[procIndex] = firstStmtNo;
+		} else {
+			cout << "\nConflicting proc indexes during insertion!!\n";
+			cout << firstStmtNo << " already exists in previous process";
+
+			return;	// don't make any changes
+		}
+	} else {
+		throw IndexNotFoundException();
+	}
 }
 
-int ProcTable::getLastStmtNoOfProc(int procIndex) {
-	return lastStmtNo.at(procIndex);
+void ProcTable::SetLastStmtNoOfProc(int procIndex, int lastStmtNo) {
+	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+		// check that firstStmt has been set and lastStmt has NOT been set
+		if (firstStmtNosList.count(procIndex) != 0 && lastStmtNosList.count(procIndex) == 0) {
+			if (lastStmtNo > firstStmtNosList.at(procIndex))
+				lastStmtNosList[procIndex] = lastStmtNo;
+		}
+	} else {
+		throw IndexNotFoundException();
+	}
+}
+
+int ProcTable::GetFirstStmtNoOfProc(int procIndex) {
+	if (firstStmtNosList.count(procIndex) != 0)
+		return firstStmtNosList.at(procIndex);
+	else if (procIndex < 0 || (unsigned int)procIndex >= procNames.size())
+		throw IndexNotFoundException();
+	else
+		return -1;	// index not set yet
+}
+
+int ProcTable::GetLastStmtNoOfProc(int procIndex) {
+	if (firstStmtNosList.count(procIndex) != 0)
+		return lastStmtNosList.at(procIndex);
+	else if (procIndex < 0 || (unsigned int)procIndex >= procNames.size())
+		throw IndexNotFoundException();
+	else
+		return -1;	// index not set yet
+}
+
+int ProcTable::GetProcOfStmt(int stmtNo) {
+	for(map<int, int>::iterator it = lastStmtNosList.begin(); it != lastStmtNosList.end(); it++) {
+		if (it->second >= stmtNo) {
+			if (firstStmtNosList[it->first] <= stmtNo)
+				return it->first;
+
+		}
+	}
+
+	return -1; // proc not found
+
 }
 
 // methods to aid testing
 int ProcTable::GetSize() {
 	return procNames.size();
-
 }
 
 void ProcTable::ClearData() {
 	procNames.clear();
+	firstStmtNosList.clear();
+	lastStmtNosList.clear();
 
 }
 

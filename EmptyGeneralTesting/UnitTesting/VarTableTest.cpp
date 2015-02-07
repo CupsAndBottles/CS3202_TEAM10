@@ -1,7 +1,8 @@
 #include <cppunit\config\SourcePrefix.h>
 #include "..\SPA\PKB\VarTable.h"
-#include "VarTableTest.h"
 #include "..\SPA\Exception\IndexNotFoundException.h"
+
+#include "VarTableTest.h"
 
 #include <iostream>
 #include <string>
@@ -117,7 +118,24 @@ void VarTableTest::testGetVarName() {
 	varName = VarTable::GetVarName(1);
 	CPPUNIT_ASSERT("b" == varName);
 
+
 }
 
-// insert other methods below here
-// add a comment before each method to indicate its purpose
+void VarTableTest::testGetAllVarNames() {
+	CPPUNIT_ASSERT_EQUAL(0, VarTable::GetSize());
+	
+	// test empty list
+	CPPUNIT_ASSERT_EQUAL(0, (int) VarTable::GetAllVarNames().size());
+
+	VarTable::InsertVar("x");
+	VarTable::InsertVar("y123");
+	VarTable::InsertVar("zz");
+	
+	// test regular var names
+	vector<string> allVarNames = VarTable::GetAllVarNames();
+	CPPUNIT_ASSERT_EQUAL(3, (int) allVarNames.size());
+	CPPUNIT_ASSERT("x" == allVarNames.at(0));
+	CPPUNIT_ASSERT("y123" == allVarNames.at(1));
+	CPPUNIT_ASSERT("zz" == allVarNames.at(2));
+
+}

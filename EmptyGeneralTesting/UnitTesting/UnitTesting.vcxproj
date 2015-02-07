@@ -79,6 +79,7 @@
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
+    <ClCompile Include="ProcTableTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryEvaluatorTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ProcTableTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryEvaluatorTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />

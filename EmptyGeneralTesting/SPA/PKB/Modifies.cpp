@@ -50,7 +50,7 @@ void Modifies::SetStmtToVarBitVector(int stmtModifying, int varModified) {
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
     if (stmtToVarBitVector.count(stmtModifying) != 0)
-		if ((varModified + 1) <= (int) stmtToVarBitVector[stmtModifying].size())
+		if (varModified < (int) stmtToVarBitVector[stmtModifying].size())
 			return stmtToVarBitVector[stmtModifying].at(varModified);
 	
 	return false;
@@ -113,7 +113,7 @@ void Modifies::SetProcToVarBitVector(int procModifying, int varModified) {
 
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
 	if (procToVarBitVector.count(procModifying) != 0)
-		if ((varModified + 1) <= (int) procToVarBitVector[procModifying].size())
+		if (varModified < (int) procToVarBitVector[procModifying].size())
 		return procToVarBitVector[procModifying].at(varModified);
 	
 	return false;

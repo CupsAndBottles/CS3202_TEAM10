@@ -49,7 +49,7 @@ void Uses::SetStmtToVarBitVector(int stmtUsing, int varUsed) {
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
    if (stmtToVarBitVector.count(stmtUsing) != 0)
-		if ((varUsed + 1) <= (int) stmtToVarBitVector[stmtUsing].size())
+		if (varUsed < (int) stmtToVarBitVector[stmtUsing].size())
 		return stmtToVarBitVector[stmtUsing].at(varUsed);
 	
 	return false;
@@ -116,7 +116,7 @@ void Uses::SetProcToVarBitVector(int procUsing, int varused) {
 
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
 	if (procToVarBitVector.count(procUsing) != 0)
-		if ((varUsed + 1) <= (int) procToVarBitVector[procUsing].size())
+		if (varUsed < (int) procToVarBitVector[procUsing].size())
 			return procToVarBitVector[procUsing].at(varUsed);
 	
 	return false;

@@ -2,16 +2,10 @@
 
 #include "Token.h"
 #include "..\Program\Program.h"
-#include "..\PKB\Follows.h"
-#include "..\PKB\Modifies.h"
-#include "..\PKB\Uses.h"
-#include "..\PKB\Parent.h"
-#include "..\PKB\StmtTypeTable.h"
-#include "..\PKB\VarTable.h"
-#include "..\PKB\ConstTable.h"
 
 #include <vector>
 #include <deque>
+#include <map>
 
 using namespace std;
 
@@ -27,6 +21,8 @@ protected:
 
 	deque<Token> tokens;
 	int currentLineNumber;
+	int procNumber;
+	static map<Token::Type, int> operatorPrecedenceMap;
 
 	Token ConsumeTopToken();
 	Token PeekAtTopToken();
@@ -36,12 +32,17 @@ protected:
 
 	void Parse();
 
+	TNode* ParseProcedure();
 	TNode* ParseStmtList(string, TNode*);
 	TNode* ParseStmt();
 	TNode* ParseStmt(TNode*);
 	TNode* ParseAssignmentStmt();
+	TNode* ParseCallStmt();
+	TNode* ParseIfStmt();
 	TNode* ParseWhileStmt();
-	TNode* ParseExpr();
+	TNode* ParseExpr(bool isBracket);
 	TNode* ParseExpr(TNode*, bool);
 	TNode* ParseAtomicToken();
+	TNode* ParseConstTNode();
+	TNode* ParseVariableTNode();
 };

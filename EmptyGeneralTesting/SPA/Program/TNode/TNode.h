@@ -41,7 +41,7 @@ public:
 
 	static TNode ConstructIfTNode(int lineNumber);
 	static TNode ConstructWhileTNode(int lineNumber);
-	static TNode ConstructCallTNode(int lineNumber);
+	static TNode ConstructCallTNode(int lineNumber, string procName);
 	static TNode ConstructAssignmentTNode(int lineNumber);
 	static TNode ConstructConstTNode(string value);
 	static TNode ConstructVarTNode(string symbol);

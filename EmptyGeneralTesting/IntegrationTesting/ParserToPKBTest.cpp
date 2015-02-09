@@ -5,6 +5,7 @@
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\PKB\StmtTypeTable.h"
+#include "..\SPA\PKB\ConstTable.h"
 #include "..\SPA\PKB\Follows.h"
 #include "..\SPA\PKB\Parent.h"
 #include "..\SPA\PKB\Modifies.h"

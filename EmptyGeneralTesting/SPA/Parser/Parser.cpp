@@ -5,6 +5,15 @@
 #include "..\Program\Program.h"
 #include "..\Program\TNode\TNode.h"
 #include "..\QueryProcessor\Grammar.h"
+#include "..\PKB\Follows.h"
+#include "..\PKB\Modifies.h"
+#include "..\PKB\Uses.h"
+#include "..\PKB\Parent.h"
+#include "..\PKB\Calls.h"
+#include "..\PKB\StmtTypeTable.h"
+#include "..\PKB\VarTable.h"
+#include "..\PKB\ConstTable.h"
+#include "..\PKB\ProcTable.h"
 #include "..\..\AutoTester\source\AbstractWrapper.h"
 
 #include <iostream>
@@ -12,6 +21,20 @@
 #include <sstream>
 
 using namespace std;
+
+static map<Token::Type, int> CreateMap() {
+	map<Token::Type, int> result;
+
+	result[Token::PLUS]			= 1;
+	result[Token::MINUS]		= 1;
+	result[Token::MULTIPLY]		= 2;
+	result[Token::END_OF_STMT]	= -1;
+	result[Token::CLOSE_BRACE]	= -1;
+
+	return result;
+}
+
+map<Token::Type, int> Parser::operatorPrecedenceMap = CreateMap();
 
 void SyntaxError() {
 	throw (string) "Syntax error!";
@@ -25,8 +48,8 @@ TNode* ConstructWhileTNode(int lineNumber) {
 	return new TNode(TNode::ConstructWhileTNode(lineNumber));
 }
 
-TNode* ConstructCallTNode(int lineNumber) {
-	return new TNode(TNode::ConstructCallTNode(lineNumber));
+TNode* ConstructCallTNode(int lineNumber, string procName) {
+	return new TNode(TNode::ConstructCallTNode(lineNumber, procName));
 }
 
 TNode* ConstructAssignmentTNode(int lineNumber) {
@@ -57,10 +80,10 @@ TNode* ConstructStmtTNode(TNode::Type type, int lineNumber) {
 	return new TNode(TNode::ConstructStmtTNode(type, lineNumber));
 }
 
-
 Parser::Parser(vector<Token> tokenVector)
 	: tokens(tokenVector.begin(), tokenVector.end())
-	, currentLineNumber(0) {
+	, currentLineNumber(0) 
+	, procNumber(0) {
 }
 
 void Parser::Parse(string fileName) {
@@ -101,20 +124,9 @@ Token Parser::ConsumeTopTokenOfType(Token::Type type) {
 	return ConsumeTopToken();
 }
 
-int getPrecedenceValue(Token::Type type) {
-	switch (type) {
-		case Token::END_OF_STMT:
-			return -1;
-		case Token::PLUS:
-			return 1;
-		default:
-			SyntaxError();
-	}
-}
-
 int Parser::compare(Token::Type first, Token::Type second) {
-	int valFirst = getPrecedenceValue(first);
-	int valSecond = getPrecedenceValue(second);
+	int valFirst = operatorPrecedenceMap[first];
+	int valSecond = operatorPrecedenceMap[second];
 	return (valFirst - valSecond);
 }
 
@@ -122,18 +134,26 @@ void Parser::Parse() {
 	TNode& rootNode = Program::GetASTRootNode();
 
 	while (tokens.size() != 0) {
+		// stop point
 		if (AbstractWrapper::GlobalStop) {
 			break;
 		}
-		ConsumeTopTokenOfType(Token::PROCEDURE);
-		Token procedureName = ConsumeTopTokenOfType(Token::IDENTIFIER);
-		TNode* procedureNode = ConstructProcedureTNode(procedureName.content);
-
-		TNode* procedureBody = ParseStmtList("", nullptr);
-		procedureNode->AddChild(procedureBody);
+		TNode* procedureNode = ParseProcedure();
 		
 		rootNode.AddChild(procedureNode);
 	}
+}
+
+TNode* Parser::ParseProcedure() {
+		ConsumeTopTokenOfType(Token::PROCEDURE);
+		string procedureName = ConsumeTopTokenOfType(Token::IDENTIFIER).content;
+		TNode* procedureNode = ConstructProcedureTNode(procedureName);
+
+		procNumber = ProcTable::InsertProc(procedureName);
+
+		TNode* procedureBody = ParseStmtList("", nullptr);
+		procedureNode->AddChild(procedureBody);
+		return procedureNode;
 }
 
 TNode* Parser::ParseStmtList(string name, TNode* parent) {
@@ -146,6 +166,7 @@ TNode* Parser::ParseStmtList(string name, TNode* parent) {
 	TNode* stmtListNode = ConstructStmtListTNode("");
 	TNode* prevStmt = nullptr;
 	while (!TopTokenIsType(Token::END_OF_STMT_LIST)) {
+		// stop point
 		if (AbstractWrapper::GlobalStop) {
 			return stmtListNode;
 		}
@@ -182,6 +203,14 @@ TNode* Parser::ParseStmt(TNode* parentStmt) {
 			stmt = ParseWhileStmt();
 			StmtTypeTable::Insert(stmt->GetLineNumber(), WHILE);
 			break;
+		case Token::CALL:
+			stmt = ParseCallStmt();
+			StmtTypeTable::Insert(stmt->GetLineNumber(), CALL);
+			break;
+		case Token::IF:
+			stmt = ParseIfStmt();
+			StmtTypeTable::Insert(stmt->GetLineNumber(), IF);
+			break;
 		default:
 			SyntaxError();
 	}
@@ -201,7 +230,7 @@ TNode* Parser::ParseAssignmentStmt() {
 	TNode* LHS = ConstructVarTNode(varToken.content);
 	TNode* assignmentStmt = ConstructAssignmentTNode(currentLineNumber);
 	Modifies::SetStmtModifiesVar(currentLineNumber, VarTable::InsertVar(varToken.content));
-	TNode* RHS = ParseExpr();
+	TNode* RHS = ParseExpr(false);
 
 	assignmentStmt->AddChild(LHS);
 	assignmentStmt->AddChild(RHS);
@@ -209,35 +238,52 @@ TNode* Parser::ParseAssignmentStmt() {
 	return assignmentStmt;
 }
 
-TNode* Parser::ParseExpr() {
+TNode* Parser::ParseExpr(bool isBracket) {
+	Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
 	Token currentToken = PeekAtTopToken(); // peek
 	TNode* result = nullptr;
-	while (currentToken.type != Token::END_OF_STMT) {
+	while (currentToken.type != terminatingCondition) {
 		if (result == nullptr) {
-			result = ParseAtomicToken();
+			if (TopTokenIsType(Token::OPEN_BRACE)) {
+				ConsumeTopTokenOfType(Token::OPEN_BRACE);
+				result = ParseExpr(true);
+			} else {
+				result = ParseAtomicToken();
+			}
 
-			if (PeekAtTopToken().type == Token::END_OF_STMT) { // peek at next token
+			if (PeekAtTopToken().type == terminatingCondition) { // peek at next token
 				return result;
 			}
 		}
-		result = ParseExpr(result, false);
+		result = ParseExpr(result, isBracket);
 		currentToken = PeekAtTopToken();
 	}
 	return result;
 }
 
 TNode* Parser::ParseExpr(TNode* LHS, bool isBracket) {
-	// if next op is of lower precedence, construct and return
+	// if next op is of lower precedence, construct RHS and return
 	// if next op is of equal precedence, construct and loop
 	// if next op is of higher precedence, perform recursive call
-	// if bracket, build bracket and return
+	// since all operations are left associative, no attempt to worry about
+		// assoiciativity is made
 
-	if (PeekAtTopToken().type == Token::END_OF_STMT_LIST) {
+	Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
+
+	if (PeekAtTopToken().type == terminatingCondition) {
 		return LHS;
 	}
 	
+	// TODO combine operator token types into one type for type checking.
 	Token op1 = ConsumeTopToken();
-	TNode* RHS = ParseAtomicToken();
+	TNode* RHS;
+	if (TopTokenIsType(Token::OPEN_BRACE)) {
+		ConsumeTopTokenOfType(Token::OPEN_BRACE);
+		RHS = ParseExpr(true);
+	} else {
+		RHS = ParseAtomicToken();
+	}
+	
 	Token nextOp = PeekAtTopToken(); // peek
 	int comparison = compare(op1.type, nextOp.type);
 
@@ -255,21 +301,28 @@ TNode* Parser::ParseExpr(TNode* LHS, bool isBracket) {
 }
 
 TNode* Parser::ParseAtomicToken() {
-	Token currentToken = ConsumeTopToken(); // peek
-	TNode* result;
+	Token currentToken = PeekAtTopToken(); // peek
 	switch (currentToken.type) {
 		case Token::IDENTIFIER:
-			result = ConstructVarTNode(currentToken.content);
-			Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(currentToken.content));
-			break;
+			return ParseVariableTNode();
 		case Token::NUMBER:
-			result = ConstructConstTNode(currentToken.content);
-			ConstTable::SetStmtUsesConst(currentLineNumber, stoi(result->GetContent()));
-			break;
+			return ParseConstTNode();
 		default:
 			SyntaxError();
 	}
+}
 
+TNode* Parser::ParseConstTNode() {
+	string constant = ConsumeTopTokenOfType(Token::NUMBER).content;
+	TNode* result = ConstructConstTNode(constant);
+	ConstTable::SetStmtUsesConst(currentLineNumber, stoi(constant));
+	return result;
+}
+
+TNode* Parser::ParseVariableTNode() {
+	string variable = ConsumeTopTokenOfType(Token::IDENTIFIER).content;
+	TNode* result = ConstructVarTNode(variable);
+	Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(variable));
 	return result;
 }
 
@@ -279,9 +332,7 @@ TNode* Parser::ParseWhileStmt() {
 	TNode* whileStmt = ConstructWhileTNode(currentLineNumber);
 
 	// parse condition
-	Token condition = ConsumeTopTokenOfType(Token::IDENTIFIER);
-	TNode* conditionNode = ConstructVarTNode(condition.content);
-	Uses::SetStmtUsesVar(currentLineNumber, VarTable::InsertVar(condition.content));
+	TNode* conditionNode = ParseVariableTNode();
 
 	// parse loop body
 	TNode* loopBody = ParseStmtList("", whileStmt);
@@ -291,11 +342,37 @@ TNode* Parser::ParseWhileStmt() {
 	whileStmt->AddChild(loopBody);
 	return whileStmt;
 }
-//
+
+TNode* Parser::ParseCallStmt() {
+	ConsumeTopTokenOfType(Token::CALL);
+	string procedure = ConsumeTopTokenOfType(Token::IDENTIFIER).content;
+	TNode* callNode = ConstructCallTNode(currentLineNumber, procedure);
+	return callNode;
+}
+
+TNode* Parser::ParseIfStmt() {
+	ConsumeTopTokenOfType(Token::IF);
+
+	TNode* ifStmt = ConstructIfTNode(currentLineNumber);
+
+	// parse condition
+	TNode* conditionNode = ParseVariableTNode();
+
+	// parse then body
+	ConsumeTopTokenOfType(Token::THEN);
+	TNode* thenBody = ParseStmtList("", ifStmt);
+	
+	// parse else body
+	ConsumeTopTokenOfType(Token::ELSE);
+	TNode* elseBody = ParseStmtList("", ifStmt);
+
+	// create if statement
+	ifStmt->AddChild(conditionNode);
+	ifStmt->AddChild(thenBody);
+	ifStmt->AddChild(elseBody);
+	return ifStmt;
+}
+
 //void main() {
-//	ifstream sourceFile("Parser\sample_SIMPLE_source.txt");
-//	stringstream buffer;
-//	buffer << sourceFile.rdbuf();
-//	sourceFile.close();
-//	Program testProgram = Parser::Parse(buffer.str());
+//	Parser::Parse("sample_SIMPLE_source.txt");
 //}

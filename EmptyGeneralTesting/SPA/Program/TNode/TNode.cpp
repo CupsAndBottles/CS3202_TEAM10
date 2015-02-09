@@ -99,8 +99,11 @@ TNode TNode::ConstructWhileTNode(int lineNumber) {
 	return ConstructStmtTNode(TNode::WHILE, lineNumber);
 }
 
-TNode TNode::ConstructCallTNode(int lineNumber) {
-	return ConstructStmtTNode(TNode::CALL, lineNumber);
+TNode TNode::ConstructCallTNode(int lineNumber, string procName) {
+	TNode result = ConstructStmtTNode(TNode::CALL, lineNumber);
+	result.content = procName;
+	result.name = procName.append(result.name);
+	return result;
 }
 
 TNode TNode::ConstructAssignmentTNode(int lineNumber) {

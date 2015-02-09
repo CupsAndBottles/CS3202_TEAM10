@@ -1,6 +1,11 @@
+#pragma once
+
 #include "PatternMatcherTest.h"
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\Tokenizer.h"
+#include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\VarTable.h"
+#include "..\SPA\PKB\ConstTable.h"
 #include "..\SPA\QueryProcessor\PatternMatcher.h"
 
 TNode* PatternMatcherTest::ParseExpr(string expr) {
@@ -8,7 +13,7 @@ TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// kinda hacky
 	Parser parser(Tokenizer::Tokenize(expr.append(";"))); // need to append end of stmt
 	parser.currentLineNumber = 1;
-	TNode* exprTree = parser.ParseExpr();
+	TNode* exprTree = parser.ParseExpr(false);
 	Uses::ClearData();
 	VarTable::ClearData();
 	ConstTable::ClearData();

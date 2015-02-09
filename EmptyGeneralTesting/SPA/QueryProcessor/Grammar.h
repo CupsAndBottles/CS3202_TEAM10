@@ -30,12 +30,12 @@ enum SynonymType {
 	ASSIGN,
 	STMT,
 	WHILE,
-	//IF,
+	IF,
 	VARIABLE,
 	CONSTANT,
 	//PROCEDURE,
 	PROG_LINE,
-	//CALL,
+	CALL,
 	//BOOLEAN,
 	INVALID_SYNONYM_TYPE
 };

@@ -87,16 +87,34 @@ Token::Type Tokenizer::StringToToken(string str) {
 		return Token::START_OF_STMT_LIST;
 	} else if (str == Token::EndOfStmtList) {
 		return Token::END_OF_STMT_LIST;
+	} else if (str == Token::OpenBrace) {
+		return Token::OPEN_BRACE;
+	} else if (str == Token::CloseBrace) {
+		return Token::CLOSE_BRACE;
 	} else if (str == Token::EndOfStmt) {
 		return Token::END_OF_STMT;
+
 	} else if (str == Token::OperatorPlus) {
 		return Token::PLUS;
+	} else if (str == Token::OperatorMinus) {
+		return Token::MINUS;
+	} else if (str == Token::OperatorMultiply) {
+		return Token::MULTIPLY;
 	} else if (str == Token::OperatorAssign) {
 		return Token::ASSIGN;
+
 	} else if (str == Token::KeywordWhile) {
 		return Token::WHILE;
 	} else if (str == Token::KeywordProcedure) {
 		return Token::PROCEDURE;
+	} else if (str == Token::KeywordCall) {
+		return Token::CALL;
+	} else if (str == Token::KeywordIf) {
+		return Token::IF;
+	} else if (str == Token::KeywordThen) {
+		return Token::THEN;
+	} else if (str == Token::KeywordElse) {
+		return Token::ELSE;
 	} else {
 		return Token::NONTOKEN;
 	}

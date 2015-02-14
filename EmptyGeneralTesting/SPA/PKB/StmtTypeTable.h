@@ -21,12 +21,14 @@ public:
 	//API-PKB and DE
 	static void Insert(int stmtIndex, SynonymType type);
 
+	static int GetSize();
+
 	static void ClearData();
 
 private:
 	//data structures
-	static map<int, SynonymType> IndexTypeTable;
-	static map<SynonymType, vector<int> > TypeIndexTable;
+	static map<int, SynonymType> indexTypeTable;
+	static map<SynonymType, vector<int> > typeIndexTable;
 };
 
 #endif

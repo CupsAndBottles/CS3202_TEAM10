@@ -22,6 +22,7 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 		afterToBeforeTable[progLineAfter].push_back(progLineBefore);
 		
 		sizeOfNext++;
+
 		maxNoOfLines = maxNoOfLines > progLineBefore ? maxNoOfLines : progLineBefore;
 		maxNoOfLines = maxNoOfLines > progLineAfter ? maxNoOfLines : progLineAfter;
 
@@ -30,6 +31,7 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 }
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
+	// checking for Next(progLineBefore, progLineAfter)
 	if (bitVectorIsBuilt) {
 		// not implemented yet
 		return false; // dummy value
@@ -191,6 +193,7 @@ void Next::ClearData() {
 
 // private methods
 bool Next::NoRelationshipConflicts(int progLineBefore, int progLineAfter) {
+	// checking for relationship conflicts: a node can only have max 2 children but unlimited number of parents
 	return BeforeNodeNotFull(progLineBefore, progLineAfter) 
 		&& AfterNodeIsValid(progLineBefore, progLineAfter);
 

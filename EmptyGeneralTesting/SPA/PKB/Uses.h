@@ -25,6 +25,7 @@ public:
 	static vector<int> GetVarUsedByProc(int procUsing);
 
 	static bool HasAnyUses();
+//	static void CreateBitVector();
 
 	// helper methods for testing
 	static int SizeOfUses();
@@ -33,17 +34,14 @@ public:
 private:
 	static map <int, vector<int>> stmtToVarTable;
     static map <int, vector<int>> varToStmtTable;
-	static map <int, vector<bool>> stmtToVarBitVector;
-	// least significant bit will represent index 0
+	//static vector<vector<bool>> stmtToVarBitVector;
 
 	static map <int, vector<int>> procToVarTable;
 	static map <int, vector<int>> varToProcTable;
-	static map <int, vector<bool>> procToVarBitVector;
+	//static vector<vector<bool>> procToVarBitVector;
 
+	static bool bitVectorIsBuilt;
 	static int sizeOfUses;
-
-	static void SetStmtToVarBitVector(int stmtUsing, int varUsed);
-	static void SetProcToVarBitVector(int procUsing, int varUsed);
 
 };
 #endif

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Follows.h"
+#include "StmtTypeTable.h"
 
 map <int, int> Follows::beforeToAfterTable;
 map <int, int> Follows::afterToBeforeTable;
@@ -24,7 +25,11 @@ void Follows::SetFollows(int stmtBefore, int stmtAfter) {
 }
 
 bool Follows::IsFollows(int stmtBefore, int stmtAfter) {
-	return beforeToAfterTable[stmtBefore] == stmtAfter;
+	if (beforeToAfterTable.count(stmtBefore) != 0) {
+		return beforeToAfterTable[stmtBefore] == stmtAfter;
+	}
+
+	return false;
 
 }
 

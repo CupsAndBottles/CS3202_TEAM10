@@ -1,6 +1,8 @@
+#include <iostream>
+
 #include "Next.h"
 #include "StmtTypeTable.h"
-#include <iostream>
+
 map <int, vector<int>> Next::beforeToAfterTable;
 map <int, vector<int>> Next::afterToBeforeTable;
 int Next::sizeOfNext;
@@ -8,8 +10,9 @@ int Next::maxNoOfLines;
 bool Next::bitVectorIsBuilt;
 
 Next::Next(void) {
-	bitVectorIsBuilt = false;
 	sizeOfNext = 0;
+	maxNoOfLines = 0;
+	bitVectorIsBuilt = false;
 }
 
 // API
@@ -80,8 +83,10 @@ bool Next::IsNextT(int progLineBefore, int progLineAfter) {
 		return false; // dummy value
 	} else {
 		queue<int> linesToCheck;
+		
 		int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetSize() ? maxNoOfLines : StmtTypeTable::GetSize();
 		vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
+		
 		int currLine;
 
 		linesToCheck.push(progLineBefore);
@@ -119,7 +124,6 @@ vector<int> Next::GetNextTAfter(int progLineBefore) {
 	
 	while (!linesToCheck.empty()){
 		currLine = linesToCheck.front();
-
 		if (!checkedLines.at(currLine)) {
 			linesAfter.push_back(currLine);
 			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
@@ -127,7 +131,6 @@ vector<int> Next::GetNextTAfter(int progLineBefore) {
 			checkedLines[currLine] = true;
 
 		}
-
 		linesToCheck.pop();
 
 	}
@@ -139,6 +142,7 @@ vector<int> Next::GetNextTAfter(int progLineBefore) {
 vector<int> Next::GetNextTBefore(int progLineAfter) {
 	queue<int> linesToCheck;
 	vector<int> linesBefore;
+	
 	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetSize() ? maxNoOfLines : StmtTypeTable::GetSize();
 	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 	
@@ -148,7 +152,6 @@ vector<int> Next::GetNextTBefore(int progLineAfter) {
 	
 	while (!linesToCheck.empty()){
 		currLine = linesToCheck.front();
-
 		if (!checkedLines.at(currLine)) {
 			linesBefore.push_back(currLine);
 			linesToCheck = AddToQueue(linesToCheck, GetNextBefore(currLine));

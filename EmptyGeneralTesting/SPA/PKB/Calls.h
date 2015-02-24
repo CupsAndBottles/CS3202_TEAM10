@@ -23,6 +23,7 @@ public:
 	static vector<int> GetProcsCallingT(int procCalled);
 
 	static bool HasAnyCalls();
+//	static void CreateBitVector();
 
 	// helper methods for testing
 	static int SizeOfCalls();
@@ -32,11 +33,13 @@ private:
 	static map<int, vector<int>> callingToCalledTable;
 	static map<int, vector<int>> calledToCallingTable;
 	static map<int, vector<bool>> callingToCalledBitVector;
+	//static vector<vector<bool>> bitVector;
+	static bool bitVectorIsBuilt;
+	static int maxNoOfProcs;
 
 	static int noOfCallsRelationships;
 
 	static void SetCallingToCalledBitVector(int procCalling, int procCalled);
-	static bool AlreadyChecked(int currProc, unsigned int checkedProcs);
 	static queue<int> AddToQueue(queue<int> procsToCheck, vector<int> additions);
 
 };

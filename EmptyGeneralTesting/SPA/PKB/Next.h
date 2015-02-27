@@ -35,7 +35,7 @@ private:
 	static map<int, vector<int>> beforeToAfterTable;
 	static map<int, vector<int>> afterToBeforeTable;
 	static int sizeOfNext;
-	//static vector<vector<bool>> bitVector;
+	static vector<vector<bool>> bitVector;
 	static bool bitVectorIsBuilt;
 	static int maxNoOfLines;
 

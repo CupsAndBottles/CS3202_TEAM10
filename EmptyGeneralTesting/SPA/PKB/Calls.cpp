@@ -11,7 +11,7 @@ map<int, vector<bool>> Calls::callingToCalledBitVector;
 int Calls::noOfCallsRelationships;
 int Calls::maxNoOfProcs;
 bool Calls::bitVectorIsBuilt;
-
+vector <vector<bool>> Calls::bitVector;
 // empty constructor
 Calls::Calls() {
 	noOfCallsRelationships = 0;
@@ -31,7 +31,23 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 
 		maxNoOfProcs = maxNoOfProcs > procCalling ? maxNoOfProcs : procCalling;
 		maxNoOfProcs = maxNoOfProcs > procCalled ? maxNoOfProcs : procCalled;
-
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			std::vector<vector<bool>> bitVector (maxNoOfProcs, 0);
+			bitVectorIsBuilt = true;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand
+		std::vector <bool> a;
+		while (bitVector.size()!=maxNoOfProcs) {
+			bitVector.push_back(a);
+		}
+		for (int i=0;i<maxNoOfProcs;i++) {
+			while (bitVector[i].size()!=maxNoOfProcs)
+				bitVector[i].push_back(0);
+		}
+		// after expanding, insert the new Next r'ship
+		bitVector[procCalling][procCalled]=1;
+		bitVector[procCalled][procCalling]=1;
 	}
 
 }

@@ -8,16 +8,18 @@ map <int, vector<int>> Next::afterToBeforeTable;
 int Next::sizeOfNext;
 int Next::maxNoOfLines;
 bool Next::bitVectorIsBuilt;
-
+vector <vector<bool>> Next::bitVector;
 Next::Next(void) {
 	sizeOfNext = 0;
 	maxNoOfLines = 0;
 	bitVectorIsBuilt = false;
+	
 }
 
 // API
 void Next::SetNext(int progLineBefore, int progLineAfter) {
 	// check availability
+
 	if (!IsNext(progLineBefore, progLineAfter) &&
 		progLineBefore != progLineAfter && 
 			NoRelationshipConflicts(progLineBefore, progLineAfter)) {
@@ -28,7 +30,23 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 
 		maxNoOfLines = maxNoOfLines > progLineBefore ? maxNoOfLines : progLineBefore;
 		maxNoOfLines = maxNoOfLines > progLineAfter ? maxNoOfLines : progLineAfter;
-
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			std::vector<vector<bool>> bitVector (maxNoOfLines, 0);
+			bitVectorIsBuilt = true;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand
+		std::vector <bool> a;
+		while (bitVector.size()!=maxNoOfLines) {
+			bitVector.push_back(a);
+		}
+		for (int i=0;i<maxNoOfLines;i++) {
+			while (bitVector[i].size()!=maxNoOfLines)
+				bitVector[i].push_back(0);
+		}
+		// after expanding, insert the new Next r'ship
+		bitVector[progLineBefore][progLineAfter]=1;
+		bitVector[progLineAfter][progLineBefore]=1;
 	}
 
 }

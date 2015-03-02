@@ -53,10 +53,8 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
 	// checking for Next(progLineBefore, progLineAfter)
-	if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-
+	if (!bitVectorIsBuilt) {
+		return false; 
 	} else {
 		if (beforeToAfterTable.count(progLineBefore) != 0) {
 			vector<int> childrenOfBefore = beforeToAfterTable[progLineBefore];
@@ -96,9 +94,8 @@ vector<int> Next::GetNextBefore(int progLineAfter) {
 }
 
 bool Next::IsNextT(int progLineBefore, int progLineAfter) {
-	if(bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
+	if(!bitVectorIsBuilt) {
+		return false; 
 	} else {
 		queue<int> linesToCheck;
 		
@@ -208,8 +205,8 @@ void Next::ClearData() {
 	beforeToAfterTable.clear();
 	afterToBeforeTable.clear();
 	sizeOfNext = 0;
-	// bitVector.clear();
-	// bitVectorIsBuilt = false;
+	bitVector.clear();
+	bitVectorIsBuilt = false;
 }
 
 // private methods

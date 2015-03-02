@@ -11,12 +11,20 @@ map <int, vector<int>> Uses::stmtToVarTable;
 map <int, vector<int>> Uses::varToStmtTable;
 map <int, vector<int>> Uses::procToVarTable;
 map <int, vector<int>> Uses::varToProcTable;
+vector<vector<bool>> Uses::stmtToVarBitVector;
+vector<vector<bool>> Uses::procToVarBitVector;
 bool Uses::bitVectorIsBuilt;
 int Uses::sizeOfUses;
+int maxNoOfVar;
+int maxNoOfLines;
+int maxNoOfProc;
 
 Uses::Uses() {
 	bitVectorIsBuilt = false;
 	sizeOfUses = 0;
+	maxNoOfVar=0;
+	maxNoOfLines=0;
+	maxNoOfProc=0;
 };
 
 // API
@@ -26,7 +34,24 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
         varToStmtTable[varUsed].push_back(stmtUsing);
 	
 		sizeOfUses++;
-
+		maxNoOfLines = maxNoOfLines > stmtUsing ? maxNoOfLines : stmtUsing;
+		maxNoOfVar = maxNoOfVar > varUsed ? maxNoOfVar : varUsed;
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			std::vector<vector<bool>> stmtToVarBitVector (maxNoOfLines, 0);
+			bitVectorIsBuilt = true;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand
+		std::vector <bool> a;
+		while (stmtToVarBitVector.size()!=maxNoOfLines) {
+			stmtToVarBitVector.push_back(a);
+		}
+		for (int i=0;i<maxNoOfVar;i++) {
+			while (stmtToVarBitVector[i].size()!=maxNoOfVar)
+				stmtToVarBitVector[i].push_back(0);
+		}
+		// after expanding, insert the new Next r'ship
+		stmtToVarBitVector[stmtUsing][varUsed]=1;
     }
 
     if (Parent::GetParentOf(stmtUsing) != -1) {
@@ -38,9 +63,8 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-   if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
+   if (!bitVectorIsBuilt) {
+		return false; 
 	} else {
 		if (stmtToVarTable.count(stmtUsing) != 0) {
 			for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
@@ -88,6 +112,24 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 		sizeOfUses++;
 
     }
+		maxNoOfProc = maxNoOfProc > procUsing ? maxNoOfProc : procUsing;
+		maxNoOfVar = maxNoOfVar > varUsed ? maxNoOfVar : varUsed;
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			std::vector<vector<bool>> procToVarBitVector (maxNoOfProc, 0);
+			bitVectorIsBuilt = true;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand
+		std::vector <bool> a;
+		while (procToVarBitVector.size()!=maxNoOfProc) {
+			procToVarBitVector.push_back(a);
+		}
+		for (int i=0;i<maxNoOfVar;i++) {
+			while (procToVarBitVector[i].size()!=maxNoOfVar)
+				procToVarBitVector[i].push_back(0);
+		}
+		// after expanding, insert the new Next r'ship
+		procToVarBitVector[procUsing][varUsed]=1;
 
 	vector<int> procsCalling = Calls::GetProcsCalling(procUsing);
 	if (procsCalling.size() > 0) {

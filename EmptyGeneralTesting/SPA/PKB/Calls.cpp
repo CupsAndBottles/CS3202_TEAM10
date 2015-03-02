@@ -91,9 +91,8 @@ vector<int> Calls::GetProcsCalling(int procCalled) {
 }
 
 bool Calls::IsCallsT(int procCalling, int procCalled) {
-	if(bitVectorIsBuilt) {
-		// not implemented yet
-		return false; //dummy value
+	if(!bitVectorIsBuilt) {
+		return false; 
 	} else {
 		queue<int> procsToCheck;
 		

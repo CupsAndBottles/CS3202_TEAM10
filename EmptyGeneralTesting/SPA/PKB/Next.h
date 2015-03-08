@@ -25,6 +25,8 @@ public:
 //	static bool IsNotModifiedInPath(int progLineBefore, int progLineAfter);
 
 	static bool HasAnyNext();
+//	static void CreateBitVector();
+
 	// helper methods for testing
 	static int SizeOfNext();
 	static void ClearData();

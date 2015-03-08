@@ -33,10 +33,10 @@ private:
 	static map<int, vector<int>> callingToCalledTable;
 	static map<int, vector<int>> calledToCallingTable;
 	static map<int, vector<bool>> callingToCalledBitVector;
-	static vector<vector<bool>> bitVector;
+	//static vector<vector<bool>> bitVector;
 	static bool bitVectorIsBuilt;
 	static int maxNoOfProcs;
-	
+
 	static int noOfCallsRelationships;
 
 	static void SetCallingToCalledBitVector(int procCalling, int procCalled);

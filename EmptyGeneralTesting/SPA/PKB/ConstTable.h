@@ -22,18 +22,16 @@ public:
 	static int SizeOfConstTable();
     static void ClearData();
 
-	// APIs out of scope of assigment 4
-	/*void SetUsesProc(int procUsing, int varUsed);
-	bool IsUsesProc(int procUsing, int varUsed);
-	vector<int> GetUsesProc(int varUsed);
-	vector<int> GetUsedByProc(int procUsing);*/
-
-	// insert subsequent columns of the ConstTable here
-	// static map<int, vector<int>> stmtToConstTable
-	// static map<int, vector<int>> procToConstTable
+	/*void SetProcUsesConst(int procUsing, int constUsed);
+	bool IsConstUsesProc(int procUsing, int constUsed);
+	vector<int> GetProcUsingConst(int constUsed);
+	vector<int> GetConstUsedByProc(int porcUsing);*/
 
 private:
 	static map <int, vector<int> > stmtToConstTable;
     static map <int, vector<int> > constToStmtTable;
+
+	// static map <int, vector<int>> procToConstTable;
+	// static map <int, vector<int>> constToProcTable;
 
 };

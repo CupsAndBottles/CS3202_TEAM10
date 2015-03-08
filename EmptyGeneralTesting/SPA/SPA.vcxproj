@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parser\DesignExtractor.cpp" />
-    <ClCompile Include="PKB\Next.h" />
+    <ClCompile Include="PKB\Next.cpp" />
     <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="Parser\Token.cpp" />

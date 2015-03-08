@@ -10,6 +10,7 @@ public:
 	friend class Parser;
 	static TNode& GetASTRootNode();
 	static TNode& GetStmtFromNumber(int);
+	static int GetNumOfStmts();
 	static void ClearData();
 
 protected:

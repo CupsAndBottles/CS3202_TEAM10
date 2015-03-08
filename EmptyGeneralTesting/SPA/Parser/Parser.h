@@ -21,7 +21,7 @@ protected:
 
 	deque<Token> tokens;
 	int currentLineNumber;
-	int procNumber;
+	int currentProcNumber;
 	static map<Token::Type, int> operatorPrecedenceMap;
 
 	Token ConsumeTopToken();
@@ -44,5 +44,5 @@ protected:
 	TNode* ParseExpr(TNode*, bool);
 	TNode* ParseAtomicToken();
 	TNode* ParseConstTNode();
-	TNode* ParseVariableTNode();
+	TNode* ParseVariableTNode(bool isModifies);
 };

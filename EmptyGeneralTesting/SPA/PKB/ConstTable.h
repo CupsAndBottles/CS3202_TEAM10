@@ -28,8 +28,12 @@ public:
 	vector<int> GetUsesProc(int varUsed);
 	vector<int> GetUsedByProc(int procUsing);*/
 
+	// insert subsequent columns of the ConstTable here
+	// static map<int, vector<int>> stmtToConstTable
+	// static map<int, vector<int>> procToConstTable
+
 private:
-	static map <int, vector<int> > StmtToConstTable;
-    static map <int, vector<int> > ConstToStmtTable;
+	static map <int, vector<int> > stmtToConstTable;
+    static map <int, vector<int> > constToStmtTable;
 
 };

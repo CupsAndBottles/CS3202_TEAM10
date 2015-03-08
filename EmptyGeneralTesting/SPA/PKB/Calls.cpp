@@ -81,7 +81,7 @@ bool Calls::IsCallsT(int procCalling, int procCalled) {
 	} else {
 		queue<int> procsToCheck;
 		
-		int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetSize() ? maxNoOfProcs : ProcTable::GetSize();
+		int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
 		vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
 		
 		int currProc;
@@ -114,7 +114,7 @@ vector<int> Calls::GetProcsCalledTBy(int procCalling) {
 	queue<int> procsToCheck;
 	vector<int> procsCalledTBy;
 	
-	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetSize() ? maxNoOfProcs : ProcTable::GetSize();
+	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
 	vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
 
 	int currProc;
@@ -141,7 +141,7 @@ vector<int> Calls::GetProcsCallingT(int procCalled) {
 	queue<int> procsToCheck;
 	vector<int> procsCallingT;
 	
-	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetSize() ? maxNoOfProcs : ProcTable::GetSize();
+	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
 	vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
 	
 	int currProc;

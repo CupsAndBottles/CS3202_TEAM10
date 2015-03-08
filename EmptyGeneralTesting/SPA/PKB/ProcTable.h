@@ -21,14 +21,17 @@ public:
 	static int GetIndexOfProc(string procName); 
 	static string GetProcName(int varIndex);
 	static vector<string> GetAllProcNames();
+	
 	static void SetFirstStmtNoOfProc(int procIndex, int firstStmtNo);
 	static void SetLastStmtNoOfProc(int procIndex, int lastStmtNo);
+	
 	static int GetFirstStmtNoOfProc(int procIndex);
 	static int GetLastStmtNoOfProc(int procIndex);
 	static int GetProcOfStmt(int stmtNo);
+
+	static int GetNoOfProcs();
 	
-	// methods to aid testing
-	static int GetSize();
+	// method(s) to aid testing
 	static void ClearData();
 
 private:

@@ -8,7 +8,7 @@ class VarTableTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(VarTableTest);
 	CPPUNIT_TEST(testInsert);
 	CPPUNIT_TEST(testGetIndexOf);
-	CPPUNIT_TEST(testGetSize);
+	CPPUNIT_TEST(testGetNoOfVars);
 	CPPUNIT_TEST(testGetVarName);
 	CPPUNIT_TEST(testGetAllVarNames);
 	// add other methods to test here
@@ -21,7 +21,7 @@ public:
 	void testConstructor();
 	void testInsert();
 	void testGetIndexOf();
-	void testGetSize();
+	void testGetNoOfVars();
 	void testGetVarName();
 	void testGetAllVarNames();
 

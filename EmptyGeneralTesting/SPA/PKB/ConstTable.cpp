@@ -7,8 +7,8 @@
 
 using namespace std;
 
-map <int, vector<int> > ConstTable::StmtToConstTable;
-map <int, vector<int> > ConstTable::ConstToStmtTable;
+map <int, vector<int> > ConstTable::stmtToConstTable;
+map <int, vector<int> > ConstTable::constToStmtTable;
 
 // empty constructor
 ConstTable::ConstTable() {}
@@ -16,8 +16,8 @@ ConstTable::ConstTable() {}
 // API
 void ConstTable::SetStmtUsesConst(int stmtUsing, int constUsed) {
     if (!IsStmtUsingConst(stmtUsing, constUsed)) {
-        StmtToConstTable[stmtUsing].push_back(constUsed);
-        ConstToStmtTable[constUsed].push_back(stmtUsing);
+        stmtToConstTable[stmtUsing].push_back(constUsed);
+        constToStmtTable[constUsed].push_back(stmtUsing);
     }
 
     if (Parent::GetParentOf(stmtUsing) != -1)
@@ -25,37 +25,37 @@ void ConstTable::SetStmtUsesConst(int stmtUsing, int constUsed) {
 }
 
 bool ConstTable::IsStmtUsingConst(int stmtUsing, int constUsed) {
-    if (StmtToConstTable.count(stmtUsing)!=0)
-        for (unsigned int i=0; i<StmtToConstTable.at(stmtUsing).size(); i++)
-            if (StmtToConstTable.at(stmtUsing).at(i) == constUsed)
+    if (stmtToConstTable.count(stmtUsing)!=0)
+		for (vector<int>::iterator it = stmtToConstTable.at(stmtUsing).begin(); it != stmtToConstTable.at(stmtUsing).end(); it++)
+            if (*it == constUsed)
                 return true;
     return false;
 }
 
 vector<int> ConstTable::GetStmtUsingConst(int constUsed) {
     vector<int> ret;
-    if (ConstToStmtTable.count(constUsed)==0)
+    if (constToStmtTable.count(constUsed)==0)
         return ret;
-    else return ConstToStmtTable.at(constUsed);
+    else return constToStmtTable.at(constUsed);
 }
 
 vector<int> ConstTable::GetConstUsedByStmt(int stmtUsing) {
     vector<int> ret;
-    if (StmtToConstTable.count(stmtUsing)==0)
+    if (stmtToConstTable.count(stmtUsing)==0)
         return ret;
-    else return StmtToConstTable.at(stmtUsing);
+    else return stmtToConstTable.at(stmtUsing);
 }
 
 
 bool ConstTable::HasAnyConst() {
-    return !StmtToConstTable.empty();
+    return !stmtToConstTable.empty();
 
 }
 
 vector<int> ConstTable::GetAllConst() {
     vector<int> listOfConstants;
 
-    for(map<int, vector<int> >::iterator it = StmtToConstTable.begin(); it != StmtToConstTable.end(); it++) {
+    for(map<int, vector<int> >::iterator it = stmtToConstTable.begin(); it != stmtToConstTable.end(); it++) {
         for(unsigned int i = 0; i < it->second.size(); i++) {
             listOfConstants.push_back(it->second.at(i));
 		}
@@ -73,13 +73,13 @@ vector<int> ConstTable::GetAllConst() {
 int ConstTable::SizeOfConstTable() {
     int sum = 0;
 
-    for(map<int, vector<int> >::iterator it=StmtToConstTable.begin(); it!=StmtToConstTable.end();        it++)
+    for(map<int, vector<int> >::iterator it=stmtToConstTable.begin(); it!=stmtToConstTable.end();        it++)
     sum += it->second.size();
     
 	return sum;
 }
 
 void ConstTable::ClearData() {
-    StmtToConstTable.clear();
-    ConstToStmtTable.clear();
+    stmtToConstTable.clear();
+    constToStmtTable.clear();
 }

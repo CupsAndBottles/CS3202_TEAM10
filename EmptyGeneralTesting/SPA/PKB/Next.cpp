@@ -84,7 +84,7 @@ bool Next::IsNextT(int progLineBefore, int progLineAfter) {
 	} else {
 		queue<int> linesToCheck;
 		
-		int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetSize() ? maxNoOfLines : StmtTypeTable::GetSize();
+		int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetNoOfStmts() ? maxNoOfLines : StmtTypeTable::GetNoOfStmts();
 		vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 		
 		int currLine;
@@ -115,7 +115,7 @@ vector<int> Next::GetNextTAfter(int progLineBefore) {
 	queue<int> linesToCheck;
 	vector<int> linesAfter;
 	
-	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetSize() ? maxNoOfLines : StmtTypeTable::GetSize();
+	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetNoOfStmts() ? maxNoOfLines : StmtTypeTable::GetNoOfStmts();
 	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 	
 	int currLine;
@@ -143,7 +143,7 @@ vector<int> Next::GetNextTBefore(int progLineAfter) {
 	queue<int> linesToCheck;
 	vector<int> linesBefore;
 	
-	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetSize() ? maxNoOfLines : StmtTypeTable::GetSize();
+	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetNoOfStmts() ? maxNoOfLines : StmtTypeTable::GetNoOfStmts();
 	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 	
 	int currLine;

@@ -20,8 +20,9 @@ public:
 
 	//API-PKB and DE
 	static void Insert(int stmtIndex, SynonymType type);
-
-	static int GetSize();
+	
+	static int GetNoOfStmts();
+	//static void GetNoOfStmtOfType(SynonymType type);
 
 	static void ClearData();
 

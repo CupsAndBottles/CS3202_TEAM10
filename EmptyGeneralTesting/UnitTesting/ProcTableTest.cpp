@@ -18,28 +18,28 @@ void ProcTableTest::tearDown() {
 CPPUNIT_TEST_SUITE_REGISTRATION(ProcTableTest);
 
 void ProcTableTest::TestInsertProc() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	// regular insertions
 	CPPUNIT_ASSERT_EQUAL(0, ProcTable::InsertProc("First"));
-	CPPUNIT_ASSERT_EQUAL(1, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(1, ProcTable::GetNoOfProcs());
 
 	CPPUNIT_ASSERT_EQUAL(1, ProcTable::InsertProc("Second"));
-	CPPUNIT_ASSERT_EQUAL(2, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(2, ProcTable::GetNoOfProcs());
 	
 	CPPUNIT_ASSERT_EQUAL(2, ProcTable::InsertProc("Third1223"));
-	CPPUNIT_ASSERT_EQUAL(3, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(3, ProcTable::GetNoOfProcs());
 	
 	// repeated insertions
 	CPPUNIT_ASSERT_EQUAL(0, ProcTable::InsertProc("First"));
 	CPPUNIT_ASSERT_EQUAL(2, ProcTable::InsertProc("Third1223"));
-	CPPUNIT_ASSERT_EQUAL(3, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(3, ProcTable::GetNoOfProcs());
 
 	// do we consider invalid names? (white spaces, non-alphanumeric...)
 }
 
 void ProcTableTest::TestGetIndexOfProc() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	ProcTable::InsertProc("First");
 	ProcTable::InsertProc("Second");
@@ -55,7 +55,7 @@ void ProcTableTest::TestGetIndexOfProc() {
 }
 
 void ProcTableTest::TestGetProcName() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	ProcTable::InsertProc("Bo00YeaH");
 	ProcTable::InsertProc("Yaemiah");
@@ -70,7 +70,7 @@ void ProcTableTest::TestGetProcName() {
 }
 
 void ProcTableTest::TestGetAllProcNames() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	// test empty list
 	CPPUNIT_ASSERT_EQUAL(0, (int) ProcTable::GetAllProcNames().size());
@@ -97,7 +97,7 @@ void ProcTableTest::TestGetAllProcNames() {
 }
 
 void ProcTableTest::TestFirstLastStmtNos() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	// regular insert and set
 	int procIndexOfFirst = ProcTable::InsertProc("First");
@@ -136,7 +136,7 @@ void ProcTableTest::TestFirstLastStmtNos() {
 }
 
 void ProcTableTest::TestGetProcOfStmt() {
-	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, ProcTable::GetNoOfProcs());
 
 	// no conflicts
 	ProcTable::InsertProc("First");

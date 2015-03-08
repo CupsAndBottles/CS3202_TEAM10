@@ -19,9 +19,9 @@ public:
 	static int GetIndexOfVar(string varName); 
 	static string GetVarName(int varIndex);
 	static vector<string> GetAllVarNames();
+	static int GetNoOfVars();
 	
-	// methods to aid testing
-	static int GetSize();
+	// method(s) to aid testing
 	static void ClearData();
 
 private:

@@ -33,7 +33,7 @@ void VarTableTest::testInsert() {
 
 	// x2 inserted first to check that the order of x1 and x2 are nto being rearranged
 	
-	size = VarTable::GetSize();
+	size = VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(3, size);
 	
 	varName = VarTable::GetVarName(0);
@@ -83,12 +83,12 @@ void VarTableTest::testGetIndexOf() {
 
 }
 
-void VarTableTest::testGetSize() {
+void VarTableTest::testGetNoOfVars() {
 	VarTable::ClearData();
 	int size;
 
 	// test for empty varTable
-	size =  VarTable::GetSize();
+	size =  VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(0, size);
 
 	// test for repeated insertions
@@ -96,7 +96,7 @@ void VarTableTest::testGetSize() {
 	VarTable::InsertVar("a");
 	VarTable::InsertVar("b");
 	VarTable::InsertVar("a");
-	size = VarTable::GetSize();
+	size = VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(2, size);
 
 }
@@ -122,7 +122,7 @@ void VarTableTest::testGetVarName() {
 }
 
 void VarTableTest::testGetAllVarNames() {
-	CPPUNIT_ASSERT_EQUAL(0, VarTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL(0, VarTable::GetNoOfVars());
 	
 	// test empty list
 	CPPUNIT_ASSERT_EQUAL(0, (int) VarTable::GetAllVarNames().size());

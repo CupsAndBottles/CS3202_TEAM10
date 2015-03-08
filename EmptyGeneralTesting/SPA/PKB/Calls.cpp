@@ -3,14 +3,21 @@
 #include <queue>
 
 #include "Calls.h"
+#include "ProcTable.h"
 
 map<int, vector<int>> Calls::callingToCalledTable;
 map<int, vector<int>> Calls::calledToCallingTable;
 map<int, vector<bool>> Calls::callingToCalledBitVector;
 int Calls::noOfCallsRelationships;
+int Calls::maxNoOfProcs;
+bool Calls::bitVectorIsBuilt;
 
 // empty constructor
-Calls::Calls() {}
+Calls::Calls() {
+	noOfCallsRelationships = 0;
+	maxNoOfProcs = 0;
+	bitVectorIsBuilt = false;
+}
 
 // API
 void Calls::SetCalls(int procCalling, int procCalled) {
@@ -21,6 +28,9 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 		SetCallingToCalledBitVector(procCalling, procCalled);
 
 		noOfCallsRelationships++;
+
+		maxNoOfProcs = maxNoOfProcs > procCalling ? maxNoOfProcs : procCalling;
+		maxNoOfProcs = maxNoOfProcs > procCalled ? maxNoOfProcs : procCalled;
 
 	}
 
@@ -65,48 +75,59 @@ vector<int> Calls::GetProcsCalling(int procCalled) {
 }
 
 bool Calls::IsCallsT(int procCalling, int procCalled) {
-	queue<int> procsToCheck;
-	unsigned int checkedProcs = 0;
-	int currProc;
+	if(bitVectorIsBuilt) {
+		// not implemented yet
+		return false; //dummy value
+	} else {
+		queue<int> procsToCheck;
+		
+		int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
+		vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
+		
+		int currProc;
 
-	procsToCheck.push(procCalling);
+		procsToCheck.push(procCalling);
 
-	while (!procsToCheck.empty()) {
-		currProc = procsToCheck.front();
+		while (!procsToCheck.empty()) {
+			currProc = procsToCheck.front();
 
-		if (!AlreadyChecked(currProc, checkedProcs)) {
-			if (IsCalls(currProc, procCalled)) {
-				return true;
+			if (!checkedProcs.at(currProc)) {
+				if (IsCalls(currProc, procCalled)) {
+					return true;
+				}
+
+				checkedProcs[currProc] = true;
+				procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(currProc));
+
 			}
 
-			checkedProcs = checkedProcs | (1 << currProc);
-			procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(currProc));
-
+			procsToCheck.pop();
+	
 		}
 
-		procsToCheck.pop();
-	
+		return false;
 	}
-
-	return false;
 
 }
 
 vector<int> Calls::GetProcsCalledTBy(int procCalling) {
 	queue<int> procsToCheck;
 	vector<int> procsCalledTBy;
-	unsigned int checkedProcs = 0;
+	
+	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
+	vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
+
 	int currProc;
 
 	procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(procCalling));
 
 	while (!procsToCheck.empty()) {
 		currProc = procsToCheck.front();
-		if (!AlreadyChecked(currProc, checkedProcs)) {
+		if (!checkedProcs.at(currProc)) {
 			procsCalledTBy.push_back(currProc);
 			procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(currProc));
 
-			checkedProcs = checkedProcs | (1 << currProc);
+			checkedProcs[currProc] = true;
 		}
 		procsToCheck.pop();
 	
@@ -119,28 +140,27 @@ vector<int> Calls::GetProcsCalledTBy(int procCalling) {
 vector<int> Calls::GetProcsCallingT(int procCalled) {
 	queue<int> procsToCheck;
 	vector<int> procsCallingT;
-	unsigned int checkedProcs = 0;
+	
+	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
+	vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
+	
 	int currProc;
 
 	procsToCheck = AddToQueue(procsToCheck, GetProcsCalling(procCalled));
 
 	while (!procsToCheck.empty()) {
 		currProc = procsToCheck.front();
-		if(!AlreadyChecked(currProc, checkedProcs)) {
+		if(!checkedProcs.at(currProc)) {
 			procsCallingT.push_back(currProc);
 			procsToCheck = AddToQueue(procsToCheck, GetProcsCalling(currProc));
 
-			checkedProcs = checkedProcs | (1 << currProc);
+			checkedProcs[currProc] = true;
 		}
 		procsToCheck.pop();
 
 	}
 
 	return procsCallingT;
-}
-
-bool Calls::AlreadyChecked(int currProc, unsigned int checkedProcs) {
-	return (checkedProcs & (1 << currProc)) != 0;
 }
 
 queue<int> Calls::AddToQueue(queue<int> procsToCheck, vector<int> additions) {

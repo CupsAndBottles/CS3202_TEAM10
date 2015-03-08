@@ -45,7 +45,7 @@ int ProcTable::GetIndexOfProc(string procName) {
 }
 
 string ProcTable::GetProcName(int procIndex) {
-	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+	if (procIndex >= 0 && procIndex < (int) procNames.size()) {
 		return procNames[procIndex];
 	} else {
 		throw IndexNotFoundException();
@@ -58,7 +58,7 @@ vector<string> ProcTable::GetAllProcNames() {
 }
 
 void ProcTable::SetFirstStmtNoOfProc(int procIndex, int firstStmtNo) {
-	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+	if (procIndex >= 0 && procIndex < (int) procNames.size()) {
 		// assumes that stmt#s are inserted in order
 		if (GetProcOfStmt(firstStmtNo) == -1) {
 			firstStmtNosList[procIndex] = firstStmtNo;
@@ -74,7 +74,7 @@ void ProcTable::SetFirstStmtNoOfProc(int procIndex, int firstStmtNo) {
 }
 
 void ProcTable::SetLastStmtNoOfProc(int procIndex, int lastStmtNo) {
-	if (procIndex >= 0 && (unsigned int)procIndex < procNames.size()) {
+	if (procIndex >= 0 && procIndex < (int) procNames.size()) {
 		// check that firstStmt has been set and lastStmt has NOT been set
 		if (firstStmtNosList.count(procIndex) != 0 && lastStmtNosList.count(procIndex) == 0) {
 			if (lastStmtNo > firstStmtNosList.at(procIndex))
@@ -88,7 +88,7 @@ void ProcTable::SetLastStmtNoOfProc(int procIndex, int lastStmtNo) {
 int ProcTable::GetFirstStmtNoOfProc(int procIndex) {
 	if (firstStmtNosList.count(procIndex) != 0)
 		return firstStmtNosList.at(procIndex);
-	else if (procIndex < 0 || (unsigned int)procIndex >= procNames.size())
+	else if (procIndex < 0 || procIndex >= (int) procNames.size())
 		throw IndexNotFoundException();
 	else
 		return -1;	// index not set yet
@@ -97,7 +97,7 @@ int ProcTable::GetFirstStmtNoOfProc(int procIndex) {
 int ProcTable::GetLastStmtNoOfProc(int procIndex) {
 	if (firstStmtNosList.count(procIndex) != 0)
 		return lastStmtNosList.at(procIndex);
-	else if (procIndex < 0 || (unsigned int)procIndex >= procNames.size())
+	else if (procIndex < 0 || procIndex >= (int) procNames.size())
 		throw IndexNotFoundException();
 	else
 		return -1;	// index not set yet
@@ -116,11 +116,11 @@ int ProcTable::GetProcOfStmt(int stmtNo) {
 
 }
 
-// methods to aid testing
-int ProcTable::GetSize() {
+int ProcTable::GetNoOfProcs() {
 	return procNames.size();
 }
 
+// method(s) to aid testing
 void ProcTable::ClearData() {
 	procNames.clear();
 	firstStmtNosList.clear();

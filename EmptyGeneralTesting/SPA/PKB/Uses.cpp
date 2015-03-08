@@ -1,5 +1,6 @@
 #include <utility>
 #include <map>
+
 #include "Parent.h"
 #include "Calls.h"
 #include "Uses.h"
@@ -8,23 +9,22 @@ using namespace std;
 
 map <int, vector<int>> Uses::stmtToVarTable;
 map <int, vector<int>> Uses::varToStmtTable;
-map <int, vector<bool>> Uses::stmtToVarBitVector;
 map <int, vector<int>> Uses::procToVarTable;
 map <int, vector<int>> Uses::varToProcTable;
-map <int, vector<bool>> Uses::procToVarBitVector;
+bool Uses::bitVectorIsBuilt;
 int Uses::sizeOfUses;
 
-// empty constructor
-Uses::Uses() {};
+Uses::Uses() {
+	bitVectorIsBuilt = false;
+	sizeOfUses = 0;
+};
 
 // API
 void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     if (!IsStmtUsingVar(stmtUsing, varUsed)) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
-
-		SetStmtToVarBitVector(stmtUsing, varUsed);
-		
+	
 		sizeOfUses++;
 
     }
@@ -36,23 +36,21 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 
 }
 
-void Uses::SetStmtToVarBitVector(int stmtUsing, int varUsed) {
-	if ((varUsed + 1) > (int) stmtToVarBitVector[stmtUsing].size()) {
-		for (int i = 0; i < ((varUsed + 1) * 2); i++) {
-			stmtToVarBitVector[stmtUsing].push_back(false);
-		}
-	} 
-	
-	stmtToVarBitVector[stmtUsing].at(varUsed) = true;
-
-}
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-   if (stmtToVarBitVector.count(stmtUsing) != 0)
-		if (varUsed < (int) stmtToVarBitVector[stmtUsing].size())
-		return stmtToVarBitVector[stmtUsing].at(varUsed);
-	
-	return false;
+   if (bitVectorIsBuilt) {
+		// not implemented yet
+		return false; // dummy value
+	} else {
+		if (stmtToVarTable.count(stmtUsing) != 0) {
+			for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
+				if (*it == varUsed)
+					return true;
+			}
+		
+		}
+		return false;
+	}
 
 }
 
@@ -86,8 +84,6 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 	if (!IsProcUsingVar(procUsing, varUsed)) {
         procToVarTable[procUsing].push_back(varUsed);
         varToProcTable[varUsed].push_back(procUsing);
-		
-		SetProcToVarBitVector(procUsing, varUsed);
 
 		sizeOfUses++;
 
@@ -102,24 +98,24 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 
 }
 
-void Uses::SetProcToVarBitVector(int procUsing, int varused) {
-	if ((varused + 1) > (int) procToVarBitVector[procUsing].size()) {
-		for (int i = 0; i < ((varused + 1) * 2); i++) {
-			procToVarBitVector[procUsing].push_back(false);
-		}
-		
-	} 
-	
-	procToVarBitVector[procUsing].at(varused) = true;
-
-}
-
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
-	if (procToVarBitVector.count(procUsing) != 0)
+	if (bitVectorIsBuilt) {
+		/*if (procToVarBitVector.count(procUsing) != 0)
 		if (varUsed < (int) procToVarBitVector[procUsing].size())
 			return procToVarBitVector[procUsing].at(varUsed);
 	
-	return false;
+		return false;*/ // old reusable code
+		return false; // dummy value
+	} else {
+		if (procToVarTable.count(procUsing) != 0) {
+			for (vector<int>::iterator it = procToVarTable[procUsing].begin(); it != procToVarTable[procUsing].end(); it++) {
+				if (*it == varUsed)
+					return true;
+			}
+		
+		}
+		return false;
+	}
 
 }
 
@@ -158,10 +154,8 @@ int Uses::SizeOfUses() {
 void Uses::ClearData() {
     stmtToVarTable.clear();
     varToStmtTable.clear();
-	stmtToVarBitVector.clear();
 	procToVarTable.clear();
 	varToProcTable.clear();
-	procToVarBitVector.clear();
 	sizeOfUses = 0;
 
 }

@@ -48,12 +48,12 @@ vector<string> VarTable::GetAllVarNames() {
 	return varNames;
 }
 
-// methods to aid testing
-int VarTable::GetSize() {
+int VarTable::GetNoOfVars() {
 	return varNames.size();
 
 }
 
+// method(s) to aid testing
 void VarTable::ClearData() {
 	varNames.clear();
 

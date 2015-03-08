@@ -9,22 +9,21 @@ using namespace std;
 
 map <int, vector<int> > Modifies::stmtToVarTable;
 map <int, vector<int> > Modifies::varToStmtTable;
-map <int, vector<bool>> Modifies::stmtToVarBitVector;
 map <int, vector<int>> Modifies::procToVarTable;
 map <int, vector<int>> Modifies::varToProcTable;
-map <int, vector<bool>> Modifies::procToVarBitVector;
+bool Modifies::bitVectorIsBuilt;
 int Modifies::sizeOfModifies;
 
-// empty constructor
-Modifies::Modifies() {};
+Modifies::Modifies() {
+	bitVectorIsBuilt = false;
+	sizeOfModifies = 0;
+};
 
 // API
 void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 	if (!IsStmtModifyingVar(stmtModifying, varModified)) {
         stmtToVarTable[stmtModifying].push_back(varModified);
         varToStmtTable[varModified].push_back(stmtModifying);
-
-		SetStmtToVarBitVector(stmtModifying, varModified);
 
 		sizeOfModifies++;
 
@@ -37,23 +36,20 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 
 }
 
-void Modifies::SetStmtToVarBitVector(int stmtModifying, int varModified) {
-	if ((varModified + 1) > (int) stmtToVarBitVector[stmtModifying].size()) {
-		for (int i = 0; i < ((varModified + 1) * 2); i++) {
-			stmtToVarBitVector[stmtModifying].push_back(false);
-		}
-	} 
-	
-	stmtToVarBitVector[stmtModifying].at(varModified) = true;
-
-}
-
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-    if (stmtToVarBitVector.count(stmtModifying) != 0)
-		if (varModified < (int) stmtToVarBitVector[stmtModifying].size())
-			return stmtToVarBitVector[stmtModifying].at(varModified);
-	
-	return false;
+	if (bitVectorIsBuilt) {
+		// not implemented yet
+		return false; // dummy value
+	} else {
+		if (stmtToVarTable.count(stmtModifying) != 0) {
+			for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
+				if (*it == varModified)
+					return true;
+			}
+		
+		}
+		return false;
+	}
 
 }
 
@@ -85,8 +81,6 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
         procToVarTable[procModifying].push_back(varModified);
         varToProcTable[varModified].push_back(procModifying);
 
-		SetProcToVarBitVector(procModifying, varModified);
-
 		sizeOfModifies++;
 
     }
@@ -100,23 +94,20 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 
 }
 
-void Modifies::SetProcToVarBitVector(int procModifying, int varModified) {
-	if ((varModified + 1) > (int) procToVarBitVector[procModifying].size()) {
-		for (int i = 0; i < ((varModified + 1) * 2); i++) {
-			procToVarBitVector[procModifying].push_back(false);
-		}
-	} 
-	
-	procToVarBitVector[procModifying].at(varModified) = true;
-
-}
-
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
-	if (procToVarBitVector.count(procModifying) != 0)
-		if (varModified < (int) procToVarBitVector[procModifying].size())
-		return procToVarBitVector[procModifying].at(varModified);
-	
-	return false;
+	if (bitVectorIsBuilt) {
+		// not implemented yet
+		return false; // dummy value
+	} else {
+		if (procToVarTable.count(procModifying) != 0) {
+			for (vector<int>::iterator it = procToVarTable[procModifying].begin(); it != procToVarTable[procModifying].end(); it++) {
+				if (*it == varModified)
+					return true;
+			}
+		
+		}
+		return false;
+	}
 
 }
 
@@ -157,10 +148,8 @@ int Modifies::SizeOfModifies() {
 void Modifies::ClearData() {
 	stmtToVarTable.clear();
 	varToStmtTable.clear();
-	stmtToVarBitVector.clear();
 	procToVarTable.clear();
 	varToProcTable.clear();
-	procToVarBitVector.clear();
 	sizeOfModifies = 0;
 
 }

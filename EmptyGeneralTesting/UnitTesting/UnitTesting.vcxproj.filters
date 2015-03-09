@@ -77,9 +77,6 @@
     <ClInclude Include="FollowsTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModifiesTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ParentTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -104,9 +101,6 @@
     <ClInclude Include="TokenizerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UsesTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConstTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -119,7 +113,13 @@
     <ClInclude Include="ProcTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ModifiesTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="NextTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsesTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

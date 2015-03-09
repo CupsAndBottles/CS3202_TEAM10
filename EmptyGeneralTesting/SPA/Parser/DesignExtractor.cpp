@@ -6,15 +6,13 @@
 #include "..\PKB\Uses.h"
 #include "..\PKB\Modifies.h"
 #include "..\PKB\Calls.h"
+#include "..\PKB\Next.h"
+#include "..\PKB\Parent.h"
 #include "..\QueryProcessor\Grammar.h"
 
 #include <vector>
 #include <map>
 #include <set>
-
-DesignExtractor::DesignExtractor(void)
-{
-}
 
 /*
 proctable
@@ -40,13 +38,17 @@ Next
 				perform recursive call to parse subtrees
 				connect tails to follows(ifstmt, next)
 */
+
 void ComputeModifiesAndUses();
 void ComputeCalls();
+void ComputeModifiesAndUsesForProcedures();
+void ComputeNext();
 
 void DesignExtractor::Extract() {
 	ComputeModifiesAndUses();
 	ComputeCalls();
-
+	//ComputeModifiesAndUsesForProcedures();
+	ComputeNext();
 }
 
 void ComputeModifiesAndUsesForProcedures() {
@@ -68,6 +70,7 @@ void ComputeModifiesAndUsesForProcedures() {
 	class TarjanHelper {
 
 	public:
+		int componentCounter;
 		TarjanHelper() {
 			depthCounter, componentCounter = 0;
 			// TODO find an easier way of getting this out
@@ -91,7 +94,7 @@ void ComputeModifiesAndUsesForProcedures() {
 		map<int, ProcInfo> procMap;
 		vector<int> SCCStack;
 		vector<int> procedures;
-		int depthCounter, componentCounter;
+		int depthCounter;
 
 		void Tarjan(int proc) {
 			ProcInfo& currentProcedure = procMap[proc];
@@ -136,8 +139,8 @@ void ComputeModifiesAndUsesForProcedures() {
 	// iterate through procs, generating SCCs
 	// for each proc, look at all procs calling said proc
 	//	if the calling proc has a different component number, said proc is parent
+	set<int> componentsWithoutChildren; for(int i = 1; i < helper.componentCounter; i++) componentsWithoutChildren.insert(i);
 	map<int, vector<int>> componentMap;
-	map<int, bool> componentHasParent;
 	map<int, set<int>> componentGraph;
 	typedef map<int, ProcInfo>::iterator c_iter;
 	for (c_iter i = callGraph.begin(); i != callGraph.end(); i++) {
@@ -149,42 +152,134 @@ void ComputeModifiesAndUsesForProcedures() {
 			int callingComponentIndex = callGraph[procedure].componentIndex;
 			if (callingComponentIndex != componentIndex) {
 				componentGraph[componentIndex].insert(callingComponentIndex);
-
+				componentsWithoutChildren.erase(callingComponentIndex);
 			}
 		}
 	}
 
 	// walk through SCC graph
 	// for each vertex/component, all procs use and modify the set union of all variables in that component
-	// for each child of vertex, vertex calls/modifies variables of children
-	// must identify heads of graphs
-	// then can have recursive implementation
-	// graph guaranteed to not have loops
+	// for each child of vertex, vertex uses/modifies variables of children
+	// recursive implementation
 	typedef map<int, vector<int>>::iterator c_map_iter;
 	typedef map<int, set<int>>::iterator c_grh_iter;
 	// iterate through each component
+	// compute us/mo for procs within components first
 	for (c_map_iter i = componentMap.begin(); i != componentMap.end(); i++) {
+		if (i->second.size() == 1) break;
+		set<int> usedVars;
+		set<int> modifiedVars;
 		// sum up the vars for all procs in the component
 		for each (int procedure in i->second) {
-
+			vector<int> uses = Uses::GetVarUsedByProc(procedure);
+			vector<int> modifies = Modifies::GetProcModifyingVar(procedure);
+			usedVars.insert(uses.begin(), uses.end());
+			modifiedVars.insert(modifies.begin(), modifies.end());
 		}
 		// make all procs inherit the vars summed up
-		
-		// 
+		for each (int procedure in i->second) {
+			for each (int var in usedVars) {
+				Uses::SetProcUsesVar(procedure, var);
+			}
+			for each (int var in modifiedVars) {
+				Modifies::SetProcModifiesVar(procedure, var);
+			}
+		}
+	}
+
+	// loop through leaves
+	// all direct parents inherit properties of children
+	// clean leaves and add parents of current set to that
+	// loop from top
+
+	// loop through all leaves
+	while (componentsWithoutChildren.size() != 0) {
+		set<int> currentSet;
+		for each(int leaf in componentsWithoutChildren) {
+			// get the first proc in the child component
+			int firstProcedure = componentMap[leaf].front();
+			vector<int> usedVars = Uses::GetVarUsedByProc(firstProcedure);
+			vector<int> modifiedVars = Modifies::GetProcModifyingVar(firstProcedure);
+
+			set<int>& currentParents = componentGraph[leaf];
+			// all direct parents inherit properties of children
+			for each(int parent in currentParents) {
+				for each (int procedure in componentMap[parent]) {
+					for each (int var in usedVars) {
+						Uses::SetProcUsesVar(procedure, var);
+					}
+					for each (int var in modifiedVars) {
+						Modifies::SetProcModifiesVar(procedure, var);
+					}
+				}
+			}
+			// add direct parents to set
+			currentSet.insert(currentParents.begin(), currentParents.end());
+		}
+		// loop from top
+		componentsWithoutChildren = currentSet;
 	}
 }
 
-void ComputeNext() {
-	int numberOfStmts = Program::GetNumOfStmts();
-	
+set<int> ConnectStmtList(int startPoint) {
+	// seeks follows connections until none can be found
+	// if while is found
+	//	recursively call this to process the stmt list
+	//	connect last stmt to first one
+	// if else is found
+	//	recursively call this twice for each stmt list
+	//	connect last stmts to next one
+	// return last stmt found (or a set)
 
+	set<int> prevStmts;
+	prevStmts.insert(startPoint);
+	int currentStmt = Follows::GetFollowsAfter(startPoint);
+	while (currentStmt != -1) {
+		// set connections
+		for each (int prevStmt in prevStmts) Next::SetNext(prevStmt, currentStmt);
+		prevStmts.clear();
+		// process current stmt
+		if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+
+			TNode& ifStmt = Program::GetStmtFromNumber(currentStmt);
+			int startOfThenBlock = ifStmt.GetChild(1).GetChild(0).GetLineNumber();
+			int startOfElseBlock = ifStmt.GetChild(2).GetChild(0).GetLineNumber();
+			Next::SetNext(currentStmt, startOfThenBlock);
+			Next::SetNext(currentStmt, startOfElseBlock);
+
+			set<int> thenBlockEnds = ConnectStmtList(startOfThenBlock);
+			set<int> elseBlockEnds = ConnectStmtList(startOfElseBlock);
+			prevStmts.insert(thenBlockEnds.begin(), thenBlockEnds.end());
+			prevStmts.insert(elseBlockEnds.begin(), elseBlockEnds.end());
+
+		} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+
+			TNode& whileStmt = Program::GetStmtFromNumber(currentStmt);
+			int startOfLoop = whileStmt.GetChild(1).GetChild(0).GetLineNumber();
+			Next::SetNext(currentStmt, startOfLoop);
+			
+			set<int> loopEnds = ConnectStmtList(startOfLoop);
+			for each (int stmt in loopEnds) Next::SetNext(stmt, currentStmt);
+			prevStmts.insert(currentStmt);
+
+		} else {
+
+			prevStmts.insert(currentStmt);
+
+		}
+		// goto next stmt
+		currentStmt = Follows::GetFollowsAfter(currentStmt);
+	}
+	return prevStmts;
 }
 
-int ConnectStmtList(int startPoint) {
-	// seeks follows connections until none can be found
-	// returns the last one
-
-	return 0;
+void ComputeNext() {
+	// gets all procedures
+	// loops through all procedures, connecting the stmts
+	for each (string procName in ProcTable::GetAllProcNames()) {
+		int procIndex = ProcTable::GetIndexOfProc(procName);
+		ConnectStmtList(ProcTable::GetFirstStmtNoOfProc(procIndex));
+	}
 }
 
 void ComputeCalls() {
@@ -199,5 +294,45 @@ void ComputeCalls() {
 
 void ComputeModifiesAndUses() {
 	// TODO migrate code
+	/* Remember that
+		while x {		\\ 1
+			while y {	\\ 2
+				z = 1;	\\ 3
+			}
+		}
+
+		1 only modifies 3, and not 2 as well.
+	*/
+
+	// get all assignment statements
+	// map to direct parents
+	// direct parents inherit properties of children
+	// set direct parents as new children
+	// loop
+
+	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
+
+	set<int> currentChildren(assignmentStmts.begin(), assignmentStmts.end());
+	
+	while (currentChildren.size() != 0) {
+		set<int> parents;
+
+		for each (int stmt in currentChildren) {
+			int parent = Parent::GetParentOf(stmt);
+			if (parent == -1) break;
+			vector<int> usedVars = Uses::GetVarUsedByStmt(stmt);
+			vector<int> modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
+			for each (int var in usedVars) {
+				Uses::SetStmtUsesVar(parent, var);
+			}
+			for each (int var in modifiedVars) {
+				Modifies::SetStmtModifiesVar(parent, var);
+			}
+			parents.insert(parent);
+		}
+
+		currentChildren = parents;
+	}
+
 }
 

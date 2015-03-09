@@ -2,6 +2,7 @@
 
 #include "Parser.h"
 #include "Tokenizer.h"
+#include "DesignExtractor.h"
 #include "..\Program\Program.h"
 #include "..\Program\TNode\TNode.h"
 #include "..\QueryProcessor\Grammar.h"
@@ -142,6 +143,9 @@ void Parser::Parse() {
 		
 		rootNode.AddChild(procedureNode);
 	}
+
+	// post processing step
+	DesignExtractor::Extract();
 }
 
 TNode* Parser::ParseProcedure() {

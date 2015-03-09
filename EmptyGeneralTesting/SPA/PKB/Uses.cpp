@@ -24,15 +24,9 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
     if (!IsStmtUsingVar(stmtUsing, varUsed)) {
         stmtToVarTable[stmtUsing].push_back(varUsed);
         varToStmtTable[varUsed].push_back(stmtUsing);
-	
+
 		sizeOfUses++;
-
     }
-
-    if (Parent::GetParentOf(stmtUsing) != -1) {
-        SetStmtUsesVar(Parent::GetParentOf(stmtUsing), varUsed);
-
-	}
 
 }
 

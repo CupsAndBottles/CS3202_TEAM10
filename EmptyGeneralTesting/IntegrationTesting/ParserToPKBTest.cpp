@@ -55,7 +55,7 @@ void ParserToPKBTest::TestNothing() {
 // insert other methods below here
 void ParserToPKBTest::TestVarTable() {
 	// check if VarTable has correct number of variables
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 8, VarTable::GetSize());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 8, VarTable::GetNoOfVars());
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("1st variable of VarTable", 0, VarTable::GetIndexOfVar("x"));
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("2nd variable of VarTable", 1, VarTable::GetIndexOfVar("y"));
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("3rd variable of VarTable", 2, VarTable::GetIndexOfVar("z"));

@@ -16,6 +16,10 @@ TNode& Program::GetStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
+int Program::GetNumOfStmts() {
+	return stmtNumberMap.size();
+}
+
 void Program::InsertStmt(TNode* stmt, int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Parser\DesignExtractor.h" />
     <ClInclude Include="PKB\Next.h" />
     <ClInclude Include="PKB\Calls.h" />
     <ClInclude Include="Exception\IndexNotFoundException.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="QueryProcessor\RelTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="PKB\Next.cpp" />
     <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />

@@ -7,8 +7,8 @@
 
 using namespace std;
 
-map <int, vector<int> > Modifies::stmtToVarTable;
-map <int, vector<int> > Modifies::varToStmtTable;
+map <int, vector<int>> Modifies::stmtToVarTable;
+map <int, vector<int>> Modifies::varToStmtTable;
 map <int, vector<int>> Modifies::procToVarTable;
 map <int, vector<int>> Modifies::varToProcTable;
 bool Modifies::bitVectorIsBuilt;
@@ -28,11 +28,6 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 		sizeOfModifies++;
 
     }
-
-    if (Parent::GetParentOf(stmtModifying) != -1) {
-           SetStmtModifiesVar(Parent::GetParentOf(stmtModifying), varModified);
-
-	}
 
 }
 

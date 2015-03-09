@@ -192,6 +192,8 @@ void ComputeModifiesAndUsesForProcedures() {
 	// clean leaves and add parents of current set to that
 	// loop from top
 
+	// TODO fix bug here!!!
+
 	// loop through all leaves
 	while (componentsWithoutChildren.size() != 0) {
 		set<int> currentSet;
@@ -232,8 +234,7 @@ set<int> ConnectStmtList(int startPoint) {
 	// return last stmt found (or a set)
 
 	set<int> prevStmts;
-	prevStmts.insert(startPoint);
-	int currentStmt = Follows::GetFollowsAfter(startPoint);
+	int currentStmt = startPoint;
 	while (currentStmt != -1) {
 		// set connections
 		for each (int prevStmt in prevStmts) Next::SetNext(prevStmt, currentStmt);

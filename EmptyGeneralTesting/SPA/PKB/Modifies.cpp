@@ -13,7 +13,11 @@ map <int, vector<int>> Modifies::procToVarTable;
 map <int, vector<int>> Modifies::varToProcTable;
 bool Modifies::bitVectorIsBuilt;
 int Modifies::sizeOfModifies;
-
+int Modifies::maxStmtOrVar;
+int Modifies::maxProcOrVar;
+vector<vector<bool>> Modifies::stmtToVarBitVector;
+vector<vector<bool>> Modifies::procToVarBitVector;
+		
 Modifies::Modifies() {
 	bitVectorIsBuilt = false;
 	sizeOfModifies = 0;
@@ -28,14 +32,30 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 		sizeOfModifies++;
 
     }
-
+	maxStmtOrVar=  maxStmtOrVar > stmtModifying ? maxStmtOrVar : stmtModifying;
+	maxStmtOrVar=  maxStmtOrVar > varModified ? maxStmtOrVar : varModified;
+	// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> stmtToVarBitVector;
+		}
+		// if the current know number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxStmtOrVar>stmtToVarBitVector.size()) {
+			for (int i=0;i<stmtToVarBitVector.size();i++) {
+				stmtToVarBitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxStmtOrVar,0);
+			for (int i=0; i<maxStmtOrVar;i++) {
+				stmtToVarBitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Modifies r'ship
+		stmtToVarBitVector[stmtModifying][varModified]=1;
+		stmtToVarBitVector[varModified][stmtModifying]=1;
 }
 
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-	if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-	} else {
+
 		if (stmtToVarTable.count(stmtModifying) != 0) {
 			for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
 				if (*it == varModified)
@@ -46,7 +66,7 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
 		return false;
 	}
 
-}
+
 
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {    
     if (varToStmtTable.count(varModified) == 0) {
@@ -85,8 +105,26 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 		for (unsigned int i = 0; i < procsCalling.size(); i++)
 			SetProcModifiesVar(procsCalling.at(i), varModified);
 
-	}
-
+	}maxProcOrVar=  maxProcOrVar > procModifying ? maxProcOrVar : procModifying;
+	maxProcOrVar=  maxProcOrVar > varModified ? maxProcOrVar : varModified;
+	// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> procToVarBitVector;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxProcOrVar>procToVarBitVector.size()) {
+			for (int i=0;i<procToVarBitVector.size();i++) {
+				procToVarBitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxProcOrVar,0);
+			for (int i=0; i<maxProcOrVar;i++) {
+				procToVarBitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Uses r'ship
+		procToVarBitVector[procModifying][varModified]=1;
+		procToVarBitVector[varModified][procModifying]=1;
 }
 
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {

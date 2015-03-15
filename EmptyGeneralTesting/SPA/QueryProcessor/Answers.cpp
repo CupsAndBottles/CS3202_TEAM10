@@ -14,7 +14,10 @@ bool Answers::hasLinksWith(int index){
 	return !(links[index].empty());
 }
 
-void Answers::cleanLinks(){
+vector<Answers*> Answers::cleanLinks(){
+
+	vector<Answers*> needDelete;
+
 	for(int i=0;i<links.size();i++)
 		for(int j=0;j<links[i].size();j++){
 			if(!(*links[i][j]).links[ListIndex].empty()){
@@ -27,6 +30,10 @@ void Answers::cleanLinks(){
 					if(temp == this)  
 						iter = (*tempList).erase(iter);
 					else iter++;
+				}
+
+				if((*links[i][j]).links[ListIndex].empty()){
+					needDelete.push_back(links[i][j]);
 				}
 			}
 		}

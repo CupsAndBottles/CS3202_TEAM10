@@ -37,4 +37,6 @@ vector<Answers*> Answers::cleanLinks(){
 				}
 			}
 		}
+
+	return needDelete;
 }

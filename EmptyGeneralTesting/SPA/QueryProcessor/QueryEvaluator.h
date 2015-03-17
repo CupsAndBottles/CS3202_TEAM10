@@ -4,7 +4,6 @@
 #include "Answers.h"
 #include <vector>
 #include <list>
-#include <map>
 
 using namespace std;
 
@@ -23,7 +22,7 @@ protected:
 	};
 
 	vector<list<Answers>> answers;
-	map<Synonym,int> maps; //record index of synonym
+	vector<pair<Synonym,int>> maps; //record index of synonym
 
 	bool EvaluateModifies(SuchThatClause, vector<IntermediateResult>&);
 	bool EvaluateParent(SuchThatClause, vector<IntermediateResult>&);

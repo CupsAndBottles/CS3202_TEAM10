@@ -10,6 +10,7 @@ class Answers{
 private:
 	int indexNumber;
 	vector<vector<Answers*>> links;
+	
 
 public:
 	bool useful; //used when delete elements in a list (Biuld a new list)
@@ -17,6 +18,8 @@ public:
 	Answers(int value,int index):indexNumber(value), listIndex(index){};
 
 	bool hasLinksWith(int index);	
+
+	bool operator==(Answers answer2);
 
 	vector<Answers*> cleanLinks();
 	//Delete all the links with other answers. Then, we can delete this answer. 

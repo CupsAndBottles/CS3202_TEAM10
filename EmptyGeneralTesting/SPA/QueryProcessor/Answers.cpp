@@ -40,3 +40,10 @@ vector<Answers*> Answers::cleanLinks(){
 
 	return needDelete;
 }
+
+bool Answers::operator==(Answers answer2){
+	if((this->indexNumber==answer2.indexNumber)&&(this->listIndex==answer2.listIndex))
+		return true;
+	else 
+		return false;
+}

@@ -1392,7 +1392,7 @@ void QueryEvaluator::initiateAll(vector<Declaration> declarations){
 		Synonym temp = it->synonym;
 
 		//add to map 
-		maps.insert(pair <Synonym,int> (temp,i));
+		maps.push_back(pair<Synonym,int> (temp,i));
 
 		/*ASSIGN,
 		STMT,

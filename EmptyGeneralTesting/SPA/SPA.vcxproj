@@ -28,6 +28,7 @@
     <ClInclude Include="PKB\VarTable.h" />
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Program\TNode\TNode.h" />
+    <ClInclude Include="QueryProcessor\Answers.h" />
     <ClInclude Include="QueryProcessor\Grammar.h" />
     <ClInclude Include="QueryProcessor\PatternMatcher.h" />
     <ClInclude Include="QueryProcessor\QueryData.h" />
@@ -53,6 +54,7 @@
     <ClCompile Include="PKB\VarTable.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\TNode.cpp" />
+    <ClCompile Include="QueryProcessor\Answers.cpp" />
     <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />

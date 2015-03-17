@@ -13,7 +13,10 @@ map <int, vector<int>> Uses::procToVarTable;
 map <int, vector<int>> Uses::varToProcTable;
 bool Uses::bitVectorIsBuilt;
 int Uses::sizeOfUses;
-
+int Uses::maxStmtOrVar;
+int Uses::maxProcOrVar;
+vector<vector<bool>> Uses::stmtToVarBitVector;
+vector<vector<bool>> Uses::procToVarBitVector;
 Uses::Uses() {
 	bitVectorIsBuilt = false;
 	sizeOfUses = 0;
@@ -27,24 +30,37 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 
 		sizeOfUses++;
     }
-
+	maxStmtOrVar=  maxStmtOrVar > stmtUsing ? maxStmtOrVar : stmtUsing;
+	maxStmtOrVar=  maxStmtOrVar > varUsed ? maxStmtOrVar : varUsed;
+	// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> stmtToVarBitVector;
+		}
+		// if the current know number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxStmtOrVar>stmtToVarBitVector.size()) {
+			for (int i=0;i<stmtToVarBitVector.size();i++) {
+				stmtToVarBitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxStmtOrVar,0);
+			for (int i=0; i<maxStmtOrVar;i++) {
+				stmtToVarBitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Uses r'ship
+		stmtToVarBitVector[stmtUsing][varUsed]=1;
+		stmtToVarBitVector[varUsed][stmtUsing]=1;
 }
 
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-   if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-	} else {
-		if (stmtToVarTable.count(stmtUsing) != 0) {
-			for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
-				if (*it == varUsed)
-					return true;
-			}
-		
+	if (stmtToVarTable.count(stmtUsing) != 0) {
+		for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
+			if (*it == varUsed) return true;
 		}
-		return false;
+		
 	}
+	return false;
 
 }
 
@@ -89,28 +105,37 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 			SetProcUsesVar(procsCalling.at(i), varUsed);
 
 	}
-
+	maxProcOrVar=  maxProcOrVar > procUsing ? maxProcOrVar : procUsing;
+	maxProcOrVar=  maxProcOrVar > varUsed ? maxProcOrVar : varUsed;
+	// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> procToVarBitVector;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxProcOrVar>procToVarBitVector.size()) {
+			for (int i=0;i<procToVarBitVector.size();i++) {
+				procToVarBitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxProcOrVar,0);
+			for (int i=0; i<maxProcOrVar;i++) {
+				procToVarBitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Uses r'ship
+		procToVarBitVector[procUsing][varUsed]=1;
+		procToVarBitVector[varUsed][procUsing]=1;
 }
 
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
-	if (bitVectorIsBuilt) {
-		/*if (procToVarBitVector.count(procUsing) != 0)
-		if (varUsed < (int) procToVarBitVector[procUsing].size())
-			return procToVarBitVector[procUsing].at(varUsed);
-	
-		return false;*/ // old reusable code
-		return false; // dummy value
-	} else {
-		if (procToVarTable.count(procUsing) != 0) {
-			for (vector<int>::iterator it = procToVarTable[procUsing].begin(); it != procToVarTable[procUsing].end(); it++) {
-				if (*it == varUsed)
-					return true;
-			}
-		
+	if (procToVarTable.count(procUsing) != 0) {
+		for (vector<int>::iterator it = procToVarTable[procUsing].begin(); it != procToVarTable[procUsing].end(); it++) {
+			if (*it == varUsed)
+				return true;
 		}
-		return false;
+		
 	}
-
+	return false;
 }
 
 vector<int> Uses::GetProcUsingVar(int varUsed) {
@@ -118,10 +143,7 @@ vector<int> Uses::GetProcUsingVar(int varUsed) {
 		vector<int> procsUsingVarUsed;
 		return procsUsingVarUsed;
 
-	} else { 
-		return varToProcTable.at(varUsed);
-
-	}
+	} else return varToProcTable.at(varUsed);
 
 }
 

@@ -1,7 +1,9 @@
 #pragma once
 #include "QueryData.h"
 #include <list>
+#include <map>
 #include "PatternMatcher.h"
+#include "Answers.h"
 
 using namespace std;
 
@@ -19,10 +21,16 @@ protected:
 		IntermediateResult(Synonym s) : synonym(s) , resultInt(), resultVar() {}
 	};
 
+	vector<list<Answers>> answers;
+	map<Synonym,int> maps; //record index of synonym
+
 	bool EvaluateModifies(SuchThatClause, vector<IntermediateResult>&);
 	bool EvaluateParent(SuchThatClause, vector<IntermediateResult>&);
 	bool EvaluateFollows(SuchThatClause, vector<IntermediateResult>&);
 	bool EvaluatePattern(PatternClause, vector<IntermediateResult>&);
+
+	void initiateAll(vector<Declaration>);//initiate all answers.
+	void deleteAnswer(Answers*);
 
 	string ToString(int);
 	Pattern CreatePatternObject(string);

@@ -25,7 +25,6 @@ class Modifies {
 		static vector<int> GetVarModifiedByProc(int procModifying);
 
         static bool HasAnyModifies();
-//		static void CreateBitVector();
 
 		// helper methods for testing
         static int SizeOfModifies();
@@ -34,12 +33,14 @@ class Modifies {
     private:
         static map <int, vector<int>> stmtToVarTable;
         static map <int, vector<int>> varToStmtTable;
-		//static vector<vector<bool>> stmtToVarBitVector;
+		static vector<vector<bool>> stmtToVarBitVector;
 
 		static map <int, vector<int>> procToVarTable;
 		static map <int, vector<int>> varToProcTable;
-		//static vector<vector<bool>> procToVarBitVector;
+		static vector<vector<bool>> procToVarBitVector;
 		
+		static int maxStmtOrVar;
+		static int maxProcOrVar;
 		static bool bitVectorIsBuilt;
 		static int sizeOfModifies;
 

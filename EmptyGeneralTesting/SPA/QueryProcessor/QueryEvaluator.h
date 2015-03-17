@@ -1,9 +1,10 @@
 #pragma once
 #include "QueryData.h"
-#include <list>
-#include <map>
 #include "PatternMatcher.h"
 #include "Answers.h"
+#include <vector>
+#include <list>
+#include <map>
 
 using namespace std;
 

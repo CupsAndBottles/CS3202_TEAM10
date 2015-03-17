@@ -40,11 +40,11 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 			std::vector<vector<bool>> stmtToVarBitVector;
 		}
 		// if the current know number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxStmtOrVar>stmtToVarBitVector.size()) {
-			for (int i=0;i<stmtToVarBitVector.size();i++) {
+		if (maxStmtOrVar>(int)stmtToVarBitVector.size()) {
+			for (int i=0;i<(int)stmtToVarBitVector.size();i++) {
 				stmtToVarBitVector[i].push_back(0);
 			}
-			std::vector <bool> a (maxStmtOrVar,0);
+			std::vector <bool> a (maxStmtOrVar,false);
 			for (int i=0; i<maxStmtOrVar;i++) {
 				stmtToVarBitVector.push_back(a);
 			}
@@ -113,11 +113,11 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 			std::vector<vector<bool>> procToVarBitVector;
 		}
 		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxProcOrVar>procToVarBitVector.size()) {
-			for (int i=0;i<procToVarBitVector.size();i++) {
+		if (maxProcOrVar>(int)procToVarBitVector.size()) {
+			for (int i=0;i<(int)procToVarBitVector.size();i++) {
 				procToVarBitVector[i].push_back(0);
 			}
-			std::vector <bool> a (maxProcOrVar,0);
+			std::vector <bool> a (maxProcOrVar,false);
 			for (int i=0; i<maxProcOrVar;i++) {
 				procToVarBitVector.push_back(a);
 			}

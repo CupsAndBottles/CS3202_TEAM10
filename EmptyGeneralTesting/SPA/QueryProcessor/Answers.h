@@ -13,8 +13,8 @@ private:
 
 public:
 	bool useful; //used when delete elements in a list (Biuld a new list)
-	int ListIndex; //Which list is this synonym in.
-	Answers(int value,int index):indexNumber(value),ListIndex(index){};
+	int listIndex; //Which list is this synonym in.
+	Answers(int value,int index):indexNumber(value), listIndex(index){};
 
 	bool hasLinksWith(int index);	
 
@@ -22,6 +22,6 @@ public:
 	//Delete all the links with other answers. Then, we can delete this answer. 
 	//Return the list of answers that has no links with others (need to be delete) after this operation.
 
-	vector<Answers*> getLinksFromList(int ListIndex);
+	vector<Answers*> getLinksFromList(int listIndex);
 	static void addLink(Answers answer1, Answers answer2);
 };

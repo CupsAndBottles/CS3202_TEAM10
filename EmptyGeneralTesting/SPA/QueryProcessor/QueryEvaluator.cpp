@@ -6,6 +6,7 @@
 #include "..\PKB\StmtTypeTable.h"
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\VarTable.h"
+#include "Answers.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>
@@ -1404,54 +1405,54 @@ void QueryEvaluator::initiateAll(vector<Declaration> declarations){
 
 		switch (temp.type){
 			case ASSIGN:{
-				vector<int> assign = StmtTypeTable.GetAllStmtsOfType(ASSIGN);
+				vector<int> assign = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 				for(vector<int>::iterator iter = assign.begin(); iter != assign.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 				break;
 						}
 			case STMT:{
-				vector<int> stmt = StmtTypeTable.GetAllStmtsOfType(STMT);
+				vector<int> stmt = StmtTypeTable::GetAllStmtsOfType(STMT);
 				for(vector<int>::iterator iter = stmt.begin(); iter != stmt.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 				break;
 					  }
 			case WHILE:{
-				vector<int> whileSt = StmtTypeTable.GetAllStmtsOfType(WHILE);
+				vector<int> whileSt = StmtTypeTable::GetAllStmtsOfType(WHILE);
 				for(vector<int>::iterator iter = whileSt.begin(); iter != whileSt.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 				break;
 					   }
 			case IF:{
-				vector<int> ifSt = StmtTypeTable.GetAllStmtsOfType(STMT);
+				vector<int> ifSt = StmtTypeTable::GetAllStmtsOfType(STMT);
 				for(vector<int>::iterator iter = ifSt.begin(); iter != ifSt.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 				break;
 					}
 			case VARIABLE:{
-				vector<string> var = VarTable.GetAllVarNames();
+				vector<string> var = VarTable::GetAllVarNames();
 				for(vector<string>::iterator iter = var.begin(); iter != var.end(); iter++){
-					answers[i].push_back(Answers(VarTable.GetIndexOfVar(*iter),i));
+					answers[i].push_back(Answers(VarTable::GetIndexOfVar(*iter),i));
 				}
 						  }
 			case CONSTANT:{
-				vector<int> con = ConstTable.GetAllConst();
+				vector<int> con = ConstTable::GetAllConst();
 				for(vector<int>::iterator iter = con.begin(); iter != con.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 						  }
 			case PROG_LINE:{
-				vector<int> progLine = StmtTypeTable.GetAllStmtsOfType(PROG_LINE);
+				vector<int> progLine = StmtTypeTable::GetAllStmtsOfType(PROG_LINE);
 				for(vector<int>::iterator iter = progLine.begin(); iter != progLine.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
 				break;
 					}
 			case CALL:{
-				vector<int> call = StmtTypeTable.GetAllStmtsOfType(CALL);
+				vector<int> call = StmtTypeTable::GetAllStmtsOfType(CALL);
 				for(vector<int>::iterator iter = call.begin(); iter != call.end(); iter++){
 					answers[i].push_back(Answers((*iter),i));
 				}
@@ -1465,7 +1466,7 @@ void QueryEvaluator::initiateAll(vector<Declaration> declarations){
 
 void QueryEvaluator::deleteAnswer(Answers* answer){
 	vector<Answers*> temp = answer->cleanLinks();
-	answers[answer->ListIndex].remove(*answer);
+	answers[answer->listIndex].remove(*answer);
 	if(!temp.empty()){
 		for(vector<Answers*>::iterator it = temp.begin(); it != temp.end(); it++){
 			deleteAnswer(*it); //recursively call himself.

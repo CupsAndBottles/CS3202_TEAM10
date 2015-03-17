@@ -4,6 +4,7 @@
 #include "..\Program\TNode\TNode.h"
 #include "..\Program\Program.h"
 #include "..\PKB\StmtTypeTable.h"
+#include "Grammar.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -71,7 +72,7 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object, bool part
 vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMatch) {
 	// printf("1 %s 2 %s 3 %s\n", object.expr.c_str(), object.leftPattern->expr.c_str(), object.rightPattern->expr.c_str());
 
-	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
+	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 	vector<int> results;
 
 	for (unsigned int currentStmt = 0; currentStmt < assignmentStmts.size(); currentStmt++) {

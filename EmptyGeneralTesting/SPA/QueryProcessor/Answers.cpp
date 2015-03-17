@@ -1,13 +1,13 @@
 #include "Answers.h"
 
 
-vector<Answers*> Answers::getLinksFromList(int ListIndex){
-	return this->links[ListIndex];
+vector<Answers*> Answers::getLinksFromList(int listIndex){
+	return this->links[listIndex];
 }
 
 void Answers::addLink(Answers answer1, Answers answer2){
-	answer1.links[answer2.ListIndex].push_back(&answer2);
-	answer2.links[answer1.ListIndex].push_back(&answer1);
+	answer1.links[answer2.listIndex].push_back(&answer2);
+	answer2.links[answer1.listIndex].push_back(&answer1);
 }
 
 bool Answers::hasLinksWith(int index){
@@ -18,10 +18,10 @@ vector<Answers*> Answers::cleanLinks(){
 
 	vector<Answers*> needDelete;
 
-	for(int i=0;i<this->links.size();i++)
-		for(int j=0;j<this->links[i].size();j++){
-			if(!(*(this->links[i][j])).links[ListIndex].empty()){
-				vector<Answers*> *tempList = &((*(this->links[i][j])).links[ListIndex]);
+	for(int i=0;i<(int)this->links.size();i++)
+		for(int j=0;j<(int)this->links[i].size();j++){
+			if(!(*(this->links[i][j])).links[listIndex].empty()){
+				vector<Answers*> *tempList = &((*(this->links[i][j])).links[listIndex]);
 
 				vector<Answers*>::iterator iter = (*tempList).begin();
 
@@ -32,7 +32,7 @@ vector<Answers*> Answers::cleanLinks(){
 					else iter++;
 				}
 
-				if((*(this->links[i][j])).links[ListIndex].empty()){
+				if((*(this->links[i][j])).links[listIndex].empty()){
 					needDelete.push_back(this->links[i][j]);
 				}
 			}

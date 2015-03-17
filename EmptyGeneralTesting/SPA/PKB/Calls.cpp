@@ -37,11 +37,11 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 			std::vector<vector<bool>> bitVector;
 		}
 		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxNoOfProcs>bitVector.size()) {
-			for (int i=0;i<bitVector.size();i++) {
+		if (maxNoOfProcs>(int)bitVector.size()) {
+			for (int i=0;i<(int)bitVector.size();i++) {
 				bitVector[i].push_back(0);
 			}
-			std::vector <bool> a (maxNoOfProcs,0);
+			std::vector <bool> a (maxNoOfProcs, false);
 			for (int i=0; i<maxNoOfProcs;i++) {
 				bitVector.push_back(a);
 			}

@@ -240,7 +240,7 @@ set<int> ConnectStmtList(int startPoint) {
 		for each (int prevStmt in prevStmts) Next::SetNext(prevStmt, currentStmt);
 		prevStmts.clear();
 		// process current stmt
-		if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+		if (StmtTypeTable::CheckIfStmtOfType(currentStmt, IF)) {
 
 			TNode& ifStmt = Program::GetStmtFromNumber(currentStmt);
 			int startOfThenBlock = ifStmt.GetChild(1).GetChild(0).GetLineNumber();
@@ -253,7 +253,7 @@ set<int> ConnectStmtList(int startPoint) {
 			prevStmts.insert(thenBlockEnds.begin(), thenBlockEnds.end());
 			prevStmts.insert(elseBlockEnds.begin(), elseBlockEnds.end());
 
-		} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+		} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, WHILE)) {
 
 			TNode& whileStmt = Program::GetStmtFromNumber(currentStmt);
 			int startOfLoop = whileStmt.GetChild(1).GetChild(0).GetLineNumber();
@@ -285,7 +285,7 @@ void ComputeNext() {
 
 void ComputeCalls() {
 	// inserting calls
-	for each (int call in StmtTypeTable::GetAllStmtsOfType(SynonymType::CALL)) {
+	for each (int call in StmtTypeTable::GetAllStmtsOfType(CALL)) {
 		TNode& callNode = Program::GetStmtFromNumber(call);
 		int callingProc = ProcTable::GetProcOfStmt(call);
 		int calledProc = ProcTable::GetIndexOfProc(callNode.GetContent());
@@ -311,7 +311,7 @@ void ComputeModifiesAndUses() {
 	// set direct parents as new children
 	// loop
 
-	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
+	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 
 	set<int> currentChildren(assignmentStmts.begin(), assignmentStmts.end());
 	

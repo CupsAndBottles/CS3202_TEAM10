@@ -6,6 +6,7 @@
 #include "..\PKB\StmtTypeTable.h"
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\VarTable.h"
+#include "Answers.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>
@@ -1382,5 +1383,93 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 	{
 		cout << "\nIn CreatePatternObject, invalid expression\n";
 		return Pattern("", NULL, NULL);
+	}
+}
+
+void QueryEvaluator::initiateAll(vector<Declaration> declarations){
+	int i = 0;
+	for(vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it){
+		Synonym temp = it->synonym;
+
+		//add to map 
+		maps.push_back(pair<Synonym,int> (temp,i));
+
+		/*ASSIGN,
+		STMT,
+		WHILE,
+		IF,
+		VARIABLE,
+		CONSTANT,
+		PROG_LINE,
+		CALL,*/
+
+		switch (temp.type){
+			case ASSIGN:{
+				vector<int> assign = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
+				for(vector<int>::iterator iter = assign.begin(); iter != assign.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+						}
+			case STMT:{
+				vector<int> stmt = StmtTypeTable::GetAllStmtsOfType(STMT);
+				for(vector<int>::iterator iter = stmt.begin(); iter != stmt.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+					  }
+			case WHILE:{
+				vector<int> whileSt = StmtTypeTable::GetAllStmtsOfType(WHILE);
+				for(vector<int>::iterator iter = whileSt.begin(); iter != whileSt.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+					   }
+			case IF:{
+				vector<int> ifSt = StmtTypeTable::GetAllStmtsOfType(STMT);
+				for(vector<int>::iterator iter = ifSt.begin(); iter != ifSt.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+					}
+			case VARIABLE:{
+				vector<string> var = VarTable::GetAllVarNames();
+				for(vector<string>::iterator iter = var.begin(); iter != var.end(); iter++){
+					answers[i].push_back(Answers(VarTable::GetIndexOfVar(*iter),i));
+				}
+						  }
+			case CONSTANT:{
+				vector<int> con = ConstTable::GetAllConst();
+				for(vector<int>::iterator iter = con.begin(); iter != con.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+						  }
+			case PROG_LINE:{
+				vector<int> progLine = StmtTypeTable::GetAllStmtsOfType(PROG_LINE);
+				for(vector<int>::iterator iter = progLine.begin(); iter != progLine.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+					}
+			case CALL:{
+				vector<int> call = StmtTypeTable::GetAllStmtsOfType(CALL);
+				for(vector<int>::iterator iter = call.begin(); iter != call.end(); iter++){
+					answers[i].push_back(Answers((*iter),i));
+				}
+				break;
+					}
+		}
+
+		i++;
+	}
+}
+
+void QueryEvaluator::deleteAnswer(Answers* answer){
+	vector<Answers*> temp = answer->cleanLinks();
+	answers[answer->listIndex].remove(*answer);
+	if(!temp.empty()){
+		for(vector<Answers*>::iterator it = temp.begin(); it != temp.end(); it++){
+			deleteAnswer(*it); //recursively call himself.
+		}
 	}
 }

@@ -16,6 +16,7 @@
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\ProcTable.h"
 #include "..\..\AutoTester\source\AbstractWrapper.h"
+#include "..\QueryProcessor\Grammar.h"
 
 #include <iostream>
 #include <fstream>
@@ -228,7 +229,7 @@ TNode* Parser::ParseStmt(TNode* parentStmt) {
 	}
 
 	Program::InsertStmt(stmt, stmt->GetLineNumber());
-	StmtTypeTable::Insert(stmt->GetLineNumber(), SynonymType::STMT);
+	StmtTypeTable::Insert(stmt->GetLineNumber(), STMT);
 	return stmt;
 }
 

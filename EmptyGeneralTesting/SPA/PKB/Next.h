@@ -25,7 +25,6 @@ public:
 //	static bool IsNotModifiedInPath(int progLineBefore, int progLineAfter);
 
 	static bool HasAnyNext();
-//	static void CreateBitVector();
 
 	// helper methods for testing
 	static int SizeOfNext();
@@ -35,7 +34,7 @@ private:
 	static map<int, vector<int>> beforeToAfterTable;
 	static map<int, vector<int>> afterToBeforeTable;
 	static int sizeOfNext;
-	//static vector<vector<bool>> bitVector;
+	static vector<vector<bool>> bitVector;
 	static bool bitVectorIsBuilt;
 	static int maxNoOfLines;
 

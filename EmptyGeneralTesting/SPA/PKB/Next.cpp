@@ -8,6 +8,7 @@ map <int, vector<int>> Next::afterToBeforeTable;
 int Next::sizeOfNext;
 int Next::maxNoOfLines;
 bool Next::bitVectorIsBuilt;
+vector<vector<bool>> Next::bitVector;
 
 Next::Next(void) {
 	sizeOfNext = 0;
@@ -29,29 +30,40 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 		maxNoOfLines = maxNoOfLines > progLineBefore ? maxNoOfLines : progLineBefore;
 		maxNoOfLines = maxNoOfLines > progLineAfter ? maxNoOfLines : progLineAfter;
 
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> bitVector;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxNoOfLines>(int)bitVector.size()) {
+			for (int i=0;i<(int)bitVector.size();i++) {
+				bitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxNoOfLines,false);
+			for (int i=0; i<maxNoOfLines;i++) {
+				bitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Next r'ship
+		bitVector[progLineBefore][progLineAfter]=1;
+		bitVector[progLineAfter][progLineBefore]=1;
 	}
 
 }
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
 	// checking for Next(progLineBefore, progLineAfter)
-	if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-
-	} else {
-		if (beforeToAfterTable.count(progLineBefore) != 0) {
-			vector<int> childrenOfBefore = beforeToAfterTable[progLineBefore];
-			if (childrenOfBefore.size() == 1) {
-				return childrenOfBefore.at(0) == progLineAfter;
-			} else {	// assuming size is always 2
-				return childrenOfBefore.at(0) == progLineAfter ||
-					childrenOfBefore.at(1) == progLineAfter;
-			}
+	if (beforeToAfterTable.count(progLineBefore) != 0) {
+		vector<int> childrenOfBefore = beforeToAfterTable[progLineBefore];
+		if (childrenOfBefore.size() == 1) {
+			return childrenOfBefore.at(0) == progLineAfter;
+		} else {	// assuming size is always 2
+			return childrenOfBefore.at(0) == progLineAfter ||
+				childrenOfBefore.at(1) == progLineAfter;
 		}
-
-		return false;
 	}
+	return false;
 
 }
 
@@ -78,37 +90,29 @@ vector<int> Next::GetNextBefore(int progLineAfter) {
 }
 
 bool Next::IsNextT(int progLineBefore, int progLineAfter) {
-	if(bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-	} else {
-		queue<int> linesToCheck;
+
+	queue<int> linesToCheck;
 		
-		int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetNoOfStmts() ? maxNoOfLines : StmtTypeTable::GetNoOfStmts();
-		vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
+	int maxNoOfLinesSoFar = maxNoOfLines > StmtTypeTable::GetNoOfStmts() ? maxNoOfLines : StmtTypeTable::GetNoOfStmts();
+	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 		
-		int currLine;
+	int currLine;
 
-		linesToCheck.push(progLineBefore);
+	linesToCheck.push(progLineBefore);
 
-		while (!linesToCheck.empty()){
-			currLine = linesToCheck.front();
+	while (!linesToCheck.empty()) {
+		currLine = linesToCheck.front();
 
-			if (!checkedLines.at(currLine)) {
-				if (IsNext(currLine, progLineAfter)) {
-					return true;
-				}
-				checkedLines[currLine] = true;
-				linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
+		if (!checkedLines.at(currLine)) {
+			if (IsNext(currLine, progLineAfter)) {
+				return true;
 			}
-
-			linesToCheck.pop();
-
+			checkedLines[currLine] = true;
+			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
 		}
-
-		return false;
+		linesToCheck.pop();
 	}
-
+	return false;
 }
 
 vector<int> Next::GetNextTAfter(int progLineBefore) {
@@ -157,13 +161,9 @@ vector<int> Next::GetNextTBefore(int progLineAfter) {
 			linesToCheck = AddToQueue(linesToCheck, GetNextBefore(currLine));
 
 			checkedLines[currLine] = true;
-
 		}
-
 		linesToCheck.pop();
-
 	}
-
 	return linesBefore;
 
 }

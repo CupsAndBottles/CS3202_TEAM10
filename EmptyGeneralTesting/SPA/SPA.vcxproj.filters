@@ -87,6 +87,9 @@
     <ClInclude Include="PKB\Next.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="QueryProcessor\Answers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parser\Parser.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\Next.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\Answers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

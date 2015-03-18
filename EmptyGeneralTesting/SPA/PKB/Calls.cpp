@@ -11,7 +11,7 @@ map<int, vector<bool>> Calls::callingToCalledBitVector;
 int Calls::noOfCallsRelationships;
 int Calls::maxNoOfProcs;
 bool Calls::bitVectorIsBuilt;
-
+vector<vector<bool>> Calls::bitVector;
 // empty constructor
 Calls::Calls() {
 	noOfCallsRelationships = 0;
@@ -31,7 +31,24 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 
 		maxNoOfProcs = maxNoOfProcs > procCalling ? maxNoOfProcs : procCalling;
 		maxNoOfProcs = maxNoOfProcs > procCalled ? maxNoOfProcs : procCalled;
-
+		// initialize if not yet done
+		if (!bitVectorIsBuilt) {
+			bitVectorIsBuilt=true;
+			std::vector<vector<bool>> bitVector;
+		}
+		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		if (maxNoOfProcs>(int)bitVector.size()) {
+			for (int i=0;i<(int)bitVector.size();i++) {
+				bitVector[i].push_back(0);
+			}
+			std::vector <bool> a (maxNoOfProcs, false);
+			for (int i=0; i<maxNoOfProcs;i++) {
+				bitVector.push_back(a);
+			}
+		}
+		// after expanding, insert the new Calls r'ship
+		bitVector[procCalling][procCalled]=1;
+		bitVector[procCalled][procCalling]=1;
 	}
 
 }
@@ -75,39 +92,30 @@ vector<int> Calls::GetProcsCalling(int procCalled) {
 }
 
 bool Calls::IsCallsT(int procCalling, int procCalled) {
-	if(bitVectorIsBuilt) {
-		// not implemented yet
-		return false; //dummy value
-	} else {
-		queue<int> procsToCheck;
-		
-		int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
-		vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
-		
-		int currProc;
-
-		procsToCheck.push(procCalling);
-
-		while (!procsToCheck.empty()) {
-			currProc = procsToCheck.front();
-
-			if (!checkedProcs.at(currProc)) {
-				if (IsCalls(currProc, procCalled)) {
-					return true;
-				}
-
-				checkedProcs[currProc] = true;
-				procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(currProc));
-
-			}
-
-			procsToCheck.pop();
 	
+	queue<int> procsToCheck;
+		
+	int maxNoOfProcsSoFar = maxNoOfProcs > ProcTable::GetNoOfProcs() ? maxNoOfProcs : ProcTable::GetNoOfProcs();
+	vector<bool> checkedProcs (maxNoOfProcsSoFar + 1, false);
+		
+	int currProc;
+
+	procsToCheck.push(procCalling);
+
+	while (!procsToCheck.empty()) {
+		currProc = procsToCheck.front();
+
+		if (!checkedProcs.at(currProc)) {
+			if (IsCalls(currProc, procCalled)) {
+				return true;
+			}
+			checkedProcs[currProc] = true;
+			procsToCheck = AddToQueue(procsToCheck, GetProcsCalledBy(currProc));
+
 		}
-
-		return false;
+		procsToCheck.pop();
 	}
-
+	return false;
 }
 
 vector<int> Calls::GetProcsCalledTBy(int procCalling) {

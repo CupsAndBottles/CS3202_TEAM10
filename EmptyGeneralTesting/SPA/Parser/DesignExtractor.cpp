@@ -47,8 +47,8 @@ void ComputeNext();
 void DesignExtractor::Extract() {
 	ComputeModifiesAndUses();
 	ComputeCalls();
-	//ComputeModifiesAndUsesForProcedures();
-	ComputeNext();
+	ComputeModifiesAndUsesForProcedures();
+	//ComputeNext();
 }
 
 void ComputeModifiesAndUsesForProcedures() {
@@ -336,4 +336,3 @@ void ComputeModifiesAndUses() {
 	}
 
 }
-

@@ -27,6 +27,9 @@
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UltimateTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -34,13 +37,16 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="QueryEvaluatorToPKBTest.h">
+    <ClInclude Include="UltimateTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParserToPKBTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryEvaluatorToPKBTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

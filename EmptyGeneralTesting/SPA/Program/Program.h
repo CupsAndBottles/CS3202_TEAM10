@@ -12,6 +12,7 @@ public:
 	static TNode& GetStmtFromNumber(int);
 	static int GetNumOfStmts();
 	static void ClearData();
+	static void ClearAll();
 
 protected:
 	static void InsertStmt(TNode*, int);

@@ -2,6 +2,30 @@
 
 #include "Program.h"
 #include "..\Parser\Token.h"
+#include "..\PKB\Modifies.h"
+#include "..\PKB\Uses.h"
+#include "..\PKB\ProcTable.h"
+#include "..\PKB\Calls.h"
+#include "..\PKB\ConstTable.h"
+#include "..\PKB\Follows.h"
+#include "..\PKB\Next.h"
+#include "..\PKB\Parent.h"
+#include "..\PKB\StmtTypeTable.h"
+#include "..\PKB\VarTable.h"
+
+void Program::ClearAll() { // clears all PKB elements
+	Program::ClearData();
+	Modifies::ClearData();
+	Uses::ClearData();
+	ProcTable::ClearData();
+	Calls::ClearData();
+	ConstTable::ClearData();
+	Follows::ClearData();
+	Next::ClearData();
+	Parent::ClearData();
+	StmtTypeTable::ClearData();
+	VarTable::ClearData();
+}
 
 Program::Program() {}
 

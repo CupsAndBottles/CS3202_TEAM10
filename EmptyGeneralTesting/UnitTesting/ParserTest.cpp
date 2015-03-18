@@ -1,6 +1,7 @@
 #include "ParserTest.h"
 #include "..\SPA\Program\Program.h"
 
+
 #include <fstream>
 
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
@@ -26,7 +27,7 @@ TNode& GetRHS(TNode& node) {
 }
 
 void ParserTest::TestSimpleAssignmentParsing() {
-	Program::ClearData();
+	Program::ClearAll();
 	ParseSource("simpleAssignmentTest.txt");
 	TNode program = Program::GetASTRootNode();
 	TNode procedure = program.GetChild(0);
@@ -48,7 +49,7 @@ void ParserTest::TestSimpleAssignmentParsing() {
 }
 
 void ParserTest::TestAdditionParsing() {
-	Program::ClearData();
+	Program::ClearAll();
 	ParseSource("additionTest.txt");
 	TNode program = Program::GetASTRootNode();
 	TNode procedure = program.GetChild(0);
@@ -91,7 +92,7 @@ void ParserTest::TestAdditionParsing() {
 }
 
 void ParserTest::TestWhileParsing() {
-	Program::ClearData();
+	Program::ClearAll();
 	ParseSource("whileTest.txt");
 	TNode program = Program::GetASTRootNode();
 	TNode procedure = program.GetChild(0);
@@ -119,7 +120,7 @@ void ParserTest::TestWhileParsing() {
 }
 
 void ParserTest::TestNestedWhileParsing() {
-	Program::ClearData();
+	Program::ClearAll();
 	ParseSource("nestedWhileTest.txt");
 	TNode program = Program::GetASTRootNode();
 	TNode procedure = program.GetChild(0);
@@ -146,7 +147,7 @@ void ParserTest::TestNestedWhileParsing() {
 }
 
 void ParserTest::TestParsing() {
-	Program::ClearData();
+	Program::ClearAll();
 	ParseSource("sample_SIMPLE_source.txt");
 	TNode program = Program::GetASTRootNode();
 	TNode procedure = program.GetChild(0);

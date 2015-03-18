@@ -391,4 +391,5 @@ TNode* Parser::ParseIfStmt() {
 
 //void main() {
 //	Parser::Parse("sample_SIMPLE_source.txt");
+//	TNode& program = Program::GetASTRootNode();
 //}

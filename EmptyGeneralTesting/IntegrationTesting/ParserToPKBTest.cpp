@@ -10,6 +10,8 @@
 #include "..\SPA\PKB\Parent.h"
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\Next.h"
+#include "..\SPA\PKB\ProcTable.h"
 #include "..\SPA\Program\Program.h"
 
 #include <iostream>
@@ -138,6 +140,34 @@ void ParserToPKBTest::TestFollows() {
 	//CPPUNIT_ASSERT(Follows::IsFollowsT(4, 6));
 	//CPPUNIT_ASSERT(Follows::IsFollowsT(9, 4));
 
+}
+
+void ParserToPKBTest::TestNext() {
+	// check if next is working in DE
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Next", 11 ,Next::SizeOfNext());
+	CPPUNIT_ASSERT_MESSAGE("1st variable of Next", Next::IsNext(1, 2));
+	CPPUNIT_ASSERT_MESSAGE("2nd variable of Next", Next::IsNext(2, 3));
+	CPPUNIT_ASSERT_MESSAGE("3rd variable of Next", Next::IsNext(3, 4));
+	CPPUNIT_ASSERT_MESSAGE("4th variable of Next", Next::IsNext(4, 5));
+	CPPUNIT_ASSERT_MESSAGE("5th variable of Next", Next::IsNext(5, 7));
+	CPPUNIT_ASSERT_MESSAGE("6th variable of Next", Next::IsNext(7, 9));
+	CPPUNIT_ASSERT_MESSAGE("7th variable of Next", Next::IsNext(5, 6));
+	CPPUNIT_ASSERT_MESSAGE("8th variable of Next", Next::IsNext(6, 5));
+	CPPUNIT_ASSERT_MESSAGE("9th variable of Next", Next::IsNext(7, 8));
+	CPPUNIT_ASSERT_MESSAGE("10th variable of Next", Next::IsNext(8, 7));
+	CPPUNIT_ASSERT_MESSAGE("11th variable of Next", Next::IsNext(9, 3));
+}
+
+void ParserToPKBTest::TestModifiesForProcs() {
+	// check if modifies for procs is computed correctly
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies for Procedures", 
+		5, (int)Modifies::GetVarModifiedByProc(ProcTable::GetIndexOfProc("test")).size());
+}
+
+void ParserToPKBTest::TestUsesForProcs() {
+	// check if uses for procs is computed correctly
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses for Procedures", 
+		6, (int)Uses::GetVarUsedByProc(ProcTable::GetIndexOfProc("test")).size());
 }
 
 void ParserToPKBTest::TestStmtTypeTable() {

@@ -41,7 +41,7 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 	//	}
 	//	// if the current known number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
 	//	if (maxStmtOrVar>(int)stmtToVarBitVector.size()) {
-	//		for (int i=0;i<(int)stmtToVarBitVector.size();i++) {
+			for (int i=0;i<=(int)stmtToVarBitVector.size();i++) {
 	//			stmtToVarBitVector[i].push_back(0);
 	//		}
 	//		std::vector <bool> a (maxStmtOrVar,false);

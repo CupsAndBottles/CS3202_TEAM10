@@ -30,8 +30,8 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 
 		sizeOfUses++;
     }
-	//maxStmtOrVar=  maxStmtOrVar > stmtUsing ? maxStmtOrVar : stmtUsing;
-	//maxStmtOrVar=  maxStmtOrVar > varUsed ? maxStmtOrVar : varUsed;
+	maxStmtOrVar=  maxStmtOrVar > stmtUsing ? maxStmtOrVar : stmtUsing;
+	maxStmtOrVar=  maxStmtOrVar > varUsed ? maxStmtOrVar : varUsed;
 	//// initialize if not yet done
 	//	if (!bitVectorIsBuilt) {
 	//		bitVectorIsBuilt=true;
@@ -98,8 +98,8 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 		sizeOfUses++;
     }
 
-	//maxProcOrVar=  maxProcOrVar > procUsing ? maxProcOrVar : procUsing;
-	//maxProcOrVar=  maxProcOrVar > varUsed ? maxProcOrVar : varUsed;
+	maxProcOrVar=  maxProcOrVar > procUsing ? maxProcOrVar : procUsing;
+	maxProcOrVar=  maxProcOrVar > varUsed ? maxProcOrVar : varUsed;
 	//// initialize if not yet done
 	//	if (!bitVectorIsBuilt) {
 	//		bitVectorIsBuilt=true;

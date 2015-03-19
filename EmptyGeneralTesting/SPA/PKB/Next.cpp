@@ -30,24 +30,24 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 		maxNoOfLines = maxNoOfLines > progLineBefore ? maxNoOfLines : progLineBefore;
 		maxNoOfLines = maxNoOfLines > progLineAfter ? maxNoOfLines : progLineAfter;
 
-		// initialize if not yet done
-		if (!bitVectorIsBuilt) {
-			bitVectorIsBuilt=true;
-			std::vector<vector<bool>> bitVector;
-		}
-		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxNoOfLines>(int)bitVector.size()) {
-			for (int i=0;i<(int)bitVector.size();i++) {
-				bitVector[i].push_back(0);
-			}
-			std::vector <bool> a (maxNoOfLines,false);
-			for (int i=0; i<maxNoOfLines;i++) {
-				bitVector.push_back(a);
-			}
-		}
-		// after expanding, insert the new Next r'ship
-		bitVector[progLineBefore][progLineAfter]=1;
-		bitVector[progLineAfter][progLineBefore]=1;
+		//// initialize if not yet done
+		//if (!bitVectorIsBuilt) {
+		//	bitVectorIsBuilt=true;
+		//	std::vector<vector<bool>> bitVector;
+		//}
+		//// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		//if (maxNoOfLines>(int)bitVector.size()) {
+		//	for (int i=0;i<(int)bitVector.size();i++) {
+		//		bitVector[i].push_back(0);
+		//	}
+		//	std::vector <bool> a (maxNoOfLines,false);
+		//	for (int i=0; i<maxNoOfLines;i++) {
+		//		bitVector.push_back(a);
+		//	}
+		//}
+		//// after expanding, insert the new Next r'ship
+		//bitVector[progLineBefore][progLineAfter]=1;
+		//bitVector[progLineAfter][progLineBefore]=1;
 	}
 
 }

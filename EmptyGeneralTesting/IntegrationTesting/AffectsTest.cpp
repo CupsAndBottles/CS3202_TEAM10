@@ -7,8 +7,10 @@
 #include "..\SPA\PKB\Next.h"
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\Follows.h"		// only used for if-else
 
 #include <iostream>
+#include <algorithm>
 
 void AffectsTest::setUp() {
 }
@@ -58,6 +60,80 @@ void AffectsTest::TestIsAffects() {
 	// misc odd cases
 	CPPUNIT_ASSERT(!Affects::IsAffects(0, 1));
 	CPPUNIT_ASSERT(!Affects::IsAffects(13, 18));
+
+}
+
+void AffectsTest::TestGetStmtsAffectedBy() {
+	ClearAllData();
+	MimicCodeWithAssignOnly();
+
+	vector<int> stmtsAffectedBy1 = Affects::GetStmtsAffectedBy(1);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffectedBy1.size());
+	CPPUNIT_ASSERT_EQUAL(3, stmtsAffectedBy1.at(0));
+
+	vector<int> stmtsAffectedBy2 = Affects::GetStmtsAffectedBy(2);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy2.size());
+
+	vector<int> stmtsAffectedBy3 = Affects::GetStmtsAffectedBy(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffectedBy3.size());
+	CPPUNIT_ASSERT_EQUAL(4, stmtsAffectedBy3.at(0));
+
+	vector<int> stmtsAffectedBy4 = Affects::GetStmtsAffectedBy(4);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffectedBy4.size());
+	CPPUNIT_ASSERT_EQUAL(5, stmtsAffectedBy4.at(0));
+
+	ClearAllData();
+	MimicCodeWithAssignWhile();
+
+	stmtsAffectedBy1 = Affects::GetStmtsAffectedBy(1);
+	CPPUNIT_ASSERT_EQUAL(3, (int) stmtsAffectedBy1.size());
+	sort(stmtsAffectedBy1.begin(), stmtsAffectedBy1.end());
+	CPPUNIT_ASSERT_EQUAL(2, stmtsAffectedBy1.at(0));
+	CPPUNIT_ASSERT_EQUAL(6, stmtsAffectedBy1.at(1));
+	CPPUNIT_ASSERT_EQUAL(9, stmtsAffectedBy1.at(2));
+
+	stmtsAffectedBy2 = Affects::GetStmtsAffectedBy(2);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy2.size());
+
+	stmtsAffectedBy3 = Affects::GetStmtsAffectedBy(3);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy3.size());
+
+	vector<int> stmtsAffectedBy5 = Affects::GetStmtsAffectedBy(5);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy5.size());
+
+	vector<int> stmtsAffectedBy6 = Affects::GetStmtsAffectedBy(6);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffectedBy6.size());
+	sort(stmtsAffectedBy6.begin(), stmtsAffectedBy6.end());
+	CPPUNIT_ASSERT_EQUAL(8, stmtsAffectedBy6.at(0));
+	CPPUNIT_ASSERT_EQUAL(10, stmtsAffectedBy6.at(1));
+
+	ClearAllData();
+	MimicCodeWithAssignIf();
+
+	stmtsAffectedBy1 = Affects::GetStmtsAffectedBy(1);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffectedBy1.size());
+	sort(stmtsAffectedBy1.begin(), stmtsAffectedBy1.end());
+	CPPUNIT_ASSERT_EQUAL(6, stmtsAffectedBy1.at(0));
+	CPPUNIT_ASSERT_EQUAL(7, stmtsAffectedBy1.at(1));
+	
+	stmtsAffectedBy2 = Affects::GetStmtsAffectedBy(2);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy2.size());
+
+	stmtsAffectedBy3 = Affects::GetStmtsAffectedBy(3);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffectedBy3.size());
+	sort(stmtsAffectedBy3.begin(), stmtsAffectedBy3.end());
+	CPPUNIT_ASSERT_EQUAL(4, stmtsAffectedBy3.at(0));
+	CPPUNIT_ASSERT_EQUAL(7, stmtsAffectedBy3.at(1));
+
+	vector<int> stmtsAffectedBy7 = Affects::GetStmtsAffectedBy(7);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffectedBy7.size());
+
+	vector<int> stmtsAffectedBy13 = Affects::GetStmtsAffectedBy(13);
+	CPPUNIT_ASSERT_EQUAL(3, (int) stmtsAffectedBy13.size());
+	sort(stmtsAffectedBy3.begin(), stmtsAffectedBy3.end());
+	CPPUNIT_ASSERT_EQUAL(15, stmtsAffectedBy13.at(0));
+	CPPUNIT_ASSERT_EQUAL(16, stmtsAffectedBy13.at(1));
+	CPPUNIT_ASSERT_EQUAL(17, stmtsAffectedBy13.at(2));
 
 }
 
@@ -193,6 +269,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	StmtTypeTable::Insert(1, ASSIGN);
 	Modifies::SetStmtModifiesVar(1, VarTable::InsertVar("a"));
 	Next::SetNext(1, 2);
+	Follows::SetFollows(1, 2);
 
 	StmtTypeTable::Insert(2, IF);
 	Uses::SetStmtUsesVar(2, VarTable::InsertVar("b"));
@@ -202,10 +279,12 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Uses::SetStmtUsesVar(2, VarTable::InsertVar("x"));
 	Next::SetNext(2, 3);
 	Next::SetNext(2, 5);
+	Follows::SetFollows(2, 7);
 	
 	StmtTypeTable::Insert(3, ASSIGN);
 	Modifies::SetStmtModifiesVar(3, VarTable::InsertVar("a"));
 	Next::SetNext(3, 4);
+	Follows::SetFollows(3, 4);
 	
 	StmtTypeTable::Insert(4, ASSIGN);
 	Modifies::SetStmtModifiesVar(4, VarTable::InsertVar("k"));
@@ -216,6 +295,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Modifies::SetStmtModifiesVar(5, VarTable::InsertVar("k"));
 	Uses::SetStmtUsesVar(5, VarTable::InsertVar("x"));
 	Next::SetNext(5, 6);
+	Follows::SetFollows(5, 6);
 
 	StmtTypeTable::Insert(6, ASSIGN);
 	Modifies::SetStmtModifiesVar(6, VarTable::InsertVar("k"));
@@ -226,6 +306,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Modifies::SetStmtModifiesVar(7, VarTable::InsertVar("a"));
 	Uses::SetStmtUsesVar(7, VarTable::InsertVar("a"));
 	Next::SetNext(7, 8);
+	Follows::SetFollows(7, 8);
 
 	StmtTypeTable::Insert(8, IF);
 	Uses::SetStmtUsesVar(8, VarTable::InsertVar("b"));
@@ -234,6 +315,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Uses::SetStmtUsesVar(8, VarTable::InsertVar("a"));
 	Next::SetNext(8, 9);
 	Next::SetNext(8, 11);
+	Follows::SetFollows(8, 13);
 
 	StmtTypeTable::Insert(9, ASSIGN);
 	Modifies::SetStmtModifiesVar(9, VarTable::InsertVar("a"));
@@ -257,6 +339,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Modifies::SetStmtModifiesVar(13, VarTable::InsertVar("a"));
 	Uses::SetStmtUsesVar(13, VarTable::InsertVar("a"));
 	Next::SetNext(13, 14);
+	Follows::SetFollows(13, 14);
 
 	StmtTypeTable::Insert(14, IF);
 	Uses::SetStmtUsesVar(14, VarTable::InsertVar("b"));
@@ -265,6 +348,7 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	Uses::SetStmtUsesVar(14, VarTable::InsertVar("a"));
 	Next::SetNext(14, 15);
 	Next::SetNext(14, 16);
+	Follows::SetFollows(14, 17);
 
 	StmtTypeTable::Insert(15, ASSIGN);
 	Modifies::SetStmtModifiesVar(15, VarTable::InsertVar("k"));
@@ -289,4 +373,5 @@ void AffectsTest::ClearAllData() {
 	Next::ClearData();
 	Modifies::ClearData();
 	Uses::ClearData();
+	Follows::ClearData();
 }

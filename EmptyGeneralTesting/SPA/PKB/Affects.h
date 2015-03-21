@@ -21,7 +21,9 @@ public:
 	~Affects(void);
 
 private:
-	static bool TraverseCFG(int stmtAffecting, int stmtAffected, int varModified);
+	static bool CheckCFG(int stmtAffecting, int stmtAffected, int varModified);
+	static vector<int> TraverseDownCFG(int stmtAffecting, int varModified);
+	//static vector<int> TraverseUpCFG(int stmtAffected, int varModified);
 	// may want to add cache here
 
 };

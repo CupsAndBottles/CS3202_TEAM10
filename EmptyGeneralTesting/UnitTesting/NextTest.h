@@ -5,7 +5,7 @@
 class NextTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(NextTest);
 	
-	CPPUNIT_TEST(TestSetNext);
+	/*CPPUNIT_TEST(TestSetNext);
 	CPPUNIT_TEST(TestIsNextBeforeBitVector);
 	CPPUNIT_TEST(TestGetNextAfter);
 	CPPUNIT_TEST(TestGetNextBefore);
@@ -14,7 +14,7 @@ class NextTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestGetNextTAfter1);
 	CPPUNIT_TEST(TestGetNextTAfter2);
 	CPPUNIT_TEST(TestGetNextTBefore1);
-	CPPUNIT_TEST(TestGetNextTBefore2);
+	CPPUNIT_TEST(TestGetNextTBefore2);*/
 	
 	CPPUNIT_TEST_SUITE_END();
 

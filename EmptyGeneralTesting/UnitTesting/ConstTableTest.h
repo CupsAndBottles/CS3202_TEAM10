@@ -16,6 +16,7 @@ class ConstTableTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(testGetAllConst);
 	CPPUNIT_TEST(testSizeOfConstTable);
 	CPPUNIT_TEST(testClearData);
+
 	// add other methods to test here
 	CPPUNIT_TEST_SUITE_END();
 

@@ -4,7 +4,7 @@
 
 class UsesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(UsesTest);
-	CPPUNIT_TEST(TestSingleStmt);
+	/*CPPUNIT_TEST(TestSingleStmt);
 	CPPUNIT_TEST(TestMultipleStmts);
 	CPPUNIT_TEST(TestMultipleStmtsUsingSingleVar);
 	CPPUNIT_TEST(TestSingleStmtUsingMultipleVars);
@@ -14,7 +14,7 @@ class UsesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestSingleProc);
 	CPPUNIT_TEST(TestMultipleProcs);
 	CPPUNIT_TEST(TestMultipleProcsUsingSingleVar);
-	CPPUNIT_TEST(TestSingleProcUsingMultipleVars);
+	CPPUNIT_TEST(TestSingleProcUsingMultipleVars);*/
 
 	CPPUNIT_TEST_SUITE_END();
 

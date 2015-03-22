@@ -5,13 +5,13 @@
 class CallsTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(CallsTest);
 
-	CPPUNIT_TEST(testSetCalls);
+	/*CPPUNIT_TEST(testSetCalls);
 	CPPUNIT_TEST(testIsCalls);
 	CPPUNIT_TEST(testGetProcsCalledBy);
 	CPPUNIT_TEST(testGetProcsCalling);
 	CPPUNIT_TEST(testIsCallsT);
 	CPPUNIT_TEST(testGetProcsCalledTBy);
-	CPPUNIT_TEST(testGetProcsCallingT);
+	CPPUNIT_TEST(testGetProcsCallingT);*/
 
 	CPPUNIT_TEST_SUITE_END();
 

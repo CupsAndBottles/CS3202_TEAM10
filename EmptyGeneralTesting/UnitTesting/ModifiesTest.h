@@ -4,7 +4,8 @@
 
 class ModifiesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(ModifiesTest);
-	CPPUNIT_TEST(TestNoStmt);
+	
+	/*CPPUNIT_TEST(TestNoStmt);
 	CPPUNIT_TEST(TestSingleStmt);
 	CPPUNIT_TEST(TestMultipleStmts);
 	CPPUNIT_TEST(TestMultipleStmtsModifyingSingleVar);
@@ -15,7 +16,7 @@ class ModifiesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestSingleProc);
 	CPPUNIT_TEST(TestMultipleProcs);
 	CPPUNIT_TEST(TestMultipleProcsModifyingSingleVar);
-	CPPUNIT_TEST(TestSingleProcModifyingMultipleVars);
+	CPPUNIT_TEST(TestSingleProcModifyingMultipleVars);*/
 
 	CPPUNIT_TEST_SUITE_END();
 

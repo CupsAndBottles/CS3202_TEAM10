@@ -51,10 +51,30 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 	}
 
 }
+void Next::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> bitVector;		
+	std::vector <bool> a (maxNoOfLines, false);
+
+	for (int i=0;i<maxNoOfLines;i++) {
+		bitVector.push_back(a);
+	}
+	int size1=beforeToAfterTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!beforeToAfterTable[i].empty()) {
+			int size2=beforeToAfterTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=beforeToAfterTable[i].at(j);
+				bitVector[i][x]=1;
+				bitVector[x][i]=1;
+			}
+		}
+	}
+}
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
 	// checking for Next(progLineBefore, progLineAfter)
-	if (beforeToAfterTable.count(progLineBefore) != 0) {
+	/*if (beforeToAfterTable.count(progLineBefore) != 0) {
 		vector<int> childrenOfBefore = beforeToAfterTable[progLineBefore];
 		if (childrenOfBefore.size() == 1) {
 			return childrenOfBefore.at(0) == progLineAfter;
@@ -64,7 +84,8 @@ bool Next::IsNext(int progLineBefore, int progLineAfter) {
 		}
 	}
 	return false;
-
+	*/
+	return bitVector[progLineBefore][progLineAfter];
 }
 
 vector<int> Next::GetNextAfter(int progLineBefore) {
@@ -190,8 +211,8 @@ void Next::ClearData() {
 	beforeToAfterTable.clear();
 	afterToBeforeTable.clear();
 	sizeOfNext = 0;
-	// bitVector.clear();
-	// bitVectorIsBuilt = false;
+	bitVector.clear();
+	bitVectorIsBuilt = false;
 }
 
 // private methods

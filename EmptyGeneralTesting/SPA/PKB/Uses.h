@@ -25,6 +25,7 @@ public:
 	static vector<int> GetVarUsedByProc(int procUsing);
 
 	static bool HasAnyUses();
+	static void CreateBitVector();
 
 	// helper methods for testing
 	static int SizeOfUses();

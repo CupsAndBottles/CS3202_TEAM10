@@ -23,7 +23,7 @@ public:
 	static vector<int> GetProcsCallingT(int procCalled);
 
 	static bool HasAnyCalls();
-
+	static void CreateBitVector();
 	// helper methods for testing
 	static int SizeOfCalls();
 	static void ClearData();

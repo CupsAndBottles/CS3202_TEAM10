@@ -25,7 +25,7 @@ class Modifies {
 		static vector<int> GetVarModifiedByProc(int procModifying);
 
         static bool HasAnyModifies();
-
+		static void CreateBitVector();
 		// helper methods for testing
         static int SizeOfModifies();
 		static void ClearData();

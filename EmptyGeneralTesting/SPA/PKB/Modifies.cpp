@@ -54,8 +54,43 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 	//	stmtToVarBitVector[varModified][stmtModifying]=1;
 }
 
-bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
+void Modifies::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> stmtToVarBitVector;		//stmtToVarBitVector[stmt][var]
+	std::vector<vector<bool>> procToVarBitVector;		//procToVarBitVector[proc][var]
+	std::vector <bool> a (maxStmtOrVar, false);
+	std::vector <bool> b (maxProcOrVar, false);
 
+	for (int i=0;i<maxStmtOrVar;i++) {
+		stmtToVarBitVector.push_back(a);
+	}
+	for (int i=0;i<maxProcOrVar;i++) {
+		procToVarBitVector.push_back(b);
+	}
+	int size1=stmtToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!stmtToVarTable[i].empty()) {
+			int size2=stmtToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=stmtToVarTable[i].at(j);
+				stmtToVarBitVector[i][x]=1;
+			}
+		}
+	}
+	
+	size1=procToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!procToVarTable[i].empty()) {
+			int size2=procToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=procToVarTable[i].at(j);
+				procToVarBitVector[i][x]=1;
+			}
+		}
+	}
+}
+bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
+	/*
 		if (stmtToVarTable.count(stmtModifying) != 0) {
 			for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
 				if (*it == varModified)
@@ -64,7 +99,9 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
 		
 		}
 		return false;
-	}
+		*/
+	return stmtToVarBitVector[stmtModifying][varModified];
+}
 
 
 
@@ -122,7 +159,9 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 	//	procToVarBitVector[varModified][procModifying]=1;
 }
 
+
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
+	/*
 	if (bitVectorIsBuilt) {
 		// not implemented yet
 		return false; // dummy value
@@ -135,8 +174,8 @@ bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
 		
 		}
 		return false;
-	}
-
+	}*/
+	return procToVarBitVector[procModifying][varModified];
 }
 
 vector<int> Modifies::GetProcModifyingVar(int varModified) {
@@ -179,7 +218,9 @@ void Modifies::ClearData() {
 	procToVarTable.clear();
 	varToProcTable.clear();
 	sizeOfModifies = 0;
-
+	bitVectorIsBuilt=false;
+	stmtToVarBitVector.clear();
+	procToVarBitVector.clear();	
 }
 
 // driver code to test out Modifies

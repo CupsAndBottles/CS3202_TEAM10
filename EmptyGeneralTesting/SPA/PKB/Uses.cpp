@@ -51,16 +51,51 @@ void Uses::SetStmtUsesVar(int stmtUsing, int varUsed) {
 	//	stmtToVarBitVector[stmtUsing][varUsed]=1;
 	//	stmtToVarBitVector[varUsed][stmtUsing]=1;
 }
+void Uses::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> stmtToVarBitVector;		//stmtToVarBitVector[stmt][var]
+	std::vector<vector<bool>> procToVarBitVector;		//procToVarBitVector[proc][var]
+	std::vector <bool> a (maxStmtOrVar, false);
+	std::vector <bool> b (maxProcOrVar, false);
 
+	for (int i=0;i<maxStmtOrVar;i++) {
+		stmtToVarBitVector.push_back(a);
+	}
+	for (int i=0;i<maxProcOrVar;i++) {
+		procToVarBitVector.push_back(b);
+	}
+	int size1=stmtToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!stmtToVarTable[i].empty()) {
+			int size2=stmtToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=stmtToVarTable[i].at(j);
+				stmtToVarBitVector[i][x]=1;
+			}
+		}
+	}
+	
+	size1=procToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!procToVarTable[i].empty()) {
+			int size2=procToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=procToVarTable[i].at(j);
+				procToVarBitVector[i][x]=1;
+			}
+		}
+	}
+}
 
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-	if (stmtToVarTable.count(stmtUsing) != 0) {
+	/*if (stmtToVarTable.count(stmtUsing) != 0) {
 		for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
 			if (*it == varUsed) return true;
 		}
 		
 	}
-	return false;
+	return false;*/
+	return stmtToVarBitVector[stmtUsing][varUsed];
 
 }
 
@@ -121,14 +156,15 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 }
 
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
-	if (procToVarTable.count(procUsing) != 0) {
+	/*if (procToVarTable.count(procUsing) != 0) {
 		for (vector<int>::iterator it = procToVarTable[procUsing].begin(); it != procToVarTable[procUsing].end(); it++) {
 			if (*it == varUsed)
 				return true;
 		}
 		
 	}
-	return false;
+	return false;*/
+	return procToVarBitVector[procUsing][varUsed];
 }
 
 vector<int> Uses::GetProcUsingVar(int varUsed) {
@@ -166,6 +202,9 @@ void Uses::ClearData() {
 	procToVarTable.clear();
 	varToProcTable.clear();
 	sizeOfUses = 0;
+	bitVectorIsBuilt=false;
+	stmtToVarBitVector.clear();
+	procToVarBitVector.clear();	
 
 }
 

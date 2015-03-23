@@ -7,16 +7,15 @@
 #include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\PKB\ConstTable.h"
 #include "..\SPA\QueryProcessor\PatternMatcher.h"
+#include "..\SPA\Program\Program.h"
 
 TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// use parser to construct a tree to test with
 	// kinda hacky
+	Program::ClearData();
 	Parser parser(Tokenizer::Tokenize(expr.append(";"))); // need to append end of stmt
 	parser.currentLineNumber = 1;
 	TNode* exprTree = parser.ParseExpr(false);
-	Uses::ClearData();
-	VarTable::ClearData();
-	ConstTable::ClearData();
 	return exprTree;
 }
 

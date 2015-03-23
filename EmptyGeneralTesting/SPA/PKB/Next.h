@@ -15,6 +15,7 @@ public:
 	// API
 	static void SetNext(int progLineBefore, int progLineAfter);
 	static bool IsNext(int progLineBefore, int progLineAfter);
+	static bool IsNextBV(int progLineBefore, int progLineAfter);
 	static vector<int> GetNextAfter(int progLineBefore);
 	static vector<int> GetNextBefore(int progLineAfter);
 

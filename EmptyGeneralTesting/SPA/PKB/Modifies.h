@@ -16,11 +16,13 @@ class Modifies {
         // API
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
         static bool IsStmtModifyingVar(int stmtModifying, int varModified);
+        static bool IsStmtModifyingVarBV(int stmtModifying, int varModified);
         static vector<int> GetStmtModifyingVar(int varModified);
 		static vector<int> GetVarModifiedByStmt(int stmtModifying);
 
 		static void SetProcModifiesVar(int procModifying, int varModified);
 		static bool IsProcModifyingVar(int procModifying, int varModified);
+		static bool IsProcModifyingVarBV(int procModifying, int varModified);
 		static vector<int> GetProcModifyingVar(int varModified);
 		static vector<int> GetVarModifiedByProc(int procModifying);
 

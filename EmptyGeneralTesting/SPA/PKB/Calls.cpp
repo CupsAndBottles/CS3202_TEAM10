@@ -53,10 +53,9 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 
 }
 
-
 void Calls::CreateBitVector() {
 	// this method transfers the r'nships in tables to bitvectors
-	std::vector<vector<bool>> bitVector;		
+	std::vector<vector<bool>> bitVector;		// bitVector[calling][called]
 	std::vector <bool> a (maxNoOfProcs, false);
 
 	for (int i=0;i<maxNoOfProcs;i++) {
@@ -69,7 +68,6 @@ void Calls::CreateBitVector() {
 			for (int j=0;j<size2;j++) {
 				int x=callingToCalledTable[i].at(j);
 				bitVector[i][x]=1;
-				bitVector[x][i]=1;
 			}
 		}
 	}
@@ -86,15 +84,17 @@ void Calls::SetCallingToCalledBitVector(int procCalling, int procCalled) {
 }
 
 bool Calls::IsCalls(int stmtCalling, int procCalled) {
-	/*if (callingToCalledBitVector.count(stmtCalling) != 0) {
+	if (callingToCalledBitVector.count(stmtCalling) != 0) {
 		if ((procCalled + 1) <= (int) callingToCalledBitVector[stmtCalling].size())
 			return callingToCalledBitVector[stmtCalling].at(procCalled);
 	}
 
-	return false;*/
-	return bitVector[stmtCalling][procCalled];
+	return false;
 }
 
+bool Calls::IsCallsBV(int stmtCalling, int procCalled) {
+	return bitVector[stmtCalling][procCalled];
+}
 vector<int> Calls::GetProcsCalledBy(int procCalling) {
 	if(callingToCalledTable.count(procCalling) != 0) {
 		return callingToCalledTable[procCalling];

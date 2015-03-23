@@ -18,6 +18,9 @@
     <ClCompile Include="source\IntegrationTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AffectsTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ParserToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,6 +40,9 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AffectsTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UltimateTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>

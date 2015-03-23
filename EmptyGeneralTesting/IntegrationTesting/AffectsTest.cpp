@@ -137,6 +137,60 @@ void AffectsTest::TestGetStmtsAffectedBy() {
 
 }
 
+void AffectsTest::TestGetStmtsAffecting() {
+	ClearAllData();
+	MimicCodeWithAssignOnly();
+
+	vector<int> stmtsAffecting1 = Affects::GetStmtsAffecting(1);
+	CPPUNIT_ASSERT(stmtsAffecting1.empty());
+
+	vector<int> stmtsAffecting3 = Affects::GetStmtsAffecting(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffecting3.size());
+	CPPUNIT_ASSERT_EQUAL(1, stmtsAffecting3.at(0));
+
+	vector<int> stmtsAffecting5 = Affects::GetStmtsAffecting(5);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffecting5.size());
+	CPPUNIT_ASSERT_EQUAL(4, stmtsAffecting5.at(0));
+
+	ClearAllData();
+	MimicCodeWithAssignWhile();
+	
+	vector<int> stmtsAffecting6 = Affects::GetStmtsAffecting(6);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffecting6.size());
+	sort(stmtsAffecting6.begin(), stmtsAffecting6.end());
+	CPPUNIT_ASSERT_EQUAL(1, stmtsAffecting6.at(0));
+	CPPUNIT_ASSERT_EQUAL(4, stmtsAffecting6.at(1));
+
+	vector<int> stmtsAffecting10 = Affects::GetStmtsAffecting(10);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffecting10.size());
+	sort(stmtsAffecting10.begin(), stmtsAffecting10.end());
+	CPPUNIT_ASSERT_EQUAL(6, stmtsAffecting10.at(0));
+
+	ClearAllData();
+	MimicCodeWithAssignIf();
+
+	stmtsAffecting1 = Affects::GetStmtsAffecting(1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) stmtsAffecting1.size());
+
+	vector<int> stmtsAffecting7 = Affects::GetStmtsAffecting(7);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffecting7.size());
+	sort(stmtsAffecting7.begin(), stmtsAffecting7.end());
+	CPPUNIT_ASSERT_EQUAL(1, stmtsAffecting7.at(0));
+	CPPUNIT_ASSERT_EQUAL(3, stmtsAffecting7.at(1));
+
+	vector<int> stmtsAffecting13 = Affects::GetStmtsAffecting(13);
+	CPPUNIT_ASSERT_EQUAL(2, (int) stmtsAffecting13.size());
+	sort(stmtsAffecting13.begin(), stmtsAffecting13.end());
+	CPPUNIT_ASSERT_EQUAL(9, stmtsAffecting13.at(0));
+	CPPUNIT_ASSERT_EQUAL(11, stmtsAffecting13.at(1));
+
+	vector<int> stmtsAffecting17 = Affects::GetStmtsAffecting(17);
+	CPPUNIT_ASSERT_EQUAL(1, (int) stmtsAffecting17.size());
+	sort(stmtsAffecting17.begin(), stmtsAffecting17.end());
+	CPPUNIT_ASSERT_EQUAL(13, stmtsAffecting17.at(0));
+	
+}
+
 void AffectsTest::MimicCodeWithAssignOnly() {
 	// 1. x = y + 4
 	// 2. z = 2
@@ -211,6 +265,7 @@ void AffectsTest::MimicCodeWithAssignWhile() {
 	Modifies::SetStmtModifiesVar(5, VarTable::InsertVar("k"));
 	Uses::SetStmtUsesVar(5, VarTable::InsertVar("a"));
 	Next::SetNext(5, 6);
+	Next::SetNext(5, 3);
 
 	StmtTypeTable::Insert(6, ASSIGN);
 	Modifies::SetStmtModifiesVar(6, VarTable::InsertVar("x"));
@@ -235,6 +290,7 @@ void AffectsTest::MimicCodeWithAssignWhile() {
 	StmtTypeTable::Insert(9, ASSIGN);
 	Modifies::SetStmtModifiesVar(9, VarTable::InsertVar("k"));
 	Uses::SetStmtUsesVar(9, VarTable::InsertVar("a"));
+	Next::SetNext(9, 7);
 	Next::SetNext(9, 10);
 
 	StmtTypeTable::Insert(10, ASSIGN);

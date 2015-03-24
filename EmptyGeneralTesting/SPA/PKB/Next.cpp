@@ -74,7 +74,7 @@ void Next::CreateBitVector() {
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
 	// checking for Next(progLineBefore, progLineAfter)
-	if (beforeToAfterTable.count(progLineBefore) != 0) {
+	/*if (beforeToAfterTable.count(progLineBefore) != 0) {
 		vector<int> childrenOfBefore = beforeToAfterTable[progLineBefore];
 		if (childrenOfBefore.size() == 1) {
 			return childrenOfBefore.at(0) == progLineAfter;
@@ -84,11 +84,10 @@ bool Next::IsNext(int progLineBefore, int progLineAfter) {
 		}
 	}
 	return false;
-	
-}
-bool Next::IsNextBV(int progLineBefore, int progLineAfter) {
+	*/
 	return bitVector[progLineBefore][progLineAfter];
 }
+
 vector<int> Next::GetNextAfter(int progLineBefore) {
 	if (beforeToAfterTable.count(progLineBefore) == 0) {
 		vector<int> emptyVector;

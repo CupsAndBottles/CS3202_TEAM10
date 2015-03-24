@@ -12,15 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser\DesignExtractor.h" />
+    <ClInclude Include="PKB\Next.h" />
+    <ClInclude Include="PKB\Calls.h" />
     <ClInclude Include="Exception\IndexNotFoundException.h" />
     <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="Parser\Token.h" />
     <ClInclude Include="Parser\Tokenizer.h" />
-    <ClInclude Include="PKB\Calls.h" />
     <ClInclude Include="PKB\ConstTable.h" />
     <ClInclude Include="PKB\Follows.h" />
     <ClInclude Include="PKB\Modifies.h" />
-    <ClInclude Include="PKB\Next.h" />
     <ClInclude Include="PKB\Parent.h" />
     <ClInclude Include="PKB\ProcTable.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />
@@ -39,14 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parser\DesignExtractor.cpp" />
+    <ClCompile Include="PKB\Next.cpp" />
+    <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="Parser\Token.cpp" />
     <ClCompile Include="Parser\Tokenizer.cpp" />
-    <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="PKB\ConstTable.cpp" />
     <ClCompile Include="PKB\Follows.cpp" />
     <ClCompile Include="PKB\Modifies.cpp" />
-    <ClCompile Include="PKB\Next.cpp" />
     <ClCompile Include="PKB\Parent.cpp" />
     <ClCompile Include="PKB\ProcTable.cpp" />
     <ClCompile Include="PKB\StmtTypeTable.cpp" />

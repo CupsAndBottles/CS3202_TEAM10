@@ -35,7 +35,8 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 	maxStmtOrVar=  maxStmtOrVar > stmtModifying ? maxStmtOrVar : stmtModifying;
 	maxStmtOrVar=  maxStmtOrVar > varModified ? maxStmtOrVar : varModified;
 	// initialize if not yet done
-	//	if (!bitVectorIsBuilt) {		//		bitVectorIsBuilt=true;
+	//	if (!bitVectorIsBuilt) {
+	//		bitVectorIsBuilt=true;
 	//		std::vector<vector<bool>> stmtToVarBitVector;
 	//	}
 	//	// if the current known number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
@@ -89,21 +90,20 @@ void Modifies::CreateBitVector() {
 	}
 }
 bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
-	
-	if (stmtToVarTable.count(stmtModifying) != 0) {
-		for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
-			if (*it == varModified)
-				return true;
-		}
+	/*
+		if (stmtToVarTable.count(stmtModifying) != 0) {
+			for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
+				if (*it == varModified)
+					return true;
+			}
 		
-	}
-	return false;
-
-}
-bool Modifies::IsStmtModifyingVarBV(int stmtModifying, int varModified) {
-
+		}
+		return false;
+		*/
 	return stmtToVarBitVector[stmtModifying][varModified];
 }
+
+
 
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {    
     if (varToStmtTable.count(varModified) == 0) {
@@ -161,21 +161,23 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 
 
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
-
-	if (procToVarTable.count(procModifying) != 0) {
-		for (vector<int>::iterator it = procToVarTable[procModifying].begin(); it != procToVarTable[procModifying].end(); it++) {
-			if (*it == varModified)
-				return true;
+	/*
+	if (bitVectorIsBuilt) {
+		// not implemented yet
+		return false; // dummy value
+	} else {
+		if (procToVarTable.count(procModifying) != 0) {
+			for (vector<int>::iterator it = procToVarTable[procModifying].begin(); it != procToVarTable[procModifying].end(); it++) {
+				if (*it == varModified)
+					return true;
+			}
+		
 		}
-	
-	}
-	return false;
-}
-
-bool Modifies::IsProcModifyingVarBV(int procModifying, int varModified) {
-	
+		return false;
+	}*/
 	return procToVarBitVector[procModifying][varModified];
 }
+
 vector<int> Modifies::GetProcModifyingVar(int varModified) {
 	if (varToProcTable.count(varModified) == 0) {
 		vector<int> procsModifyingVarModified;

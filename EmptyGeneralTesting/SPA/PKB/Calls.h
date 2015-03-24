@@ -15,7 +15,6 @@ public:
 	// API
 	static void SetCalls(int procCalling, int procCalled);
 	static bool IsCalls(int procCalling, int procCalled);
-	static bool IsCallsBV(int procCalling, int procCalled);
 	static vector<int> GetProcsCalledBy(int procCalling);
 	static vector<int> GetProcsCalling(int procCalled);
 	

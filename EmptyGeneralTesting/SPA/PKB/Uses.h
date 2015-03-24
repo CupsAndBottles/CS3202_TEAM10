@@ -16,13 +16,11 @@ public:
 	// API
 	static void SetStmtUsesVar(int stmtUsing, int varUsed);
 	static bool IsStmtUsingVar(int stmtUsing, int varUsed);
-	static bool IsStmtUsingVarBV(int stmtUsing, int varUsed);
     static vector<int> GetStmtUsingVar(int varUsed);
     static vector<int> GetVarUsedByStmt(int stmtUsing);
 
 	static void SetProcUsesVar(int procUsing, int varUsed);
 	static bool IsProcUsingVar(int procUsing, int varUsed);
-	static bool IsProcUsingVarBV(int procUsing, int varUsed);
 	static vector<int> GetProcUsingVar(int varUsed);
 	static vector<int> GetVarUsedByProc(int procUsing);
 

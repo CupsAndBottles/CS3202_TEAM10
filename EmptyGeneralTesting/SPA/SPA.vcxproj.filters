@@ -33,6 +33,9 @@
     <ClInclude Include="PKB\Follows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PKB\Modifies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PKB\Parent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +55,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PKB\ProcTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKB\Calls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryProcessor\Grammar.h">
@@ -78,16 +84,10 @@
     <ClInclude Include="Parser\DesignExtractor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QueryProcessor\Answers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PKB\Calls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PKB\Modifies.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PKB\Next.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryProcessor\Answers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\Follows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Modifies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\Parent.cpp">
@@ -128,6 +131,9 @@
     <ClCompile Include="PKB\ProcTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PKB\Calls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="QueryProcessor\PatternMatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -149,16 +155,10 @@
     <ClCompile Include="Parser\DesignExtractor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryProcessor\Answers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PKB\Calls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PKB\Modifies.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PKB\Next.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\Answers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

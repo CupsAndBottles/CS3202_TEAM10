@@ -87,18 +87,20 @@ void Uses::CreateBitVector() {
 	}
 }
 
+bool Uses::IsStmtUsingVarBV(int stmtUsing, int varUsed) {
+
+	return stmtToVarBitVector[stmtUsing][varUsed];
+}
 bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
-	/*if (stmtToVarTable.count(stmtUsing) != 0) {
+	if (stmtToVarTable.count(stmtUsing) != 0) {
 		for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
 			if (*it == varUsed) return true;
 		}
 		
 	}
-	return false;*/
-	return stmtToVarBitVector[stmtUsing][varUsed];
+	return false;
 
 }
-
 vector<int> Uses::GetStmtUsingVar(int varUsed) {
   
     if (varToStmtTable.count(varUsed) == 0) {
@@ -155,18 +157,19 @@ void Uses::SetProcUsesVar(int procUsing, int varUsed) {
 	//	procToVarBitVector[varUsed][procUsing]=1;
 }
 
+bool Uses::IsProcUsingVarBV(int procUsing, int varUsed) {
+
+	return procToVarBitVector[procUsing][varUsed];
+}
 bool Uses::IsProcUsingVar(int procUsing, int varUsed) {
-	/*if (procToVarTable.count(procUsing) != 0) {
+	if (procToVarTable.count(procUsing) != 0) {
 		for (vector<int>::iterator it = procToVarTable[procUsing].begin(); it != procToVarTable[procUsing].end(); it++) {
 			if (*it == varUsed)
 				return true;
 		}
-		
 	}
-	return false;*/
-	return procToVarBitVector[procUsing][varUsed];
+	return false;
 }
-
 vector<int> Uses::GetProcUsingVar(int varUsed) {
 	if (varToProcTable.count(varUsed) == 0) {
 		vector<int> procsUsingVarUsed;

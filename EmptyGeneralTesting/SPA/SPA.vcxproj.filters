@@ -87,7 +87,7 @@
     <ClInclude Include="PKB\Next.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QueryProcessor\Answers.h">
+    <ClInclude Include="QueryProcessor\IntermediateResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,7 +158,7 @@
     <ClCompile Include="PKB\Next.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryProcessor\Answers.cpp">
+    <ClCompile Include="QueryProcessor\IntermediateResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1385,7 +1385,7 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 		return Pattern("", NULL, NULL);
 	}
 }
-
+/*
 void QueryEvaluator::initiateAll(vector<Declaration> declarations){
 	int i = 0;
 	for(vector<Declaration>::iterator it = declarations.begin(); it != declarations.end(); ++it){
@@ -1393,15 +1393,6 @@ void QueryEvaluator::initiateAll(vector<Declaration> declarations){
 
 		//add to map 
 		maps.push_back(pair<Synonym,int> (temp,i));
-
-		/*ASSIGN,
-		STMT,
-		WHILE,
-		IF,
-		VARIABLE,
-		CONSTANT,
-		PROG_LINE,
-		CALL,*/
 
 		switch (temp.type){
 			case ASSIGN:{
@@ -1473,3 +1464,4 @@ void QueryEvaluator::deleteAnswer(Answers* answer){
 		}
 	}
 }
+*/

@@ -81,6 +81,7 @@
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>

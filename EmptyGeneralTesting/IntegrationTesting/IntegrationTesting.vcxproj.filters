@@ -35,6 +35,7 @@
     <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserToPKBTest.h">

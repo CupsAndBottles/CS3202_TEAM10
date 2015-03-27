@@ -50,5 +50,6 @@
     <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
     <None Include="ParserTestFiles\whileTest.txt" />
     <None Include="ParserTestFiles\callTest.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
 </Project>

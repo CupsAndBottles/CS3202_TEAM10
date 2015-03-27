@@ -81,6 +81,7 @@
     <None Include="ParserTestFiles\procTest.txt" />
     <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
     <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\whileTest.txt" />
   </ItemGroup>
   <ItemGroup>

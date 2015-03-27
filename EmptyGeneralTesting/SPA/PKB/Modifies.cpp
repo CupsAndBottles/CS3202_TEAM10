@@ -32,21 +32,74 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
 		sizeOfModifies++;
 
     }
+	//	if (!bitVectorIsBuilt) {		//		bitVectorIsBuilt=true;
+	//		std::vector<vector<bool>> stmtToVarBitVector;
+	//	}
+	//	// if the current known number of procs or var is bigger than size of bitVector, expand beginning with the current bitVector
+	//	if (maxStmtOrVar>(int)stmtToVarBitVector.size()) {
+	//		for (int i=0;i<=(int)stmtToVarBitVector.size();i++) {
+	//			stmtToVarBitVector[i].push_back(0);
+	//		}
+	//		std::vector <bool> a (maxStmtOrVar,false);
+	//		for (int i=0; i<maxStmtOrVar;i++) {
+	//			stmtToVarBitVector.push_back(a);
+	//		}
+	//	}
+	//	// after expanding, insert the new Modifies r'ship
+	//	stmtToVarBitVector[stmtModifying][varModified]=1;
+	//	stmtToVarBitVector[varModified][stmtModifying]=1;
 }
 
-bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
+void Modifies::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> stmtToVarBitVector;		//stmtToVarBitVector[stmt][var]
+	std::vector<vector<bool>> procToVarBitVector;		//procToVarBitVector[proc][var]
+	std::vector <bool> a (maxStmtOrVar, false);
+	std::vector <bool> b (maxProcOrVar, false);
 
-		if (stmtToVarTable.count(stmtModifying) != 0) {
-			for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
-				if (*it == varModified)
-					return true;
-			}
-		
-		}
-		return false;
+	for (int i=0;i<maxStmtOrVar;i++) {
+		stmtToVarBitVector.push_back(a);
 	}
+	for (int i=0;i<maxProcOrVar;i++) {
+		procToVarBitVector.push_back(b);
+	}
+	int size1=stmtToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!stmtToVarTable[i].empty()) {
+			int size2=stmtToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=stmtToVarTable[i].at(j);
+				stmtToVarBitVector[i][x]=1;
+			}
+	}
+	
+	size1=procToVarTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!procToVarTable[i].empty()) {
+			int size2=procToVarTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=procToVarTable[i].at(j);
+				procToVarBitVector[i][x]=1;
+			}
+		}
+	}
+}
+bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
+	
+	if (stmtToVarTable.count(stmtModifying) != 0) {
+		for (vector<int>::iterator it = stmtToVarTable[stmtModifying].begin(); it != stmtToVarTable[stmtModifying].end(); it++) {
+			if (*it == varModified)
+				return true;
+		}
+		
+	}
+	return false;
 
+}
+bool Modifies::IsStmtModifyingVarBV(int stmtModifying, int varModified) {
 
+	return stmtToVarBitVector[stmtModifying][varModified];
+}
 
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {    
     if (varToStmtTable.count(varModified) == 0) {
@@ -79,25 +132,27 @@ void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 		sizeOfModifies++;
 
     }
+	maxProcOrVar=  maxProcOrVar > procModifying ? maxProcOrVar : procModifying;
+	maxProcOrVar=  maxProcOrVar > varModified ? maxProcOrVar : varModified;
 }
+
 
 bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
-	if (bitVectorIsBuilt) {
-		// not implemented yet
-		return false; // dummy value
-	} else {
-		if (procToVarTable.count(procModifying) != 0) {
-			for (vector<int>::iterator it = procToVarTable[procModifying].begin(); it != procToVarTable[procModifying].end(); it++) {
-				if (*it == varModified)
-					return true;
-			}
-		
-		}
-		return false;
-	}
 
+	if (procToVarTable.count(procModifying) != 0) {
+		for (vector<int>::iterator it = procToVarTable[procModifying].begin(); it != procToVarTable[procModifying].end(); it++) {
+			if (*it == varModified)
+				return true;
+		}
+	
+	}
+	return false;
 }
 
+bool Modifies::IsProcModifyingVarBV(int procModifying, int varModified) {
+	
+	return procToVarBitVector[procModifying][varModified];
+}
 vector<int> Modifies::GetProcModifyingVar(int varModified) {
 	if (varToProcTable.count(varModified) == 0) {
 		vector<int> procsModifyingVarModified;
@@ -138,7 +193,9 @@ void Modifies::ClearData() {
 	procToVarTable.clear();
 	varToProcTable.clear();
 	sizeOfModifies = 0;
-
+	bitVectorIsBuilt=false;
+	stmtToVarBitVector.clear();
+	procToVarBitVector.clear();	
 }
 
 // driver code to test out Modifies

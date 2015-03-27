@@ -21,10 +21,66 @@ Calls::Calls() {
 
 // API
 void Calls::SetCalls(int procCalling, int procCalled) {
-	if (!IsCalls(procCalling, procCalled) && !IsCalls(procCalled, procCalling)) {
+	if (!IsCalls(procCalling, procCalled)  && !IsCalls(procCalled, procCalling)) {
 		callingToCalledTable[procCalling].push_back(procCalled);
 		calledToCallingTable[procCalled].push_back(procCalling);
+
+		SetCallingToCalledBitVector(procCalling, procCalled);
+
+		noOfCallsRelationships++;
+
+		maxNoOfProcs = maxNoOfProcs > procCalling ? maxNoOfProcs : procCalling;
+		maxNoOfProcs = maxNoOfProcs > procCalled ? maxNoOfProcs : procCalled;
+		//// initialize if not yet done
+		//if (!bitVectorIsBuilt) {
+		//	bitVectorIsBuilt=true;
+		//	std::vector<vector<bool>> bitVector;
+		//}
+		//// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		//if (maxNoOfProcs>(int)bitVector.size()) {
+		//	for (int i=0;i<(int)bitVector.size();i++) {
+		//		bitVector[i].push_back(0);
+		//	}
+		//	std::vector <bool> a (maxNoOfProcs, false);
+		//	for (int i=0; i<maxNoOfProcs;i++) {
+		//		bitVector.push_back(a);
+		//	}
+		//}
+		//// after expanding, insert the new Calls r'ship
+		//bitVector[procCalling][procCalled]=1;
+		//bitVector[procCalled][procCalling]=1;
 	}
+
+}
+
+void Calls::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> bitVector;		// bitVector[calling][called]
+	std::vector <bool> a (maxNoOfProcs, false);
+
+	for (int i=0;i<maxNoOfProcs;i++) {
+		bitVector.push_back(a);
+	}
+	int size1=callingToCalledTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!callingToCalledTable[i].empty()) {
+			int size2=callingToCalledTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=callingToCalledTable[i].at(j);
+				bitVector[i][x]=1;
+			}
+		}
+	}
+}
+void Calls::SetCallingToCalledBitVector(int procCalling, int procCalled) {
+	if ((procCalled + 1) > (int) callingToCalledBitVector[procCalling].size()) {
+		for (int i = 0; i < ((procCalled + 1) * 2); i++) {
+			callingToCalledBitVector[procCalling].push_back(false);
+		}
+	}
+
+	callingToCalledBitVector[procCalling].at(procCalled) = true;
+
 }
 
 bool Calls::IsCalls(int stmtCalling, int procCalled) {
@@ -36,6 +92,9 @@ bool Calls::IsCalls(int stmtCalling, int procCalled) {
 	return false;
 }
 
+bool Calls::IsCallsBV(int stmtCalling, int procCalled) {
+	return bitVector[stmtCalling][procCalled];
+}
 vector<int> Calls::GetProcsCalledBy(int procCalling) {
 	if(callingToCalledTable.count(procCalling) != 0) {
 		return callingToCalledTable[procCalling];
@@ -156,4 +215,7 @@ void Calls::ClearData() {
 	calledToCallingTable.clear();
 	callingToCalledBitVector.clear();
 	noOfCallsRelationships = 0;
+	bitVectorIsBuilt=false;
+	bitVector.clear();
+
 }

@@ -30,26 +30,46 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 		maxNoOfLines = maxNoOfLines > progLineBefore ? maxNoOfLines : progLineBefore;
 		maxNoOfLines = maxNoOfLines > progLineAfter ? maxNoOfLines : progLineAfter;
 
-		// initialize if not yet done
-		if (!bitVectorIsBuilt) {
-			bitVectorIsBuilt=true;
-			std::vector<vector<bool>> bitVector;
-		}
-		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxNoOfLines>(int)bitVector.size()) {
-			for (int i=0;i<(int)bitVector.size();i++) {
-				bitVector[i].push_back(0);
-			}
-			std::vector <bool> a (maxNoOfLines,false);
-			for (int i=0; i<maxNoOfLines;i++) {
-				bitVector.push_back(a);
-			}
-		}
-		// after expanding, insert the new Next r'ship
-		bitVector[progLineBefore][progLineAfter]=1;
-		bitVector[progLineAfter][progLineBefore]=1;
+		//// initialize if not yet done
+		//if (!bitVectorIsBuilt) {
+		//	bitVectorIsBuilt=true;
+		//	std::vector<vector<bool>> bitVector;
+		//}
+		//// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
+		//if (maxNoOfLines>(int)bitVector.size()) {
+		//	for (int i=0;i<(int)bitVector.size();i++) {
+		//		bitVector[i].push_back(0);
+		//	}
+		//	std::vector <bool> a (maxNoOfLines,false);
+		//	for (int i=0; i<maxNoOfLines;i++) {
+		//		bitVector.push_back(a);
+		//	}
+		//}
+		//// after expanding, insert the new Next r'ship
+		//bitVector[progLineBefore][progLineAfter]=1;
+		//bitVector[progLineAfter][progLineBefore]=1;
 	}
 
+}
+void Next::CreateBitVector() {
+	// this method transfers the r'nships in tables to bitvectors
+	std::vector<vector<bool>> bitVector;		
+	std::vector <bool> a (maxNoOfLines, false);
+
+	for (int i=0;i<maxNoOfLines;i++) {
+		bitVector.push_back(a);
+	}
+	int size1=beforeToAfterTable.size();
+	for (int i=0;i<size1;i++) {
+		if (!beforeToAfterTable[i].empty()) {
+			int size2=beforeToAfterTable[i].size();
+			for (int j=0;j<size2;j++) {
+				int x=beforeToAfterTable[i].at(j);
+				bitVector[i][x]=1;
+				bitVector[x][i]=1;
+			}
+		}
+	}
 }
 
 bool Next::IsNext(int progLineBefore, int progLineAfter) {
@@ -64,9 +84,11 @@ bool Next::IsNext(int progLineBefore, int progLineAfter) {
 		}
 	}
 	return false;
-
+	
 }
-
+bool Next::IsNextBV(int progLineBefore, int progLineAfter) {
+	return bitVector[progLineBefore][progLineAfter];
+}
 vector<int> Next::GetNextAfter(int progLineBefore) {
 	if (beforeToAfterTable.count(progLineBefore) == 0) {
 		vector<int> emptyVector;
@@ -190,8 +212,8 @@ void Next::ClearData() {
 	beforeToAfterTable.clear();
 	afterToBeforeTable.clear();
 	sizeOfNext = 0;
-	// bitVector.clear();
-	// bitVectorIsBuilt = false;
+	bitVector.clear();
+	bitVectorIsBuilt = false;
 }
 
 // private methods

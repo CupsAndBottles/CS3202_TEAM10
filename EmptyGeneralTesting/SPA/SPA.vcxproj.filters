@@ -166,5 +166,6 @@
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="bracketsTest.txt" />
     <None Include="procTest.txt" />
+    <None Include="pkbTest.txt" />
   </ItemGroup>
 </Project>

@@ -168,7 +168,7 @@ void ComputeModifiesAndUsesForProcedures() {
 	// iterate through each component
 	// compute us/mo for procs within components first
 	for (c_map_iter i = componentMap.begin(); i != componentMap.end(); i++) {
-		if (i->second.size() == 1) break;
+		if (i->second.size() == 1) continue;
 		set<int> usedVars;
 		set<int> modifiedVars;
 		// sum up the vars for all procs in the component
@@ -319,7 +319,7 @@ void ComputeModifiesAndUses() {
 
 		for each (int stmt in currentChildren) {
 			int parent = Parent::GetParentOf(stmt);
-			if (parent == -1) break;
+			if (parent == -1) continue;
 			vector<int> usedVars = Uses::GetVarUsedByStmt(stmt);
 			vector<int> modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
 			for each (int var in usedVars) {

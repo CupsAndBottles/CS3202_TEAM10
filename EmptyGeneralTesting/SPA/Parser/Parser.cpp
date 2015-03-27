@@ -386,6 +386,6 @@ TNode* Parser::ParseIfStmt() {
 }
 
 //void main() {
-//	Parser::Parse("callTest.txt");
+//	Parser::Parse("pkbTest.txt");
 //	TNode& program = Program::GetASTRootNode();
 //}

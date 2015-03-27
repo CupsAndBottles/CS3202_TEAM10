@@ -30,7 +30,6 @@ void Modifies::SetStmtModifiesVar(int stmtModifying, int varModified) {
         varToStmtTable[varModified].push_back(stmtModifying);
 
 		sizeOfModifies++;
-
     }
 	//	if (!bitVectorIsBuilt) {		//		bitVectorIsBuilt=true;
 	//		std::vector<vector<bool>> stmtToVarBitVector;

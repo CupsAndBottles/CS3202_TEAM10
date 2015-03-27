@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bracketsTest.txt" />
+    <None Include="pkbTest.txt" />
     <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
   </ItemGroup>

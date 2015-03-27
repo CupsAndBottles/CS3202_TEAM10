@@ -71,7 +71,7 @@ void ParserToPKBTest::TestVarTable() {
 
 void ParserToPKBTest::TestModifies() {
 	// check if modifiesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 11, Modifies::SizeOfModifies());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 15, Modifies::SizeOfModifies());
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifyingVar(2, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifyingVar(4, 3));
@@ -88,7 +88,7 @@ void ParserToPKBTest::TestModifies() {
 
 void ParserToPKBTest::TestUses() {
 	// check if usesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 17, Uses::SizeOfUses());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 23, Uses::SizeOfUses());
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 1st variable", Uses::IsStmtUsingVar(2, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 2nd variable", Uses::IsStmtUsingVar(3, 2));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 3rd variable", Uses::IsStmtUsingVar(4, 2));
@@ -162,7 +162,12 @@ void ParserToPKBTest::TestNext() {
 void ParserToPKBTest::TestModifiesForProcs() {
 	// check if modifies for procs is computed correctly
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies for Procedures", 
-		5, (int)Modifies::GetVarModifiedByProc(ProcTable::GetIndexOfProc("test")).size());
+		4, (int)Modifies::GetVarModifiedByProc(ProcTable::GetIndexOfProc("test")).size());
+
+	CPPUNIT_ASSERT_MESSAGE("1st variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 0));
+	CPPUNIT_ASSERT_MESSAGE("2nd variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 1));
+	CPPUNIT_ASSERT_MESSAGE("3rd variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 3));
+	CPPUNIT_ASSERT_MESSAGE("4th variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 5));
 }
 
 void ParserToPKBTest::TestUsesForProcs() {

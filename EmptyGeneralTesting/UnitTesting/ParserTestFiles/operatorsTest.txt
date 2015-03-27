@@ -1,0 +1,10 @@
+\\ test new operators
+
+procedure ops {
+	x = y - 1;			\\1
+	y = x * 5;			\\2
+	z = x + y * z;		\\3
+	a = y + z - b;		\\4
+	b = a - c * g;		\\5
+	c = x * y - z + a;	\\6
+}

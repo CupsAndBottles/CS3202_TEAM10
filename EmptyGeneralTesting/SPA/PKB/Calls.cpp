@@ -21,47 +21,10 @@ Calls::Calls() {
 
 // API
 void Calls::SetCalls(int procCalling, int procCalled) {
-	if (!IsCalls(procCalling, procCalled)  && !IsCalls(procCalled, procCalling)) {
+	if (!IsCalls(procCalling, procCalled) && !IsCalls(procCalled, procCalling)) {
 		callingToCalledTable[procCalling].push_back(procCalled);
 		calledToCallingTable[procCalled].push_back(procCalling);
-
-		SetCallingToCalledBitVector(procCalling, procCalled);
-
-		noOfCallsRelationships++;
-
-		maxNoOfProcs = maxNoOfProcs > procCalling ? maxNoOfProcs : procCalling;
-		maxNoOfProcs = maxNoOfProcs > procCalled ? maxNoOfProcs : procCalled;
-		// initialize if not yet done
-		if (!bitVectorIsBuilt) {
-			bitVectorIsBuilt=true;
-			std::vector<vector<bool>> bitVector;
-		}
-		// if the current number of lines is bigger than size of bitVector, expand beginning with the current bitVector
-		if (maxNoOfProcs>(int)bitVector.size()) {
-			for (int i=0;i<(int)bitVector.size();i++) {
-				bitVector[i].push_back(0);
-			}
-			std::vector <bool> a (maxNoOfProcs, false);
-			for (int i=0; i<maxNoOfProcs;i++) {
-				bitVector.push_back(a);
-			}
-		}
-		// after expanding, insert the new Calls r'ship
-		bitVector[procCalling][procCalled]=1;
-		bitVector[procCalled][procCalling]=1;
 	}
-
-}
-
-void Calls::SetCallingToCalledBitVector(int procCalling, int procCalled) {
-	if ((procCalled + 1) > (int) callingToCalledBitVector[procCalling].size()) {
-		for (int i = 0; i < ((procCalled + 1) * 2); i++) {
-			callingToCalledBitVector[procCalling].push_back(false);
-		}
-	}
-
-	callingToCalledBitVector[procCalling].at(procCalled) = true;
-
 }
 
 bool Calls::IsCalls(int stmtCalling, int procCalled) {

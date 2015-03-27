@@ -20,11 +20,13 @@
     <None Include="ParserTestFiles\nestedWhileTest.txt" />
     <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
     <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+    <None Include="ParserTestFiles\operatorsTest.txt" />
+    <None Include="ParserTestFiles\bracketsTest.txt" />
+    <None Include="ParserTestFiles\callTest.txt" />
+    <None Include="ParserTestFiles\ifTest.txt" />
+    <None Include="ParserTestFiles\procTest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ParserTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,13 +36,7 @@
     <ClCompile Include="FollowsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModifiesTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ParentTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PatternMatcherTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProcTableTest.cpp">
@@ -64,23 +60,20 @@
     <ClCompile Include="TokenizerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UsesTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VarTableTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CallsTest.cpp">
+    <ClCompile Include="ModifiesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NextTest.cpp">
+    <ClCompile Include="PatternMatcherTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParserTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ParentTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,13 +83,7 @@
     <ClInclude Include="FollowsTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModifiesTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StmtTypeTableTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PatternMatcherTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProcTableTest.h">
@@ -120,13 +107,13 @@
     <ClInclude Include="TokenizerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UsesTest.h">
+    <ClInclude Include="ModifiesTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CallsTest.h">
+    <ClInclude Include="PatternMatcherTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NextTest.h">
+    <ClInclude Include="ParserTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

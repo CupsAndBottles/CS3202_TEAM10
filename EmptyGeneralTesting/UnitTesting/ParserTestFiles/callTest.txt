@@ -1,0 +1,6 @@
+\\ Calls Test
+
+procedure calls {
+	call calls;
+	\\ call others; \\ may fail
+}

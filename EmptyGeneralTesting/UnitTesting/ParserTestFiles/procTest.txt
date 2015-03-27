@@ -1,0 +1,17 @@
+\\ multiple procedures
+
+procedure one {
+	x = 1;
+}
+
+procedure two {
+	x = 2;
+}
+
+procedure three {
+	x = 3;
+}
+
+procedure four {
+	x = 4;
+}

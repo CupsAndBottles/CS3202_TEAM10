@@ -10,6 +10,11 @@ class ParserTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestWhileParsing);
 	CPPUNIT_TEST(TestNestedWhileParsing);
 	CPPUNIT_TEST(TestParsing);
+	CPPUNIT_TEST(TestBracketParsing);
+	CPPUNIT_TEST(TestCallParsing);
+	CPPUNIT_TEST(TestIfParsing);
+	CPPUNIT_TEST(TestOperatorParsing);
+	CPPUNIT_TEST(TestProcedureParsing);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,5 +29,10 @@ public:
 	void TestWhileParsing();
 	void TestNestedWhileParsing();
 	void TestParsing();
+	void TestBracketParsing();
+	void TestCallParsing();
+	void TestIfParsing();
+	void TestOperatorParsing();
+	void TestProcedureParsing();
 };
 

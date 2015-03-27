@@ -1,0 +1,8 @@
+\\ Brackets Test
+
+procedure brackets {
+	x = (y);
+	y = (x + 1);
+	z = (x + y) + z;
+	a = (x + y) + (a + b);
+}

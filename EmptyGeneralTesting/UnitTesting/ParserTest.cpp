@@ -1,7 +1,6 @@
 #include "ParserTest.h"
 #include "..\SPA\Program\Program.h"
 
-
 #include <fstream>
 
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
@@ -308,5 +307,95 @@ void ParserTest::TestParsing() {
 	CPPUNIT_ASSERT(GetRHS(*stmtList4[1]).GetContent() == "+");
 	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList4[1])).GetContent() == "w");
 	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList4[1])).GetContent() == "1");
+
+}
+
+
+void ParserTest::TestBracketParsing() {
+	Program::ClearAll();
+	ParseSource("bracketsTest.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	//procedure brackets{
+	CPPUNIT_ASSERT_EQUAL((string)"brackets", procedure.GetContent());
+	//	x = (y);
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(*stmts[0]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(*stmts[0]).GetContent());
+	//	y = (x + 1);
+	CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(*stmts[1]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(*stmts[1]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetRHS(*stmts[1])).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(GetRHS(*stmts[1])).GetContent());
+	//	z = (x + y) + z;
+	CPPUNIT_ASSERT_EQUAL(3, stmts[2]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetLHS(*stmts[2]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(*stmts[2]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetRHS(GetRHS(*stmts[2])).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetLHS(GetRHS(*stmts[2])).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetLHS(GetRHS(*stmts[2]))).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(GetLHS(GetRHS(*stmts[2]))).GetContent());
+
+	//	a = (x + y) + (a + b);
+	CPPUNIT_ASSERT_EQUAL(4, stmts[3]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(*stmts[3]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(*stmts[3]).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetLHS(GetRHS(*stmts[3])).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetLHS(GetRHS(*stmts[3]))).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(GetLHS(GetRHS(*stmts[3]))).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(GetRHS(*stmts[3])).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(GetRHS(GetRHS(*stmts[3]))).GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"b", GetRHS(GetRHS(GetRHS(*stmts[3]))).GetContent());
+	//}
+}
+
+void ParserTest::TestCallParsing() {
+	Program::ClearAll();
+	ParseSource("callTest.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	//procedure calls{
+	CPPUNIT_ASSERT_EQUAL((string)"calls", procedure.GetContent());
+	//	call calls;
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"calls", stmts[0]->GetContent());
+	////	call others; \\ may fail
+	//CPPUNIT_ASSERT_EQUAL(1, stmts[1]->GetLineNumber());
+	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[1]->GetType());
+	//CPPUNIT_ASSERT_EQUAL((string)"others", stmts[1]->GetContent());
+	//}
+
+}
+
+void ParserTest::TestIfParsing() {
+	Program::ClearAll();
+	ParseSource("sample_SIMPLE_source.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+}
+
+void ParserTest::TestOperatorParsing() {
+	Program::ClearAll();
+	ParseSource("sample_SIMPLE_source.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+}
+
+void ParserTest::TestProcedureParsing() {
+	Program::ClearAll();
+	ParseSource("sample_SIMPLE_source.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
 
 }

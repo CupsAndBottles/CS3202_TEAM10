@@ -4,17 +4,21 @@
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\Tokenizer.h"
 #include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\PKB\ConstTable.h"
+#include "..\SPA\Program\Program.h"
 #include "..\SPA\QueryProcessor\PatternMatcher.h"
 
 TNode* PatternMatcherTest::ParseExpr(string expr) {
 	// use parser to construct a tree to test with
 	// kinda hacky
+	Program::ClearAll();
 	Parser parser(Tokenizer::Tokenize(expr.append(";"))); // need to append end of stmt
 	parser.currentLineNumber = 1;
 	TNode* exprTree = parser.ParseExpr(false);
 	Uses::ClearData();
+	Modifies::ClearData();
 	VarTable::ClearData();
 	ConstTable::ClearData();
 	return exprTree;

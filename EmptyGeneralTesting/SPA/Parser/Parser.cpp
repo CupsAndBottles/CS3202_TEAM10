@@ -146,7 +146,7 @@ void Parser::Parse() {
 	}
 
 	// post processing step
-	DesignExtractor::Extract();
+	//DesignExtractor::Extract();
 }
 
 TNode* Parser::ParseProcedure() {

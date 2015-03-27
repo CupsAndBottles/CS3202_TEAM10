@@ -192,8 +192,6 @@ void ComputeModifiesAndUsesForProcedures() {
 	// clean leaves and add parents of current set to that
 	// loop from top
 
-	// TODO fix bug here!!!
-
 	// loop through all leaves
 	while (componentsWithoutChildren.size() != 0) {
 		set<int> currentSet;
@@ -294,7 +292,6 @@ void ComputeCalls() {
 }
 
 void ComputeModifiesAndUses() {
-	// TODO migrate code
 	/* Remember that
 		while x {		\\ 1
 			while y {	\\ 2

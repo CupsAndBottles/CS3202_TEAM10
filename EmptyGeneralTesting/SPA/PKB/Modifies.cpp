@@ -66,11 +66,12 @@ void Modifies::CreateBitVector() {
 	int size1=stmtToVarTable.size();
 	for (int i=0;i<size1;i++) {
 		if (!stmtToVarTable[i].empty()) {
-			int size2=stmtToVarTable[i].size();
-			for (int j=0;j<size2;j++) {
-				int x=stmtToVarTable[i].at(j);
-				stmtToVarBitVector[i][x]=1;
+			int size2 = stmtToVarTable[i].size();
+			for (int j = 0; j < size2; j++) {
+				int x = stmtToVarTable[i].at(j);
+				stmtToVarBitVector[i][x] = 1;
 			}
+		}
 	}
 	
 	size1=procToVarTable.size();

@@ -4,6 +4,6 @@ procedure testif {
 	if x then {
 		y = 1;
 	} else {
-		y = 2
+		y = 2;
 	}
 }

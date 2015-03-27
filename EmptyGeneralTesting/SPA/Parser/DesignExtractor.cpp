@@ -48,7 +48,7 @@ void DesignExtractor::Extract() {
 	ComputeModifiesAndUses();
 	ComputeCalls();
 	ComputeModifiesAndUsesForProcedures();
-	//ComputeNext();
+	ComputeNext();
 }
 
 void ComputeModifiesAndUsesForProcedures() {
@@ -72,11 +72,12 @@ void ComputeModifiesAndUsesForProcedures() {
 	public:
 		int componentCounter;
 		TarjanHelper() {
-			depthCounter, componentCounter = 0;
+			depthCounter, componentCounter = 1;
 			// TODO find an easier way of getting this out
 			for each (string procedure in ProcTable::GetAllProcNames()) {
 				int procIndex = ProcTable::GetIndexOfProc(procedure);
 				procMap[procIndex] = ProcInfo(procIndex);
+				int i = procMap[procIndex].minReacheableDepth;
 				procedures.push_back(procIndex);
 			}
 		}
@@ -126,6 +127,7 @@ void ComputeModifiesAndUsesForProcedures() {
 					SCCStack.pop_back();
 					nextProc = procMap[SCCStack.back()];
 				}
+				procMap[SCCStack.back()].componentIndex = componentCounter;
 				SCCStack.pop_back();
 				componentCounter++; // one component done, on to the next
 			}

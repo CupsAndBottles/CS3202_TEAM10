@@ -37,6 +37,7 @@ void ParseSource(string filename) {
 }
 
 void ParserToPKBTest::setUp() { 
+	Program::ClearAll();
 	ParseSource("pkbTest.txt");
 }
 

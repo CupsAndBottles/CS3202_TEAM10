@@ -146,7 +146,7 @@ void Parser::Parse() {
 	}
 
 	// post processing step
-	//DesignExtractor::Extract();
+	DesignExtractor::Extract();
 }
 
 TNode* Parser::ParseProcedure() {
@@ -386,6 +386,6 @@ TNode* Parser::ParseIfStmt() {
 }
 
 //void main() {
-//	Parser::Parse("bracketsTest.txt");
+//	Parser::Parse("callTest.txt");
 //	TNode& program = Program::GetASTRootNode();
 //}

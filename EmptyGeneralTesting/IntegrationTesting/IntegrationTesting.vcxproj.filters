@@ -38,15 +38,15 @@
     <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AffectsTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UltimateTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ParserToPKBTest.h">
+    <ClInclude Include="UltimateTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">

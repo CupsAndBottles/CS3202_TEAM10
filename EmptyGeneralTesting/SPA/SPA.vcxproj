@@ -29,9 +29,10 @@
     <ClInclude Include="PKB\VarTable.h" />
     <ClInclude Include="program\program.h" />
     <ClInclude Include="program\tnode\tnode.h" />
-    <ClInclude Include="queryprocessor\answers.h" />
+    <ClInclude Include="QueryProcessor\Answers.h" />
     <ClInclude Include="queryprocessor\grammar.h" />
     <ClInclude Include="queryprocessor\patternmatcher.h" />
+    <ClInclude Include="QueryProcessor\IntermediateResult.h" />
     <ClInclude Include="queryprocessor\querydata.h" />
     <ClInclude Include="queryprocessor\queryevaluator.h" />
     <ClInclude Include="queryprocessor\querypreprocessor.h" />
@@ -56,7 +57,7 @@
     <ClCompile Include="PKB\VarTable.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\TNode.cpp" />
-    <ClCompile Include="QueryProcessor\Answers.cpp" />
+    <ClCompile Include="QueryProcessor\IntermediateResult.cpp" />
     <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
     <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
@@ -65,6 +66,9 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bracketsTest.txt" />
+    <None Include="pkbTest.txt" />
+    <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

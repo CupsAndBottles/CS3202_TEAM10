@@ -48,7 +48,7 @@ void DesignExtractor::Extract() {
 	ComputeModifiesAndUses();
 	ComputeCalls();
 	ComputeModifiesAndUsesForProcedures();
-	//ComputeNext();
+	ComputeNext();
 }
 
 void ComputeModifiesAndUsesForProcedures() {
@@ -72,11 +72,12 @@ void ComputeModifiesAndUsesForProcedures() {
 	public:
 		int componentCounter;
 		TarjanHelper() {
-			depthCounter, componentCounter = 0;
+			depthCounter, componentCounter = 1;
 			// TODO find an easier way of getting this out
 			for each (string procedure in ProcTable::GetAllProcNames()) {
 				int procIndex = ProcTable::GetIndexOfProc(procedure);
 				procMap[procIndex] = ProcInfo(procIndex);
+				int i = procMap[procIndex].minReacheableDepth;
 				procedures.push_back(procIndex);
 			}
 		}
@@ -126,6 +127,7 @@ void ComputeModifiesAndUsesForProcedures() {
 					SCCStack.pop_back();
 					nextProc = procMap[SCCStack.back()];
 				}
+				procMap[SCCStack.back()].componentIndex = componentCounter;
 				SCCStack.pop_back();
 				componentCounter++; // one component done, on to the next
 			}
@@ -166,7 +168,7 @@ void ComputeModifiesAndUsesForProcedures() {
 	// iterate through each component
 	// compute us/mo for procs within components first
 	for (c_map_iter i = componentMap.begin(); i != componentMap.end(); i++) {
-		if (i->second.size() == 1) break;
+		if (i->second.size() == 1) continue;
 		set<int> usedVars;
 		set<int> modifiedVars;
 		// sum up the vars for all procs in the component
@@ -191,8 +193,6 @@ void ComputeModifiesAndUsesForProcedures() {
 	// all direct parents inherit properties of children
 	// clean leaves and add parents of current set to that
 	// loop from top
-
-	// TODO fix bug here!!!
 
 	// loop through all leaves
 	while (componentsWithoutChildren.size() != 0) {
@@ -294,7 +294,6 @@ void ComputeCalls() {
 }
 
 void ComputeModifiesAndUses() {
-	// TODO migrate code
 	/* Remember that
 		while x {		\\ 1
 			while y {	\\ 2
@@ -320,7 +319,7 @@ void ComputeModifiesAndUses() {
 
 		for each (int stmt in currentChildren) {
 			int parent = Parent::GetParentOf(stmt);
-			if (parent == -1) break;
+			if (parent == -1) continue;
 			vector<int> usedVars = Uses::GetVarUsedByStmt(stmt);
 			vector<int> modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
 			for each (int var in usedVars) {

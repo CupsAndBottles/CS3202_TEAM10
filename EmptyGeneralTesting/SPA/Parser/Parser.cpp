@@ -205,7 +205,6 @@ TNode* Parser::ParseStmt(TNode* parentStmt) {
 	switch (firstToken.type) {
 		case Token::IDENTIFIER:
 			stmt = ParseAssignmentStmt();
-			ConsumeTopTokenOfType(Token::END_OF_STMT);
 			StmtTypeTable::Insert(stmt->GetLineNumber(), ASSIGN);
 			break;
 		case Token::WHILE:
@@ -248,9 +247,8 @@ TNode* Parser::ParseAssignmentStmt() {
 
 TNode* Parser::ParseExpr(bool isBracket) {
 	Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
-	Token currentToken = PeekAtTopToken(); // peek
 	TNode* result = nullptr;
-	while (currentToken.type != terminatingCondition) {
+	while (!TopTokenIsType(terminatingCondition)) {
 		if (result == nullptr) {
 			if (TopTokenIsType(Token::OPEN_BRACE)) {
 				ConsumeTopTokenOfType(Token::OPEN_BRACE);
@@ -258,14 +256,11 @@ TNode* Parser::ParseExpr(bool isBracket) {
 			} else {
 				result = ParseAtomicToken();
 			}
-
-			if (PeekAtTopToken().type == terminatingCondition) { // peek at next token
-				return result;
-			}
+		} else {
+			result = ParseExpr(result, isBracket);
 		}
-		result = ParseExpr(result, isBracket);
-		currentToken = PeekAtTopToken();
 	}
+	ConsumeTopTokenOfType(terminatingCondition);
 	return result;
 }
 
@@ -363,6 +358,7 @@ TNode* Parser::ParseCallStmt() {
 	ConsumeTopTokenOfType(Token::CALL);
 	string procedure = ConsumeTopTokenOfType(Token::IDENTIFIER).content;
 	TNode* callNode = ConstructCallTNode(currentLineNumber, procedure);
+	ConsumeTopTokenOfType(Token::END_OF_STMT);
 	return callNode;
 }
 
@@ -390,6 +386,6 @@ TNode* Parser::ParseIfStmt() {
 }
 
 //void main() {
-//	Parser::Parse("sample_SIMPLE_source.txt");
+//	Parser::Parse("pkbTest.txt");
 //	TNode& program = Program::GetASTRootNode();
 //}

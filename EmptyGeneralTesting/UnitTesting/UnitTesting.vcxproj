@@ -74,9 +74,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\additionTest.txt" />
+    <None Include="ParserTestFiles\bracketsTest.txt" />
+    <None Include="ParserTestFiles\callTest.txt" />
+    <None Include="ParserTestFiles\ifTest.txt" />
     <None Include="ParserTestFiles\nestedWhileTest.txt" />
+    <None Include="ParserTestFiles\operatorsTest.txt" />
+    <None Include="ParserTestFiles\procTest.txt" />
     <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
     <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\whileTest.txt" />
   </ItemGroup>
   <ItemGroup>

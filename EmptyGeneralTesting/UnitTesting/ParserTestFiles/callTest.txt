@@ -1,0 +1,10 @@
+\\ Calls Test
+
+procedure calls {
+	call calls;
+	call others;
+}
+
+procedure others {
+	call calls;
+}

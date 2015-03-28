@@ -1,7 +1,6 @@
 #include "ParserTest.h"
 #include "..\SPA\Program\Program.h"
 
-
 #include <fstream>
 
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
@@ -18,12 +17,20 @@ void ParseSource(string filename) {
 	Parser::Parse(string(TESTFILE_DIRECTORY).append(filename));
 }
 
-TNode& GetLHS(TNode& node) {
-	return node.GetChild(0);
+TNode* GetLHS(TNode* node) {
+	return &node->GetChild(0);
 }
 
-TNode& GetRHS(TNode& node) {
-	return node.GetChild(1);
+TNode* GetLHS(TNode& node) {
+	return &node.GetChild(0);
+}
+
+TNode* GetRHS(TNode* node) {
+	return &node->GetChild(1);
+}
+
+TNode* GetRHS(TNode& node) {
+	return &node.GetChild(1);
 }
 
 void ParserTest::TestSimpleAssignmentParsing() {
@@ -38,13 +45,13 @@ void ParserTest::TestSimpleAssignmentParsing() {
 
 	CPPUNIT_ASSERT(firstStmt.GetLineNumber() == 1);
 	CPPUNIT_ASSERT(firstStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(firstStmt).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(firstStmt).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(firstStmt)->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(firstStmt)->GetContent() == "1");
 
 	CPPUNIT_ASSERT(secondStmt.GetLineNumber() == 2);
 	CPPUNIT_ASSERT(secondStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(secondStmt).GetContent() == "y");
-	CPPUNIT_ASSERT(GetRHS(secondStmt).GetContent() == "x");
+	CPPUNIT_ASSERT(GetLHS(secondStmt)->GetContent() == "y");
+	CPPUNIT_ASSERT(GetRHS(secondStmt)->GetContent() == "x");
 
 }
 
@@ -62,33 +69,33 @@ void ParserTest::TestAdditionParsing() {
 
 	CPPUNIT_ASSERT(firstStmt.GetLineNumber() == 1);
 	CPPUNIT_ASSERT(firstStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(firstStmt).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(firstStmt).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(firstStmt)).GetContent() == "y");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(firstStmt)).GetContent() == "z");
+	CPPUNIT_ASSERT(GetLHS(firstStmt)->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(firstStmt)->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(firstStmt))->GetContent() == "y");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(firstStmt))->GetContent() == "z");
 
 	CPPUNIT_ASSERT(secondStmt.GetLineNumber() == 2);
 	CPPUNIT_ASSERT(secondStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(secondStmt).GetContent() == "y");
-	CPPUNIT_ASSERT(GetRHS(secondStmt).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(secondStmt)).GetContent() == "z");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(secondStmt)).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(secondStmt)->GetContent() == "y");
+	CPPUNIT_ASSERT(GetRHS(secondStmt)->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(secondStmt))->GetContent() == "z");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(secondStmt))->GetContent() == "1");
 
 	CPPUNIT_ASSERT(thirdStmt.GetLineNumber() == 3);
 	CPPUNIT_ASSERT(thirdStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(thirdStmt).GetContent() == "z");
-	CPPUNIT_ASSERT(GetRHS(thirdStmt).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(thirdStmt)).GetContent() == "2");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(thirdStmt)).GetContent() == "3");
+	CPPUNIT_ASSERT(GetLHS(thirdStmt)->GetContent() == "z");
+	CPPUNIT_ASSERT(GetRHS(thirdStmt)->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(thirdStmt))->GetContent() == "2");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(thirdStmt))->GetContent() == "3");
 
 	CPPUNIT_ASSERT(fourthStmt.GetLineNumber() == 4);
 	CPPUNIT_ASSERT(fourthStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(fourthStmt).GetContent() == "a");
-	CPPUNIT_ASSERT(GetRHS(fourthStmt).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(fourthStmt)).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(fourthStmt)).GetContent() == "y");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(fourthStmt))).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(fourthStmt))).GetContent() == "2");
+	CPPUNIT_ASSERT(GetLHS(fourthStmt)->GetContent() == "a");
+	CPPUNIT_ASSERT(GetRHS(fourthStmt)->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(fourthStmt))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(fourthStmt))->GetContent() == "y");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(fourthStmt)))->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(fourthStmt)))->GetContent() == "2");
 }
 
 void ParserTest::TestWhileParsing() {
@@ -108,15 +115,15 @@ void ParserTest::TestWhileParsing() {
 
 	CPPUNIT_ASSERT(firstStmt.GetLineNumber() == 2);
 	CPPUNIT_ASSERT(firstStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(firstStmt).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(firstStmt).GetContent() == "2");
+	CPPUNIT_ASSERT(GetLHS(firstStmt)->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(firstStmt)->GetContent() == "2");
 
 	CPPUNIT_ASSERT(secondStmt.GetLineNumber() == 3);
 	CPPUNIT_ASSERT(secondStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(secondStmt).GetContent() == "y");
-	CPPUNIT_ASSERT(GetRHS(secondStmt).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(secondStmt)).GetContent() == "y");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(secondStmt)).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(secondStmt)->GetContent() == "y");
+	CPPUNIT_ASSERT(GetRHS(secondStmt)->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(secondStmt))->GetContent() == "y");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(secondStmt))->GetContent() == "1");
 }
 
 void ParserTest::TestNestedWhileParsing() {
@@ -142,8 +149,8 @@ void ParserTest::TestNestedWhileParsing() {
 
 	CPPUNIT_ASSERT(nestedStmt.GetLineNumber() == 4);
 	CPPUNIT_ASSERT(nestedStmt.GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(nestedStmt).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(nestedStmt).GetContent() == "0");
+	CPPUNIT_ASSERT(GetLHS(nestedStmt)->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(nestedStmt)->GetContent() == "0");
 }
 
 void ParserTest::TestParsing() {
@@ -159,20 +166,20 @@ void ParserTest::TestParsing() {
 	//  i=1;
 	CPPUNIT_ASSERT(stmts[0]->GetLineNumber() == 1);
 	CPPUNIT_ASSERT(stmts[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmts[0]).GetContent() == "i");
-	CPPUNIT_ASSERT(GetRHS(*stmts[0]).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmts[0])->GetContent() == "i");
+	CPPUNIT_ASSERT(GetRHS(stmts[0])->GetContent() == "1");
 
 	// b=200 ;
 	CPPUNIT_ASSERT(stmts[1]->GetLineNumber() == 2);
 	CPPUNIT_ASSERT(stmts[1]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmts[1]).GetContent() == "b");
-	CPPUNIT_ASSERT(GetRHS(*stmts[1]).GetContent() == "200");
+	CPPUNIT_ASSERT(GetLHS(stmts[1])->GetContent() == "b");
+	CPPUNIT_ASSERT(GetRHS(stmts[1])->GetContent() == "200");
 
 	// 	c= a   ;
 	CPPUNIT_ASSERT(stmts[2]->GetLineNumber() == 3);
 	CPPUNIT_ASSERT(stmts[2]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmts[2]).GetContent() == "c");
-	CPPUNIT_ASSERT(GetRHS(*stmts[2]).GetContent() == "a");
+	CPPUNIT_ASSERT(GetLHS(stmts[2])->GetContent() == "c");
+	CPPUNIT_ASSERT(GetRHS(stmts[2])->GetContent() == "a");
 
 	// while a	
 	CPPUNIT_ASSERT(stmts[3]->GetLineNumber() == 4);
@@ -191,12 +198,12 @@ void ParserTest::TestParsing() {
 	//         oSCar  = 1 + beta + tmp;
 	CPPUNIT_ASSERT(stmtList5[0]->GetLineNumber() == 6);
 	CPPUNIT_ASSERT(stmtList5[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList5[0]).GetContent() == "oSCar");
-	CPPUNIT_ASSERT(GetRHS(*stmtList5[0]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList5[0])).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList5[0])).GetContent() == "tmp");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(*stmtList5[0]))).GetContent() == "1");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(*stmtList5[0]))).GetContent() == "beta");
+	CPPUNIT_ASSERT(GetLHS(stmtList5[0])->GetContent() == "oSCar");
+	CPPUNIT_ASSERT(GetRHS(stmtList5[0])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList5[0]))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList5[0]))->GetContent() == "tmp");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(stmtList5[0])))->GetContent() == "1");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(stmtList5[0])))->GetContent() == "beta");
 
 	//         while tmp{
 	CPPUNIT_ASSERT(stmtList5[1]->GetLineNumber() == 7);
@@ -208,14 +215,14 @@ void ParserTest::TestParsing() {
 	//           oSCar = I + k + j1k + chArlie; }
 	CPPUNIT_ASSERT(stmtList7[0]->GetLineNumber() == 8);
 	CPPUNIT_ASSERT(stmtList7[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList7[0]).GetContent() == "oSCar");
-	CPPUNIT_ASSERT(GetRHS(*stmtList7[0]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList7[0])).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList7[0])).GetContent() == "chArlie");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(*stmtList7[0]))).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(*stmtList7[0]))).GetContent() == "j1k");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetLHS(GetRHS(*stmtList7[0])))).GetContent() == "I");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetLHS(GetRHS(*stmtList7[0])))).GetContent() == "k");
+	CPPUNIT_ASSERT(GetLHS(stmtList7[0])->GetContent() == "oSCar");
+	CPPUNIT_ASSERT(GetRHS(stmtList7[0])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList7[0]))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList7[0]))->GetContent() == "chArlie");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(stmtList7[0])))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(stmtList7[0])))->GetContent() == "j1k");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetLHS(GetRHS(stmtList7[0]))))->GetContent() == "I");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetLHS(GetRHS(stmtList7[0]))))->GetContent() == "k");
 
 	// 	while x 
 	CPPUNIT_ASSERT(stmtList5[2]->GetLineNumber() == 9);
@@ -227,10 +234,10 @@ void ParserTest::TestParsing() {
 	//         x = x + 1;
 	CPPUNIT_ASSERT(stmtList9[0]->GetLineNumber() == 10);
 	CPPUNIT_ASSERT(stmtList9[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList9[0]).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(*stmtList9[0]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList9[0])).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList9[0])).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmtList9[0])->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(stmtList9[0])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList9[0]))->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList9[0]))->GetContent() == "1");
 
 	//        while left {
 	CPPUNIT_ASSERT(stmtList9[1]->GetLineNumber() == 11);
@@ -249,28 +256,28 @@ void ParserTest::TestParsing() {
 	//             Romeo = Romeo + 1;
 	CPPUNIT_ASSERT(stmtList12[0]->GetLineNumber() == 13);
 	CPPUNIT_ASSERT(stmtList12[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList12[0]).GetContent() == "Romeo");
-	CPPUNIT_ASSERT(GetRHS(*stmtList12[0]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList12[0])).GetContent() == "Romeo");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList12[0])).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmtList12[0])->GetContent() == "Romeo");
+	CPPUNIT_ASSERT(GetRHS(stmtList12[0])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList12[0]))->GetContent() == "Romeo");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList12[0]))->GetContent() == "1");
 
 	//             b = 0;
 	CPPUNIT_ASSERT(stmtList12[1]->GetLineNumber() == 14);
 	CPPUNIT_ASSERT(stmtList12[1]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList12[1]).GetContent() == "b");
-	CPPUNIT_ASSERT(GetRHS(*stmtList12[1]).GetContent() == "0");
+	CPPUNIT_ASSERT(GetLHS(stmtList12[1])->GetContent() == "b");
+	CPPUNIT_ASSERT(GetRHS(stmtList12[1])->GetContent() == "0");
 
 	//             c = delta    + l  + width + Romeo ; }
 	CPPUNIT_ASSERT(stmtList12[2]->GetLineNumber() == 15);
 	CPPUNIT_ASSERT(stmtList12[2]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList12[2]).GetContent() == "c");
-	CPPUNIT_ASSERT(GetRHS(*stmtList12[2]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList12[2])).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList12[2])).GetContent() == "Romeo");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(*stmtList12[2]))).GetContent() == "+");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(*stmtList12[2]))).GetContent() == "width");
-	CPPUNIT_ASSERT(GetLHS(GetLHS(GetLHS(GetRHS(*stmtList12[2])))).GetContent() == "delta");
-	CPPUNIT_ASSERT(GetRHS(GetLHS(GetLHS(GetRHS(*stmtList12[2])))).GetContent() == "l");
+	CPPUNIT_ASSERT(GetLHS(stmtList12[2])->GetContent() == "c");
+	CPPUNIT_ASSERT(GetRHS(stmtList12[2])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList12[2]))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList12[2]))->GetContent() == "Romeo");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetRHS(stmtList12[2])))->GetContent() == "+");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetRHS(stmtList12[2])))->GetContent() == "width");
+	CPPUNIT_ASSERT(GetLHS(GetLHS(GetLHS(GetRHS(stmtList12[2]))))->GetContent() == "delta");
+	CPPUNIT_ASSERT(GetRHS(GetLHS(GetLHS(GetRHS(stmtList12[2]))))->GetContent() == "l");
 
 	//             while c {
 	CPPUNIT_ASSERT(stmtList11[1]->GetLineNumber() == 16);
@@ -282,31 +289,252 @@ void ParserTest::TestParsing() {
 	//               c = c +1   	; }
 	CPPUNIT_ASSERT(stmtList16[0]->GetLineNumber() == 17);
 	CPPUNIT_ASSERT(stmtList16[0]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList16[0]).GetContent() == "c");
-	CPPUNIT_ASSERT(GetRHS(*stmtList16[0]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList16[0])).GetContent() == "c");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList16[0])).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmtList16[0])->GetContent() == "c");
+	CPPUNIT_ASSERT(GetRHS(stmtList16[0])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList16[0]))->GetContent() == "c");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList16[0]))->GetContent() == "1");
 
 	//             x = x+ 1	; }}
 	CPPUNIT_ASSERT(stmtList11[2]->GetLineNumber() == 18);
 	CPPUNIT_ASSERT(stmtList11[2]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList11[2]).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(*stmtList11[2]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList11[2])).GetContent() == "x");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList11[2])).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmtList11[2])->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(stmtList11[2])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList11[2]))->GetContent() == "x");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList11[2]))->GetContent() == "1");
 
 	//           a=   2; }
 	CPPUNIT_ASSERT(stmtList5[3]->GetLineNumber() == 19);
 	CPPUNIT_ASSERT(stmtList5[3]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList5[3]).GetContent() == "a");
-	CPPUNIT_ASSERT(GetRHS(*stmtList5[3]).GetContent() == "2");
+	CPPUNIT_ASSERT(GetLHS(stmtList5[3])->GetContent() == "a");
+	CPPUNIT_ASSERT(GetRHS(stmtList5[3])->GetContent() == "2");
 
 	//    w = w+1  ;
 	CPPUNIT_ASSERT(stmtList4[1]->GetLineNumber() == 20);
 	CPPUNIT_ASSERT(stmtList4[1]->GetContent() == "=");
-	CPPUNIT_ASSERT(GetLHS(*stmtList4[1]).GetContent() == "w");
-	CPPUNIT_ASSERT(GetRHS(*stmtList4[1]).GetContent() == "+");
-	CPPUNIT_ASSERT(GetLHS(GetRHS(*stmtList4[1])).GetContent() == "w");
-	CPPUNIT_ASSERT(GetRHS(GetRHS(*stmtList4[1])).GetContent() == "1");
+	CPPUNIT_ASSERT(GetLHS(stmtList4[1])->GetContent() == "w");
+	CPPUNIT_ASSERT(GetRHS(stmtList4[1])->GetContent() == "+");
+	CPPUNIT_ASSERT(GetLHS(GetRHS(stmtList4[1]))->GetContent() == "w");
+	CPPUNIT_ASSERT(GetRHS(GetRHS(stmtList4[1]))->GetContent() == "1");
 
+}
+
+
+void ParserTest::TestBracketParsing() {
+	Program::ClearAll();
+	ParseSource("bracketsTest.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	//procedure brackets{
+	CPPUNIT_ASSERT_EQUAL((string)"brackets", procedure.GetContent());
+	//	x = (y);
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(stmts[0])->GetContent());
+	//	y = (x + 1);
+	CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(stmts[1])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(stmts[1])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetRHS(stmts[1]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(GetRHS(stmts[1]))->GetContent());
+	//	z = (x + y) + z;
+	CPPUNIT_ASSERT_EQUAL(3, stmts[2]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetLHS(stmts[2])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(stmts[2])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetRHS(GetRHS(stmts[2]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetLHS(GetRHS(stmts[2]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetLHS(GetRHS(stmts[2])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(GetLHS(GetRHS(stmts[2])))->GetContent());
+
+	//	a = (x + y) + (a + b);
+	CPPUNIT_ASSERT_EQUAL(4, stmts[3]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(stmts[3])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(stmts[3])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetLHS(GetRHS(stmts[3]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetLHS(GetRHS(stmts[3])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetRHS(GetLHS(GetRHS(stmts[3])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(GetRHS(stmts[3]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(GetRHS(GetRHS(stmts[3])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"b", GetRHS(GetRHS(GetRHS(stmts[3])))->GetContent());
+	//}
+}
+
+void ParserTest::TestIfParsing() {
+	Program::ClearAll();
+	ParseSource("ifTest.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	//procedure testif{
+	CPPUNIT_ASSERT_EQUAL((string)"testif", procedure.GetContent());
+	//	if x then{
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", stmts[0]->GetChild(0).GetContent());
+	CPPUNIT_ASSERT_EQUAL(TNode::IF, stmts[0]->GetType());
+	//		y = 1;
+	vector<TNode*> thenBlock = stmts[0]->GetChild(1).GetChildren();
+	CPPUNIT_ASSERT_EQUAL(2, thenBlock[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(thenBlock[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(thenBlock[0])->GetContent());
+	//	} else {
+	//		y = 2
+	vector<TNode*> elseBlock = stmts[0]->GetChild(2).GetChildren();
+	CPPUNIT_ASSERT_EQUAL(3, elseBlock[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(elseBlock[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"2", GetRHS(elseBlock[0])->GetContent());
+	//	}
+	//}
+}
+
+void ParserTest::TestOperatorParsing() {
+	Program::ClearAll();
+	ParseSource("operatorsTest.txt");
+	TNode program = Program::GetASTRootNode();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	//procedure testops{
+	CPPUNIT_ASSERT_EQUAL((string)"testops", procedure.GetContent());
+	//	x = y - 1;			\\1
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetRHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(GetRHS(stmts[0]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(GetRHS(stmts[0]))->GetContent());
+	//	y = x * 5;			\\2
+	CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(stmts[1])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetRHS(stmts[1])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetRHS(stmts[1]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"5", GetRHS(GetRHS(stmts[1]))->GetContent());
+	//	z = x + y * z;		\\3
+	CPPUNIT_ASSERT_EQUAL(3, stmts[2]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetLHS(stmts[2])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(stmts[2])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetRHS(stmts[2]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetRHS(GetRHS(stmts[2]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(GetRHS(GetRHS(stmts[2])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetRHS(GetRHS(GetRHS(stmts[2])))->GetContent());
+	//	a = y + z - b;		\\4
+	CPPUNIT_ASSERT_EQUAL(4, stmts[3]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(stmts[3])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetRHS(stmts[3])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetLHS(GetRHS(stmts[3]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"b", GetRHS(GetRHS(stmts[3]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(GetLHS(GetRHS(stmts[3])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetRHS(GetLHS(GetRHS(stmts[3])))->GetContent());
+	//	b = a - c * g;		\\5
+	CPPUNIT_ASSERT_EQUAL(5, stmts[4]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"b", GetLHS(stmts[4])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetRHS(stmts[4])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetLHS(GetRHS(stmts[4]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetRHS(GetRHS(stmts[4]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"c", GetLHS(GetRHS(GetRHS(stmts[4])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"g", GetRHS(GetRHS(GetRHS(stmts[4])))->GetContent());
+	//	c = x - y * z + a;	\\6
+	CPPUNIT_ASSERT_EQUAL(6, stmts[5]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"c", GetLHS(stmts[5])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"+", GetRHS(stmts[5])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"a", GetRHS(GetRHS(stmts[5]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetLHS(GetRHS(stmts[5]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(GetLHS(GetRHS(stmts[5])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetRHS(GetLHS(GetRHS(stmts[5])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(GetRHS(GetLHS(GetRHS(stmts[5]))))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"z", GetRHS(GetRHS(GetLHS(GetRHS(stmts[5]))))->GetContent());
+	//	d = d - d - d;		\\7
+	CPPUNIT_ASSERT_EQUAL(7, stmts[6]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"d", GetLHS(stmts[6])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetRHS(stmts[6])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"-", GetLHS(GetRHS(stmts[6]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"d", GetRHS(GetRHS(stmts[6]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"d", GetLHS(GetLHS(GetRHS(stmts[6])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"d", GetRHS(GetLHS(GetRHS(stmts[6])))->GetContent());
+	//	e = e * e * e;		\\8
+	CPPUNIT_ASSERT_EQUAL(8, stmts[7]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"e", GetLHS(stmts[7])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetRHS(stmts[7])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"*", GetLHS(GetRHS(stmts[7]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"e", GetRHS(GetRHS(stmts[7]))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"e", GetLHS(GetLHS(GetRHS(stmts[7])))->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"e", GetRHS(GetLHS(GetRHS(stmts[7])))->GetContent());
+	//}
+}
+
+void ParserTest::TestProcedureParsing() {
+	Program::ClearAll();
+	ParseSource("procTest.txt");
+	TNode program = Program::GetASTRootNode();
+
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+	//procedure one {
+	CPPUNIT_ASSERT_EQUAL((string)"one", procedure.GetContent());
+	//	x = 1;
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(stmts[0])->GetContent());
+	//}
+
+	procedure = program.GetChild(1);
+	stmts = procedure.GetChild(0).GetChildren();
+	//procedure two {
+	CPPUNIT_ASSERT_EQUAL((string)"two", procedure.GetContent());
+	//	x = 2;
+	CPPUNIT_ASSERT_EQUAL(2, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"2", GetRHS(stmts[0])->GetContent());
+	//}
+
+	procedure = program.GetChild(2);
+	stmts = procedure.GetChild(0).GetChildren();
+	//procedure three {
+	CPPUNIT_ASSERT_EQUAL((string)"three", procedure.GetContent());
+	//	x = 3;
+	CPPUNIT_ASSERT_EQUAL(3, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"3", GetRHS(stmts[0])->GetContent());
+	//}
+
+	procedure = program.GetChild(3);
+	stmts = procedure.GetChild(0).GetChildren();
+	//procedure four {
+	CPPUNIT_ASSERT_EQUAL((string)"four", procedure.GetContent());
+	//	x = 4;
+	CPPUNIT_ASSERT_EQUAL(4, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"4", GetRHS(stmts[0])->GetContent());
+	//}
+
+}
+
+void ParserTest::TestCallParsing() {
+	Program::ClearAll();
+	ParseSource("callTest.txt");
+	TNode program = Program::GetASTRootNode();
+	//TNode procedure = program.GetChild(0);
+	//vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+
+	////procedure calls{
+	//CPPUNIT_ASSERT_EQUAL((string)"calls", procedure.GetContent());
+	////	call calls;
+	//CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
+	//CPPUNIT_ASSERT_EQUAL((string)"calls", stmts[0]->GetContent());
+	////	call others;
+	//CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
+	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[1]->GetType());
+	//CPPUNIT_ASSERT_EQUAL((string)"others", stmts[1]->GetContent());
+	////}
+
+	//procedure = program.GetChild(1);
+	//stmts = procedure.GetChild(0).GetChildren();
+	////procedure others{
+	//CPPUNIT_ASSERT_EQUAL((string)"others", procedure.GetContent());
+	////	call calls;
+	//CPPUNIT_ASSERT_EQUAL(3, stmts[0]->GetLineNumber());
+	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
+	//CPPUNIT_ASSERT_EQUAL((string)"calls", stmts[0]->GetContent());
+	//}
 }

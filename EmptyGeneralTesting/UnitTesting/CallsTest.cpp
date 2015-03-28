@@ -32,7 +32,7 @@ void CallsTest::testSetCalls() {
 
 	Calls::SetCalls(2, 1);
 	CPPUNIT_ASSERT_EQUAL(4, Calls::SizeOfCalls());
-	// set recurssive call (illegal)
+	// set recursive call (illegal)
 	Calls::SetCalls(1, 2);
 	CPPUNIT_ASSERT_EQUAL(4, Calls::SizeOfCalls());
 	

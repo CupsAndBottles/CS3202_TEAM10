@@ -11,7 +11,7 @@ class ParserToPKBTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestUses);
 	CPPUNIT_TEST(TestParent);
 	CPPUNIT_TEST(TestFollows);
-	//CPPUNIT_TEST(TestNext);
+	CPPUNIT_TEST(TestNext);
 	CPPUNIT_TEST(TestModifiesForProcs);
 	CPPUNIT_TEST(TestUsesForProcs);
 	CPPUNIT_TEST(TestStmtTypeTable);

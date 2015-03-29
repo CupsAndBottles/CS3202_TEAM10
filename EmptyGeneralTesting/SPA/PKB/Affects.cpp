@@ -4,9 +4,11 @@
 #include "Modifies.h"
 #include "Uses.h"
 #include "Follows.h"
+#include "..\Program\Program.h"
 //#include "VarTable.h"
 
 #include <iostream>
+#include <set>
 
 Affects::Affects(void) {
 }
@@ -261,6 +263,8 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 			}
 			stmtsIsChecked.at(currStmt) = true;
 		} else {
+
+
 			nextBeforeCurrStmt.clear();
 		}
 
@@ -361,6 +365,211 @@ vector<bool> Affects::OrOperationOnBoolVects(vector<bool> boolVect1, vector<bool
 		return boolVect2;
 	}
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                                                                                                                     */
+/*                                                 AFFECTS*                                                            */
+/*                                                                                                                     */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+bool stmtWalker(int startStmt, int var, int endStmt);
+
+bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
+	// TODO do error checking to check if stmts are in the same procedures.
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN) ||
+		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+	// stmtAffecting is guaranteed to be assignment
+	int varModified = Modifies::GetVarModifiedByStmt(stmtAffecting)[0];
+
+	return stmtWalker(stmtAffecting, varModified, stmtAffected);
+}
+
+int getLastStmtInListFrom(int stmt) {
+	// loop until no follows
+	// perform actions depending on the type of stmt last one is
+	// keyword is FOLLOWS
+	int followingStmt = stmt;
+
+	do {
+		stmt = followingStmt;
+		followingStmt = Follows::GetFollowsAfter(stmt);
+	} while (followingStmt != -1);
+
+	if (StmtTypeTable::CheckIfStmtOfType(stmt, SynonymType::WHILE)) {
+		getLastStmtInListFrom(stmt + 1); // a bit of cheating
+	} else if (StmtTypeTable::CheckIfStmtOfType(stmt, SynonymType::IF)) {
+		vector<int> followingStmts = Next::GetNextAfter(stmt);
+		getLastStmtInListFrom(max(followingStmts[0], followingStmts[1]));
+	} else {
+		return stmt;
+	}
+}
+
+bool stmtWalker(int currentStmt, int var, int endStmt) {
+	/*
+		tail recursive
+		calls itself upon finding next stmt in chain, updating stmtAffecting with new stmtAffecting
+		if while is found, continue tail call with start of stmtlist
+			this means that if encounter next < currentStmt, end of loop has been reached, update next accordingly
+		if else is found, perform 2 tail calls
+			update currentStmt with stmt numbers of beginnings of each branch
+			return or of results
+	*/
+
+	if (currentStmt > endStmt) return false; // overshot
+
+	if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+		// if while is found, continue tail call with start of stmtlist
+		vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+		if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
+			if (followingStmts.size == 2) {
+				return stmtWalker(max(followingStmts[0], followingStmts[1]), var, endStmt); // false branch of while
+			} else {
+				return false; // end of proc reached
+			}
+		} else {
+			return stmtWalker(currentStmt + 1, var, endStmt); // start of stmtlist
+		}
+
+	} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+		// if else is found, perform 2 tail calls
+
+		if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
+			return stmtWalker(getLastStmtInListFrom(currentStmt) + 1, var, endStmt);
+		}
+
+		vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+		return stmtWalker(followingStmts[0], var, endStmt) || stmtWalker(followingStmts[1], var, endStmt);
+
+	} else {
+		// stmt found was assignment or call stmt
+		// no call stmts will possess uses or modifies (for now)
+		// this is where you do the checking for the truth val
+		// endStmt guaranteed to be assignment
+
+		vector<int> nextStmts = Next::GetNextAfter(currentStmt);
+		int nextStmt;
+		if (nextStmts.size == 0) { // check if is end of proc or not
+			nextStmt = endStmt + 1; // must end by next iteration
+		} else {
+			nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
+			if (nextStmt < currentStmt) { // skip while
+				vector<int> nextAfterWhile = Next::GetNextAfter(nextStmt);
+				if (nextStmts.size != 2) { // check if end or not
+					nextStmt = endStmt + 1; // must end by next iteration
+				} else {
+					nextStmt = max(nextStmts[0], nextStmts[1]);
+				}
+			}
+		}
+
+		if (Uses::IsStmtUsingVar(currentStmt, var)) {
+			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::ASSIGN)) {
+				if (currentStmt == endStmt) {
+					return true; // stmt found
+				} else {
+					int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+					return stmtWalker(nextStmt, varModified, endStmt);
+				}
+			}
+		} else {
+			return stmtWalker(nextStmt, var, endStmt);
+		}
+	}
+}
+
+// WARNING, RESULT MAY BE UNSORTED
+vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
+
+	class StmtsHelper {
+		map<int, bool> mappedAffects;
+		
+	public:
+		set<int> affectedStmts;
+		StmtsHelper() {};
+
+		void findAffectedStmts(int currentStmt, int var) {
+			if (currentStmt > StmtTypeTable::GetNoOfStmts()) return; // done
+			if (mappedAffects[currentStmt]) return; // optimisation (some form of memoization)
+
+			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+				// if while is found, continue tail call with start of stmtlist
+				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+				if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
+					if (followingStmts.size == 2) {
+						findAffectedStmts(max(followingStmts[0], followingStmts[1]), var); // false branch of while
+					} else {
+						return; // end of proc reached
+					}
+				} else {
+					findAffectedStmts(currentStmt + 1, var); // start of stmtlist
+				}
+
+			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+				// if else is found, perform 2 tail calls
+
+				if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
+					return findAffectedStmts(getLastStmtInListFrom(currentStmt), var);
+				}
+
+				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+				findAffectedStmts(followingStmts[0], var);
+				findAffectedStmts(followingStmts[1], var);
+
+			} else {
+				// stmt found was assignment or call stmt
+				// no call stmts will possess uses or modifies (for now)
+				// this is where you do the checking for the truth val
+				// endStmt guaranteed to be assignment
+
+				vector<int> nextStmts = Next::GetNextAfter(currentStmt);
+				int nextStmt;
+				if (nextStmts.size == 0) { // check if is end of proc or not
+					nextStmt = currentStmt + 1; // must end by next iteration
+				} else {
+					nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
+					if (StmtTypeTable::CheckIfStmtOfType(nextStmt, SynonymType::WHILE)) { // skip while
+						mappedAffects[nextStmt] = true;
+						vector<int> nextAfterWhile = Next::GetNextAfter(nextStmt);
+						if (nextStmts.size != 2) { // check if end or not
+							nextStmt = currentStmt + 1; // must end by next iteration
+						} else {
+							nextStmt = max(nextStmts[0], nextStmts[1]);
+						}
+					}
+				}
+
+				if (Uses::IsStmtUsingVar(currentStmt, var)) {
+					if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::ASSIGN)) {
+						mappedAffects[currentStmt] = true;
+						affectedStmts.insert(currentStmt);
+						int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+						return findAffectedStmts(nextStmt, varModified);
+					}
+				} else {
+					return findAffectedStmts(nextStmt, var);
+				}
+			}
+		}
+	};
+
+	// guarantee that stmt is assignment.
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+
+	StmtsHelper helper;
+	helper.findAffectedStmts(stmtAffecting, Modifies::GetVarModifiedByStmt(stmtAffecting)[0]);
+	return vector<int>(helper.affectedStmts.begin(), helper.affectedStmts.end());
+}
+
+vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
+	/*
+		walk backwards up next chain
+
+	*/
+
+}
+
 
 Affects::~Affects(void) {
 }

@@ -38,7 +38,23 @@ void UsesTest::TestSingleStmt() {
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == false);
 	
 }
+void UsesTest::TestBitVector() {
+	Uses::ClearData();
+	Uses::SetStmtUsesVar(0,1);
+	Uses::SetStmtUsesVar(1,2);
+	Uses::SetProcUsesVar(2,3);
+	Uses::SetStmtUsesVar(3,4);
+	
+	Uses::CreateBitVector();
+	CPPUNIT_ASSERT(Uses::IsStmtUsingVarBV(0,1));
+	CPPUNIT_ASSERT(Uses::IsStmtUsingVarBV(1,2));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVarBV(2,3));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVarBV(3,4));
 
+	Uses::ClearData();
+	CPPUNIT_ASSERT(Uses::HasAnyUses()==false);
+
+}
 void UsesTest::TestMultipleStmts() {
 	Uses::ClearData();
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == false);

@@ -62,7 +62,23 @@ void NextTest::TestSetNext() {
 	CPPUNIT_ASSERT_EQUAL(4, Next::SizeOfNext());
 	
 }
+void NextTest::TestBitVector() {
+	Next::ClearData();
+	Next::SetNext(0,1);
+	Next::SetNext(1,2);
+	Next::SetNext(2,3);
+	Next::SetNext(3,4);
+	
+	Next::CreateBitVector();
+	CPPUNIT_ASSERT(Next::IsNextBV(0,1));
+	CPPUNIT_ASSERT(Next::IsNextBV(2,3));
+	CPPUNIT_ASSERT(Next::IsNextBV(3,4));
+	CPPUNIT_ASSERT(Next::IsNextBV(1,2));
 
+	Next::ClearData();
+	CPPUNIT_ASSERT(Next::HasAnyNext()==false);
+
+}
 void NextTest::TestGetNextAfter() {
 	Next::ClearData();
 	CPPUNIT_ASSERT_EQUAL(0, Next::SizeOfNext());

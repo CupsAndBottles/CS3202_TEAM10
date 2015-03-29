@@ -20,7 +20,23 @@ void ModifiesTest::TestNoStmt() {
 	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::SizeOfModifies());
 
 }
+void ModifiesTest::TestBitVector() {
+	Modifies::ClearData();
+	Modifies::SetStmtModifiesVar(1, 0);
+	Modifies::SetStmtModifiesVar(2, 0);
+	Modifies::SetProcModifiesVar(3, 0);
+	Modifies::SetProcModifiesVar(4, 0);
+	Modifies::CreateBitVector();
 
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVarBV(1,0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVarBV(2,0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVarBV(3,0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVarBV(4,0));
+
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
+
+}
 void ModifiesTest::TestSingleStmt() {
 
 	Modifies::ClearData();

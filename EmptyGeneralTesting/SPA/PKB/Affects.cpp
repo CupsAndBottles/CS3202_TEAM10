@@ -423,7 +423,7 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 		// if while is found, continue tail call with start of stmtlist
 		vector<int> followingStmts = Next::GetNextAfter(currentStmt);
 		if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
-			if (followingStmts.size == 2) {
+			if (followingStmts.size() == 2) {
 				return stmtWalker(max(followingStmts[0], followingStmts[1]), var, endStmt); // false branch of while
 			} else {
 				return false; // end of proc reached
@@ -450,13 +450,13 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 
 		vector<int> nextStmts = Next::GetNextAfter(currentStmt);
 		int nextStmt;
-		if (nextStmts.size == 0) { // check if is end of proc or not
+		if (nextStmts.size() == 0) { // check if is end of proc or not
 			nextStmt = endStmt + 1; // must end by next iteration
 		} else {
 			nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
 			if (nextStmt < currentStmt) { // skip while
 				vector<int> nextAfterWhile = Next::GetNextAfter(nextStmt);
-				if (nextStmts.size != 2) { // check if end or not
+				if (nextStmts.size() != 2) { // check if end or not
 					nextStmt = endStmt + 1; // must end by next iteration
 				} else {
 					nextStmt = max(nextStmts[0], nextStmts[1]);
@@ -497,7 +497,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 				// if while is found, continue tail call with start of stmtlist
 				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
 				if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
-					if (followingStmts.size == 2) {
+					if (followingStmts.size() == 2) {
 						findAffectedStmts(max(followingStmts[0], followingStmts[1]), var); // false branch of while
 					} else {
 						return; // end of proc reached
@@ -525,14 +525,14 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 
 				vector<int> nextStmts = Next::GetNextAfter(currentStmt);
 				int nextStmt;
-				if (nextStmts.size == 0) { // check if is end of proc or not
+				if (nextStmts.size() == 0) { // check if is end of proc or not
 					nextStmt = currentStmt + 1; // must end by next iteration
 				} else {
 					nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
 					if (StmtTypeTable::CheckIfStmtOfType(nextStmt, SynonymType::WHILE)) { // skip while
 						mappedAffects[nextStmt] = true;
 						vector<int> nextAfterWhile = Next::GetNextAfter(nextStmt);
-						if (nextStmts.size != 2) { // check if end or not
+						if (nextStmts.size() != 2) { // check if end or not
 							nextStmt = currentStmt + 1; // must end by next iteration
 						} else {
 							nextStmt = max(nextStmts[0], nextStmts[1]);
@@ -568,6 +568,8 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 
 	*/
 
+	// rmb to remove this
+	return vector<int>();
 }
 
 

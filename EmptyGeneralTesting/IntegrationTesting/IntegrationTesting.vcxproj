@@ -72,11 +72,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ParserToPKBTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
+    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
-    <ClCompile Include="UltimateTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -85,10 +82,7 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParserToPKBTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
-    <ClInclude Include="UltimateTest.h" />
+    <ClInclude Include="ParentStmtTypeTableTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

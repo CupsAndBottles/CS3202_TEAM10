@@ -2,11 +2,14 @@
 #include <utility>
 #include <map>
 #include <vector>
+#include <iostream>
 
 #include "Parent.h"
+#include "StmtTypeTable.h"
 
 map <int, vector<int>> Parent::parentToChildrenTable;
 map <int, int> Parent::childToParentTable;
+vector<vector<bool>> Parent::parentToChildrenTTable;
 
 /** public methods **/
 Parent::Parent() {
@@ -56,6 +59,18 @@ bool Parent::IsParentT(int parentStmtIndex, int childStmtIndex) {
 
 }
 
+bool Parent::IsParentTBV(int parentStmtIndex, int childStmtIndex) {
+	int totalNoOfStmts = StmtTypeTable::GetMaxStmtIndex();
+
+	if (parentStmtIndex >= 0 && parentStmtIndex < totalNoOfStmts + 1 
+		&& childStmtIndex >= 0 && childStmtIndex < totalNoOfStmts + 1) {
+		return parentToChildrenTTable.at(parentStmtIndex).at(childStmtIndex);
+	} else {
+		return false;
+	}
+
+}
+
 vector<int> Parent::GetParentTOf(int childStmtIndex) {
 	vector<int> parentList;
 	int currParent = GetParentOf(childStmtIndex);
@@ -96,6 +111,24 @@ vector<int> Parent::GetChildrenTOf(int parentStmtIndex) {
 // tells whether any parents relationships are stored
 bool Parent::HasAnyParents() {
 	return SizeOfParent() > 0;
+}
+
+void Parent::CreateParentToChildrenTTable() {
+	int totalNoOfStmts = StmtTypeTable::GetMaxStmtIndex();
+	vector<bool> emptyRow(totalNoOfStmts + 1, false);
+	parentToChildrenTTable = vector<vector<bool>>(totalNoOfStmts + 1, emptyRow);
+
+	vector<int> childrenT;
+	for (int i = 0; i < (totalNoOfStmts + 1); i++) {
+		childrenT = GetChildrenTOf(i);
+
+		for(vector<int>::iterator it = childrenT.begin(); it != childrenT.end(); it++) {
+			parentToChildrenTTable.at(i).at(*it) = true;
+
+		}
+	
+	}
+
 }
 
 int Parent::SizeOfParent() {

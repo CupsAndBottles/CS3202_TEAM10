@@ -16,8 +16,12 @@ vector<int> StmtTypeTable::allWhileStmts;
 vector<int> StmtTypeTable::allCallStmts;
 vector<int> StmtTypeTable::allIfThenStmts;
 
+int StmtTypeTable::maxStmtIndex;
+
 // constructor
-StmtTypeTable::StmtTypeTable() {};
+StmtTypeTable::StmtTypeTable() {
+	maxStmtIndex = 0;
+};
 
 vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 	if(type == STMT || type == PROG_LINE) { 
@@ -69,6 +73,7 @@ void StmtTypeTable::Insert(int stmtIndex, SynonymType type) {
 		indexTypeTable[stmtIndex] = type;
 		typeIndexTable[type].push_back(stmtIndex);
 		
+		maxStmtIndex = maxStmtIndex > stmtIndex ? maxStmtIndex : stmtIndex;
 	}
 }
 
@@ -116,6 +121,10 @@ int StmtTypeTable::GetNoOfStmtsOfType(SynonymType type) {
 			return GetNoOfStmts();
 
 	}
+}
+
+int StmtTypeTable::GetMaxStmtIndex() {
+	return maxStmtIndex;
 }
 
 void StmtTypeTable::ClearData() {

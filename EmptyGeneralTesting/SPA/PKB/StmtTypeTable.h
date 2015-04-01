@@ -23,6 +23,7 @@ public:
 	
 	static int GetNoOfStmts();
 	static int GetNoOfStmtsOfType(SynonymType type);
+	static int GetMaxStmtIndex();
 
 	static void ClearData();
 
@@ -35,6 +36,8 @@ private:
 	static vector<int> allWhileStmts;
 	static vector<int> allCallStmts;
 	static vector<int> allIfThenStmts;
+
+	static int maxStmtIndex;
 
 	static void InsertByTypes(int stmtIndex, SynonymType type);
 	static bool ValidType(SynonymType type);

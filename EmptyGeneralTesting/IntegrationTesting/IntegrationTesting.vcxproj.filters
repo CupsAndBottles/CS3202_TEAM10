@@ -18,16 +18,7 @@
     <ClCompile Include="source\IntegrationTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ParserToPKBTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UltimateTest.cpp">
+    <ClCompile Include="ParentStmtTypeTableTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,16 +29,7 @@
     <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParserToPKBTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UltimateTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryEvaluatorToPKBTest.h">
+    <ClInclude Include="ParentStmtTypeTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

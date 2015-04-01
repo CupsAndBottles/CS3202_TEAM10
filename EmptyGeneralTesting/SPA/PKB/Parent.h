@@ -19,10 +19,12 @@ public:
 	static vector<int> GetChildrenOf(int parentStmtIndex);
 	
 	static bool IsParentT(int parentStmtIndex, int childStmtIndex);
+	static bool IsParentTBV(int parentStmtIndex, int childStmtIndex);
 	static vector<int> GetParentTOf(int childStmtIndex);
 	static vector<int> GetChildrenTOf(int parentStmtIndex);
 
 	static bool HasAnyParents();
+	static void CreateParentToChildrenTTable();
 
 	// helper methods for testing
 	static int SizeOfParent();
@@ -31,6 +33,7 @@ public:
 private:
 	static map <int, vector<int>> parentToChildrenTable;
 	static map <int, int> childToParentTable;
+	static vector<vector<bool>> parentToChildrenTTable;
 	
 	static bool AlreadyInserted(int parentStmtIndex, int childStmtIndex);
 	static bool HasNoParent(int childStmtIndex);

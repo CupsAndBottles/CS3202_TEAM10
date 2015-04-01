@@ -72,6 +72,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
     <ClCompile Include="ParentStmtTypeTableTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
   </ItemGroup>
@@ -82,6 +83,7 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FollowsStmtTypeTableTest.h" />
     <ClInclude Include="ParentStmtTypeTableTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

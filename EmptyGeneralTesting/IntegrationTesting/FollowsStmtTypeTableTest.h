@@ -6,7 +6,9 @@
 
 class FollowsStmtTypeTableTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(FollowsStmtTypeTableTest);
+	CPPUNIT_TEST(TestBeforeToAfterTBV);
 	CPPUNIT_TEST(TestBeforeToAfterTTable);
+	CPPUNIT_TEST(TestAfterToBeforeTTable);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -15,7 +17,9 @@ public:
 
 	FollowsStmtTypeTableTest(void);
 
+	void TestBeforeToAfterTBV();
 	void TestBeforeToAfterTTable();
+	void TestAfterToBeforeTTable();
 
 	~FollowsStmtTypeTableTest(void);
 };

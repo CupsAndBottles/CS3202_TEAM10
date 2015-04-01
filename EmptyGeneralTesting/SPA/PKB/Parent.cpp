@@ -90,18 +90,19 @@ vector<int> Parent::GetParentTOf(int childStmtIndex) {
 }
 
 vector<int> Parent::GetStoredParentTOf(int childStmtIndex) {
-	vector<int> parentList;
 	int maxStmtIndex = StmtTypeTable::GetMaxStmtIndex();
 
 	if (childStmtIndex >= 0 && childStmtIndex <= maxStmtIndex) {
-		if ((int) childToParentTTable.size() >= 0) {
+		if ((int) childToParentTTable.size() >= childStmtIndex) {
 			return childToParentTTable.at(childStmtIndex);
 		} else {
+			cout << "\nwarning: unable to find " << childStmtIndex << " in childToParentTTable.\n";
 			return GetParentTOf(childStmtIndex);
 		}
 	}
 
-	return parentList;
+	vector<int> emptyList;
+	return emptyList;
 
 }
 
@@ -135,6 +136,7 @@ vector<int> Parent::GetStoredChildrenTOf(int parentStmtIndex) {
 		if ((int) parentToChildrenTTable.size() >= 0) {
 			return parentToChildrenTTable.at(parentStmtIndex);
 		} else {
+			cout << "\nwarning: unable to find " << parentStmtIndex << " in parentToChildrenTTable.\n";
 			return GetChildrenTOf(parentStmtIndex);
 		}
 	}

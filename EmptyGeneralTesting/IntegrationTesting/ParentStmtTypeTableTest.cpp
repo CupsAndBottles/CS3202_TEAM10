@@ -80,6 +80,10 @@ void ParentStmtTypeTableTest::TestChildrenToParentTTable() {
 	sort(parentTOf22.begin(), parentTOf22.end());
 	CPPUNIT_ASSERT_EQUAL(1, parentTOf22.at(0));
 	CPPUNIT_ASSERT_EQUAL(2, parentTOf22.at(1));
+
+	vector<int> parentTOf223 = Parent::GetStoredParentTOf(223);
+	CPPUNIT_ASSERT_EQUAL(0, (int) parentTOf223.size());
+
 }
 
 ParentStmtTypeTableTest::ParentStmtTypeTableTest(void){

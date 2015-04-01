@@ -72,6 +72,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CallsProcTableTest.cpp" />
     <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
     <ClCompile Include="ParentStmtTypeTableTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
@@ -83,6 +84,7 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CallsProcTableTest.h" />
     <ClInclude Include="FollowsStmtTypeTableTest.h" />
     <ClInclude Include="ParentStmtTypeTableTest.h" />
   </ItemGroup>

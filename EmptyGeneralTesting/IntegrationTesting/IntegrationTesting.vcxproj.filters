@@ -24,6 +24,9 @@
     <ClCompile Include="FollowsStmtTypeTableTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CallsProcTableTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FollowsStmtTypeTableTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CallsProcTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

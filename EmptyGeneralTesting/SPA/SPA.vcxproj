@@ -12,8 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exception\IndexNotFoundException.h" />
+    <ClInclude Include="pkb\calls.h" />
     <ClInclude Include="PKB\Follows.h" />
     <ClInclude Include="PKB\Parent.h" />
+    <ClInclude Include="pkb\proctable.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -23,8 +25,10 @@
     <None Include="sample_SIMPLE_source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="PKB\Follows.cpp" />
     <ClCompile Include="PKB\Parent.cpp" />
+    <ClCompile Include="PKB\ProcTable.cpp" />
     <ClCompile Include="PKB\StmtTypeTable.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

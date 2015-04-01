@@ -1,6 +1,7 @@
 #include <map>
 #include <vector>
 #include <queue>
+#include <iostream>
 
 #include "Calls.h"
 #include "ProcTable.h"
@@ -12,7 +13,10 @@ int Calls::noOfCallsRelationships;
 int Calls::maxNoOfProcs;
 bool Calls::bitVectorIsBuilt;
 vector<vector<bool>> Calls::bitVector;
-// empty constructor
+vector<vector<bool>> Calls::callingToCalledTBV;
+vector<vector<int>> Calls::callingToCalledTTable;
+vector<vector<int>> Calls::calledToCallingTTable;
+
 Calls::Calls() {
 	noOfCallsRelationships = 0;
 	maxNoOfProcs = 0;
@@ -72,6 +76,7 @@ void Calls::CreateBitVector() {
 		}
 	}
 }
+
 void Calls::SetCallingToCalledBitVector(int procCalling, int procCalled) {
 	if ((procCalled + 1) > (int) callingToCalledBitVector[procCalling].size()) {
 		for (int i = 0; i < ((procCalled + 1) * 2); i++) {
@@ -95,6 +100,7 @@ bool Calls::IsCalls(int stmtCalling, int procCalled) {
 bool Calls::IsCallsBV(int stmtCalling, int procCalled) {
 	return bitVector[stmtCalling][procCalled];
 }
+
 vector<int> Calls::GetProcsCalledBy(int procCalling) {
 	if(callingToCalledTable.count(procCalling) != 0) {
 		return callingToCalledTable[procCalling];
@@ -140,6 +146,18 @@ bool Calls::IsCallsT(int procCalling, int procCalled) {
 	return false;
 }
 
+bool Calls::IsCallsTBV(int procCalling, int procCalled) {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+
+	if (procCalling >= 0 && procCalling < totalNoOfProcs
+		&& procCalled >= 0 && procCalled < totalNoOfProcs) {
+			return callingToCalledTBV.at(procCalling).at(procCalled);
+	} else {
+		return false;
+	}
+
+}
+
 vector<int> Calls::GetProcsCalledTBy(int procCalling) {
 	queue<int> procsToCheck;
 	vector<int> procsCalledTBy;
@@ -165,6 +183,23 @@ vector<int> Calls::GetProcsCalledTBy(int procCalling) {
 
 	return procsCalledTBy;
 
+}
+
+vector<int> Calls::GetStoredProcsCalledTBy(int procCalling) {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+
+	if (procCalling >= 0 && procCalling < totalNoOfProcs) {
+		if ((int) callingToCalledTTable.size() >= procCalling) {
+			return callingToCalledTTable.at(procCalling);
+		} else {
+			cout << "\nwarning: unable to find " << procCalling << " in callingToCalledTTable. \n";
+			return GetProcsCalledTBy(procCalling);
+		}
+	
+	}
+
+	vector<int> emptyList;
+	return emptyList;
 }
 
 vector<int> Calls::GetProcsCallingT(int procCalled) {
@@ -193,12 +228,74 @@ vector<int> Calls::GetProcsCallingT(int procCalled) {
 	return procsCallingT;
 }
 
+vector<int> Calls::GetStoredProcsCallingT(int procCalled) {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+
+	if (procCalled >= 0 && procCalled < totalNoOfProcs) {
+		if ((int) calledToCallingTTable.size() >= procCalled) {
+			return calledToCallingTTable.at(procCalled);
+		} else {
+			cout << "\nwarning: unable to find " << procCalled << " in calledToCallingTTable. \n";
+			return GetProcsCallingT(procCalled);
+		}
+	
+	}
+
+	vector<int> emptyList;
+	return emptyList;
+
+}
+
 queue<int> Calls::AddToQueue(queue<int> procsToCheck, vector<int> additions) {
 	for (unsigned int i = 0; i < additions.size(); i++) {
 		procsToCheck.push(additions.at(i));
 	}
 
 	return procsToCheck;
+
+}
+
+void Calls::CreateCallingToCalledTBV() {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+	vector<bool> emptyRow(totalNoOfProcs + 1, false);
+	callingToCalledTBV = vector<vector<bool>>(totalNoOfProcs + 1, emptyRow);
+
+	vector<int> calledT;
+	for (int i = 0; i < totalNoOfProcs; i++) {
+		calledT = GetProcsCalledTBy(i);
+
+		for(vector<int>::iterator it = calledT.begin(); it != calledT.end(); it++) {
+			callingToCalledTBV.at(i).at(*it) = true;
+		}
+	
+	}
+
+}
+
+void Calls::CreateCallingToCalledTTable() {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+	vector<int> emptyRow;
+	callingToCalledTTable = vector<vector<int>>(totalNoOfProcs + 1, emptyRow);
+
+	vector<int> calledT;
+	for (int i = 0; i < totalNoOfProcs; i++) {
+		calledT = GetProcsCalledTBy(i);
+		callingToCalledTTable.at(i) = calledT;
+	
+	}
+
+}
+
+void Calls::CreateCalledToCallingTTable() {
+	int totalNoOfProcs = ProcTable::GetNoOfProcs();
+	vector<int> emptyRow;
+	calledToCallingTTable = vector<vector<int>>(totalNoOfProcs + 1, emptyRow);
+
+	vector<int> callingT;
+	for (int i = 0; i < totalNoOfProcs; i++) {
+		callingT = GetProcsCallingT(i);
+		calledToCallingTTable.at(i) = callingT;
+	}
 
 }
 
@@ -217,5 +314,9 @@ void Calls::ClearData() {
 	noOfCallsRelationships = 0;
 	bitVectorIsBuilt=false;
 	bitVector.clear();
+
+	callingToCalledTBV.clear();
+	callingToCalledTTable.clear();
+	calledToCallingTTable.clear();
 
 }

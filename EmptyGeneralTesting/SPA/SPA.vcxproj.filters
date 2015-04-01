@@ -27,6 +27,12 @@
     <ClInclude Include="PKB\Follows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pkb\calls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\proctable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="sample_SIMPLE_source.txt" />
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\Follows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Calls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\ProcTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

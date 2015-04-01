@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exception\IndexNotFoundException.h" />
+    <ClInclude Include="PKB\Follows.h" />
     <ClInclude Include="PKB\Parent.h" />
     <ClInclude Include="PKB\StmtTypeTable.h" />
   </ItemGroup>
@@ -22,6 +23,7 @@
     <None Include="sample_SIMPLE_source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\Follows.cpp" />
     <ClCompile Include="PKB\Parent.cpp" />
     <ClCompile Include="PKB\StmtTypeTable.cpp" />
   </ItemGroup>

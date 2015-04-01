@@ -24,6 +24,9 @@
     <ClInclude Include="PKB\StmtTypeTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PKB\Follows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="sample_SIMPLE_source.txt" />
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\StmtTypeTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Follows.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

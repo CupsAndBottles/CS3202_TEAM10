@@ -6,7 +6,9 @@
 
 class ParentStmtTypeTableTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(ParentStmtTypeTableTest);
+	CPPUNIT_TEST(TestParentToChildrenTBV);
 	CPPUNIT_TEST(TestParentToChildrenTTable);
+	CPPUNIT_TEST(TestChildrenToParentTTable);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -15,7 +17,9 @@ public:
 
 	ParentStmtTypeTableTest(void);
 
+	void TestParentToChildrenTBV();
 	void TestParentToChildrenTTable();
+	void TestChildrenToParentTTable();
 
 	~ParentStmtTypeTableTest(void);
 

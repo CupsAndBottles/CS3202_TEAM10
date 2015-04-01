@@ -207,6 +207,9 @@ int Follows::SizeOfFollows() {
 void Follows::ClearData() {
 	beforeToAfterTable.clear();
 	afterToBeforeTable.clear();
+	beforeToAfterTBV.clear();
+	beforeToAfterTTable.clear();
+	afterToBeforeTTable.clear();
 }
 
 /** private methods **/

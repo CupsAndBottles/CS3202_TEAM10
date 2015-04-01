@@ -207,6 +207,9 @@ int Parent::SizeOfParent() {
 void Parent::ClearData() {
 	parentToChildrenTable.clear();
 	childToParentTable.clear();
+	parentToChildrenTBV.clear();
+	parentToChildrenTTable.clear();
+	childToParentTTable.clear();
 }
 
 /** private methods **/

@@ -33,6 +33,66 @@
     <ClInclude Include="pkb\proctable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Parser\DesignExtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\token.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\tokenizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\consttable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\modifies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\next.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\uses.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pkb\vartable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="program\tnode\tnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="program\program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\answers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\grammar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryProcessor\IntermediateResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\patternmatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\querydata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\queryevaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\querypreprocessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\queryprocessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryprocessor\reltable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="sample_SIMPLE_source.txt" />
@@ -54,6 +114,63 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKB\ProcTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser\DesignExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser\Parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser\Token.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser\Tokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\ConstTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Modifies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Next.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\Uses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB\VarTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\TNode\TNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program\Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\Answers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\IntermediateResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\PatternMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\QueryData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\QueryProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryProcessor\RelTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

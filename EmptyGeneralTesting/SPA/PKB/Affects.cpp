@@ -483,11 +483,13 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 
 	class StmtsHelper {
-		map<int, bool> mappedAffects;
+		vector<bool> mappedAffects;
 		
 	public:
 		set<int> affectedStmts;
-		StmtsHelper() {};
+		StmtsHelper() {
+			mappedAffects = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
+		};
 
 		void findAffectedStmts(int currentStmt, int var) {
 			if (currentStmt > StmtTypeTable::GetNoOfStmts()) return; // done
@@ -564,12 +566,100 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 
 vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 	/*
-		walk backwards up next chain
-
+		Get all used by stmt affected.
+		Walk up the next chain, once var modified is found, break for that var
+		repeat for every var
+		add stmts to result, recurse for every stmt.
 	*/
+	class StmtsHelper {
+		vector<bool> mappedAffects;
 
-	// rmb to remove this
-	return vector<int>();
+	public:
+		set<int> affectingStmts;
+		StmtsHelper() {
+			mappedAffects = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
+		};
+		
+		// have to use loops cos current algo is not tail optimisable
+		// keep track of previous node
+		void findAffectingStmts(int affectedStmt, int varUsed, int nextStmt) {
+			vector<int> currentStmts;
+			currentStmts.push_back(affectedStmt);
+
+			while (currentStmts.size() != 0) {
+				if (currentStmts.size() > 1) {
+					for each (int currentStmt in currentStmts) {
+						findAffectingStmts(currentStmt, varUsed, nextStmt);
+					}
+				} else {
+					int currentStmt = currentStmts[0];
+					vector<int> prevStmts;
+					if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+						if (currentStmt == nextStmt - 1) { // reached start of loop
+							prevStmts = Next::GetNextBefore(currentStmt);
+						} else { // came from outside the loop
+							if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) { 
+								for each (int stmt in Next::GetNextBefore(currentStmt)) {
+									if (stmt > currentStmt) { // enter loop
+										prevStmts.push_back(stmt);
+									}
+								}
+							} else { // optimised call
+								for each (int stmt in Next::GetNextBefore(currentStmt)) {
+									if (stmt < currentStmt) { // exit loop
+										prevStmts.push_back(stmt);
+									}
+								}
+							}
+						}
+					} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+						// no check for modifies if in if, just skip
+						prevStmts = Next::GetNextBefore(currentStmt);
+					} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
+						// just skip
+						prevStmts = Next::GetNextBefore(currentStmt);
+					} else {
+						// stmt found is assign
+						if (mappedAffects[currentStmt]) {
+							continue; // this stmt has already been mapped.
+						} else {
+							// perform checking here.
+							if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) {
+								affectingStmts.insert(currentStmt);
+								mappedAffects[currentStmt] = true;
+								return findAffectingStmts(currentStmt); // end here, subject found
+							} else {
+								prevStmts = Next::GetNextBefore(currentStmt);
+							}
+						}
+					}
+
+					nextStmt = currentStmt;
+					currentStmts = prevStmts;
+				}
+			}
+		}
+
+		void findAffectingStmts(int affectedStmt) {
+			// guaranteed that every affectedStmt is an assignment
+
+			vector<int> varsUsed = Uses::GetVarUsedByStmt(affectedStmt);
+			vector<int> previousStmts = Next::GetNextBefore(affectedStmt);
+
+			for each (int var in varsUsed) {
+				for each (int stmt in previousStmts) {
+					findAffectingStmts(stmt, var, affectedStmt);
+				}
+			}
+		}
+	};
+
+	// guarantee that stmt is assignment.
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+
+	StmtsHelper helper;
+	helper.findAffectingStmts(stmtAffected);
+	return vector<int>(helper.affectingStmts.begin(), helper.affectingStmts.end());
 }
 
 

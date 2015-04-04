@@ -84,9 +84,9 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				break;
 			case WHILE:
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				if (stmtAffected >= nextOfCurrStmt.at(1)) {
+				if ((int) nextOfCurrStmt.size() > 1 && stmtAffected >= nextOfCurrStmt.at(1)) {
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
-				} else if (stmtAffected < nextOfCurrStmt.at(1) && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
+				} else if ((int) nextOfCurrStmt.size() > 1 && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 					return true;
 				} else {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
@@ -97,19 +97,21 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				endOfIfElse = Follows::GetFollowsAfter(currStmt);
 				
 				if (stmtAffected < nextOfCurrStmt.at(1)) {
+					// modification in 1st block
 					if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 						return true;
 					} else {
 						uncheckedStmts.push(nextOfCurrStmt.at(0));	
 					}
-				} else if (stmtAffected >= nextOfCurrStmt.at(1) && stmtAffected < endOfIfElse) {
+				} else if (endOfIfElse > 0 && stmtAffected >= nextOfCurrStmt.at(1) && stmtAffected < endOfIfElse) {
+					// modification in 2nd block
 					if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 						return true;
 					} else {
 						uncheckedStmts.push(nextOfCurrStmt.at(1));	
 					}
-				} else if (stmtAffected >= endOfIfElse && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
-					// skip all if-else
+				} else if (endOfIfElse > 0 && stmtAffected >= endOfIfElse && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
+					// if-else does not modify at all, skip all if-else
 					uncheckedStmts.push(Follows::GetFollowsAfter(currStmt));
 				} else {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
@@ -174,7 +176,9 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 					// not used as a control variable in while
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 				}
-				uncheckedStmts.push(nextOfCurrStmt.at(1));
+				if ((int) nextOfCurrStmt.size() > 1) {
+					uncheckedStmts.push(nextOfCurrStmt.at(1));
+				}
 				break;
 			case IF:
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);

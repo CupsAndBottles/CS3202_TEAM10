@@ -4,6 +4,7 @@
 #include "Modifies.h"
 #include "Uses.h"
 #include "Follows.h"
+#include "ProcTable.h"
 #include "..\Program\Program.h"
 //#include "VarTable.h"
 
@@ -415,11 +416,11 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 		tail recursive
 		calls itself upon finding next stmt in chain, updating stmtAffecting with new stmtAffecting
 		if while is found, continue tail call with start of stmtlist
-			this means that if encounter next < currentStmt, end of loop has been reached, update next accordingly
+		this means that if encounter next < currentStmt, end of loop has been reached, update next accordingly
 		if else is found, perform 2 tail calls
-			update currentStmt with stmt numbers of beginnings of each branch
-			return or of results
-	*/
+		update currentStmt with stmt numbers of beginnings of each branch
+		return or of results
+		*/
 
 	if (currentStmt > endStmt) return false; // overshot
 
@@ -446,9 +447,16 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 		vector<int> followingStmts = Next::GetNextAfter(currentStmt);
 		return stmtWalker(followingStmts[0], var, endStmt) || stmtWalker(followingStmts[1], var, endStmt);
 
+	} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
+		// check if call type modifies variable
+		// if it does, break
+		if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), var)) {
+			return false;
+		} else {
+			return stmtWalker(Next::GetNextAfter(currentStmt)[0], var, endStmt);
+		}
 	} else {
-		// stmt found was assignment or call stmt
-		// no call stmts will possess uses or modifies (for now)
+		// stmt found was assignment stmt
 		// this is where you do the checking for the truth val
 		// endStmt guaranteed to be assignment
 
@@ -468,18 +476,19 @@ bool stmtWalker(int currentStmt, int var, int endStmt) {
 			}
 		}
 
-		if (Uses::IsStmtUsingVar(currentStmt, var)) {
-			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::ASSIGN)) {
-				if (currentStmt == endStmt) {
-					return true; // stmt found
-				} else {
-					int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-					return stmtWalker(nextStmt, varModified, endStmt);
-				}
+		if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
+			if (currentStmt == endStmt) {
+				return true; // stmt found
+			} else {
+				int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+				return stmtWalker(nextStmt, varModified, endStmt);
 			}
+		} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
+			return false; // another valid modifies was found
 		} else {
 			return stmtWalker(nextStmt, var, endStmt);
 		}
+
 	}
 }
 
@@ -523,11 +532,17 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 				findAffectedStmts(followingStmts[0], var);
 				findAffectedStmts(followingStmts[1], var);
 
+			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
+				// check if call type modifies variable
+				// if it does, break
+				if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), var)) {
+					return;
+				} else {
+					return findAffectedStmts(Next::GetNextAfter(currentStmt)[0], var);
+				}
 			} else {
-				// stmt found was assignment or call stmt
-				// no call stmts will possess uses or modifies (for now)
+				// stmt found was assignment
 				// this is where you do the checking for the truth val
-				// endStmt guaranteed to be assignment
 
 				vector<int> nextStmts = Next::GetNextAfter(currentStmt);
 				int nextStmt;
@@ -535,8 +550,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 					nextStmt = currentStmt + 1; // must end by next iteration
 				} else {
 					nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
-					if (StmtTypeTable::CheckIfStmtOfType(nextStmt, SynonymType::WHILE)) { // skip while
-						mappedAffects[nextStmt] = true;
+					if (nextStmt < currentStmt) { // skip while
 						vector<int> nextAfterWhile = Next::GetNextAfter(nextStmt);
 						if (nextStmts.size() != 2) { // check if end or not
 							nextStmt = currentStmt + 1; // must end by next iteration
@@ -546,13 +560,13 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 					}
 				}
 
-				if (Uses::IsStmtUsingVar(currentStmt, var)) {
-					if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::ASSIGN)) {
-						mappedAffects[currentStmt] = true;
-						affectedStmts.insert(currentStmt);
-						int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-						return findAffectedStmts(nextStmt, varModified);
-					}
+				if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
+					mappedAffects[currentStmt] = true;
+					affectedStmts.insert(currentStmt);
+					int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+					return findAffectedStmts(nextStmt, varModified);
+				} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
+					return; // another valid modifies was found
 				} else {
 					return findAffectedStmts(nextStmt, var);
 				}
@@ -620,8 +634,12 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 						// no check for modifies if in if, just skip
 						prevStmts = Next::GetNextBefore(currentStmt);
 					} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
-						// just skip
-						prevStmts = Next::GetNextBefore(currentStmt);
+						// if call modifies var, break
+						if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), varUsed)) {
+							continue;
+						} else {
+							prevStmts = Next::GetNextBefore(currentStmt);
+						}
 					} else {
 						// stmt found is assign
 						if (mappedAffects[currentStmt]) {

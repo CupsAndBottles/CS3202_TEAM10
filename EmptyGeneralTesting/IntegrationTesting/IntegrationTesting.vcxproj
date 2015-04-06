@@ -73,6 +73,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
+    <ClCompile Include="CallsProcTableTest.cpp" />
+    <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
+    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
     <ClCompile Include="ParserToPKBTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
@@ -88,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModifiesUsesCallsParentTest.h" />
+    <ClInclude Include="CallsProcTableTest.h" />
+    <ClInclude Include="FollowsStmtTypeTableTest.h" />
+    <ClInclude Include="ParentStmtTypeTableTest.h" />
     <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />

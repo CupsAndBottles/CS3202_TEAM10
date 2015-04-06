@@ -37,7 +37,23 @@ void CallsTest::testSetCalls() {
 	CPPUNIT_ASSERT_EQUAL(4, Calls::SizeOfCalls());
 	
 }
+void CallsTest::testBitVector() {
+	Calls::ClearData();
+	Calls::SetCalls(1, 0);
+	Calls::SetCalls(2, 0);
+	Calls::SetCalls(3, 0);
+	Calls::SetCalls(4, 0);
+	Calls::CreateBitVector();
 
+	CPPUNIT_ASSERT(Calls::IsCallsBV(1,0));
+	CPPUNIT_ASSERT(Calls::IsCallsBV(2,0));
+	CPPUNIT_ASSERT(Calls::IsCallsBV(3,0));
+	CPPUNIT_ASSERT(Calls::IsCallsBV(4,0));
+
+	Calls::ClearData();
+	CPPUNIT_ASSERT(Calls::HasAnyCalls() == false);
+
+}
 void CallsTest::testIsCalls() {
 	Calls::ClearData();
 	CPPUNIT_ASSERT_EQUAL(0, Calls::SizeOfCalls());

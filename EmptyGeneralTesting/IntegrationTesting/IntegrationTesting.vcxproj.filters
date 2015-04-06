@@ -18,6 +18,15 @@
     <ClCompile Include="source\IntegrationTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParentStmtTypeTableTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowsStmtTypeTableTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CallsProcTableTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ParserToPKBTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,10 +51,19 @@
     <None Include="ModifiesUsesCallsParentText.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParserToPKBTest.h">
+    <ClInclude Include="ParentStmtTypeTableTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowsStmtTypeTableTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CallsProcTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UltimateTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserToPKBTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h">

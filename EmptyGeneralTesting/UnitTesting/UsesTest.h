@@ -15,7 +15,7 @@ class UsesTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestMultipleProcs);
 	CPPUNIT_TEST(TestMultipleProcsUsingSingleVar);
 	CPPUNIT_TEST(TestSingleProcUsingMultipleVars);
-
+	CPPUNIT_TEST(TestBitVector);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -35,6 +35,6 @@ public:
 	void TestMultipleProcs();
 	void TestMultipleProcsUsingSingleVar();
 	void TestSingleProcUsingMultipleVars();
-
+	void TestBitVector();
 };
 

@@ -12,7 +12,7 @@ class CallsTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(testIsCallsT);
 	CPPUNIT_TEST(testGetProcsCalledTBy);
 	CPPUNIT_TEST(testGetProcsCallingT);
-
+	CPPUNIT_TEST(testBitVector);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -26,5 +26,6 @@ public:
 	void testIsCallsT();
 	void testGetProcsCalledTBy();
 	void testGetProcsCallingT();
+	void testBitVector();
 };
 

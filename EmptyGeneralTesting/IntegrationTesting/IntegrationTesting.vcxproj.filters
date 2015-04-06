@@ -30,12 +30,16 @@
     <ClCompile Include="UltimateTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModifiesUsesCallsParentTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
     <None Include="ParserTestFiles\Source.txt" />
+    <None Include="ModifiesUsesCallsParentText.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParserToPKBTest.h">
@@ -48,6 +52,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryEvaluatorToPKBTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModifiesUsesCallsParentTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

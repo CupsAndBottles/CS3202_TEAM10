@@ -3,7 +3,3 @@
 
 AffectsBip::AffectsBip() {
 }
-
-
-AffectsBip::~AffectsBip() {
-}

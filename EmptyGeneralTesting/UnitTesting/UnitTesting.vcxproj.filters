@@ -1,45 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="ConstTableTest.cpp" />
-    <ClCompile Include="FollowsTest.cpp" />
-    <ClCompile Include="ModifiesTest.cpp" />
-    <ClCompile Include="ParentTest.cpp" />
-    <ClCompile Include="PatternMatcherTest.cpp" />
-    <ClCompile Include="ProcTableTest.cpp" />
-    <ClCompile Include="QueryDataTest.cpp" />
-    <ClCompile Include="QueryEvaluatorTest.cpp" />
-    <ClCompile Include="QueryPreprocessorTest.cpp" />
-    <ClCompile Include="RelTableTest.cpp" />
-    <ClCompile Include="StmtTypeTableTest.cpp" />
-    <ClCompile Include="TestMain.cpp" />
-    <ClCompile Include="TokenizerTest.cpp" />
-    <ClCompile Include="VarTableTest.cpp" />
-    <ClCompile Include="UsesTest.cpp" />
-    <ClCompile Include="NextTest.cpp" />
-    <ClCompile Include="CallsTest.cpp" />
-    <ClCompile Include="ParserTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ConstTableTest.h" />
-    <ClInclude Include="FollowsTest.h" />
-    <ClInclude Include="ModifiesTest.h" />
-    <ClInclude Include="ParentTest.h" />
-    <ClInclude Include="PatternMatcherTest.h" />
-    <ClInclude Include="ProcTableTest.h" />
-    <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="QueryEvaluatorTest.h" />
-    <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="RelTableTest.h" />
-    <ClInclude Include="StmtTypeTableTest.h" />
-    <ClInclude Include="TokenizerTest.h" />
-    <ClInclude Include="VarTableTest.h" />
-    <ClInclude Include="UsesTest.h" />
-    <ClInclude Include="NextTest.h" />
-    <ClInclude Include="CallsTest.h" />
-    <ClInclude Include="ParserTest.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ParserTestFiles\additionTest.txt" />
     <None Include="ParserTestFiles\bracketsTest.txt" />
     <None Include="ParserTestFiles\ifTest.txt" />
@@ -51,5 +12,36 @@
     <None Include="ParserTestFiles\whileTest.txt" />
     <None Include="ParserTestFiles\callTest.txt" />
     <None Include="ParserTestFiles\Source.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VarTableTest.h" />
+    <ClInclude Include="TokenizerTest.h" />
+    <ClInclude Include="StmtTypeTableTest.h" />
+    <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="QueryPreprocessorTest.h" />
+    <ClInclude Include="QueryEvaluatorTest.h" />
+    <ClInclude Include="QueryDataTest.h" />
+    <ClInclude Include="ProcTableTest.h" />
+    <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ConstTableTest.h" />
+    <ClInclude Include="FollowsTest.h" />
+    <ClInclude Include="ParserTest.h" />
+    <ClInclude Include="ParentTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VarTableTest.cpp" />
+    <ClCompile Include="TestMain.cpp" />
+    <ClCompile Include="TokenizerTest.cpp" />
+    <ClCompile Include="StmtTypeTableTest.cpp" />
+    <ClCompile Include="RelTableTest.cpp" />
+    <ClCompile Include="QueryPreprocessorTest.cpp" />
+    <ClCompile Include="QueryEvaluatorTest.cpp" />
+    <ClCompile Include="QueryDataTest.cpp" />
+    <ClCompile Include="ProcTableTest.cpp" />
+    <ClCompile Include="PatternMatcherTest.cpp" />
+    <ClCompile Include="ConstTableTest.cpp" />
+    <ClCompile Include="FollowsTest.cpp" />
+    <ClCompile Include="ParserTest.cpp" />
+    <ClCompile Include="ParentTest.cpp" />
   </ItemGroup>
 </Project>

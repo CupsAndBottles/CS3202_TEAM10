@@ -86,11 +86,23 @@
     <None Include="ParserTestFiles\whileTest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CallsTest.cpp" />
+    <ClInclude Include="ConstTableTest.h" />
+    <ClInclude Include="FollowsTest.h" />
+    <ClInclude Include="ParentTest.h" />
+    <ClInclude Include="ParserTest.h" />
+    <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ProcTableTest.h" />
+    <ClInclude Include="QueryDataTest.h" />
+    <ClInclude Include="QueryEvaluatorTest.h" />
+    <ClInclude Include="QueryPreprocessorTest.h" />
+    <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="StmtTypeTableTest.h" />
+    <ClInclude Include="TokenizerTest.h" />
+    <ClInclude Include="VarTableTest.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
-    <ClCompile Include="ModifiesTest.cpp" />
-    <ClCompile Include="NextTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
@@ -102,27 +114,7 @@
     <ClCompile Include="StmtTypeTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
-    <ClCompile Include="UsesTest.cpp" />
     <ClCompile Include="VarTableTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CallsTest.h" />
-    <ClInclude Include="ConstTableTest.h" />
-    <ClInclude Include="FollowsTest.h" />
-    <ClInclude Include="ModifiesTest.h" />
-    <ClInclude Include="NextTest.h" />
-    <ClInclude Include="ParentTest.h" />
-    <ClInclude Include="ParserTest.h" />
-    <ClInclude Include="PatternMatcherTest.h" />
-    <ClInclude Include="ProcTableTest.h" />
-    <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="QueryEvaluatorTest.h" />
-    <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="RelTableTest.h" />
-    <ClInclude Include="StmtTypeTableTest.h" />
-    <ClInclude Include="TokenizerTest.h" />
-    <ClInclude Include="UsesTest.h" />
-    <ClInclude Include="VarTableTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

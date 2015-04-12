@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PKB\AffectsBip.h" />
+    <ClInclude Include="PKB\Contains.h" />
+    <ClInclude Include="PKB\NextBip.h" />
     <ClInclude Include="Parser\ParserTester.h" />
     <ClInclude Include="Parser\DesignExtractor.h" />
     <ClInclude Include="parser\parser.h" />
@@ -39,8 +42,12 @@
     <ClInclude Include="queryprocessor\querypreprocessor.h" />
     <ClInclude Include="queryprocessor\queryprocessor.h" />
     <ClInclude Include="queryprocessor\reltable.h" />
+    <ClInclude Include="PKB\Sibling.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\AffectsBip.cpp" />
+    <ClCompile Include="PKB\Contains.cpp" />
+    <ClCompile Include="PKB\NextBip.cpp" />
     <ClCompile Include="Parser\ParserTester.cpp" />
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
@@ -66,6 +73,7 @@
     <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
+    <ClCompile Include="PKB\Sibling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />

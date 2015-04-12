@@ -26,6 +26,10 @@
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
     <ClCompile Include="Parser\ParserTester.cpp" />
+    <ClCompile Include="PKB\NextBip.cpp" />
+    <ClCompile Include="PKB\Contains.cpp" />
+    <ClCompile Include="PKB\AffectsBip.cpp" />
+    <ClCompile Include="PKB\Sibling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser\DesignExtractor.h" />
@@ -56,6 +60,10 @@
     <ClInclude Include="queryprocessor\queryprocessor.h" />
     <ClInclude Include="queryprocessor\reltable.h" />
     <ClInclude Include="Parser\ParserTester.h" />
+    <ClInclude Include="PKB\NextBip.h" />
+    <ClInclude Include="PKB\Contains.h" />
+    <ClInclude Include="PKB\AffectsBip.h" />
+    <ClInclude Include="PKB\Sibling.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bracketsTest.txt" />

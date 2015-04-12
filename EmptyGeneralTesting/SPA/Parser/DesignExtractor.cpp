@@ -8,6 +8,7 @@
 #include "..\PKB\Calls.h"
 #include "..\PKB\Next.h"
 #include "..\PKB\Parent.h"
+#include "..\PKB\NextBip.h"
 #include "..\QueryProcessor\Grammar.h"
 
 #include <vector>
@@ -43,12 +44,14 @@ void ComputeModifiesAndUses();
 void ComputeCalls();
 void ComputeModifiesAndUsesForProcedures();
 void ComputeNext();
+void ComputeNextBip();
 
 void DesignExtractor::Extract() {
 	ComputeModifiesAndUses();
 	ComputeCalls();
 	ComputeModifiesAndUsesForProcedures();
 	ComputeNext();
+	ComputeNextBip();
 }
 
 void ComputeModifiesAndUsesForProcedures() {
@@ -279,7 +282,10 @@ void ComputeNext() {
 	// loops through all procedures, connecting the stmts
 	for each (string procName in ProcTable::GetAllProcNames()) {
 		int procIndex = ProcTable::GetIndexOfProc(procName);
-		ConnectStmtList(ProcTable::GetFirstStmtNoOfProc(procIndex));
+		set<int> finalStmts = ConnectStmtList(ProcTable::GetFirstStmtNoOfProc(procIndex));
+		for each (int stmt in finalStmts) {
+			NextBip::setEndOfProc(procIndex, stmt);
+		}
 	}
 }
 
@@ -332,6 +338,22 @@ void ComputeModifiesAndUses() {
 		}
 
 		currentChildren = parents;
+	}
+
+}
+
+void ComputeNextBip() {
+	for each (int call in StmtTypeTable::GetAllStmtsOfType(CALL)) {
+		TNode& callNode = Program::GetStmtFromNumber(call);
+		int calledProc = ProcTable::GetIndexOfProc(callNode.GetContent());
+		vector<int> afterCall = Next::GetNextAfter(call);
+		if (afterCall.size() == 0) {
+			continue; // nothing to insert
+		} else if (afterCall.size() == 1) {
+			NextBip::setReturnPoint(calledProc, afterCall[0]);
+		} else {
+			throw (string) "WE HAVE A PROBLEM"; // call will never have more than one next.
+		}
 	}
 
 }

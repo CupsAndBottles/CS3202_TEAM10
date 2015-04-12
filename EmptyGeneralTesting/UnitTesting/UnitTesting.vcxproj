@@ -47,6 +47,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>$(TargetPath)</Command>

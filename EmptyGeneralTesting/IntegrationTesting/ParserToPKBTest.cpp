@@ -13,6 +13,7 @@
 #include "..\SPA\PKB\Next.h"
 #include "..\SPA\PKB\ProcTable.h"
 #include "..\SPA\Program\Program.h"
+#include "..\SPA\Parser\ParserTester.h"
 
 #include <iostream>
 #include <string>
@@ -23,26 +24,17 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 ParserToPKBTest::ParserToPKBTest() {
-	Program::ClearData();
-	Parent::ClearData();
-	Uses::ClearData();
-	Modifies::ClearData();
-	Follows::ClearData();
-	VarTable::ClearData();
-	ConstTable::ClearData();
-}
-
-void ParseSource(string filename) {
-	Parser::Parse(string(TESTFILE_DIRECTORY).append(filename));
+	Program::ClearAll();
 }
 
 void ParserToPKBTest::setUp() { 
 	Program::ClearAll();
-	ParseSource("pkbTest.txt");
+	ParserTester tester(TESTFILE_DIRECTORY);
+	tester.ParseSource("pkbTest.txt");
 }
 
 void ParserToPKBTest::tearDown() {
-	// empty body
+	Program::ClearAll();
 }
 
 

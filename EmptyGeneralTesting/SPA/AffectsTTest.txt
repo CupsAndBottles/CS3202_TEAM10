@@ -1,0 +1,64 @@
+\\ Affects* Test
+
+procedure sequential {
+	b = a;											\\ 1
+	c = b;											\\ 2
+	d = b;											\\ 3
+	e = c;											\\ 4
+}
+
+procedure whileLoop {
+	whileVar = innerWhileVar;						\\ 5
+	while whileCond {								\\ 6
+		rand = whileVar;							\\ 7
+		innerVar = innerVar + 1;					\\ 8
+		outerWhileVar = 1;							\\ 9
+	}
+	something = outerWhileVar + rand;				\\ 10
+}
+
+procedure ifStmt {
+	outerVar = 1;									\\ 11
+	if ifCond then {								\\ 12
+		thenBranch = outerVar;						\\ 13
+	} else {
+		elseBranch = outerVar;						\\ 14
+	}
+	something = outerVar;							\\ 15
+	thenTest = thenBranch;							\\ 16
+	elseTest = elseBranch;							\\ 17
+}
+
+procedure ifInWhile {
+	while whileCond {								\\ 18
+		outsideIf = 1;								\\ 19
+		if ifCond then {							\\ 20
+			thenBranch = outsideIf;					\\ 21
+		} else {
+			elseBranch = outsideIf + elseBranch;	\\ 22
+		}
+		thenBranch = elseBranch;					\\ 23
+		outsideIf = thenBranch;						\\ 24
+	}
+}
+
+procedure whileInIf {
+	if ifCond then {								\\ 25
+		outsideWhile = blah;						\\ 26
+		while whileCond {							\\ 27
+			blah = 2;								\\ 28
+			insideWhile = outsideWhile;				\\ 29
+		}
+	} else {
+		blah = 1;									\\ 30
+	}
+	blah = insideWhile;								\\ 31
+}
+
+procedure modifiesVar {
+	modified = 2;									\\ 32
+}
+
+procedure usesVar {
+	unmodified = used;								\\ 33
+}

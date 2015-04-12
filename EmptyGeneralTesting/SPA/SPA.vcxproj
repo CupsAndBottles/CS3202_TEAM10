@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Parser\ParserTester.h" />
     <ClInclude Include="Parser\DesignExtractor.h" />
     <ClInclude Include="parser\parser.h" />
     <ClInclude Include="parser\token.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="queryprocessor\reltable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Parser\ParserTester.cpp" />
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="Parser\Token.cpp" />
@@ -66,10 +68,12 @@
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AffectsTTest.txt" />
     <None Include="bracketsTest.txt" />
     <None Include="pkbTest.txt" />
     <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
+    <None Include="Test.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>

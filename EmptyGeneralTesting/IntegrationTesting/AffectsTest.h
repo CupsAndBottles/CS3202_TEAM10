@@ -11,10 +11,6 @@ class AffectsTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestGetStmtsAffectedBy);
 	CPPUNIT_TEST(TestGetStmtsAffecting);
 
-	/*CPPUNIT_TEST(TestIsAffectsT);
-	CPPUNIT_TEST(TestGetStmtsAffectedTBy);
-	CPPUNIT_TEST(TestGetStmtsAffectingT);*/
-
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,10 +20,6 @@ public:
 	void TestIsAffects();
 	void TestGetStmtsAffectedBy();
 	void TestGetStmtsAffecting();
-	
-	/*void TestIsAffectsT();
-	void TestGetStmtsAffectedTBy();
-	void TestGetStmtsAffectingT();*/
 
 private:
 	void ClearAllData();

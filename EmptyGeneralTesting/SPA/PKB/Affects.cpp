@@ -118,8 +118,8 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				} else {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
-				}}
-				break;
+				}
+			} break;
 			case CALL: {
 				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
@@ -127,8 +127,8 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
-				}}
-				break;
+				}
+			} break;
 			default:
 				//1. "longer method, without using bitvector"
 				//2. do bit vector optimisaion of while and if
@@ -210,8 +210,8 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 					if (!nextOfCurrStmt.empty()) {
 						uncheckedStmts.push(nextOfCurrStmt.at(0));
 					}
-				}}
-				break;
+				}
+			} break;
 			default:
 				//1. "longer method, without using bitvector"
 				//2. do bit vector optimisaion of while and if
@@ -285,8 +285,6 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 			}
 			stmtsIsChecked.at(currStmt) = true;
 		} else {
-
-
 			nextBeforeCurrStmt.clear();
 		}
 
@@ -299,9 +297,24 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 			} 
 		}
 	}
-	case CALL:
-		stmtsIsChecked.at(currStmt) = true;
-		break;
+	case CALL:{
+		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+		if (!stmtsIsChecked.at(currStmt)) {
+			int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
+			vector<int>::iterator it = varsUsed.begin();
+			while (it != varsUsed.end()) {
+				if (varModified == *it) {
+					affectedStmts.push_back(currStmt);
+					it = varsUsed.erase(it);
+				} else {
+					it++;
+				}
+			}
+			stmtsIsChecked.at(currStmt) = true;
+		} else {
+			nextBeforeCurrStmt.clear();
+		}
+	} break;
 	default:
 		cout << "unable to determine stmttype of stmt# " << currStmt;
 		break;

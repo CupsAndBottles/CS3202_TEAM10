@@ -94,6 +94,8 @@ void Parser::Parse(string fileName) {
 	buffer << sourceFile.rdbuf();
 	sourceFile.close();
 
+	TNode::resetNodeCounter();
+
 	vector<Token> tokens = Tokenizer::Tokenize(buffer.str());
 	Parser parser(tokens);
 	parser.Parse();
@@ -372,11 +374,11 @@ TNode* Parser::ParseIfStmt() {
 
 	// parse then body
 	ConsumeTopTokenOfType(Token::THEN);
-	TNode* thenBody = ParseStmtList("", ifStmt);
+	TNode* thenBody = ParseStmtList("then", ifStmt);
 	
 	// parse else body
 	ConsumeTopTokenOfType(Token::ELSE);
-	TNode* elseBody = ParseStmtList("", ifStmt);
+	TNode* elseBody = ParseStmtList("else", ifStmt);
 
 	// create if statement
 	ifStmt->AddChild(conditionNode);

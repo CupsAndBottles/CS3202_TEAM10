@@ -9,6 +9,7 @@
 #include "..\PKB\Next.h"
 #include "..\PKB\Parent.h"
 #include "..\PKB\NextBip.h"
+#include "..\PKB\NodeTypeTable.h"
 #include "..\QueryProcessor\Grammar.h"
 
 #include <vector>
@@ -40,6 +41,7 @@ Next
 				connect tails to follows(ifstmt, next)
 */
 
+void ComputeNodeTypeTable();
 void ComputeModifiesAndUses();
 void ComputeCalls();
 void ComputeModifiesAndUsesForProcedures();
@@ -47,11 +49,33 @@ void ComputeNext();
 void ComputeNextBip();
 
 void DesignExtractor::Extract() {
+	ComputeNodeTypeTable();
 	ComputeModifiesAndUses();
 	ComputeCalls();
 	ComputeModifiesAndUsesForProcedures();
 	ComputeNext();
 	ComputeNextBip();
+}
+
+void ComputeNodeTypeTable() {
+	// flatten nodes and iterate through them
+	// ast has no loops if following only child links.
+
+	NodeTypeTable::Initialise();
+	
+	vector<TNode*> currentSet;
+	currentSet.push_back(&Program::GetASTRootNode());
+
+	while (currentSet.size() > 0) {
+		vector<TNode*> nextSet;
+		for each (TNode* nodeptr in currentSet) {
+			NodeTypeTable::Insert(nodeptr);
+			for each (TNode* child in nodeptr->GetChildren()) {
+				nextSet.push_back(child);
+			}
+		}
+		currentSet = nextSet;
+	}
 }
 
 void ComputeModifiesAndUsesForProcedures() {

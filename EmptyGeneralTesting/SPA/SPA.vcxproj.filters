@@ -74,5 +74,6 @@
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="AffectsTTest.txt" />
     <None Include="Test.txt" />
+>>>>>>> 3a84f13805c67fe9cac25f1e782b2cc63e9e6236
   </ItemGroup>
 </Project>

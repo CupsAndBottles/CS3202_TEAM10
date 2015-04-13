@@ -14,18 +14,19 @@
     <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VarTableTest.h" />
-    <ClInclude Include="TokenizerTest.h" />
-    <ClInclude Include="StmtTypeTableTest.h" />
-    <ClInclude Include="RelTableTest.h" />
-    <ClInclude Include="QueryPreprocessorTest.h" />
-    <ClInclude Include="QueryEvaluatorTest.h" />
-    <ClInclude Include="QueryDataTest.h" />
-    <ClInclude Include="ProcTableTest.h" />
-    <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ModifiesTest.h" />
     <ClInclude Include="ConstTableTest.h" />
-    <ClInclude Include="FollowsTest.h" />
+    <ClInclude Include="StmtTypeTableTest.h" />
     <ClInclude Include="ParserTest.h" />
+    <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ProcTableTest.h" />
+    <ClInclude Include="QueryDataTest.h" />
+    <ClInclude Include="QueryEvaluatorTest.h" />
+    <ClInclude Include="QueryPreprocessorTest.h" />
+    <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="TokenizerTest.h" />
+    <ClInclude Include="VarTableTest.h" />
+    <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ParentTest.h" />
   </ItemGroup>
   <ItemGroup>
@@ -43,5 +44,6 @@
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
+    <ClCompile Include="ModifiesTest.cpp" />
   </ItemGroup>
 </Project>

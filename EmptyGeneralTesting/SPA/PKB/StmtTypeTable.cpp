@@ -56,6 +56,15 @@ vector<int> StmtTypeTable::GetAllStmtsOfType(SynonymType type) {
 	}
 }
 
+SynonymType StmtTypeTable::GetStmtTypeOf(int stmtIndex) {
+	if (indexTypeTable.count(stmtIndex) != 0) {
+		return indexTypeTable[stmtIndex];
+	} else {
+		return STMT;
+	}
+
+}
+
 bool StmtTypeTable::CheckIfStmtOfType(int stmtIndex, SynonymType type) {
 	if(type == STMT || type == PROG_LINE) {
 		if(indexTypeTable.at(stmtIndex) == ASSIGN || indexTypeTable.at(stmtIndex) == WHILE || indexTypeTable.at(stmtIndex) == IF)

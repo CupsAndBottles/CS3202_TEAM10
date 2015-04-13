@@ -384,8 +384,3 @@ TNode* Parser::ParseIfStmt() {
 	ifStmt->AddChild(elseBody);
 	return ifStmt;
 }
-
-//void main() {
-//	Parser::Parse("pkbTest.txt");
-//	TNode& program = Program::GetASTRootNode();
-//}

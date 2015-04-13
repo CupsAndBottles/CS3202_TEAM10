@@ -16,6 +16,7 @@ public:
 	//API-Query
 	static vector<int> GetAllStmtsOfType(SynonymType type);
 	// static vector<int> GetAllStmtsOfTypeFrmProc(SynonymType type, int procIndex);
+	static SynonymType GetStmtTypeOf(int stmtIndex);
 	static bool CheckIfStmtOfType(int stmtIndex, SynonymType type);
 
 	//API-PKB and DE

@@ -96,7 +96,6 @@ bool Uses::IsStmtUsingVar(int stmtUsing, int varUsed) {
 		for (vector<int>::iterator it = stmtToVarTable[stmtUsing].begin(); it != stmtToVarTable[stmtUsing].end(); it++) {
 			if (*it == varUsed) return true;
 		}
-		
 	}
 	return false;
 

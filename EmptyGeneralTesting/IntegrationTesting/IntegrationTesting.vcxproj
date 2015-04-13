@@ -47,6 +47,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(SolutionDir)IntegrationTesting\$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>$(TargetPath)</Command>
@@ -72,9 +73,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CallsProcTableTest.cpp" />
-    <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
-    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
+    <ClCompile Include="AffectsTest.cpp" />
+    <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="ParserToPKBTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
@@ -83,14 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
+    <None Include="ParserTestFiles\AffectsTTest.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CallsProcTableTest.h" />
-    <ClInclude Include="FollowsStmtTypeTableTest.h" />
-    <ClInclude Include="ParentStmtTypeTableTest.h" />
+    <ClInclude Include="AffectsTest.h" />
+    <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+
+using namespace std;
+
 class AffectsBip {
 public:
 	AffectsBip();
@@ -13,4 +17,4 @@ public:
 	static vector<int> GetStmtsAffectedTBy(int stmtAffecting);
 	static vector<int> GetStmtsAffectingT(int stmtAffected);
 
-}
+};

@@ -3,7 +3,3 @@
 
 NodeTypeTable::NodeTypeTable() {
 }
-
-
-NodeTypeTable::~NodeTypeTable() {
-}

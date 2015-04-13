@@ -5,8 +5,8 @@
 #include "StmtTypeTable.h"
 #include "..\Program\Program.h"
 
-map <int, vector<int>> returnPoints; // stores points that procs return to. 
-map <int, vector<int>> endsOfProcs; // stores the last next of every proc 
+map <int, vector<int>> NextBip::returnPoints; // stores points that procs return to. 
+map <int, vector<int>> NextBip::endsOfProcs; // stores the last next of every proc 
 
 NextBip::NextBip() {
 	ClearData();
@@ -103,18 +103,19 @@ vector<int> NextBip::GetEntryPoint(int startingStmt, int callingProc) {
 			result.push_back(stmt);
 		}
 	}
+	return result;
 }
 
 bool NextBip::IsNextT(int progLineBefore, int progLineAfter) {
-
+	return false;
 }
 
 vector<int> NextBip::GetNextTAfter(int progLineBefore) {
-
+	return vector<int>();
 }
 
 vector<int> NextBip::GetNextTBefore(int progLineAfter) {
-
+	return vector<int>();
 }
 
 void NextBip::ClearData() {

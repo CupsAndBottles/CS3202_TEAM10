@@ -1,6 +1,5 @@
 #pragma once
 
-#include "..\QueryProcessor\grammar.h"
 #include "..\Program\TNode\TNode.h"
 
 #include <vector>
@@ -10,6 +9,22 @@ using namespace std;
 class NodeTypeTable {
 public:
 	NodeTypeTable();
+
+	enum NodeType {
+		ASSIGN,
+		WHILE,
+		WHILEBODY,
+		IF,
+		THENBODY,
+		ELSEBODY,
+		VARIABLE,
+		CONSTANT,
+		PLUS,
+		MINUS,
+		MULTIPLY,
+		PROCEDURE,
+		PROGRAM
+	};
 
 	//API-Query
 	static vector<int> GetAllNodesOfType(NodeType type);

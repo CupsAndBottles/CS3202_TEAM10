@@ -1,5 +1,10 @@
 #pragma once
 
+#include <vector>
+#include <map>
+
+using namespace std;
+
 class NextBip {
 public:
 	// default constructor
@@ -21,6 +26,6 @@ public:
 
 private:
 	static map <int, vector<int>> returnPoints;
-	static map <int, vector<int>> endsOfProcs
+	static map <int, vector<int>> endsOfProcs;
 };
 

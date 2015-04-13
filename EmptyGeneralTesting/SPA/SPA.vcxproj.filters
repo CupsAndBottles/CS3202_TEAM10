@@ -30,6 +30,7 @@
     <ClCompile Include="PKB\Contains.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\Sibling.cpp" />
+    <ClCompile Include="PKB\NodeTypeTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser\DesignExtractor.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="PKB\Contains.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\Sibling.h" />
+    <ClInclude Include="PKB\NodeTypeTable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bracketsTest.txt" />

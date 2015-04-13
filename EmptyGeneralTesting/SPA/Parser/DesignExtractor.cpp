@@ -346,14 +346,7 @@ void ComputeNextBip() {
 	for each (int call in StmtTypeTable::GetAllStmtsOfType(CALL)) {
 		TNode& callNode = Program::GetStmtFromNumber(call);
 		int calledProc = ProcTable::GetIndexOfProc(callNode.GetContent());
-		vector<int> afterCall = Next::GetNextAfter(call);
-		if (afterCall.size() == 0) {
-			continue; // nothing to insert
-		} else if (afterCall.size() == 1) {
-			NextBip::setReturnPoint(calledProc, afterCall[0]);
-		} else {
-			throw (string) "WE HAVE A PROBLEM"; // call will never have more than one next.
-		}
+		NextBip::setReturnPoint(calledProc, call);
 	}
 
 }

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PKB\NodeTypeTable.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\Contains.h" />
     <ClInclude Include="PKB\NextBip.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="PKB\Sibling.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PKB\NodeTypeTable.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\Contains.cpp" />
     <ClCompile Include="PKB\NextBip.cpp" />

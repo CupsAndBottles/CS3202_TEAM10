@@ -40,6 +40,22 @@ enum SynonymType {
 	INVALID_SYNONYM_TYPE
 };
 
+enum NodeType {
+	ASSIGN,
+	WHILE,
+	WHILEBODY,
+	IF,
+	THENBODY,
+	ELSEBODY,
+	VARIABLE,
+	CONSTANT,
+	PLUS,
+	MINUS,
+	MULTIPLY,
+	PROCEDURE,
+	PROGRAM
+};
+
 struct Synonym {
 	std::string value;
 	SynonymType type;

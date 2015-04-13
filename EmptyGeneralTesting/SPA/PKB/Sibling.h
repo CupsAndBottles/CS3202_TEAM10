@@ -1,4 +1,9 @@
 #pragma once
+
+#include <vector>
+
+using namespace std;
+
 class Sibling {
 public:
 	Sibling();

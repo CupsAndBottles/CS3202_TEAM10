@@ -10,6 +10,8 @@ public:
 	static void setEndOfProc(int procedure, int endOfProc);
 	static vector<int> GetNextAfter(int progLineBefore);
 	static vector<int> GetNextBefore(int progLineAfter);
+	static vector<int> GetReturnTo(int terminatingStmt, int callingProc); // returns the return point in the calling proc
+	static vector<int> GetEntryPoint(int startingStmt, int callingProc); // returns the entry call stmt in the calling proc
 
 	static bool IsNextT(int progLineBefore, int progLineAfter);
 	static vector<int> GetNextTAfter(int progLineBefore);

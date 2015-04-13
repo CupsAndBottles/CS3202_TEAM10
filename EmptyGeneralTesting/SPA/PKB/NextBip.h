@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <queue>
 
 using namespace std;
 
@@ -18,14 +19,15 @@ public:
 	static vector<int> GetReturnTo(int terminatingStmt, int callingProc); // returns the return point in the calling proc
 	static vector<int> GetEntryPoint(int startingStmt, int callingProc); // returns the entry call stmt in the calling proc
 
-	static bool IsNextT(int progLineBefore, int progLineAfter);
-	static vector<int> GetNextTAfter(int progLineBefore);
-	static vector<int> GetNextTBefore(int progLineAfter);
+	static bool IsNextBipT(int progLineBefore, int progLineAfter);
+	static vector<int> GetNextBipTAfter(int progLineBefore);
+	static vector<int> GetNextBipTBefore(int progLineAfter);
 
 	static void ClearData();
 
 private:
 	static map <int, vector<int>> returnPoints;
 	static map <int, vector<int>> endsOfProcs;
+	static queue<int> AddToQueue(queue<int> linesToCheck, vector<int> additions);
 };
 

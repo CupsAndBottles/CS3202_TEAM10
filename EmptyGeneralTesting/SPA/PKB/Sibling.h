@@ -9,7 +9,7 @@ public:
 	Sibling();
 
 	// API 
-	bool IsSibling(int nodeOne, int nodeTwo);
-	vector<int> GetSiblings(int node);
+	static bool IsSibling(int nodeOne, int nodeTwo);
+	static vector<int> GetSiblings(int node);
 };
 

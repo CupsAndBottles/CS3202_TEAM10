@@ -18,12 +18,12 @@
     <ClInclude Include="parser\tokenizer.h" />
     <ClInclude Include="pkb\calls.h" />
     <ClInclude Include="pkb\consttable.h" />
-    <ClInclude Include="PKB\Follows.h" />
+    <ClInclude Include="pkb\follows.h" />
     <ClInclude Include="pkb\modifies.h" />
     <ClInclude Include="pkb\next.h" />
-    <ClInclude Include="PKB\Parent.h" />
+    <ClInclude Include="pkb\parent.h" />
     <ClInclude Include="pkb\proctable.h" />
-    <ClInclude Include="PKB\StmtTypeTable.h" />
+    <ClInclude Include="pkb\stmttypetable.h" />
     <ClInclude Include="pkb\uses.h" />
     <ClInclude Include="pkb\vartable.h" />
     <ClInclude Include="program\program.h" />

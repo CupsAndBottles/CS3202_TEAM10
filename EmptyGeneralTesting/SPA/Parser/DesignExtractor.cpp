@@ -50,11 +50,11 @@ void ComputeNextBip();
 
 void DesignExtractor::Extract() {
 	ComputeNodeTypeTable();
-	ComputeModifiesAndUses();
 	ComputeCalls();
-	ComputeModifiesAndUsesForProcedures();
 	ComputeNext();
 	ComputeNextBip();
+	ComputeModifiesAndUsesForProcedures();
+	ComputeModifiesAndUses();
 }
 
 void ComputeNodeTypeTable() {
@@ -291,9 +291,7 @@ set<int> ConnectStmtList(int startPoint) {
 			prevStmts.insert(currentStmt);
 
 		} else {
-
 			prevStmts.insert(currentStmt);
-
 		}
 		// goto next stmt
 		currentStmt = Follows::GetFollowsAfter(currentStmt);
@@ -341,8 +339,11 @@ void ComputeModifiesAndUses() {
 	// loop
 
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
+	vector<int> callStmts = StmtTypeTable::GetAllStmtsOfType(CALL);
 
-	set<int> currentChildren(assignmentStmts.begin(), assignmentStmts.end());
+	set<int> currentChildren;
+	currentChildren.insert(assignmentStmts.begin(), assignmentStmts.end());
+	currentChildren.insert(callStmts.begin(), callStmts.end());
 	
 	while (currentChildren.size() != 0) {
 		set<int> parents;
@@ -350,8 +351,18 @@ void ComputeModifiesAndUses() {
 		for each (int stmt in currentChildren) {
 			int parent = Parent::GetParentOf(stmt);
 			if (parent == -1) continue;
-			vector<int> usedVars = Uses::GetVarUsedByStmt(stmt);
-			vector<int> modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
+			vector<int> usedVars, modifiedVars;
+
+			if (StmtTypeTable::GetStmtTypeOf(stmt) == CALL) {
+				// should only encounter this code on the first pass. Maybe can optimise
+				int proc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(stmt).GetContent());
+				usedVars = Uses::GetVarUsedByProc(proc);
+				modifiedVars = Modifies::GetVarModifiedByProc(proc);
+			} else { // assign or while or whatever
+				usedVars = Uses::GetVarUsedByStmt(stmt);
+				modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
+			}
+
 			for each (int var in usedVars) {
 				Uses::SetStmtUsesVar(parent, var);
 			}
@@ -363,7 +374,6 @@ void ComputeModifiesAndUses() {
 
 		currentChildren = parents;
 	}
-
 }
 
 void ComputeNextBip() {

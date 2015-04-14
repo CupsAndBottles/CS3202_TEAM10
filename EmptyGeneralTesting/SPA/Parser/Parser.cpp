@@ -327,12 +327,11 @@ TNode* Parser::ParseConstTNode() {
 TNode* Parser::ParseVariableTNode(bool isModifies) {
 	string variable = ConsumeTopTokenOfType(Token::IDENTIFIER).content;
 	TNode* result = ConstructVarTNode(variable);
+	int varIndex = VarTable::InsertVar(variable);
 	if (isModifies) {
-		int varIndex = VarTable::InsertVar(variable);
 		Modifies::SetStmtModifiesVar(currentLineNumber, varIndex);
 		Modifies::SetProcModifiesVar(currentProcNumber, varIndex);
 	} else {
-		int varIndex = VarTable::InsertVar(variable);
 		Uses::SetStmtUsesVar(currentLineNumber, varIndex);
 		Uses::SetProcUsesVar(currentProcNumber, varIndex);
 	}

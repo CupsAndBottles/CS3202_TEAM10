@@ -10,34 +10,41 @@ public:
 	Contains();
 
 	// General API
-	bool IsContains(int nodeContaining, int nodeContained);
-	bool IsContains(NodeType nodetypeContaining, NodeType nodetypeContained);
-	bool IsContains(int nodeContaining, NodeType nodetypeContained);
-	bool IsContains(NodeType nodetypeContaining, int nodeContained);
+	static bool IsContains(int nodeContaining, int nodeContained);
+	static bool IsContains(NodeType nodetypeContaining, NodeType nodetypeContained);
+	static bool IsContains(int nodeContaining, NodeType nodetypeContained);
+	static bool IsContains(NodeType nodetypeContaining, int nodeContained);
 
-	vector<int> GetNodesContaining(int nodeContained);
-	vector<int> GetNodesContained(int nodeContaining);
-	vector<int> GetNodesContaining(NodeType nodetypeContained);
-	vector<int> GetNodesContained(NodeType nodetypeContaining);
+	static bool IsContainsVar(int nodeContaining, int varIndex);
+	static bool IsContainsConst(int nodeContaining, int constant);
+	static bool IsContainsVar(NodeType nodetypeContaining, int varIndex);
+	static bool IsContainsConst(NodeType nodetypeContaining, int constant);
+
+	static int GetNodeContaining(int nodeContained);
+	static vector<int> GetNodesContained(int nodeContaining);
+	static vector<int> GetNodesContaining(NodeType nodetypeContained);
+	static vector<int> GetNodesContained(NodeType nodetypeContaining);
+	static vector<int> GetNodesContainingVar(int varIndex);
+	static vector<int> GetNodesContainingConst(int constantw);
 
 
-	bool IsContainsT(int nodeContaining, int nodeContained);
-	bool IsContainsT(NodeType nodetypeContaining, NodeType nodetypeContained);
-	bool IsContainsT(int nodeContaining, NodeType nodetypeContained);
-	bool IsContainsT(NodeType nodetypeContaining, int nodeContained);
+	static bool IsContainsT(int nodeContaining, int nodeContained);
+	static bool IsContainsT(NodeType nodetypeContaining, NodeType nodetypeContained);
+	static bool IsContainsT(int nodeContaining, NodeType nodetypeContained);
+	static bool IsContainsT(NodeType nodetypeContaining, int nodeContained);
 
-	vector<int> GetNodesContainingT(int nodeContained);
-	vector<int> GetNodesContainedT(int nodeContaining);
-	vector<int> GetNodesContainingT(NodeType nodetypeContained);
-	vector<int> GetNodesContainedT(NodeType nodetypeContaining);
+	static vector<int> GetNodesContainingT(int nodeContained);
+	static vector<int> GetNodesContainedT(int nodeContaining);
+	static vector<int> GetNodesContainingT(NodeType nodetypeContained);
+	static vector<int> GetNodesContainedT(NodeType nodetypeContaining);
 
 	// helpers
-	vector<int> FilterNodesBy(vector<int> nodes, NodeType filterType);
-	bool DoesNodeNumberExistIn(vector<int> nodes, int nodeIndex);
+	static vector<int> FilterNodesBy(vector<int> nodes, NodeType filterType);
+	static bool DoesNodeNumberExistIn(vector<int> nodes, int nodeIndex);
 
 	// specialisations, feel free to add your own or make them
-	bool IsContainsStmt(NodeType nodetypeContaining, int stmtNumber);
-	bool IsStmtContains(int stmtNumber, NodeType nodetypeContained);
+	static bool IsContainsStmt(NodeType nodetypeContaining, int stmtNumber);
+	static bool IsStmtContains(int stmtNumber, NodeType nodetypeContained);
 
 };
 

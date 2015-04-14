@@ -2,17 +2,31 @@
 
 #include <iostream>
 #include <string>
-#include "Parser\Parser.h"
 #include "Program\Program.h"
-#include "PKB\Affects.h"
+#include "QueryProcessor\QueryEvaluator.h"
 
 using namespace std;
 
+Pattern PatternParser(string expr) {
+	Pattern patternObj = Pattern();
+	bool notExactMatch = false;
+	if (expr.length() != 0) {
+		notExactMatch = expr.at(0) == '_';
+		vector<char> resultantExpr;
+		for each (char c in expr) {
+			if (c != '\"' && c != '_') resultantExpr.push_back(c);
+		}
+		patternObj = QueryEvaluator::CreatePatternObject(string(resultantExpr.begin(), resultantExpr.end()));
+	}
+
+	return patternObj;
+}
+
+
+
 void main() {
 	Program::ClearAll();
-	Parser::Parse("Test.txt");
-	cout << (Program::GetStmtFromNumber(22).GetChild(0).GetContent());
-	cout << Affects::IsAffectsT(22, 22);
+	Pattern obj = PatternParser("_ \" 3 +  fnJw\" _");
 }
 
 

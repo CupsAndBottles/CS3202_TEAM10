@@ -72,7 +72,6 @@ bool PatternMatcher::MatchPatternAtLeaves(TNode* node, Pattern object, bool part
 vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMatch) {
 
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(SynonymType::ASSIGN);
-
 	return MatchPatternFromRoot(object, partialMatch, assignmentStmts);
 }
 

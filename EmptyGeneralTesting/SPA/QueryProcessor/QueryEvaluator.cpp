@@ -6,6 +6,8 @@
 #include "..\PKB\StmtTypeTable.h"
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\VarTable.h"
+#include "..\Parser\Tokenizer.h"
+#include "..\Parser\Parser.h"
 #include "Answers.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
@@ -13,6 +15,7 @@
 #include <algorithm>
 #include <iterator> 
 #include <sstream>
+#include <deque>
 #include "..\..\AutoTester\source\AbstractWrapper.h"
 
 using namespace std;
@@ -867,11 +870,20 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern, vector<IntermediateR
 		else if(arg2Type == EXPRESSION)
 		{
 			vector<int> tempResult;
+			Pattern patternObj = Pattern();
+			bool notExactMatch = false;
+			if (arg2Value.length() != 0) {
+				notExactMatch = arg2Value.at(0) == '_';
+				vector<char> resultantExpr;
+				for each (char c in arg2Value) {
+					if (c != '\"' && c != '_') resultantExpr.push_back(c);
+				}
+				patternObj = CreatePatternObject(string(resultantExpr.begin(), resultantExpr.end()));
+			}
 
-			Pattern patternObj = CreatePatternObject(arg2Value);
 			if(patternObj.expr == "")	return false;
 			cout << "here";
-			vector<int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,true);
+			vector<int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,notExactMatch);
 			if(rightResult.empty())		return false;
 			cout << "here";
 			//vector<string> rightResult;
@@ -1356,34 +1368,97 @@ string QueryEvaluator::ToString(int i)
 //Construct Pattern struct
 Pattern QueryEvaluator::CreatePatternObject(string expr)
 {
-	//remove white spaces and get expression content
-	expr.erase(remove_if(expr.begin(), expr.end(), [](char x){return isspace(x);}), expr.end());
-	int length = expr.length() - 4;
-	expr = expr.substr(2, length);
+	class Helper {
+		deque<Token> tokens;
+		Pattern* emptyPattern;
+	public:
+		Helper(string expr) {
+			expr.push_back(';');
+			vector<Token> tokenVector = Tokenizer::Tokenize(expr);
+			tokens = deque<Token>(tokenVector.begin(), tokenVector.end());
+			emptyPattern = new Pattern();
+		}
 
-	vector<string> tokenList;
-	string delim = "+";
+		Token PeekAtTopToken() {
+			return tokens.front();
+		}
 
-	QueryPreProcessor::Tokenize(expr, tokenList, delim);
+		Token ConsumeTopToken() {
+			Token token = tokens.front();
+			tokens.pop_front();
+			return token;
+		}
 
-	if(tokenList.size() == 1)
-	{
-		return Pattern(tokenList.at(0), NULL, NULL);
-	}
+		bool TopTokenIsType(Token::Type type) {
+			return (tokens.front().type == type);
+		}
 
-	else if(tokenList.size() == 2)
-	{
-		Pattern *left = new Pattern(tokenList.at(0), NULL, NULL);
-		Pattern *right = new Pattern(tokenList.at(1), NULL, NULL);
-		Pattern p("+", left, right);
-		return p;
-	}
+		Token ConsumeTopTokenOfType(Token::Type type) {
+			// verifies that top token is of given type
+			// then consumes it
+			if (!TopTokenIsType(type)) throw (string) "Error in parsing pattern.";
+			return ConsumeTopToken();
+		}
 
-	else
-	{
-		cout << "\nIn CreatePatternObject, invalid expression\n";
-		return Pattern("", NULL, NULL);
-	}
+		Pattern* ParseExpr(bool isBracket) {
+			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
+			Pattern* result = emptyPattern;
+			while (!TopTokenIsType(terminatingCondition)) {
+				if (result->expr == "") { // empty pattern
+					if (TopTokenIsType(Token::OPEN_BRACE)) {
+						ConsumeTopTokenOfType(Token::OPEN_BRACE);
+						result = ParseExpr(true);
+					} else {
+						result = new Pattern(ConsumeTopToken().content, nullptr, nullptr);
+					}
+				} else {
+					result = ParseExpr(result, isBracket);
+				}
+			}
+			ConsumeTopTokenOfType(terminatingCondition);
+			return result;
+		}
+
+		Pattern* ParseExpr(Pattern* LHS, bool isBracket) {
+			// if next op is of lower precedence, construct RHS and return
+			// if next op is of equal precedence, construct and loop
+			// if next op is of higher precedence, perform recursive call
+			// since all operations are left associative, no attempt to worry about
+			//		assoiciativity is made
+
+			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
+
+			if (PeekAtTopToken().type == terminatingCondition) {
+				return LHS;
+			}
+
+			// TODO combine operator token types into one type for type checking.
+			Token op1 = ConsumeTopToken();
+			Pattern* RHS;
+			if (TopTokenIsType(Token::OPEN_BRACE)) {
+				ConsumeTopTokenOfType(Token::OPEN_BRACE);
+				RHS = ParseExpr(true);
+			} else {
+				RHS = new Pattern(ConsumeTopToken().content, nullptr, nullptr);
+			}
+
+			Token nextOp = PeekAtTopToken(); // peek
+			int comparison = Parser::compare(op1.type, nextOp.type);
+
+			if (comparison < 0) { // nextOp is of lower precedence than currentOp
+				RHS = ParseExpr(RHS, isBracket);
+			}
+			Pattern* expression = new Pattern(op1.content, LHS, RHS);
+			if (comparison > 0) { // nextOp is of higher precedence than currentOp
+				return expression;
+			} else { // equal precedence
+				return ParseExpr(expression, isBracket);
+			}
+		}
+	};
+
+	Helper helper(expr);
+	return *helper.ParseExpr(false);
 }
 /*
 void QueryEvaluator::initiateAll(vector<Declaration> declarations){

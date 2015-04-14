@@ -17,8 +17,6 @@
     <ClCompile Include="PKB\StmtTypeTable.cpp" />
     <ClCompile Include="PKB\Uses.cpp" />
     <ClCompile Include="PKB\VarTable.cpp" />
-    <ClCompile Include="Program\Program.cpp" />
-    <ClCompile Include="Program\TNode\TNode.cpp" />
     <ClCompile Include="PKB\NextBip.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\Sibling.cpp" />
@@ -34,6 +32,9 @@
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
     <ClCompile Include="PKB\Contains.cpp" />
+    <ClCompile Include="Program\TNode\TNode.cpp" />
+    <ClCompile Include="Program\Program.cpp" />
+    <ClCompile Include="NextBipWithState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -55,8 +56,6 @@
     <ClInclude Include="PKB\StmtTypeTable.h" />
     <ClInclude Include="PKB\Uses.h" />
     <ClInclude Include="PKB\VarTable.h" />
-    <ClInclude Include="program\program.h" />
-    <ClInclude Include="program\tnode\tnode.h" />
     <ClInclude Include="PKB\NextBip.h" />
     <ClInclude Include="PKB\Contains.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
@@ -72,6 +71,9 @@
     <ClInclude Include="queryprocessor\querypreprocessor.h" />
     <ClInclude Include="queryprocessor\queryprocessor.h" />
     <ClInclude Include="queryprocessor\reltable.h" />
+    <ClInclude Include="program\tnode\tnode.h" />
+    <ClInclude Include="program\program.h" />
+    <ClInclude Include="NextBipWithState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />

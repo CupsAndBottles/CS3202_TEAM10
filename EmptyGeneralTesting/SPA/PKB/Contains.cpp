@@ -220,7 +220,7 @@ bool Contains::IsContainsTConst(NodeType nodetypeContaining, int constant) {
 	return false;
 }
 
-vector<int> GetNodesContainingT(int nodeContained) {
+vector<int> Contains::GetNodesContainingT(int nodeContained) {
 	vector<int> result;
 	TNode* parent = NodeTypeTable::GetPtrToNode(nodeContained)->GetDirectParent();
 	if (parent != nullptr) {
@@ -231,7 +231,7 @@ vector<int> GetNodesContainingT(int nodeContained) {
 	return result;
 }
 
-vector<int> GetNodesContainedT(int nodeContaining) {
+vector<int> Contains::GetNodesContainedT(int nodeContaining) {
 	vector<int> result;
 	for each(TNode* child in NodeTypeTable::GetPtrToNode(nodeContaining)->GetChildren()) {
 		int childNodeIndex = child->GetNodeIndex();
@@ -243,7 +243,7 @@ vector<int> GetNodesContainedT(int nodeContaining) {
 	return result;
 }
 
-vector<int> GetNodesContainingT(NodeType nodetypeContained) {
+vector<int> Contains::GetNodesContainingT(NodeType nodetypeContained) {
 	set<int> result;
 	for each (int node in NodeTypeTable::GetAllNodesOfType(nodetypeContained)){
 		vector<int> intermediateResult = GetNodesContainingT(node);
@@ -252,7 +252,7 @@ vector<int> GetNodesContainingT(NodeType nodetypeContained) {
 	return vector<int>(result.begin(), result.end());
 }
 
-vector<int> GetNodesContainedT(NodeType nodetypeContaining) {
+vector<int> Contains::GetNodesContainedT(NodeType nodetypeContaining) {
 	set<int> result;
 	for each (int node in NodeTypeTable::GetAllNodesOfType(nodetypeContaining)) {
 		vector<int> intermediateResult = GetNodesContainedT(node);
@@ -280,7 +280,7 @@ vector<int> Contains::GetNodesContainingTConst(int constant) {
 }
 
 // helpers
-vector<int> FilterNodesBy(vector<int> nodes, NodeType filterType) {
+vector<int> Contains::FilterNodesBy(vector<int> nodes, NodeType filterType) {
 	vector<int> results;
 	for each (int node in nodes) {
 		if (NodeTypeTable::CheckIfNodeOfType(node, filterType)) results.push_back(node);

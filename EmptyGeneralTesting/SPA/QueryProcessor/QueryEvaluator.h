@@ -10,6 +10,9 @@ using namespace std;
 class QueryEvaluator
 {
 	friend class QueryEvaluatorTest;
+public:
+
+	static Pattern CreatePatternObject(string);
 
 protected:
 
@@ -33,7 +36,6 @@ protected:
 	//void deleteAnswer(Answers*);
 
 	string ToString(int);
-	Pattern CreatePatternObject(string);
 
 public:
 	QueryEvaluator(void);

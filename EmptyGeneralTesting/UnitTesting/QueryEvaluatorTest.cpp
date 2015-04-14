@@ -42,7 +42,7 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.rightPattern->expr == "y");
 	CPPUNIT_ASSERT(patternObj.rightPattern->leftPattern == NULL);
 	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
-	\
+
 
 	expr = "_ \" 3 +  fnJw\" _";
 	patternObj = qe.CreatePatternObject(expr); 

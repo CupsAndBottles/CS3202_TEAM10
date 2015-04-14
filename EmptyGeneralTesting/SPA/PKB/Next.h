@@ -5,6 +5,7 @@
 #include <map>
 #include <queue>
 
+#include <boost/dynamic_bitset.hpp>
 using namespace std;
 
 class Next {
@@ -35,7 +36,7 @@ private:
 	static map<int, vector<int>> beforeToAfterTable;
 	static map<int, vector<int>> afterToBeforeTable;
 	static int sizeOfNext;
-	static vector<vector<bool>> bitVector;
+	static vector<boost::dynamic_bitset<>> bitVector;
 	static bool bitVectorIsBuilt;
 	static int maxNoOfLines;
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+#include <boost/dynamic_bitset.hpp>
 using namespace std;
 
 class Uses {
@@ -36,11 +37,11 @@ public:
 private:
 	static map <int, vector<int>> stmtToVarTable;
     static map <int, vector<int>> varToStmtTable;
-	static vector<vector<bool>> stmtToVarBitVector;
+	static vector<boost::dynamic_bitset<>> stmtToVarBitVector;
 
 	static map <int, vector<int>> procToVarTable;
 	static map <int, vector<int>> varToProcTable;
-	static vector<vector<bool>> procToVarBitVector;
+	static vector<boost::dynamic_bitset<>> procToVarBitVector;
 	
 	static int maxProcOrVar;
 	static int maxStmtOrVar;

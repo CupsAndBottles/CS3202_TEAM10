@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+#include <boost/dynamic_bitset.hpp>
 using namespace std;
 
 class Modifies {
@@ -19,8 +20,8 @@ class Modifies {
         static bool IsStmtModifyingVarBV(int stmtModifying, int varModified);
         static vector<int> GetStmtModifyingVar(int varModified);
 		static vector<int> GetVarModifiedByStmt(int stmtModifying);
-		vector<bool> Modifies::GetStmtsModifyingBV(int varModified);
-		vector<bool> Modifies::GetVarsModifiedByBV(int stmtModifying);
+		vector<int> Modifies::GetStmtsModifyingBV(int varModified);
+		vector<int> Modifies::GetVarsModifiedByBV(int stmtModifying);
 
 		static void SetProcModifiesVar(int procModifying, int varModified);
 		static bool IsProcModifyingVar(int procModifying, int varModified);
@@ -37,11 +38,11 @@ class Modifies {
     private:
         static map <int, vector<int>> stmtToVarTable;
         static map <int, vector<int>> varToStmtTable;
-		static vector<vector<bool>> stmtToVarBitVector;
+		static vector<boost::dynamic_bitset<>> stmtToVarBitVector;
 
 		static map <int, vector<int>> procToVarTable;
 		static map <int, vector<int>> varToProcTable;
-		static vector<vector<bool>> procToVarBitVector;
+		static vector<boost::dynamic_bitset<>> procToVarBitVector;
 		
 		static int maxStmtOrVar;
 		static int maxProcOrVar;

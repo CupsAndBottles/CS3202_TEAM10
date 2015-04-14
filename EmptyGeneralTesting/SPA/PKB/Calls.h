@@ -5,6 +5,7 @@
 #include <map>
 #include <queue>
 
+#include <boost/dynamic_bitset.hpp>
 using namespace std;
 
 class Calls {
@@ -43,7 +44,7 @@ private:
 	static map<int, vector<int>> calledToCallingTable;
 	
 	static map<int, vector<bool>> callingToCalledBitVector;
-	static vector<vector<bool>> bitVector;
+	static vector<boost::dynamic_bitset<>> bitVector;
 	static bool bitVectorIsBuilt;
 
 	static vector<vector<bool>> callingToCalledTBV;

@@ -34,15 +34,6 @@
     <ClInclude Include="PKB\VarTable.h" />
     <ClInclude Include="program\program.h" />
     <ClInclude Include="program\tnode\tnode.h" />
-    <ClInclude Include="QueryProcessor\Answers.h" />
-    <ClInclude Include="queryprocessor\grammar.h" />
-    <ClInclude Include="queryprocessor\patternmatcher.h" />
-    <ClInclude Include="QueryProcessor\IntermediateResult.h" />
-    <ClInclude Include="queryprocessor\querydata.h" />
-    <ClInclude Include="queryprocessor\queryevaluator.h" />
-    <ClInclude Include="queryprocessor\querypreprocessor.h" />
-    <ClInclude Include="queryprocessor\queryprocessor.h" />
-    <ClInclude Include="queryprocessor\reltable.h" />
     <ClInclude Include="PKB\Sibling.h" />
   </ItemGroup>
   <ItemGroup>
@@ -67,13 +58,6 @@
     <ClCompile Include="PKB\VarTable.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\TNode.cpp" />
-    <ClCompile Include="QueryProcessor\IntermediateResult.cpp" />
-    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
-    <ClCompile Include="QueryProcessor\QueryData.cpp" />
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
-    <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
-    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\RelTable.cpp" />
     <ClCompile Include="PKB\Sibling.cpp" />
   </ItemGroup>
   <ItemGroup>

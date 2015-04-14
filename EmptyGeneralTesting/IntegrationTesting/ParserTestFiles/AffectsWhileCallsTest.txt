@@ -1,0 +1,37 @@
+\\ Affects Test with calls
+\\ Regular while and call stmts
+
+procedure while1 {
+	while w {			\\ 1
+		x = 1;			\\ 2
+		call noModifiesX;	\\ 3
+	}
+	z = x;				\\ 4
+	while w {			\\ 5
+		x = 1;			\\ 6
+		call modifiesX;		\\ 7
+	}
+	z = x;				\\ 8
+}
+
+procedure while2 {
+	x = 1;				\\ 9
+	while w {			\\ 10
+		call noModifiesX;	\\ 11
+	}
+	z = x;				\\ 12
+	x = 1;				\\ 13
+	while w {			\\ 14
+		call modifiesX;		\\ 15
+	}
+	z = x;				\\ 16
+}
+
+procedure noModifiesX {
+	y = 2;				\\ 17
+}
+
+procedure modifiesX {
+	x = 2;				\\ 18
+}
+

@@ -121,13 +121,13 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				}
 			} break;
 			case CALL: {
-				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
-				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
-					// don't check for anything after this stmt
-				} else {
+				//int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+				//if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+				//	// don't check for anything after this stmt
+				//} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
-				}
+				//}
 			} break;
 			default:
 				//1. "longer method, without using bitvector"
@@ -198,19 +198,19 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 				}
 				break;
 			case CALL: {
-				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
-				if (Uses::IsProcUsingVar(procCalled, varModified)) {
-					affectedStmts.push_back(currStmt);
-				}
-				
-				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
-					// don't check for anything after this stmt
-				} else {
+				//int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+				//if (Uses::IsProcUsingVar(procCalled, varModified)) {
+				//	affectedStmts.push_back(currStmt);
+				//}
+				//
+				//if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+				//	// don't check for anything after this stmt
+				//} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
 					if (!nextOfCurrStmt.empty()) {
 						uncheckedStmts.push(nextOfCurrStmt.at(0));
 					}
-				}
+				//}
 			} break;
 			default:
 				//1. "longer method, without using bitvector"
@@ -298,9 +298,9 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 		}
 	}
 	case CALL:{
-		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+		//int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 		if (!stmtsIsChecked.at(currStmt)) {
-			int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
+			/*int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
 			vector<int>::iterator it = varsUsed.begin();
 			while (it != varsUsed.end()) {
 				if (varModified == *it) {
@@ -309,7 +309,7 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 				} else {
 					it++;
 				}
-			}
+			}*/
 			stmtsIsChecked.at(currStmt) = true;
 		} else {
 			nextBeforeCurrStmt.clear();

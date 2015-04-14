@@ -1,0 +1,58 @@
+\\ Affects Test with calls
+\\ Regular if-then-else and call stmts
+
+procedure ifThenElse1 {
+	x = 1;				\\ 1
+	if i then {			\\ 2
+		call modifiesX;		\\ 3
+	} else {
+		call modifiesX;		\\ 4
+	}
+	y = x;				\\ 5
+	x = 1;				\\ 6
+	if i then {			\\ 7
+		call noModifiesX;	\\ 8
+	} else {
+		call modifiesX;		\\ 9
+	}
+	y = x;				\\ 10
+	x = 1;				\\ 11
+	if i then {			\\ 12
+		call modifiesX;		\\ 13
+	} else {
+		y = x;			\\ 14
+	}
+	y = x;				\\ 15
+}
+
+procedure ifThenElse2 {
+	if i then {			\\ 16
+		x = 1;			\\ 17
+	} else {
+		call modifiesX;		\\ 18
+	}
+	y = x;				\\ 19
+	if i then {			\\ 20
+		call modifiesX;		\\ 21
+	} else {
+		x = 1;			\\ 22
+	}
+	y = x;				\\ 23
+	x = 1;				\\ 24
+	if i then {			\\ 25
+		call modifiesX;		\\ 26
+		y = x;			\\ 27
+	} else {
+		y = 2;			\\ 28
+		y = x;			\\ 29
+	}
+}
+
+procedure noModifiesX {
+	y = 2;				\\ 30
+}
+
+procedure modifiesX {
+	x = 2;				\\ 31
+}
+

@@ -86,7 +86,6 @@
     <None Include="ParserTestFiles\whileTest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ModifiesTest.h" />
     <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ParentTest.h" />
@@ -104,7 +103,6 @@
   <ItemGroup>
     <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
-    <ClCompile Include="ModifiesTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />

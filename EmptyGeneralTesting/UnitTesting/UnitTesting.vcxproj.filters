@@ -14,7 +14,6 @@
     <None Include="ParserTestFiles\Source.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ModifiesTest.h" />
     <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="StmtTypeTableTest.h" />
     <ClInclude Include="ParserTest.h" />
@@ -40,10 +39,9 @@
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="ProcTableTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
-    <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
-    <ClCompile Include="ModifiesTest.cpp" />
+    <ClCompile Include="ConstTableTest.cpp" />
   </ItemGroup>
 </Project>

@@ -108,10 +108,13 @@ bool Modifies::IsStmtModifyingVar(int stmtModifying, int varModified) {
 bool Modifies::IsStmtModifyingVarBV(int stmtModifying, int varModified) {
 	//cout << "size of stmtbitvector: " << stmtToVarBitVector.size() << "\n";
 	//return true;
-	/** TODO: BOUNDS CHECKING */
-	return stmtToVarBitVector[stmtModifying][varModified];
-}
+	if (stmtModifying > 0 && stmtModifying <= maxStmtOrVar) {
 
+		return stmtToVarBitVector[stmtModifying][varModified];
+
+	}
+	else return false; 
+}
 vector<int> Modifies::GetStmtModifyingVar(int varModified) {    
     if (varToStmtTable.count(varModified) == 0) {
 		vector<int> stmtsModifyingVarModified;
@@ -123,6 +126,9 @@ vector<int> Modifies::GetStmtModifyingVar(int varModified) {
 	}
 }
 
+vector<bool> Modifies::GetStmtsModifyingBV(int varModified) {
+	return stmtToVarBitVector[varModified];
+}
 vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
     if (stmtToVarTable.count(stmtModifying) == 0) {
 		vector<int> varsModifyiedByStmtModifying;
@@ -134,7 +140,15 @@ vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
 	}
 
 }
+vector<bool> Modifies::GetVarsModifiedByBV(int stmtModifying) {
+	vector<bool> result;
+	for (int i=0; i<stmtToVarBitVector.size(); i++) {
+		if (stmtToVarBitVector[i][stmtModifying])
+			result.push_back(i);
+	}
 
+	return result;
+}
 void Modifies::SetProcModifiesVar(int procModifying, int varModified) {
 	if (!IsProcModifyingVar(procModifying, varModified)) {
         procToVarTable[procModifying].push_back(varModified);
@@ -161,8 +175,12 @@ bool Modifies::IsProcModifyingVar(int procModifying, int varModified) {
 }
 
 bool Modifies::IsProcModifyingVarBV(int procModifying, int varModified) {
-	/** TODO: BOUNDS CHECKING */
-	return procToVarBitVector[procModifying][varModified];
+	if (procModifying > 0 && procModifying <= maxProcOrVar && varModified <=maxProcOrVar) {
+
+		return procToVarBitVector[procModifying][varModified];
+
+	}
+	else return false; 
 }
 vector<int> Modifies::GetProcModifyingVar(int varModified) {
 	if (varToProcTable.count(varModified) == 0) {

@@ -23,7 +23,6 @@
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\NextBip.cpp" />
-    <ClCompile Include="QueryProcessor\Answers.cpp" />
     <ClCompile Include="QueryProcessor\IntermediateResult.cpp" />
     <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
     <ClCompile Include="QueryProcessor\QueryData.cpp" />
@@ -62,7 +61,6 @@
     <ClInclude Include="PKB\Sibling.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\NextBip.h" />
-    <ClInclude Include="QueryProcessor\Answers.h" />
     <ClInclude Include="queryprocessor\grammar.h" />
     <ClInclude Include="QueryProcessor\IntermediateResult.h" />
     <ClInclude Include="queryprocessor\patternmatcher.h" />

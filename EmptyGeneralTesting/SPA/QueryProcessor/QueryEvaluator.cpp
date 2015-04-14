@@ -8,7 +8,6 @@
 #include "..\PKB\VarTable.h"
 #include "..\Parser\Tokenizer.h"
 #include "..\Parser\Parser.h"
-#include "Answers.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>

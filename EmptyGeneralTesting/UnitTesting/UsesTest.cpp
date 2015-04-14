@@ -43,7 +43,7 @@ void UsesTest::TestBitVector() {
 	Uses::SetStmtUsesVar(0,1);
 	Uses::SetStmtUsesVar(1,2);
 	Uses::SetProcUsesVar(2,3);
-	Uses::SetStmtUsesVar(3,4);
+	Uses::SetProcUsesVar(3,4);
 	
 	Uses::CreateBitVector();
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVarBV(0,1));

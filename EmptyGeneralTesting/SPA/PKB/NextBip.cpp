@@ -34,7 +34,7 @@ vector<int> NextBip::GetNextAfter(int progLineBefore) {
 	int thisProc = ProcTable::GetProcOfStmt(progLineBefore);
 	vector<int> nextStmts;
 
-	if (StmtTypeTable::CheckIfStmtOfType(progLineBefore, SynonymType::CALL)) {
+	if (StmtTypeTable::CheckIfStmtOfType(progLineBefore, CALL)) {
 		int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(progLineBefore).GetContent());
 		nextStmts.push_back(ProcTable::GetFirstStmtNoOfProc(calledProc));
 	} else {
@@ -67,7 +67,7 @@ vector<int> NextBip::GetNextBefore(int progLineAfter) {
 	} else {
 		vector<int> filteredCalls;
 		for each (int stmt in prevStmts) {
-			if (StmtTypeTable::CheckIfStmtOfType(stmt, SynonymType::CALL)) { // convert all prevCalls into ends of called procs
+			if (StmtTypeTable::CheckIfStmtOfType(stmt, CALL)) { // convert all prevCalls into ends of called procs
 				int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(stmt).GetContent());
 				vector<int> endsOfCalledProc = endsOfProcs[calledProc];
 				for each (int end in endsOfCalledProc) {
@@ -106,16 +106,83 @@ vector<int> NextBip::GetEntryPoint(int startingStmt, int callingProc) {
 	return result;
 }
 
-bool NextBip::IsNextT(int progLineBefore, int progLineAfter) {
+bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {
+	queue<int> linesToCheck;
+		
+	int maxNoOfLinesSoFar =StmtTypeTable::GetMaxStmtIndex();
+	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
+		
+	int currLine;
+
+	linesToCheck.push(progLineBefore);
+
+	while (!linesToCheck.empty()) {
+		currLine = linesToCheck.front();
+
+		if (!checkedLines.at(currLine)) {
+			if (currLine == progLineAfter) {
+				return true;
+			}
+			checkedLines[currLine] = true;
+			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
+		}
+		linesToCheck.pop();
+	}
 	return false;
+
 }
 
-vector<int> NextBip::GetNextTAfter(int progLineBefore) {
-	return vector<int>();
+vector<int> NextBip::GetNextBipTAfter(int progLineBefore) {
+	queue<int> linesToCheck;
+	vector<int> linesAfter;
+
+	int maxNoOfLinesSoFar = StmtTypeTable::GetMaxStmtIndex();
+	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
+	
+	int currLine;
+
+	linesToCheck = AddToQueue(linesToCheck, GetNextAfter(progLineBefore));
+	
+	while (!linesToCheck.empty()){
+		currLine = linesToCheck.front();
+		if (!checkedLines.at(currLine)) {
+			linesAfter.push_back(currLine);
+			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
+			
+			checkedLines[currLine] = true;
+
+		}
+		linesToCheck.pop();
+
+	}
+
+	return linesAfter;
+
 }
 
-vector<int> NextBip::GetNextTBefore(int progLineAfter) {
-	return vector<int>();
+vector<int> NextBip::GetNextBipTBefore(int progLineAfter) {
+	queue<int> linesToCheck;
+	vector<int> linesBefore;
+	
+	int maxNoOfLinesSoFar = StmtTypeTable::GetMaxStmtIndex();
+	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
+	
+	int currLine;
+
+	linesToCheck = AddToQueue(linesToCheck, GetNextBefore(progLineAfter));
+	
+	while (!linesToCheck.empty()){
+		currLine = linesToCheck.front();
+		if (!checkedLines.at(currLine)) {
+			linesBefore.push_back(currLine);
+			linesToCheck = AddToQueue(linesToCheck, GetNextBefore(currLine));
+
+			checkedLines[currLine] = true;
+		}
+		linesToCheck.pop();
+	}
+	return linesBefore;
+
 }
 
 void NextBip::ClearData() {
@@ -125,4 +192,13 @@ void NextBip::ClearData() {
 		returnPoints[proc] = emptySet;
 		endsOfProcs[proc] = emptySet;
 	}
+}
+
+queue<int> Next::AddToQueue(queue<int> linesToCheck, vector<int> additions) {
+	for (unsigned int i = 0; i < additions.size(); i++) {
+		linesToCheck.push(additions.at(i));
+	}
+
+	return linesToCheck;
+
 }

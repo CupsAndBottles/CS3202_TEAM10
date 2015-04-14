@@ -6,8 +6,8 @@
 #include "Follows.h"
 #include "ProcTable.h"
 #include "VarTable.h"
+#include "Calls.h"
 #include "..\Program\Program.h"
-//#include "VarTable.h"
 
 #include <iostream>
 #include <set>
@@ -65,7 +65,7 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 	vector<int> nextOfCurrStmt = Next::GetNextAfter(stmtAffecting);
 	uncheckedStmts.push(nextOfCurrStmt.at(0));
 
-	int currStmt, endOfIfElse;
+	int currStmt;
 	
 	while (!uncheckedStmts.empty()) {
 		currStmt = uncheckedStmts.front();
@@ -94,9 +94,9 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 				}
 				break;
-			case IF:
+			case IF: {
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				endOfIfElse = Follows::GetFollowsAfter(currStmt);
+				int endOfIfElse = Follows::GetFollowsAfter(currStmt);
 				
 				if (stmtAffected < nextOfCurrStmt.at(1)) {
 					// modification in 1st block
@@ -119,11 +119,16 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				}
-				break;
-			case CALL:
-				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				uncheckedStmts.push(nextOfCurrStmt.at(0));
-				break;
+			} break;
+			case CALL: {
+				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+					// don't check for anything after this stmt
+				} else {
+					nextOfCurrStmt = Next::GetNextAfter(currStmt);
+					uncheckedStmts.push(nextOfCurrStmt.at(0));
+				}
+			} break;
 			default:
 				//1. "longer method, without using bitvector"
 				//2. do bit vector optimisaion of while and if
@@ -192,10 +197,21 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				}
 				break;
-			case CALL:
-				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				uncheckedStmts.push(nextOfCurrStmt.at(0));
-				break;
+			case CALL: {
+				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+				if (Uses::IsProcUsingVar(procCalled, varModified)) {
+					affectedStmts.push_back(currStmt);
+				}
+				
+				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+					// don't check for anything after this stmt
+				} else {
+					nextOfCurrStmt = Next::GetNextAfter(currStmt);
+					if (!nextOfCurrStmt.empty()) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+					}
+				}
+			} break;
 			default:
 				//1. "longer method, without using bitvector"
 				//2. do bit vector optimisaion of while and if
@@ -269,8 +285,6 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 			}
 			stmtsIsChecked.at(currStmt) = true;
 		} else {
-
-
 			nextBeforeCurrStmt.clear();
 		}
 
@@ -283,9 +297,24 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 			} 
 		}
 	}
-	case CALL:
-		stmtsIsChecked.at(currStmt) = true;
-		break;
+	case CALL:{
+		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+		if (!stmtsIsChecked.at(currStmt)) {
+			int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
+			vector<int>::iterator it = varsUsed.begin();
+			while (it != varsUsed.end()) {
+				if (varModified == *it) {
+					affectedStmts.push_back(currStmt);
+					it = varsUsed.erase(it);
+				} else {
+					it++;
+				}
+			}
+			stmtsIsChecked.at(currStmt) = true;
+		} else {
+			nextBeforeCurrStmt.clear();
+		}
+	} break;
 	default:
 		cout << "unable to determine stmttype of stmt# " << currStmt;
 		break;

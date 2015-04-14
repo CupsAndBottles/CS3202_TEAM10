@@ -357,7 +357,14 @@ void ComputeModifiesAndUses() {
 				// should only encounter this code on the first pass. Maybe can optimise
 				int proc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(stmt).GetContent());
 				usedVars = Uses::GetVarUsedByProc(proc);
+				// compute modifies and uses for calls here as well
 				modifiedVars = Modifies::GetVarModifiedByProc(proc);
+				for each (int var in usedVars) {
+					Uses::SetStmtUsesVar(stmt, var);
+				}
+				for each (int var in modifiedVars) {
+					Modifies::SetStmtModifiesVar(stmt, var);
+				}
 			} else { // assign or while or whatever
 				usedVars = Uses::GetVarUsedByStmt(stmt);
 				modifiedVars = Modifies::GetVarModifiedByStmt(stmt);

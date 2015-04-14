@@ -6,7 +6,6 @@
 #include "Calls.h"
 #include "Modifies.h"
 
-#include <boost/dynamic_bitset.hpp>
 using namespace std;
 
 map <int, vector<int>> Modifies::stmtToVarTable;
@@ -17,8 +16,8 @@ bool Modifies::bitVectorIsBuilt;
 int Modifies::sizeOfModifies;
 int Modifies::maxStmtOrVar;
 int Modifies::maxProcOrVar;
-vector<boost::dynamic_bitset<>> Modifies::stmtToVarBitVector;
-vector<boost::dynamic_bitset<>> Modifies::procToVarBitVector;
+vector<vector<bool>> Modifies::stmtToVarBitVector;
+vector<vector<bool>> Modifies::procToVarBitVector;
 		
 Modifies::Modifies() {
 	bitVectorIsBuilt = false;
@@ -49,8 +48,8 @@ void Modifies::CreateBitVector() {
 	
 	/* bug2: should add 1 to the size, because index starts from 0, 
 	example, a SIMPLE code with 5 vars will have to access index 5, since index starts from 0, the size of the bitvector should be 6*/
-	boost::dynamic_bitset<> a (maxStmtOrVar+1, false);
-	boost::dynamic_bitset<> b (maxProcOrVar+1, false);
+	std::vector <bool> a (maxStmtOrVar+1, false);
+	std::vector <bool> b (maxProcOrVar+1, false);
 	
 	typedef map<int, vector<int>>::iterator map_it;
 
@@ -127,13 +126,8 @@ vector<int> Modifies::GetStmtModifyingVar(int varModified) {
 	}
 }
 
-vector<int> Modifies::GetStmtsModifyingBV(int varModified) {
-	vector<int> result;
-	for (int i=0; i<stmtToVarBitVector.size(); i++) {
-		if (stmtToVarBitVector[varModified][i])
-			result.push_back(i);
-	}
-	return result;
+vector<bool> Modifies::GetStmtsModifyingBV(int varModified) {
+	return stmtToVarBitVector[varModified];
 }
 vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
     if (stmtToVarTable.count(stmtModifying) == 0) {
@@ -146,8 +140,8 @@ vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
 	}
 
 }
-vector<int> Modifies::GetVarsModifiedByBV(int stmtModifying) {
-	vector<int> result;
+vector<bool> Modifies::GetVarsModifiedByBV(int stmtModifying) {
+	vector<bool> result;
 	for (int i=0; i<stmtToVarBitVector.size(); i++) {
 		if (stmtToVarBitVector[i][stmtModifying])
 			result.push_back(i);

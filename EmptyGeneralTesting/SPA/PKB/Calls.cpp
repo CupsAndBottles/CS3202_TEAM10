@@ -2,7 +2,7 @@
 #include <vector>
 #include <queue>
 #include <iostream>
-#include <boost/dynamic_bitset.hpp>
+
 #include "Calls.h"
 #include "ProcTable.h"
 
@@ -12,7 +12,7 @@ map<int, vector<bool>> Calls::callingToCalledBitVector;
 int Calls::noOfCallsRelationships;
 int Calls::maxNoOfProcs;
 bool Calls::bitVectorIsBuilt;
-vector<boost::dynamic_bitset<>> Calls::bitVector;
+vector<vector<bool>> Calls::bitVector;
 vector<vector<bool>> Calls::callingToCalledTBV;
 vector<vector<int>> Calls::callingToCalledTTable;
 vector<vector<int>> Calls::calledToCallingTTable;
@@ -41,7 +41,7 @@ void Calls::SetCalls(int procCalling, int procCalled) {
 void Calls::CreateBitVector() {
 	// this method transfers the r'nships in tables to bitvectors
 	// bitVector[calling][called]
-	boost::dynamic_bitset<> a (maxNoOfProcs, false);
+	std::vector <bool> a (maxNoOfProcs, false);
 
 	for (int i=0;i<maxNoOfProcs;i++) {
 		bitVector.push_back(a);

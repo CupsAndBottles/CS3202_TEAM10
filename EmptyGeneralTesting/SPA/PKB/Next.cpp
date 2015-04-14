@@ -2,14 +2,13 @@
 
 #include "Next.h"
 #include "StmtTypeTable.h"
-#include <boost/dynamic_bitset.hpp>
 
 map <int, vector<int>> Next::beforeToAfterTable;
 map <int, vector<int>> Next::afterToBeforeTable;
 int Next::sizeOfNext;
 int Next::maxNoOfLines;
 bool Next::bitVectorIsBuilt;
-vector<boost::dynamic_bitset<>> Next::bitVector;
+vector<vector<bool>> Next::bitVector;
 
 Next::Next(void) {
 	sizeOfNext = 0;
@@ -36,7 +35,7 @@ void Next::SetNext(int progLineBefore, int progLineAfter) {
 }
 void Next::CreateBitVector() {
 	// this method transfers the r'nships in tables to bitvectors	
-	boost::dynamic_bitset<> a (maxNoOfLines, false);
+	std::vector <bool> a (maxNoOfLines, false);
 
 	for (int i=0;i<maxNoOfLines;i++) {
 		bitVector.push_back(a);

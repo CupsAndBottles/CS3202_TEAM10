@@ -4,7 +4,6 @@
 #include "Parent.h"
 #include "Calls.h"
 #include "Uses.h"
-#include <boost/dynamic_bitset.hpp>
 
 using namespace std;
 
@@ -16,8 +15,8 @@ bool Uses::bitVectorIsBuilt;
 int Uses::sizeOfUses;
 int Uses::maxStmtOrVar;
 int Uses::maxProcOrVar;
-vector<boost::dynamic_bitset<>> Uses::stmtToVarBitVector;
-vector<boost::dynamic_bitset<>> Uses::procToVarBitVector;
+vector<vector<bool>> Uses::stmtToVarBitVector;
+vector<vector<bool>> Uses::procToVarBitVector;
 Uses::Uses() {
 	bitVectorIsBuilt = false;
 	sizeOfUses = 0;
@@ -39,8 +38,8 @@ void Uses::CreateBitVector() {
 	// this method transfers the r'nships in tables to bitvectors
 	//stmtToVarBitVector[stmt][var]
 	//procToVarBitVector[proc][var]
-	boost::dynamic_bitset<> a (maxStmtOrVar+1, false);
-	boost::dynamic_bitset<> b (maxProcOrVar+1, false);
+	std::vector <bool> a (maxStmtOrVar+1, false);
+	std::vector <bool> b (maxProcOrVar+1, false);
 
 	for (int i=0;i<maxStmtOrVar;i++) {
 		stmtToVarBitVector.push_back(a);

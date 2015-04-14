@@ -27,6 +27,10 @@
     <ClInclude Include="VarTableTest.h" />
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ParentTest.h" />
+    <ClInclude Include="CallsTest.h" />
+    <ClInclude Include="ModifiesTest.h" />
+    <ClInclude Include="NextTest.h" />
+    <ClInclude Include="UsesTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VarTableTest.cpp" />
@@ -43,5 +47,9 @@
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ConstTableTest.cpp" />
+    <ClCompile Include="CallsTest.cpp" />
+    <ClCompile Include="ModifiesTest.cpp" />
+    <ClCompile Include="NextTest.cpp" />
+    <ClCompile Include="UsesTest.cpp" />
   </ItemGroup>
 </Project>

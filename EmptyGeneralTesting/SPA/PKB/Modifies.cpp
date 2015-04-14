@@ -126,8 +126,14 @@ vector<int> Modifies::GetStmtModifyingVar(int varModified) {
 	}
 }
 
-vector<bool> Modifies::GetStmtsModifyingBV(int varModified) {
-	return stmtToVarBitVector[varModified];
+vector<int> Modifies::GetStmtsModifyingBV(int varModified) {
+	vector<int> result;
+	for (int i=0; i<stmtToVarBitVector.size(); i++) {
+		if (stmtToVarBitVector[i][varModified])
+			result.push_back(i);
+	}
+
+	return result;
 }
 vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
     if (stmtToVarTable.count(stmtModifying) == 0) {
@@ -140,10 +146,10 @@ vector<int> Modifies::GetVarModifiedByStmt(int stmtModifying) {
 	}
 
 }
-vector<bool> Modifies::GetVarsModifiedByBV(int stmtModifying) {
-	vector<bool> result;
-	for (int i=0; i<stmtToVarBitVector.size(); i++) {
-		if (stmtToVarBitVector[i][stmtModifying])
+vector<int> Modifies::GetVarsModifiedByBV(int stmtModifying) {
+	vector<int> result;
+	for (int i=0; i<stmtToVarBitVector[stmtModifying].size(); i++) {
+		if (stmtToVarBitVector[stmtModifying][i])
 			result.push_back(i);
 	}
 

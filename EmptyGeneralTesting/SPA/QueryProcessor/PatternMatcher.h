@@ -6,9 +6,7 @@
 using namespace std;
 
 struct Pattern {
-	Pattern() : expr(""), leftPattern(nullptr), rightPattern(nullptr) {};
-
-	Pattern(string e, Pattern* l, Pattern* r) :
+	Pattern(string e = "", Pattern* l = NULL, Pattern* r = NULL) :
 		expr(e), leftPattern(l), rightPattern(r) {
 	};
 

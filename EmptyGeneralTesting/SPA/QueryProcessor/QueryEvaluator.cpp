@@ -1409,7 +1409,7 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 						ConsumeTopTokenOfType(Token::OPEN_BRACE);
 						result = ParseExpr(true);
 					} else {
-						result = new Pattern(ConsumeTopToken().content, nullptr, nullptr);
+						result = new Pattern(ConsumeTopToken().content);
 					}
 				} else {
 					result = ParseExpr(result, isBracket);
@@ -1439,7 +1439,7 @@ Pattern QueryEvaluator::CreatePatternObject(string expr)
 				ConsumeTopTokenOfType(Token::OPEN_BRACE);
 				RHS = ParseExpr(true);
 			} else {
-				RHS = new Pattern(ConsumeTopToken().content, nullptr, nullptr);
+				RHS = new Pattern(ConsumeTopToken().content);
 			}
 
 			Token nextOp = PeekAtTopToken(); // peek

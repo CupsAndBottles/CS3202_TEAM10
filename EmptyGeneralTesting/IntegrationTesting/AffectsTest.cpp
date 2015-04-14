@@ -1,13 +1,6 @@
 #include <cppunit\config\SourcePrefix.h>
 
-#include "..\SPA\PKB\Affects.h"
 #include "AffectsTest.h"
-#include "..\SPA\PKB\StmtTypeTable.h"
-#include "..\SPA\PKB\VarTable.h"
-#include "..\SPA\PKB\Next.h"
-#include "..\SPA\PKB\Modifies.h"
-#include "..\SPA\PKB\Uses.h"
-#include "..\SPA\PKB\Follows.h"		// only used for if-else
 
 #include <iostream>
 #include <algorithm>
@@ -423,7 +416,16 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	cout << "\nSIMPLE-code-with-assign-if successfully created\n";
 }
 
+//void AffectsTest::TestIsAffectsCalls() {
+//	ParserTester tester("ParserTestFiles/");
+//	tester.ParseSource("AffectsAssignCallsTest.txt");
+//
+//
+//}
+
 void AffectsTest::ClearAllData() {
+	//Program::ClearAll();
+	//ProcTable::ClearData();
 	StmtTypeTable::ClearData();
 	VarTable::ClearData();
 	Next::ClearData();

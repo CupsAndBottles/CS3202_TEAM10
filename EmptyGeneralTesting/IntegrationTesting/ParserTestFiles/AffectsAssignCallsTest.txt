@@ -1,0 +1,20 @@
+\\ Affects Test with calls
+\\ Regular assign and call stmts
+
+procedure assign {
+	x = 1;				\\ 1
+	y = 2;				\\ 2
+	call noModifiesX;		\\ 3
+	z = x;				\\ 4
+	call modifiesX;			\\ 5
+	z = x;				\\ 6
+}
+
+procedure noModifiesX {
+	y = 2;				\\ 7
+}
+
+procedure modifiesX {
+	x = 2;				\\ 8
+}
+

@@ -1,21 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AffectsTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
-    <ClCompile Include="ParserToPKBTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
-    <ClCompile Include="UltimateTest.cpp" />
-    <ClCompile Include="AffectsTTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AffectsTest.h" />
-    <ClInclude Include="UltimateTest.h" />
-    <ClInclude Include="ParserToPKBTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
-    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
-    <ClInclude Include="AffectsTTest.h" />
+    <ClCompile Include="AffectsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -23,5 +10,11 @@
     <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
     <None Include="ParserTestFiles\AffectsTTest.txt" />
+    <None Include="ParserTestFiles\AffectsAssignCallsTest.txt" />
+    <None Include="ParserTestFiles\AffectsIfThenElseCallsTest.txt" />
+    <None Include="ParserTestFiles\AffectsWhileCallsTest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AffectsTest.h" />
   </ItemGroup>
 </Project>

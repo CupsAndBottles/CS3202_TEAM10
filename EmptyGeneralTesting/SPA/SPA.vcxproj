@@ -12,15 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />
-    <ClInclude Include="PKB\AffectsBip.h" />
-    <ClInclude Include="PKB\Contains.h" />
-    <ClInclude Include="PKB\NextBip.h" />
     <ClInclude Include="Parser\ParserTester.h" />
     <ClInclude Include="Parser\DesignExtractor.h" />
     <ClInclude Include="parser\parser.h" />
     <ClInclude Include="parser\token.h" />
     <ClInclude Include="parser\tokenizer.h" />
-    <ClInclude Include="PKB\Affects.h" />
     <ClInclude Include="pkb\calls.h" />
     <ClInclude Include="pkb\consttable.h" />
     <ClInclude Include="pkb\follows.h" />
@@ -38,15 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PKB\NodeTypeTable.cpp" />
-    <ClCompile Include="PKB\AffectsBip.cpp" />
-    <ClCompile Include="PKB\Contains.cpp" />
-    <ClCompile Include="PKB\NextBip.cpp" />
     <ClCompile Include="Parser\ParserTester.cpp" />
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="Parser\Parser.cpp" />
     <ClCompile Include="Parser\Token.cpp" />
     <ClCompile Include="Parser\Tokenizer.cpp" />
-    <ClCompile Include="PKB\Affects.cpp" />
     <ClCompile Include="PKB\Calls.cpp" />
     <ClCompile Include="PKB\ConstTable.cpp" />
     <ClCompile Include="PKB\Follows.cpp" />

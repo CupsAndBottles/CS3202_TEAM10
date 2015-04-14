@@ -48,6 +48,7 @@
   <ItemGroup>
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
+    <ClCompile Include="PKB\Contains.cpp" />
     <ClCompile Include="PKB\NextBip.cpp" />
     <ClCompile Include="PKB\NodeTypeTable.cpp" />
     <ClCompile Include="Parser\ParserTester.cpp" />

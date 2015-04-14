@@ -33,6 +33,7 @@
     <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
     <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
     <ClCompile Include="QueryProcessor\RelTable.cpp" />
+    <ClCompile Include="PKB\Contains.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />

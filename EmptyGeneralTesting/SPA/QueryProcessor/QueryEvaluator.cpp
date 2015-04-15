@@ -7,6 +7,7 @@
 #include "..\PKB\ConstTable.h"
 #include "..\PKB\VarTable.h"
 #include "..\PKB\ProcTable.h"
+#include "..\PKB\Affects.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>
@@ -1256,13 +1257,310 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause)
 
 bool QueryEvaluator::EvaluateNext(SuchThatClause)
 {
+
 	return true;
 }
 
 
-bool QueryEvaluator::EvaluateAffects(SuchThatClause)
+bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 {
-	return true;
+	Argument arg1 = suchThat.arg1;
+	Argument arg2 = suchThat.arg2;
+	Synonym arg1Syn = suchThat.arg1.syn;
+	Synonym arg2Syn = suchThat.arg2.syn;
+	RelationshipType rel = suchThat.relationship;
+
+	cout << "Evaluating Affects( " << arg1.value << " , " << arg2.value << ")\n";
+
+	if (arg1.type == SYNONYM) {
+		int validCount = 0;
+
+		if (arg2.type == SYNONYM) {
+			//if (arg1Syn.value == arg2Syn.value) {
+			//	cout << "In EvaluateAffects, both arg1 and arg2 has the same synonym\n";
+			//	return false;
+			//}
+
+			vector<int> affectingStmt, affectedStmt;
+			bool valid = false;
+			bool usingIntermediateResult_affected = false, usingIntermediateResult_affecting = false;
+
+			//get appropriate stmt, while, if, prog_line
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				affectingStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1.syn.value, affectingStmt);
+				usingIntermediateResult_affected = true;
+			}
+
+			//get appropriate stmt, assign, while, if, prog_line, call
+			if (intermediateResult.IsListEmpty(arg2.syn)) {
+				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				affectedStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+			}
+
+			else {
+				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg2.syn.value, affectedStmt);
+				usingIntermediateResult_affecting = true;
+			}
+
+			//loop affectedStmt.size() * affectingStmt.size() times, if all invalid, validCount will be 0, return false
+			validCount = affectingStmt.size() * affectedStmt.size();
+
+			for (vector<int>::iterator it_affecting = affectingStmt.begin(); it_affecting != affectingStmt.end(); ++it_affecting) {
+				for (vector<int>::iterator it_affected = affectedStmt.begin(); it_affected != affectedStmt.end(); ++it_affected) {
+					bool isAffects = false;
+					//convert int to string to use with intermediateResult
+					string affected_str = ITOS(*it_affecting);
+					string affecting_str = ITOS(*it_affected);
+
+					if (rel == AFFECTS)	isAffects = Affects::IsAffects(*it_affecting, *it_affected);
+					else				isAffects = Affects::IsAffectsT(*it_affecting, *it_affected);
+
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_affected && usingIntermediateResult_affecting) {
+						if (isAffects) {
+							//check HasLink(), if yes, do nothing, else make pair
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, isDirectLink)) {
+
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, affected_str) && intermediateResult.HasLink(arg2Syn.value, affecting_str)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+									}
+
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+								}
+							}
+						} else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_affected, arg2Syn.value, *it_affecting);
+							--validCount;
+						}
+					}
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (isAffects) {
+							//insert pair
+							intermediateResult.InsertPair(arg1Syn.value, *it_affecting, arg2Syn.value, *it_affected);
+						} else {
+							//do nothing
+							--validCount;
+						}
+					}
+				}
+			}
+
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_affected && usingIntermediateResult_affecting) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
+		}
+
+		else if (arg2.type == INTEGER) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
+
+			validCount = stmts.size();
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+				int arg2Value = atoi(arg2.value.c_str());
+				bool isAffects = false;
+
+				if (rel == AFFECTS)	isAffects = Affects::IsAffects(*it, arg2Value);
+				else				isAffects = Affects::IsAffectsT(*it, arg2Value);
+
+				if (usingIntermediateResult) {
+					if (isAffects) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (isAffects) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		// Affects(syn, _)
+		else if (arg2.type == UNDERSCORE) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
+
+			validCount = stmts.size();
+
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+				vector<int> affects;
+
+				if (rel == AFFECTS)	affects = Affects::GetStmtsAffectedBy(*it);
+				else				affects = Affects::GetStmtsAffectedTBy(*it);
+
+				if (usingIntermediateResult) {
+					if (!affects.empty()) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (!affects.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		else {
+			cout << "\nIn EvaluateAffects, invalid Affects argument 2 type.\n";
+			return false;
+		}
+
+		//all statements do not satisfy Affects()
+		if (validCount == 0) {
+			cout << "Affects() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	//Affects (smth, syn)
+	else if (arg2.type == SYNONYM) {
+		vector<int> stmts;
+		bool usingIntermediateResult = false;
+
+		if (intermediateResult.IsListEmpty(arg2.syn)) {
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+		}
+
+		else {
+			intermediateResult.GetList(arg2.syn.value, stmts);
+			usingIntermediateResult = true;
+		}
+
+		int validCount = stmts.size();
+
+		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+			bool isAffects = false;
+			
+			// Affects(1, syn)
+			if (arg1.type == INTEGER) {
+				int arg1Value = STOI(arg1.value);
+
+				if (rel == AFFECTS)	isAffects = Affects::IsAffects(arg1Value, *it);
+				else				isAffects = Affects::IsAffectsT(arg1Value, *it);
+			}
+
+			//Affects(_ , syn)
+			else if (arg1.type == UNDERSCORE) {
+				if (rel == AFFECTS)	isAffects = !Affects::GetStmtsAffecting(*it).empty();
+				else				isAffects = !Affects::GetStmtsAffectingT(*it).empty();
+			}
+
+			else {
+				cout << "\nIn EvaluateAffects, invalid argument 1 type.\n";
+				return false;
+			}
+
+			if (usingIntermediateResult) {
+				//remove if invalid, do nothing if valid
+				if (isAffects) {} else {
+					intermediateResult.Remove(arg2Syn.value, *it);
+					--validCount;
+				}
+			} else {
+				//insert if valid, do nothing if invalid
+				if (isAffects) intermediateResult.Insert(arg2Syn.value, *it);
+				else --validCount;
+			}
+		}
+
+		//all statements do not satisfy Affects()
+		if (validCount == 0) {
+			cout << "Affects() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
+		int arg2Value = STOI(arg2.value);
+
+		vector<int> affecting;
+		if (rel == AFFECTS)	affecting = Affects::GetStmtsAffecting(arg2Value);
+		else				affecting = Affects::GetStmtsAffectingT(arg2Value);
+
+		if (affecting.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
+		int arg1Value = STOI(arg1.value);
+
+		vector<int> affected;
+		if (rel == AFFECTS)	affected = Affects::GetStmtsAffectedBy(arg1Value);
+		else				affected = Affects::GetStmtsAffectedTBy(arg1Value);
+
+		if (affected.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
+		int arg1Value = STOI(arg1.value);
+		int arg2Value = STOI(arg2.value);
+
+		if (rel == AFFECTS)	return Affects::IsAffects(arg1Value, arg2Value);
+		else				return Affects::IsAffectsT(arg1Value, arg2Value);
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
+		// extremely computationally expensive
+		for (int stmt = 1; stmt < StmtTypeTable::GetMaxStmtIndex(); stmt++) {
+			if (Affects::GetStmtsAffectedBy(stmt).size() != 0) return true;
+		}
+
+		return false;
+	}
+
+	else {
+		cout << "In EvaluateAffects, no matching arguments.\n";
+		return false;
+	}
 }
 
 

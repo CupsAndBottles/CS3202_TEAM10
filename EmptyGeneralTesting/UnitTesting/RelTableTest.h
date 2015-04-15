@@ -5,7 +5,7 @@
 class RelTableTest : public CPPUNIT_NS::TestFixture 
 {
 	CPPUNIT_TEST_SUITE( RelTableTest );
-	CPPUNIT_TEST( TestGetRelTableData );
+	//CPPUNIT_TEST( TestGetRelTableData );
 	CPPUNIT_TEST_SUITE_END();
 
 public:

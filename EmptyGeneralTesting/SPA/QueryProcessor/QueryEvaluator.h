@@ -1,7 +1,6 @@
 #pragma once
 #include "QueryData.h"
 #include "PatternMatcher.h"
-#include "Answers.h"
 #include <vector>
 #include <list>
 

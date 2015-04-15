@@ -9,10 +9,11 @@
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
 #include "..\SPA\PKB\Follows.h"			// only used for if-else
-//#include "..\SPA\PKB\ProcTable.h"		// only used for calls
-//#include "..\SPA\Program\Program.h"		// only used for calls
-//#include "..\SPA\Parser\Parser.h"
-//#include "..\SPA\Parser\ParserTester.h"
+#include "..\SPA\PKB\Calls.h"
+#include "..\SPA\PKB\ProcTable.h"		// only used for calls
+#include "..\SPA\Program\Program.h"		// only used for calls
+#include "..\SPA\Parser\Parser.h"
+#include "..\SPA\Parser\ParserTester.h"
 #include "..\SPA\PKB\Affects.h"
 
 class AffectsTest : public CPPUNIT_NS::TestFixture {
@@ -21,7 +22,7 @@ class AffectsTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestIsAffects);
 	CPPUNIT_TEST(TestGetStmtsAffectedBy);
 	CPPUNIT_TEST(TestGetStmtsAffecting);
-	//CPPUNIT_TEST(TestIsAffectsCalls);
+	CPPUNIT_TEST(TestIsAffectsCalls);
 
 	CPPUNIT_TEST_SUITE_END();
 
@@ -33,7 +34,7 @@ public:
 	void TestGetStmtsAffectedBy();
 	void TestGetStmtsAffecting();
 
-	//void TestIsAffectsCalls();
+	void TestIsAffectsCalls();
 
 private:
 	void ClearAllData();

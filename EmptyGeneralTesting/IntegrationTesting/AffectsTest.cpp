@@ -416,20 +416,46 @@ void AffectsTest::MimicCodeWithAssignIf() {
 	cout << "\nSIMPLE-code-with-assign-if successfully created\n";
 }
 
-//void AffectsTest::TestIsAffectsCalls() {
-//	ParserTester tester("ParserTestFiles/");
-//	tester.ParseSource("AffectsAssignCallsTest.txt");
-//
-//
-//}
+void AffectsTest::TestIsAffectsCalls() {
+	ClearAllData();
+	ParserTester tester("ParserTestFiles/");
+	tester.ParseSource("AffectsAssignCallsTest.txt");
+
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 4));
+	CPPUNIT_ASSERT(!Affects::IsAffects(1, 6));
+
+	ClearAllData();
+	tester.ParseSource("AffectsWhileCallsTest.txt");
+	
+	CPPUNIT_ASSERT(Affects::IsAffects(2, 4));
+	CPPUNIT_ASSERT(Affects::IsAffects(2, 8));
+	CPPUNIT_ASSERT(!Affects::IsAffects(6, 8));
+	
+	CPPUNIT_ASSERT(Affects::IsAffects(9, 12));
+	CPPUNIT_ASSERT(!Affects::IsAffects(9, 16));
+	CPPUNIT_ASSERT(Affects::IsAffects(13, 16));
+
+	ClearAllData();
+	tester.ParseSource("AffectsIfThenElseCallsTest.txt");
+
+	CPPUNIT_ASSERT(!Affects::IsAffects(1, 5));
+	CPPUNIT_ASSERT(Affects::IsAffects(6, 10));
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 15));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(17, 19));
+	CPPUNIT_ASSERT(Affects::IsAffects(22, 23));
+	CPPUNIT_ASSERT(!Affects::IsAffects(24, 27));
+	CPPUNIT_ASSERT(Affects::IsAffects(24, 29));
+}
 
 void AffectsTest::ClearAllData() {
-	//Program::ClearAll();
-	//ProcTable::ClearData();
+	Program::ClearAll();
+	ProcTable::ClearData();
 	StmtTypeTable::ClearData();
 	VarTable::ClearData();
 	Next::ClearData();
 	Modifies::ClearData();
 	Uses::ClearData();
 	Follows::ClearData();
+	Calls::ClearData();
 }

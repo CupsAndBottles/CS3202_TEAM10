@@ -3,16 +3,17 @@
   <ItemGroup>
     <ClCompile Include="source\IntegrationTest.cpp" />
     <ClCompile Include="AffectsTest.cpp" />
-    <ClCompile Include="ParserToPKBTest.cpp" />
-    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
-    <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
     <ClCompile Include="AffectsTest.cpp" />
+    <ClCompile Include="NextBipTest.cpp" />
     <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="CallsProcTableTest.cpp" />
     <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
-    <ClCompile Include="UltimateTest.cpp" />
+    <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
+    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
+    <ClCompile Include="ParserToPKBTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
+    <ClCompile Include="UltimateTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\pkbTest.txt" />
@@ -22,19 +23,20 @@
     <None Include="ParserTestFiles\AffectsAssignCallsTest.txt" />
     <None Include="ParserTestFiles\AffectsIfThenElseCallsTest.txt" />
     <None Include="ParserTestFiles\AffectsWhileCallsTest.txt" />
-    <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ModifiesUsesCallsParentText.txt" />
+    <None Include="InteractionsBtwnComponents.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AffectsTest.h" />
-    <ClInclude Include="ParserToPKBTest.h" />
-    <ClInclude Include="ParentStmtTypeTableTest.h" />
-    <ClInclude Include="ModifiesUsesCallsParentTest.h" />
     <ClInclude Include="AffectsTest.h" />
+    <ClInclude Include="NextBipTest.h" />
     <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="CallsProcTableTest.h" />
     <ClInclude Include="FollowsStmtTypeTableTest.h" />
+    <ClInclude Include="ModifiesUsesCallsParentTest.h" />
     <ClInclude Include="UltimateTest.h" />
+    <ClInclude Include="ParentStmtTypeTableTest.h" />
+    <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "..\SPA\Program\Program.h"	
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\ParserTester.h"
+#include "..\SPA\PKBCleaner.h"
 
 class NextBipTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(NextBipTest);
@@ -25,7 +26,7 @@ public:
 	void tearDown();
 
 	void TestGetNextAfter();
-	void TestGetNextBefore();
+	//void TestGetNextBefore();
 	void TestGetNextBipTAfter();
 	void TestGetNextBipTBefore();
 

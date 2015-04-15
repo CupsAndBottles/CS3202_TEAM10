@@ -6,7 +6,7 @@
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\Parser\ParserTester.h"
 #include "..\SPA\PKB\Parent.h"
-
+#include "..\SPA\PKBCleaner.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AffectsTTest);
 
@@ -14,6 +14,7 @@ const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 void AffectsTTest::setUp() {
 	Program::ClearAll();
+	PKBCleaner::ClearAll();
 	ParserTester tester(TESTFILE_DIRECTORY);
 	tester.ParseSource("AffectsTTest.txt");
 }

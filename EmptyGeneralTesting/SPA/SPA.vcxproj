@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NextBipWithState.h" />
+    <ClInclude Include="PKBCleaner.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\NextBip.h" />
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -36,10 +37,19 @@
     <ClInclude Include="program\program.h" />
     <ClInclude Include="program\tnode\tnode.h" />
     <ClInclude Include="PKB\Sibling.h" />
+    <ClInclude Include="queryprocessor\grammar.h" />
+    <ClInclude Include="QueryProcessor\IntermediateResult.h" />
+    <ClInclude Include="queryprocessor\patternmatcher.h" />
+    <ClInclude Include="queryprocessor\querydata.h" />
+    <ClInclude Include="queryprocessor\queryevaluator.h" />
+    <ClInclude Include="queryprocessor\querypreprocessor.h" />
+    <ClInclude Include="queryprocessor\queryprocessor.h" />
+    <ClInclude Include="queryprocessor\reltable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NextBipWithState.cpp" />
     <ClCompile Include="Parser\DesignExtractor.cpp" />
+    <ClCompile Include="PKBCleaner.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\Contains.cpp" />
     <ClCompile Include="PKB\NextBip.cpp" />
@@ -62,6 +72,13 @@
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Program\TNode\TNode.cpp" />
     <ClCompile Include="PKB\Sibling.cpp" />
+    <ClCompile Include="QueryProcessor\IntermediateResult.cpp" />
+    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
+    <ClCompile Include="QueryProcessor\QueryData.cpp" />
+    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
+    <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
+    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
+    <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />

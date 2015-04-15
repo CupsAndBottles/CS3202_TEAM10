@@ -6,6 +6,7 @@
 #include <algorithm>
 
 void AffectsTest::setUp() {
+	ClearAllData();
 }
 
 void AffectsTest::tearDown() {
@@ -453,12 +454,13 @@ void AffectsTest::TestIsAffectsCalls() {
 
 void AffectsTest::ClearAllData() {
 	Program::ClearAll();
-	ProcTable::ClearData();
+	PKBCleaner::ClearAll();
+	/*ProcTable::ClearData();
 	StmtTypeTable::ClearData();
 	VarTable::ClearData();
 	Next::ClearData();
 	Modifies::ClearData();
 	Uses::ClearData();
 	Follows::ClearData();
-	Calls::ClearData();
+	Calls::ClearData();*/
 }

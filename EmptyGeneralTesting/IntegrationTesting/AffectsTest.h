@@ -3,6 +3,7 @@
 #define AffectsTest_h
 
 #include <cppunit\extensions\HelperMacros.h>
+#include "..\SPA\PKBCleaner.h"
 #include "..\SPA\PKB\StmtTypeTable.h"
 #include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\PKB\Next.h"

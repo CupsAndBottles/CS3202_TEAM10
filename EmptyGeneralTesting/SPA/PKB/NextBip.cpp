@@ -131,7 +131,6 @@ bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {
 
 	while (!linesToCheck.empty()) {
 		currLine = linesToCheck.front();
-
 		if (!checkedLines.at(currLine)) {
 			if (currLine == progLineAfter) {
 				return true;

@@ -41,6 +41,7 @@ PatternMatcherTest::PatternMatcherTest() {
 void PatternMatcherTest::matchSingleVariable() {
 	string expr = "x";
 	TNode* exprTree = ParseExpr(expr);
+	Program::ClearAll();
 
 	CPPUNIT_ASSERT_EQUAL(true, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), false));
 	CPPUNIT_ASSERT_EQUAL(true, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), true));
@@ -50,6 +51,7 @@ void PatternMatcherTest::matchSingleVariable() {
 void PatternMatcherTest::matchExprsWithTwoVariables() {
 	string expr = "x + y";
 	TNode* exprTree = ParseExpr(expr);
+	Program::ClearAll();
 	
 	CPPUNIT_ASSERT_EQUAL(true, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), true));
 	CPPUNIT_ASSERT_EQUAL(false, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), false));
@@ -65,6 +67,7 @@ void PatternMatcherTest::matchExprsWithTwoVariables() {
 void PatternMatcherTest::matchExprsWithMultipleVariables() {
 	string expr = "x + 1 + y";
 	TNode* exprTree = ParseExpr(expr);
+	Program::ClearAll();
 
 	CPPUNIT_ASSERT_EQUAL(true, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), true));
 	CPPUNIT_ASSERT_EQUAL(false, PatternMatcher::MatchPatternAtLeaves(exprTree, Pattern("x", nullptr, nullptr), false));

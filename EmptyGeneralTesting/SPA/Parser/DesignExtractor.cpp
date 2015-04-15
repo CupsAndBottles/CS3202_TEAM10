@@ -79,175 +79,43 @@ void ComputeNodeTypeTable() {
 }
 
 void ComputeModifiesAndUsesForProcedures() {
-	// Use calls in PKB and shrink SCCs
-	// we shall use an implementation of Tarjan's strongly connected components algorithm
+	/* 
+	find all procedures that are not called by other procedures
+	for all said procedures, recursively add properties of children to procedure
+	*/
 
-	struct ProcInfo {
-		// check if node is visited by accessing the depth
-		// check if node is in component by checking the componentIndex
-		ProcInfo(int procIndex = -1) 
-			: procIndex(procIndex), componentIndex(0)
-			, depth(0), minReacheableDepth(-1) {}
-		int procIndex;
-		int componentIndex;
-		int depth;
-		int minReacheableDepth;
-	};
+	vector<int> procIndexes = vector<int>();
+	for each (string procName in ProcTable::GetAllProcNames()) {
+		procIndexes.push_back(ProcTable::GetIndexOfProc(procName));
+	}
 
-	class TarjanHelper {
-
-	public:
-		int componentCounter;
-		TarjanHelper() {
-			depthCounter, componentCounter = 1;
-			// TODO find an easier way of getting this out
-			for each (string procedure in ProcTable::GetAllProcNames()) {
-				int procIndex = ProcTable::GetIndexOfProc(procedure);
-				procMap[procIndex] = ProcInfo(procIndex);
-				int i = procMap[procIndex].minReacheableDepth;
-				procedures.push_back(procIndex);
-			}
-		}
-
-		map<int, ProcInfo> ComputeSCC() {
-			for each (int procedure in procedures) {
-				if(procMap[procedure].depth == 0) {
-					Tarjan(procedure);
-				}
-			}
-			return procMap;
-		}
-
-	private:
-		map<int, ProcInfo> procMap;
-		vector<int> SCCStack;
-		vector<int> procedures;
-		int depthCounter;
-
-		void Tarjan(int proc) {
-			ProcInfo& currentProcedure = procMap[proc];
-			currentProcedure.depth = depthCounter;
-			currentProcedure.minReacheableDepth = depthCounter;
-			depthCounter++;
-			SCCStack.push_back(proc);
-			// map children of currentProcedure
-			for each (int procedure in Calls::GetProcsCalledBy(proc)){
-				ProcInfo& calledProcedure = procMap[procedure];
-				if (calledProcedure.depth == 0) { // procedure has not been mapped
-					Tarjan(procedure); // add proc to stack
-					currentProcedure.minReacheableDepth = 
-						(calledProcedure.minReacheableDepth < currentProcedure.minReacheableDepth) 
-						? calledProcedure.minReacheableDepth : currentProcedure.minReacheableDepth;
-				} else {
-					// do not add proc to stack
-					currentProcedure.minReacheableDepth = 
-						(calledProcedure.minReacheableDepth < currentProcedure.minReacheableDepth) 
-						? calledProcedure.minReacheableDepth : currentProcedure.minReacheableDepth;
-				}
-			}
-
-			// SCC generation time
-			if (currentProcedure.depth == currentProcedure.minReacheableDepth) {
-				ProcInfo& nextProc = procMap[SCCStack.back()];
-				while (nextProc.procIndex != currentProcedure.procIndex) {
-					nextProc.componentIndex = componentCounter;
-					SCCStack.pop_back();
-					nextProc = procMap[SCCStack.back()];
-				}
-				procMap[SCCStack.back()].componentIndex = componentCounter;
-				SCCStack.pop_back();
-				componentCounter++; // one component done, on to the next
-			}
-		}
-	};
-
-	// TODO can someone teach me to declare unnamed objects?
-	TarjanHelper helper;
-	map<int, ProcInfo> callGraph = helper.ComputeSCC();
-	
-	// iterate through procs, generating SCCs
-	// for each proc, look at all procs calling said proc
-	//	if the calling proc has a different component number, said proc is parent
-	set<int> componentsWithoutChildren; for(int i = 1; i < helper.componentCounter; i++) componentsWithoutChildren.insert(i);
-	map<int, vector<int>> componentMap;
-	map<int, set<int>> componentGraph;
-	typedef map<int, ProcInfo>::iterator c_iter;
-	for (c_iter i = callGraph.begin(); i != callGraph.end(); i++) {
-		int procIndex = i->first;
-		int componentIndex = i->second.componentIndex;
-		componentMap[componentIndex].push_back(procIndex);
-		// find parents
-		for each (int procedure in Calls::GetProcsCalling(procIndex)) {
-			int callingComponentIndex = callGraph[procedure].componentIndex;
-			if (callingComponentIndex != componentIndex) {
-				componentGraph[componentIndex].insert(callingComponentIndex);
-				componentsWithoutChildren.erase(callingComponentIndex);
-			}
+	vector<int> rootProcs = vector<int>();
+	for each (int proc in procIndexes) {
+		if (Calls::GetProcsCalling(proc).size() == 0) { // guaranteed to have at least one, because there are no loops
+			rootProcs.push_back(proc);
 		}
 	}
 
-	// walk through SCC graph
-	// for each vertex/component, all procs use and modify the set union of all variables in that component
-	// for each child of vertex, vertex uses/modifies variables of children
-	// recursive implementation
-	typedef map<int, vector<int>>::iterator c_map_iter;
-	typedef map<int, set<int>>::iterator c_grh_iter;
-	// iterate through each component
-	// compute us/mo for procs within components first
-	for (c_map_iter i = componentMap.begin(); i != componentMap.end(); i++) {
-		if (i->second.size() == 1) continue;
-		set<int> usedVars;
-		set<int> modifiedVars;
-		// sum up the vars for all procs in the component
-		for each (int procedure in i->second) {
-			vector<int> uses = Uses::GetVarUsedByProc(procedure);
-			vector<int> modifies = Modifies::GetProcModifyingVar(procedure);
-			usedVars.insert(uses.begin(), uses.end());
-			modifiedVars.insert(modifies.begin(), modifies.end());
+	for each (int proc in rootProcs) {
+		ProcedureHelper(proc);
+	}
+}
+
+pair<vector<int>, vector<int>> ProcedureHelper(int procedure) {
+	vector<int> varsModified;
+	vector<int> varsUsed;
+
+	for each (int proc in Calls::GetProcsCalledBy(procedure)) {
+		pair<vector<int>, vector<int>> modAndUsed = ProcedureHelper(proc);
+		for each (int mod in modAndUsed.first) {
+			Modifies::SetProcModifiesVar(procedure, mod);
 		}
-		// make all procs inherit the vars summed up
-		for each (int procedure in i->second) {
-			for each (int var in usedVars) {
-				Uses::SetProcUsesVar(procedure, var);
-			}
-			for each (int var in modifiedVars) {
-				Modifies::SetProcModifiesVar(procedure, var);
-			}
+		for each (int use in modAndUsed.second) {
+			Uses::SetProcUsesVar(procedure, use);
 		}
 	}
 
-	// loop through leaves
-	// all direct parents inherit properties of children
-	// clean leaves and add parents of current set to that
-	// loop from top
-
-	// loop through all leaves
-	while (componentsWithoutChildren.size() != 0) {
-		set<int> currentSet;
-		for each(int leaf in componentsWithoutChildren) {
-			// get the first proc in the child component
-			int firstProcedure = componentMap[leaf].front();
-			vector<int> usedVars = Uses::GetVarUsedByProc(firstProcedure);
-			vector<int> modifiedVars = Modifies::GetProcModifyingVar(firstProcedure);
-
-			set<int>& currentParents = componentGraph[leaf];
-			// all direct parents inherit properties of children
-			for each(int parent in currentParents) {
-				for each (int procedure in componentMap[parent]) {
-					for each (int var in usedVars) {
-						Uses::SetProcUsesVar(procedure, var);
-					}
-					for each (int var in modifiedVars) {
-						Modifies::SetProcModifiesVar(procedure, var);
-					}
-				}
-			}
-			// add direct parents to set
-			currentSet.insert(currentParents.begin(), currentParents.end());
-		}
-		// loop from top
-		componentsWithoutChildren = currentSet;
-	}
+	return pair<vector<int>, vector<int>>(Modifies::GetVarModifiedByProc(procedure), Uses::GetVarUsedByProc(procedure));
 }
 
 set<int> ConnectStmtList(int startPoint) {

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NextBipWithState.h" />
+    <ClInclude Include="PKB\NextBipWithState.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\NextBip.h" />
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -47,7 +47,7 @@
     <ClInclude Include="queryprocessor\reltable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NextBipWithState.cpp" />
+    <ClCompile Include="PKB\NextBipWithState.cpp" />
     <ClCompile Include="Parser\DesignExtractor.cpp" />
     <ClCompile Include="PKB\AffectsBip.cpp" />
     <ClCompile Include="PKB\Contains.cpp" />

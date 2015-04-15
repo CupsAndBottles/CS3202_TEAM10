@@ -34,7 +34,7 @@
     <ClCompile Include="PKB\Contains.cpp" />
     <ClCompile Include="Program\TNode\TNode.cpp" />
     <ClCompile Include="Program\Program.cpp" />
-    <ClCompile Include="NextBipWithState.cpp" />
+    <ClCompile Include="PKB\NextBipWithState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -73,7 +73,7 @@
     <ClInclude Include="queryprocessor\reltable.h" />
     <ClInclude Include="program\tnode\tnode.h" />
     <ClInclude Include="program\program.h" />
-    <ClInclude Include="NextBipWithState.h" />
+    <ClInclude Include="PKB\NextBipWithState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />

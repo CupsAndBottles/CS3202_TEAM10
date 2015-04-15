@@ -12,7 +12,7 @@ QueryEvaluatorTest::QueryEvaluatorTest(void){}
 void QueryEvaluatorTest::TestHelperFunction()
 {
 	QueryEvaluator qe;
-	std::string expr = "_\"x\"_";
+	std::string expr = "x";
 	Pattern patternObj = qe.CreatePatternObject(expr); 
 
 	CPPUNIT_ASSERT(patternObj.expr == "x");
@@ -21,7 +21,7 @@ void QueryEvaluatorTest::TestHelperFunction()
 
 
 
-	expr = "_\" 111 \"_";
+	expr = "111";
 	patternObj = qe.CreatePatternObject(expr); 
 
 	CPPUNIT_ASSERT(patternObj.expr == "111");
@@ -30,7 +30,7 @@ void QueryEvaluatorTest::TestHelperFunction()
 
 
 
-	expr = "_\"x+y\"_";
+	expr = "x+y";
 	patternObj = qe.CreatePatternObject(expr); 
 
 	CPPUNIT_ASSERT(patternObj.expr == "+");
@@ -44,7 +44,7 @@ void QueryEvaluatorTest::TestHelperFunction()
 	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
 
 
-	expr = "_ \" 3 +  fnJw\" _";
+	expr = " 3 +  fnJw ";
 	patternObj = qe.CreatePatternObject(expr); 
 
 	CPPUNIT_ASSERT(patternObj.expr == "+");

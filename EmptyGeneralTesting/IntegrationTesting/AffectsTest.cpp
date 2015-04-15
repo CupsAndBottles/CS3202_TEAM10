@@ -420,12 +420,14 @@ void AffectsTest::TestIsAffectsCalls() {
 	ClearAllData();
 	ParserTester tester("ParserTestFiles/");
 	tester.ParseSource("AffectsAssignCallsTest.txt");
+	cout << "parsed: AffectsAssignCallsTest.txt";
 
 	CPPUNIT_ASSERT(Affects::IsAffects(1, 4));
 	CPPUNIT_ASSERT(!Affects::IsAffects(1, 6));
 
 	ClearAllData();
 	tester.ParseSource("AffectsWhileCallsTest.txt");
+	cout << "parsed: AffectsWhileCallsTest.txt"; 
 	
 	CPPUNIT_ASSERT(Affects::IsAffects(2, 4));
 	CPPUNIT_ASSERT(Affects::IsAffects(2, 8));
@@ -437,6 +439,7 @@ void AffectsTest::TestIsAffectsCalls() {
 
 	ClearAllData();
 	tester.ParseSource("AffectsIfThenElseCallsTest.txt");
+	cout << "parsed: AffectsIfThenElseCallsTest.txt";
 
 	CPPUNIT_ASSERT(!Affects::IsAffects(1, 5));
 	CPPUNIT_ASSERT(Affects::IsAffects(6, 10));

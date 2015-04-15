@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -29,5 +30,6 @@ private:
 	static map <int, vector<int>> returnPoints;
 	static map <int, vector<int>> endsOfProcs;
 	static queue<int> AddToQueue(queue<int> linesToCheck, vector<int> additions);
+
 };
 

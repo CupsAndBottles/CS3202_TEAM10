@@ -95,6 +95,8 @@
     <None Include="ParserTestFiles\AffectsIfThenElseCallsTest.txt" />
     <None Include="ParserTestFiles\AffectsTTest.txt" />
     <None Include="ParserTestFiles\AffectsWhileCallsTest.txt" />
+    <None Include="ParserTestFiles\NextBipCallOnceTest.txt" />
+    <None Include="ParserTestFiles\NextBipCallTwiceTest.txt" />
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />

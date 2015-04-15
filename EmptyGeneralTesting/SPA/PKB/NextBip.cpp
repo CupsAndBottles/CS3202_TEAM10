@@ -30,7 +30,6 @@ vector<int> NextBip::GetNextAfter(int progLineBefore) {
 			if end of proc, return return points
 			else normal
 	*/
-
 	int thisProc = ProcTable::GetProcOfStmt(progLineBefore);
 	vector<int> nextStmts;
 
@@ -83,10 +82,10 @@ vector<int> NextBip::GetNextBefore(int progLineAfter) {
 	return prevStmts;
 }
 
-
 vector<int> NextBip::GetReturnTo(int terminatingStmt, int callingProc) {
 	vector<int> returnPoints = GetNextAfter(terminatingStmt);
 	vector<int> result;
+
 	for each (int stmt in returnPoints) {
 		if (ProcTable::GetProcOfStmt(stmt) == callingProc) {
 			result.push_back(stmt);
@@ -134,21 +133,47 @@ bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {
 
 vector<int> NextBip::GetNextBipTAfter(int progLineBefore) {
 	queue<int> linesToCheck;
-	vector<int> linesAfter;
+	vector<int> linesAfter, nextAfterCurrCall;
 
 	int maxNoOfLinesSoFar = StmtTypeTable::GetMaxStmtIndex();
 	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 	
 	int currLine;
+	stack<int> enteredFrom;
 
-	linesToCheck = AddToQueue(linesToCheck, GetNextAfter(progLineBefore));
-	
+	if (StmtTypeTable::CheckIfStmtOfType(progLineBefore, CALL)) {
+		nextAfterCurrCall = Next::GetNextAfter(progLineBefore);
+		if (!nextAfterCurrCall.empty()) {
+			enteredFrom.push(nextAfterCurrCall.at(0));
+		}
+		int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(progLineBefore).GetContent());
+		linesToCheck.push(ProcTable::GetFirstStmtNoOfProc(calledProc));
+	} else {
+		linesToCheck = AddToQueue(linesToCheck, Next::GetNextAfter(progLineBefore));
+	}
+
 	while (!linesToCheck.empty()){
 		currLine = linesToCheck.front();
-		if (!checkedLines.at(currLine)) {
+		if (!checkedLines.at(currLine)) {		// in case of while loops
 			linesAfter.push_back(currLine);
-			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
-			
+			if (StmtTypeTable::CheckIfStmtOfType(currLine, CALL)) {
+				nextAfterCurrCall = Next::GetNextAfter(currLine);
+				if (!nextAfterCurrCall.empty()) {
+					enteredFrom.push(nextAfterCurrCall.at(0));
+				}
+				int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currLine).GetContent());
+				linesToCheck.push(ProcTable::GetFirstStmtNoOfProc(calledProc));
+			} else {
+				nextAfterCurrCall = Next::GetNextAfter(currLine);
+				if (nextAfterCurrCall.empty() && !enteredFrom.empty() || 
+					!nextAfterCurrCall.empty() && checkedLines.at(nextAfterCurrCall.at(0))) {
+					// cout << ProcTable::GetLastStmtNoOfProc(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currLine).GetContent()));
+					linesToCheck.push(enteredFrom.top());
+					enteredFrom.pop();
+				} else {
+					linesToCheck = AddToQueue(linesToCheck, Next::GetNextAfter(currLine));
+				}
+			}
 			checkedLines[currLine] = true;
 
 		}
@@ -195,8 +220,8 @@ void NextBip::ClearData() {
 }
 
 queue<int> NextBip::AddToQueue(queue<int> linesToCheck, vector<int> additions) {
-	for (unsigned int i = 0; i < additions.size(); i++) {
-		linesToCheck.push(additions.at(i));
+	for (vector<int>::iterator it = additions.begin(); it != additions.end(); it++) {
+		linesToCheck.push(*it);
 	}
 
 	return linesToCheck;

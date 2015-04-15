@@ -12,17 +12,20 @@ class NextBipTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(NextBipTest);
 
 	CPPUNIT_TEST(TestGetNextAfter);
-	CPPUNIT_TEST(TestGetNextBefore);
-	/*CPPUNIT_TEST(TestGetReturnTo);
+	/*CPPUNIT_TEST(TestGetNextBefore);
+	CPPUNIT_TEST(TestGetReturnTo);
 	CPPUNIT_TEST(TestGetEntryPoint);*/
+	CPPUNIT_TEST(TestGetNextBipTAfter);
 
 	CPPUNIT_TEST_SUITE_END();
+
 public:
 	void setUp();
 	void tearDown();
 
 	void TestGetNextAfter();
-	void TestGetNextBefore();
+	//void TestGetNextBefore();
+	void TestGetNextBipTAfter();
 
 	NextBipTest(void);
 	~NextBipTest(void);

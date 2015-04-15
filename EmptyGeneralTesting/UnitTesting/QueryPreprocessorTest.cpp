@@ -1554,8 +1554,33 @@ void QueryPreProcessorTest::ValidateRelationshipTest()
 	CPPUNIT_ASSERT(arg2.type == INTEGER);
 	CPPUNIT_ASSERT(arg2.value == "5");
 
-	//Affects*
+	//Affects* with arg1 INTEGER , arg2 SYNONYM
+	rel = "Affects*";
+	arg1.value = "1";
+	arg2.value = "a";
+	CPPUNIT_ASSERT(qp.ValidateRelationship(rel , rel_enum , arg1 , arg2) == true);
+	CPPUNIT_ASSERT(rel_enum == AFFECTST);
+	CPPUNIT_ASSERT(arg1.type == INTEGER);
+	CPPUNIT_ASSERT(arg1.value == "1");
+	CPPUNIT_ASSERT(arg2.type == SYNONYM);
+	CPPUNIT_ASSERT(arg2.value == "a");
+	CPPUNIT_ASSERT(arg2.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg2.syn.value == "a");
 
+	//Affects* with arg1 SYNONYM , arg2 SYNONYM
+	rel = "Affects*";
+	arg1.value = "a1";
+	arg2.value = "a2";
+	CPPUNIT_ASSERT(qp.ValidateRelationship(rel , rel_enum , arg1 , arg2) == true);
+	CPPUNIT_ASSERT(rel_enum == AFFECTST);
+	CPPUNIT_ASSERT(arg1.type == SYNONYM);
+	CPPUNIT_ASSERT(arg1.value == "a1");
+	CPPUNIT_ASSERT(arg1.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg1.syn.value == "a1");
+	CPPUNIT_ASSERT(arg2.type == SYNONYM);
+	CPPUNIT_ASSERT(arg2.value == "a2");
+	CPPUNIT_ASSERT(arg2.syn.type == ASSIGN);
+	CPPUNIT_ASSERT(arg2.syn.value == "a2");
 	//Next
 
 	//Next*
@@ -1572,6 +1597,8 @@ void QueryPreProcessorTest::ValidateRelationshipTest()
 
 
 	//*********************************************************************
+
+	
 
 }
 
@@ -2049,10 +2076,36 @@ void QueryPreProcessorTest::IsExpressionTest()
 	exp = "\"(x+y)*z\"";
 	CPPUNIT_ASSERT(qp.IsExpression(exp) == true);
 
-
 	exp = "\"(a-b+(x+y))*z\"";
 	CPPUNIT_ASSERT(qp.IsExpression(exp) == true);
 
 	exp = "\"x\"";
 	CPPUNIT_ASSERT(qp.IsExpression(exp) == true);
+	
+	exp = "\"z*(x+y)\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == true);
+
+	exp = "\"((x+y))\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == true);
+
+	exp = "\"((x+)\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+	
+	exp = "\"*z\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+	
+	//exp = "\"(x+y)*z- +x\"";
+	//CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+	
+	exp = "\"*\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+	
+	exp = "\"++x\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+
+	exp = "\"x(*)\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
+	
+	exp = "\"x(*y)+2\"";
+	CPPUNIT_ASSERT(qp.IsExpression(exp) == false);
 }

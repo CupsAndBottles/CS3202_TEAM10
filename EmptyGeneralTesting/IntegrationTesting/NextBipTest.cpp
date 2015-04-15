@@ -111,5 +111,77 @@ void NextBipTest::TestGetNextBipTAfter() {
 	
 }
 
+void NextBipTest::TestGetNextBipTBefore() {
+	ParserTester tester("ParserTestFiles/");
+	tester.ParseSource("NextBipCallOnceTest.txt");
+
+	// procedure test1
+	vector<int> nextBipTBefore4 = NextBip::GetNextBipTBefore(4);
+	CPPUNIT_ASSERT_EQUAL(9, (int) nextBipTBefore4.size());
+	sort(nextBipTBefore4.begin(), nextBipTBefore4.end());
+
+	CPPUNIT_ASSERT_EQUAL(1, nextBipTBefore4.at(0));
+	CPPUNIT_ASSERT_EQUAL(3, nextBipTBefore4.at(2));
+	CPPUNIT_ASSERT_EQUAL(6, nextBipTBefore4.at(3));
+	CPPUNIT_ASSERT_EQUAL(7, nextBipTBefore4.at(4));
+	CPPUNIT_ASSERT_EQUAL(14, nextBipTBefore4.at(5));
+	CPPUNIT_ASSERT_EQUAL(17, nextBipTBefore4.at(8));
+
+	// procedure test2
+	vector<int> nextBipTBefore7 = NextBip::GetNextBipTBefore(7);
+	CPPUNIT_ASSERT_EQUAL(1, (int) nextBipTBefore7.size());
+	CPPUNIT_ASSERT_EQUAL(6, nextBipTBefore7.at(0));
+
+	// procedure multpaths
+	vector<int> nextBipTBefore11 = NextBip::GetNextBipTBefore(11);
+	CPPUNIT_ASSERT_EQUAL(5, (int) nextBipTBefore11.size());
+	sort(nextBipTBefore11.begin(), nextBipTBefore11.end());
+
+	CPPUNIT_ASSERT_EQUAL(9, nextBipTBefore11.at(0));
+	CPPUNIT_ASSERT_EQUAL(10, nextBipTBefore11.at(1));
+	CPPUNIT_ASSERT_EQUAL(21, nextBipTBefore11.at(2));
+	CPPUNIT_ASSERT_EQUAL(23, nextBipTBefore11.at(4));
+
+	vector<int> nextBipTBefore13 = NextBip::GetNextBipTBefore(13);
+	CPPUNIT_ASSERT_EQUAL(11, (int) nextBipTBefore13.size());
+	sort(nextBipTBefore13.begin(), nextBipTBefore13.end());
+
+	CPPUNIT_ASSERT_EQUAL(9, nextBipTBefore13.at(0));
+	CPPUNIT_ASSERT_EQUAL(12, nextBipTBefore13.at(3));
+	CPPUNIT_ASSERT_EQUAL(21, nextBipTBefore13.at(4));
+	CPPUNIT_ASSERT_EQUAL(23, nextBipTBefore13.at(6));
+	CPPUNIT_ASSERT_EQUAL(24, nextBipTBefore13.at(7));
+	CPPUNIT_ASSERT_EQUAL(27, nextBipTBefore13.at(10));
+
+	// calling from within a container stmt
+	vector<int> nextBipTBefore23 = NextBip::GetNextBipTBefore(23);
+	CPPUNIT_ASSERT_EQUAL(5, (int) nextBipTBefore23.size());
+	sort(nextBipTBefore23.begin(), nextBipTBefore23.end());
+
+	CPPUNIT_ASSERT_EQUAL(9, nextBipTBefore23.at(0));
+	CPPUNIT_ASSERT_EQUAL(10, nextBipTBefore23.at(1));
+	CPPUNIT_ASSERT_EQUAL(21, nextBipTBefore23.at(2));
+	CPPUNIT_ASSERT_EQUAL(23, nextBipTBefore23.at(4));
+
+	vector<int> nextBipTBefore27 = NextBip::GetNextBipTBefore(27);
+	CPPUNIT_ASSERT_EQUAL(9, (int) nextBipTBefore27.size());
+	sort(nextBipTBefore27.begin(), nextBipTBefore27.end());
+
+	CPPUNIT_ASSERT_EQUAL(9, nextBipTBefore27.at(0));
+	CPPUNIT_ASSERT_EQUAL(12, nextBipTBefore27.at(3));
+	CPPUNIT_ASSERT_EQUAL(21, nextBipTBefore27.at(4));
+	CPPUNIT_ASSERT_EQUAL(23, nextBipTBefore27.at(6));
+	CPPUNIT_ASSERT_EQUAL(24, nextBipTBefore27.at(7));
+	CPPUNIT_ASSERT_EQUAL(25, nextBipTBefore27.at(8));
+}
+
 NextBipTest::~NextBipTest(void) {
 }
+
+/*
+	check for start of proc
+		if start, return to call stmts (prev of return points)
+	else check if previous is call
+		if prev is call, return ends of procs called
+		return all normal
+	*/

@@ -16,6 +16,7 @@ class NextBipTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestGetReturnTo);
 	CPPUNIT_TEST(TestGetEntryPoint);*/
 	CPPUNIT_TEST(TestGetNextBipTAfter);
+	CPPUNIT_TEST(TestGetNextBipTBefore);
 
 	CPPUNIT_TEST_SUITE_END();
 
@@ -24,8 +25,9 @@ public:
 	void tearDown();
 
 	void TestGetNextAfter();
-	//void TestGetNextBefore();
+	void TestGetNextBefore();
 	void TestGetNextBipTAfter();
+	void TestGetNextBipTBefore();
 
 	NextBipTest(void);
 	~NextBipTest(void);

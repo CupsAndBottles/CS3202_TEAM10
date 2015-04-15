@@ -27,13 +27,6 @@
     <ClCompile Include="Program\TNode\TNode.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="NextBipWithState.cpp" />
-    <ClCompile Include="QueryProcessor\IntermediateResult.cpp" />
-    <ClCompile Include="QueryProcessor\PatternMatcher.cpp" />
-    <ClCompile Include="QueryProcessor\QueryData.cpp" />
-    <ClCompile Include="QueryProcessor\QueryEvaluator.cpp" />
-    <ClCompile Include="QueryProcessor\QueryPreprocessor.cpp" />
-    <ClCompile Include="QueryProcessor\QueryProcessor.cpp" />
-    <ClCompile Include="QueryProcessor\RelTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -64,14 +57,6 @@
     <ClInclude Include="program\tnode\tnode.h" />
     <ClInclude Include="program\program.h" />
     <ClInclude Include="NextBipWithState.h" />
-    <ClInclude Include="queryprocessor\grammar.h" />
-    <ClInclude Include="QueryProcessor\IntermediateResult.h" />
-    <ClInclude Include="queryprocessor\patternmatcher.h" />
-    <ClInclude Include="queryprocessor\querydata.h" />
-    <ClInclude Include="queryprocessor\queryevaluator.h" />
-    <ClInclude Include="queryprocessor\querypreprocessor.h" />
-    <ClInclude Include="queryprocessor\queryprocessor.h" />
-    <ClInclude Include="queryprocessor\reltable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />

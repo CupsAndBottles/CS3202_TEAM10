@@ -18,7 +18,7 @@ struct Pattern {
 
 class PatternMatcher {
     public:
-        PatternMatcher() { };
+        PatternMatcher() {};
 
 		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch);
 		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch, vector<int> stmtsToMatch);

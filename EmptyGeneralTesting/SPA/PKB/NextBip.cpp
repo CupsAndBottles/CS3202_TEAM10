@@ -5,6 +5,9 @@
 #include "StmtTypeTable.h"
 #include "..\Program\Program.h"
 
+#include <algorithm>
+
+// maps the called proc to the call stmts calling them
 map <int, vector<int>> NextBip::returnPoints; // stores points that procs return to. 
 map <int, vector<int>> NextBip::endsOfProcs; // stores the last next of every proc 
 
@@ -42,11 +45,11 @@ vector<int> NextBip::GetNextAfter(int progLineBefore) {
 		nextStmts.push_back(ProcTable::GetFirstStmtNoOfProc(calledProc));
 	} else {
 		nextStmts = Next::GetNextAfter(progLineBefore);
-		if (nextStmts.size() == 0) {
-			for each (int callStmt in returnPoints[thisProc]) {
-				vector<int> afterCall = Next::GetNextAfter(callStmt);
-				if (afterCall.size() == 1) { // after Call size is only one
-					nextStmts.push_back(afterCall[0]);
+		vector<int> endpts = endsOfProcs[thisProc];
+		if (find(endpts.begin(), endpts.end(), progLineBefore) != endpts.end()) { // check if stmt is in endpoints
+			for each (int returnPt in returnPoints[thisProc]) {
+				for each (int nextStmt in Next::GetNextAfter(returnPt)) {
+					nextStmts.push_back(nextStmt);
 				}
 			}
 		}
@@ -65,8 +68,8 @@ vector<int> NextBip::GetNextBefore(int progLineAfter) {
 
 	int thisProc = ProcTable::GetProcOfStmt(progLineAfter);
 	vector<int> prevStmts = Next::GetNextBefore(progLineAfter);
-	if (prevStmts.size() == 0) {
-		prevStmts = returnPoints[thisProc];
+	if (ProcTable::GetFirstStmtNoOfProc(thisProc) == progLineAfter) {
+		prevStmts.insert(prevStmts.end(), returnPoints[thisProc].begin(), returnPoints[thisProc].end());
 	} else {
 		vector<int> filteredCalls;
 		for each (int stmt in prevStmts) {
@@ -86,11 +89,26 @@ vector<int> NextBip::GetNextBefore(int progLineAfter) {
 	return prevStmts;
 }
 
-vector<int> NextBip::GetReturnTo(int terminatingStmt, int callingProc) {
-	vector<int> returnPoints = GetNextAfter(terminatingStmt);
-	vector<int> result;
+bool NextBip::IsNext(int progLineBefore, int progLineAfter) {
+	vector<int> nextStmts = GetNextAfter(progLineBefore);
+	return find(nextStmts.begin(), nextStmts.end(), progLineAfter) != nextStmts.end();
+}
 
-	for each (int stmt in returnPoints) {
+vector<int> NextBip::GetReturnsTo(int calledProc, int callingProc) {
+	vector<int> result = vector<int>();
+	for each (int stmt in GetEntryPoints(calledProc, callingProc)) {
+		vector<int> afterCall = Next::GetNextAfter(stmt);
+		if (afterCall.size() != 0) {
+			result.insert(result.end(), afterCall.begin(), afterCall.end()); // next after call
+		}
+	}
+	return result;
+}
+
+vector<int> NextBip::GetEntryPoints(int calledProc, int callingProc) {
+	vector<int> entryPoints = returnPoints[calledProc];
+	vector<int> result = vector<int>();
+	for each (int stmt in entryPoints) {
 		if (ProcTable::GetProcOfStmt(stmt) == callingProc) {
 			result.push_back(stmt);
 		}
@@ -98,15 +116,28 @@ vector<int> NextBip::GetReturnTo(int terminatingStmt, int callingProc) {
 	return result;
 }
 
-vector<int> NextBip::GetEntryPoint(int startingStmt, int callingProc) {
-	vector<int> entryPoints = GetNextBefore(startingStmt);
-	vector<int> result;
-	for each (int stmt in entryPoints) {
-		if (ProcTable::GetProcOfStmt(stmt) == callingProc) {
-			result.push_back(stmt);
+vector<int> NextBip::GetAllEntryPoints(int calledProc) {
+	return returnPoints[calledProc];
+}
+
+vector<int> NextBip::GetAllReturnPoints(int calledProc) {
+	vector<int> result = vector<int>();
+	for each (int stmt in GetAllEntryPoints(calledProc)) {
+		vector<int> afterCall = Next::GetNextAfter(stmt);
+		if (afterCall.size() != 0) {
+			result.insert(result.end(), afterCall.begin(), afterCall.end()); // next after call
 		}
 	}
 	return result;
+}
+
+vector<int> NextBip::GetEndPoints(int proc) {
+	return endsOfProcs[proc];
+}
+
+bool NextBip::IsEndPoint(int stmt, int procedure) {
+	vector<int> endpts = GetEndPoints(procedure);
+	return find(endpts.begin(), endpts.end(), stmt) != endpts.end();
 }
 
 bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {

@@ -12,6 +12,8 @@
 #include "..\PKB\Parent.h"
 #include "..\PKB\StmtTypeTable.h"
 #include "..\PKB\VarTable.h"
+#include "..\PKB\NextBip.h"
+#include "..\PKB\NodeTypeTable.h"
 
 void Program::ClearAll() { // clears all PKB elements
 	Program::ClearData();
@@ -24,7 +26,9 @@ void Program::ClearAll() { // clears all PKB elements
 	Next::ClearData();
 	Parent::ClearData();
 	StmtTypeTable::ClearData();
+	NodeTypeTable::ClearData();
 	VarTable::ClearData();
+	NextBip::ClearData();
 }
 
 Program::Program() {}

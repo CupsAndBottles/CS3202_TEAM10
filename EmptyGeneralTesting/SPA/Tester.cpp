@@ -22,11 +22,9 @@ Pattern PatternParser(string expr) {
 	return patternObj;
 }
 
-
-
 void main() {
 	Program::ClearAll();
-	Pattern obj = PatternParser("_ \" 3 +  fnJw\" _");
+	Pattern obj = PatternParser("_\"x\"_");
 }
 
 

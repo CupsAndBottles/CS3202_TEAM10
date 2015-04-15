@@ -143,5 +143,5 @@ void StmtTypeTable::ClearData() {
 	allWhileStmts.clear();
 	allCallStmts.clear();
 	allIfThenStmts.clear();
-
+	maxStmtIndex = 0;
 }

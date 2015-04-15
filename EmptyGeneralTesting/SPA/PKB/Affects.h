@@ -19,8 +19,6 @@ public:
 	static vector<int> GetStmtsAffectedTBy(int stmtAffecting);
 	static vector<int> GetStmtsAffectingT(int stmtAffected);
 
-	~Affects(void);
-
 private:
 	static bool CheckCFG(int stmtAffecting, int stmtAffected, int varModified);
 	static vector<int> TraverseDownCFG(int stmtAffecting, int varModified);

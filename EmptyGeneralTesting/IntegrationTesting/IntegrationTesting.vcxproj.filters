@@ -11,6 +11,8 @@
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
     <ClCompile Include="UltimateTest.cpp" />
+    <ClCompile Include="AffectsTTest.cpp" />
+    <ClCompile Include="AffectsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\pkbTest.txt" />
@@ -35,5 +37,7 @@
     <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
+    <ClInclude Include="AffectsTTest.h" />
+    <ClInclude Include="AffectsTest.h" />
   </ItemGroup>
 </Project>

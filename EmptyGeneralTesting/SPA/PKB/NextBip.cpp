@@ -12,7 +12,6 @@ map <int, vector<int>> NextBip::returnPoints; // stores points that procs return
 map <int, vector<int>> NextBip::endsOfProcs; // stores the last next of every proc 
 
 NextBip::NextBip() {
-	ClearData();
 }
 
 void NextBip::setReturnPoint(int procedure, int returnPoint) {
@@ -309,12 +308,8 @@ vector<int> NextBip::GetNextBipTBefore(int progLineAfter) {
 }
 
 void NextBip::ClearData() {
-	int noOfProcs = ProcTable::GetNoOfProcs();
-	vector<int> emptySet;
-	for (int proc = 0; proc < noOfProcs; proc++) {
-		returnPoints[proc] = emptySet;
-		endsOfProcs[proc] = emptySet;
-	}
+	returnPoints.clear();
+	endsOfProcs.clear();
 }
 
 queue<int> NextBip::AddToQueue(queue<int> linesToCheck, vector<int> additions) {

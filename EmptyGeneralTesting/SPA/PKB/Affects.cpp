@@ -745,10 +745,6 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 	return vector<int>(helper.affectingStmts.begin(), helper.affectingStmts.end());
 }
 
-
-Affects::~Affects(void) {
-}
-
 //void main(){
 //	StmtTypeTable::Insert(1, ASSIGN);
 //	Modifies::SetStmtModifiesVar(1, VarTable::InsertVar("a"));

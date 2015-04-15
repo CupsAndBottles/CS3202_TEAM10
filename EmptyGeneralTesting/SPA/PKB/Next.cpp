@@ -199,6 +199,7 @@ void Next::ClearData() {
 	sizeOfNext = 0;
 	bitVector.clear();
 	bitVectorIsBuilt = false;
+	maxNoOfLines = 0;
 }
 
 // private methods

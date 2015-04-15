@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NextBipWithState.h" />
     <ClInclude Include="PKBCleaner.h" />
     <ClInclude Include="PKB\AffectsBip.h" />
     <ClInclude Include="PKB\NextBip.h" />
+    <ClInclude Include="PKB\NextBipWithState.h" />
     <ClInclude Include="PKB\NodeTypeTable.h" />
     <ClInclude Include="PKB\Contains.h" />
     <ClInclude Include="Parser\ParserTester.h" />

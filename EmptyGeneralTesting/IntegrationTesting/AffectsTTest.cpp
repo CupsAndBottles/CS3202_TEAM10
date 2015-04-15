@@ -14,12 +14,12 @@ const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 void AffectsTTest::setUp() {
 	Program::ClearAll();
-	PKBCleaner::ClearAll();
 	ParserTester tester(TESTFILE_DIRECTORY);
 	tester.ParseSource("AffectsTTest.txt");
 }
 
 void AffectsTTest::tearDown() {
+	Program::ClearAll();
 }
 
 void AffectsTTest::TestIsAffectsT() {

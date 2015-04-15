@@ -30,6 +30,7 @@
     <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
+    <ClCompile Include="NextTest.cpp" />
     <ClCompile Include="CallsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="ParserTest.h" />
+    <ClInclude Include="NextTest.h" />
     <ClInclude Include="CallsTest.h" />
   </ItemGroup>
 </Project>

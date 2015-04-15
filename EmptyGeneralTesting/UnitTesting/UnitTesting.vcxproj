@@ -90,6 +90,7 @@
     <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ModifiesTest.cpp" />
+    <ClCompile Include="NextTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ModifiesTest.h" />
+    <ClInclude Include="NextTest.h" />
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="PatternMatcherTest.h" />

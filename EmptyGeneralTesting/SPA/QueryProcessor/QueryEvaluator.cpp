@@ -8,6 +8,9 @@
 #include "..\PKB\VarTable.h"
 #include "..\PKB\ProcTable.h"
 #include "..\PKB\Affects.h"
+#include "..\PKB\Next.h"
+#include "..\Parser\Tokenizer.h"
+#include "..\Parser\Parser.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>
@@ -1255,10 +1258,300 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause)
 }
 
 
-bool QueryEvaluator::EvaluateNext(SuchThatClause)
+bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 {
+	Argument arg1 = suchThat.arg1;
+	Argument arg2 = suchThat.arg2;
+	Synonym arg1Syn = suchThat.arg1.syn;
+	Synonym arg2Syn = suchThat.arg2.syn;
+	RelationshipType rel = suchThat.relationship;
 
-	return true;
+	cout << "Evaluating Next( " << arg1.value << " , " << arg2.value << ")\n";
+
+	if (arg1.type == SYNONYM) {
+		int validCount = 0;
+
+		if (arg2.type == SYNONYM) {
+			//if (arg1Syn.value == arg2Syn.value) {
+			//	cout << "In EvaluateNext, both arg1 and arg2 has the same synonym\n";
+			//	return false;
+			//}
+
+			vector<int> prevStmt, nextStmt;
+			bool valid = false;
+			bool usingIntermediateResult_next = false, usingIntermediateResult_prev = false;
+
+			//get appropriate stmt, while, if, prog_line
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				prevStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1.syn.value, prevStmt);
+				usingIntermediateResult_next = true;
+			}
+
+			//get appropriate stmt, assign, while, if, prog_line, call
+			if (intermediateResult.IsListEmpty(arg2.syn)) {
+				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				nextStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+			}
+
+			else {
+				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg2.syn.value, nextStmt);
+				usingIntermediateResult_prev = true;
+			}
+
+			//loop nextStmt.size() * prevStmt.size() times, if all invalid, validCount will be 0, return false
+			validCount = prevStmt.size() * nextStmt.size();
+
+			for (vector<int>::iterator it_prev = prevStmt.begin(); it_prev != prevStmt.end(); ++it_prev) {
+				for (vector<int>::iterator it_next = nextStmt.begin(); it_next != nextStmt.end(); ++it_next) {
+					bool isNext = false;
+					//convert int to string to use with intermediateResult
+					string next_str = ITOS(*it_prev);
+					string prev_str = ITOS(*it_next);
+
+					if (rel == NEXT)	isNext = Next::IsNext(*it_prev, *it_next);
+					else				isNext = Next::IsNextT(*it_prev, *it_next);
+
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_next && usingIntermediateResult_prev) {
+						if (isNext) {
+							//check HasLink(), if yes, do nothing, else make pair
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, isDirectLink)) {
+
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, next_str) && intermediateResult.HasLink(arg2Syn.value, prev_str)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+									}
+
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+								}
+							}
+						} else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_next, arg2Syn.value, *it_prev);
+							--validCount;
+						}
+					}
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (isNext) {
+							//insert pair
+							intermediateResult.InsertPair(arg1Syn.value, *it_prev, arg2Syn.value, *it_next);
+						} else {
+							//do nothing
+							--validCount;
+						}
+					}
+				}
+			}
+
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_next && usingIntermediateResult_prev) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
+		}
+
+		else if (arg2.type == INTEGER) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
+
+			validCount = stmts.size();
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+				int arg2Value = atoi(arg2.value.c_str());
+				bool isNext = false;
+
+				if (rel == NEXT)	isNext = Next::IsNext(*it, arg2Value);
+				else				isNext = Next::IsNextT(*it, arg2Value);
+
+				if (usingIntermediateResult) {
+					if (isNext) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (isNext) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		// Next(syn, _)
+		else if (arg2.type == UNDERSCORE) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
+
+			validCount = stmts.size();
+
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+				vector<int> Next;
+
+				if (rel == NEXT)	Next = Next::GetNextAfter(*it);
+				else				Next = Next::GetNextTAfter(*it);
+
+				if (usingIntermediateResult) {
+					if (!Next.empty()) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (!Next.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		else {
+			cout << "\nIn EvaluateNext, invalid Next argument 2 type.\n";
+			return false;
+		}
+
+		//all statements do not satisfy Next()
+		if (validCount == 0) {
+			cout << "Next() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	//Next (smth, syn)
+	else if (arg2.type == SYNONYM) {
+		vector<int> stmts;
+		bool usingIntermediateResult = false;
+
+		if (intermediateResult.IsListEmpty(arg2.syn)) {
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+		}
+
+		else {
+			intermediateResult.GetList(arg2.syn.value, stmts);
+			usingIntermediateResult = true;
+		}
+
+		int validCount = stmts.size();
+
+		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+			bool isNext = false;
+
+			// Next(1, syn)
+			if (arg1.type == INTEGER) {
+				int arg1Value = STOI(arg1.value);
+
+				if (rel == NEXT)	isNext = Next::IsNext(arg1Value, *it);
+				else				isNext = Next::IsNextT(arg1Value, *it);
+			}
+
+			//Next(_ , syn)
+			else if (arg1.type == UNDERSCORE) {
+				if (rel == NEXT)	isNext = !Next::GetNextBefore(*it).empty();
+				else				isNext = !Next::GetNextTBefore(*it).empty();
+			}
+
+			else {
+				cout << "\nIn EvaluateNext, invalid argument 1 type.\n";
+				return false;
+			}
+
+			if (usingIntermediateResult) {
+				//remove if invalid, do nothing if valid
+				if (isNext) {} else {
+					intermediateResult.Remove(arg2Syn.value, *it);
+					--validCount;
+				}
+			} else {
+				//insert if valid, do nothing if invalid
+				if (isNext) intermediateResult.Insert(arg2Syn.value, *it);
+				else --validCount;
+			}
+		}
+
+		//all statements do not satisfy Next()
+		if (validCount == 0) {
+			cout << "Next() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
+		int arg2Value = STOI(arg2.value);
+
+		vector<int> prev;
+		if (rel == NEXT)	prev = Next::GetNextBefore(arg2Value);
+		else				prev = Next::GetNextTBefore(arg2Value);
+
+		if (prev.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
+		int arg1Value = STOI(arg1.value);
+
+		vector<int> next;
+		if (rel == NEXT)	next = Next::GetNextAfter(arg1Value);
+		else				next = Next::GetNextTAfter(arg1Value);
+
+		if (next.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
+		int arg1Value = STOI(arg1.value);
+		int arg2Value = STOI(arg2.value);
+
+		if (rel == NEXT)	return Next::IsNext(arg1Value, arg2Value);
+		else				return Next::IsNextT(arg1Value, arg2Value);
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
+		return Next::HasAnyNext();
+	}
+
+	else {
+		cout << "In EvaluateNext, no matching arguments.\n";
+		return false;
+	}
 }
 
 
@@ -1957,34 +2250,97 @@ string QueryEvaluator::ToString(int i)
 //Construct Pattern struct
 Pattern QueryEvaluator::CreatePatternObject(string expr)
 {
-	//remove white spaces and get expression content
-	expr.erase(remove_if(expr.begin(), expr.end(), [](char x){return isspace(x);}), expr.end());
-	int length = expr.length() - 4;
-	expr = expr.substr(2, length);
+	class Helper {
+		deque<Token> tokens;
+		Pattern* emptyPattern;
+	public:
+		Helper(string expr) {
+			expr.push_back(';');
+			vector<Token> tokenVector = Tokenizer::Tokenize(expr);
+			tokens = deque<Token>(tokenVector.begin(), tokenVector.end());
+			emptyPattern = new Pattern();
+		}
 
-	vector<string> tokenList;
-	string delim = "+";
+		Token PeekAtTopToken() {
+			return tokens.front();
+		}
 
-	QueryPreProcessor::Tokenize(expr, tokenList, delim);
+		Token ConsumeTopToken() {
+			Token token = tokens.front();
+			tokens.pop_front();
+			return token;
+		}
 
-	if(tokenList.size() == 1)
-	{
-		return Pattern(tokenList.at(0), NULL, NULL);
-	}
+		bool TopTokenIsType(Token::Type type) {
+			return (tokens.front().type == type);
+		}
 
-	else if(tokenList.size() == 2)
-	{
-		Pattern *left = new Pattern(tokenList.at(0), NULL, NULL);
-		Pattern *right = new Pattern(tokenList.at(1), NULL, NULL);
-		Pattern p("+", left, right);
-		return p;
-	}
+		Token ConsumeTopTokenOfType(Token::Type type) {
+			// verifies that top token is of given type
+			// then consumes it
+			if (!TopTokenIsType(type)) throw (string) "Error in parsing pattern.";
+			return ConsumeTopToken();
+		}
 
-	else
-	{
-		cout << "\nIn CreatePatternObject, invalid expression\n";
-		return Pattern("", NULL, NULL);
-	}
+		Pattern* ParseExpr(bool isBracket) {
+			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
+			Pattern* result = emptyPattern;
+			while (!TopTokenIsType(terminatingCondition)) {
+				if (result->expr == "") { // empty pattern
+					if (TopTokenIsType(Token::OPEN_BRACE)) {
+						ConsumeTopTokenOfType(Token::OPEN_BRACE);
+						result = ParseExpr(true);
+					} else {
+						result = new Pattern(ConsumeTopToken().content);
+					}
+				} else {
+					result = ParseExpr(result, isBracket);
+				}
+			}
+			ConsumeTopTokenOfType(terminatingCondition);
+			return result;
+		}
+
+		Pattern* ParseExpr(Pattern* LHS, bool isBracket) {
+			// if next op is of lower precedence, construct RHS and return
+			// if next op is of equal precedence, construct and loop
+			// if next op is of higher precedence, perform recursive call
+			// since all operations are left associative, no attempt to worry about
+			//		assoiciativity is made
+
+			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
+
+			if (PeekAtTopToken().type == terminatingCondition) {
+				return LHS;
+			}
+
+			// TODO combine operator token types into one type for type checking.
+			Token op1 = ConsumeTopToken();
+			Pattern* RHS;
+			if (TopTokenIsType(Token::OPEN_BRACE)) {
+				ConsumeTopTokenOfType(Token::OPEN_BRACE);
+				RHS = ParseExpr(true);
+			} else {
+				RHS = new Pattern(ConsumeTopToken().content);
+			}
+
+			Token nextOp = PeekAtTopToken(); // peek
+			int comparison = Parser::compare(op1.type, nextOp.type);
+
+			if (comparison < 0) { // nextOp is of lower precedence than currentOp
+				RHS = ParseExpr(RHS, isBracket);
+			}
+			Pattern* expression = new Pattern(op1.content, LHS, RHS);
+			if (comparison > 0) { // nextOp is of higher precedence than currentOp
+				return expression;
+			} else { // equal precedence
+				return ParseExpr(expression, isBracket);
+			}
+		}
+	};
+
+	Helper helper(expr);
+	return *helper.ParseExpr(false);
 }
 
 

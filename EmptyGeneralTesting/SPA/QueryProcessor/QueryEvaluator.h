@@ -1,6 +1,7 @@
 #pragma once
 #include "QueryData.h"
 #include "PatternMatcher.h"
+#include "IntermediateResult.h"
 #include <vector>
 #include <list>
 
@@ -12,27 +13,34 @@ class QueryEvaluator
 
 protected:
 
-	struct IntermediateResult {
-		Synonym synonym;
-		vector<int> resultInt;
-		vector<string> resultVar;
+	IntermediateResult intermediateResult;
 
-		IntermediateResult(Synonym s) : synonym(s) , resultInt(), resultVar() {}
-	};
+	//Evaluate Relationship
+	bool EvaluateModifies(SuchThatClause);
+	bool EvaluateParent(SuchThatClause);
+	bool EvaluateFollows(SuchThatClause);
+	bool EvaluateCalls(SuchThatClause);
+	bool EvaluateNext(SuchThatClause);
+	bool EvaluateAffects(SuchThatClause);
+	bool EvaluateContains(SuchThatClause);
+	bool EvaluateSibling(SuchThatClause);
+	bool EvaluateAffectsBip(SuchThatClause);
+	bool EvaluateNextBip(SuchThatClause);
 
-	//vector<list<Answers>> answers;
-	//vector<pair<Synonym,int>> maps; //record index of synonym
+	//Evvaluate Pattern
+	bool EvaluatePattern(PatternClause);
 
-	bool EvaluateModifies(SuchThatClause, vector<IntermediateResult>&);
-	bool EvaluateParent(SuchThatClause, vector<IntermediateResult>&);
-	bool EvaluateFollows(SuchThatClause, vector<IntermediateResult>&);
-	bool EvaluatePattern(PatternClause, vector<IntermediateResult>&);
+	//Evaluate With
+	bool EvaluateWith(WithClause);
 
-	//void initiateAll(vector<Declaration>);//initiate all answers.
-	//void deleteAnswer(Answers*);
-
-	Pattern CreatePatternObject(string);
 	string ToString(int);
+	Pattern CreatePatternObject(string);
+
+	//Functions to convert between integer and string
+	string ITOS(int num);
+	vector<string> ITOS(vector<int> intList);
+	int STOI(string s);
+	vector<int> STOI(vector<string> strList);
 
 public:
 	QueryEvaluator(void);

@@ -111,13 +111,23 @@ vector<int> NextBip::GetEntryPoint(int startingStmt, int callingProc) {
 
 bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {
 	queue<int> linesToCheck;
-		
+	vector<int> nextAfterCurrLine;
 	int maxNoOfLinesSoFar =StmtTypeTable::GetMaxStmtIndex();
 	vector<bool> checkedLines (maxNoOfLinesSoFar + 1, false);
 		
 	int currLine;
+	stack<int> enteredFrom;
 
-	linesToCheck.push(progLineBefore);
+	if (StmtTypeTable::CheckIfStmtOfType(progLineBefore, CALL)) {
+		nextAfterCurrLine = Next::GetNextAfter(progLineBefore);
+		if (!nextAfterCurrLine.empty()) {
+			enteredFrom.push(nextAfterCurrLine.at(0));
+		}
+		int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(progLineBefore).GetContent());
+		linesToCheck.push(ProcTable::GetFirstStmtNoOfProc(calledProc));
+	} else {
+		linesToCheck = AddToQueue(linesToCheck, Next::GetNextAfter(progLineBefore));
+	}
 
 	while (!linesToCheck.empty()) {
 		currLine = linesToCheck.front();
@@ -126,8 +136,28 @@ bool NextBip::IsNextBipT(int progLineBefore, int progLineAfter) {
 			if (currLine == progLineAfter) {
 				return true;
 			}
+
+			if (StmtTypeTable::CheckIfStmtOfType(currLine, CALL)) {
+				nextAfterCurrLine = Next::GetNextAfter(currLine);
+				if (!nextAfterCurrLine.empty()) {
+					enteredFrom.push(nextAfterCurrLine.at(0));
+				}
+				int calledProc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currLine).GetContent());
+				linesToCheck.push(ProcTable::GetFirstStmtNoOfProc(calledProc));
+			} else {
+				nextAfterCurrLine = Next::GetNextAfter(currLine);
+				if (nextAfterCurrLine.empty() && !enteredFrom.empty() || 
+					!nextAfterCurrLine.empty() && checkedLines.at(nextAfterCurrLine.at(0))) {
+					// cout << ProcTable::GetLastStmtNoOfProc(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currLine).GetContent()));
+					linesToCheck.push(enteredFrom.top());
+					enteredFrom.pop();
+				} else {
+					linesToCheck = AddToQueue(linesToCheck, Next::GetNextAfter(currLine));
+				}
+			}
+
 			checkedLines[currLine] = true;
-			linesToCheck = AddToQueue(linesToCheck, GetNextAfter(currLine));
+
 		}
 		linesToCheck.pop();
 	}

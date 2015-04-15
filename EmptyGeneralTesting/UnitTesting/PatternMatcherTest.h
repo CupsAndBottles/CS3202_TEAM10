@@ -5,9 +5,9 @@
 
 class PatternMatcherTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(PatternMatcherTest);
-	/*CPPUNIT_TEST(matchSingleVariable);
+	CPPUNIT_TEST(matchSingleVariable);
 	CPPUNIT_TEST(matchExprsWithTwoVariables);
-	CPPUNIT_TEST(matchExprsWithMultipleVariables);*/
+	CPPUNIT_TEST(matchExprsWithMultipleVariables);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

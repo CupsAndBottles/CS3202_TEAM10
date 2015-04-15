@@ -95,6 +95,27 @@ void ComputeModifiesAndUsesForProcedures() {
 			rootProcs.push_back(proc);
 		}
 	}
+
+	for each (int proc in rootProcs) {
+		ProcedureHelper(proc);
+	}
+}
+
+pair<vector<int>, vector<int>> ProcedureHelper(int procedure) {
+	vector<int> varsModified;
+	vector<int> varsUsed;
+
+	for each (int proc in Calls::GetProcsCalledBy(procedure)) {
+		pair<vector<int>, vector<int>> modAndUsed = ProcedureHelper(proc);
+		for each (int mod in modAndUsed.first) {
+			Modifies::SetProcModifiesVar(procedure, mod);
+		}
+		for each (int use in modAndUsed.second) {
+			Uses::SetProcUsesVar(procedure, use);
+		}
+	}
+
+	return pair<vector<int>, vector<int>>(Modifies::GetVarModifiedByProc(procedure), Uses::GetVarUsedByProc(procedure));
 }
 
 set<int> ConnectStmtList(int startPoint) {

@@ -1,10 +1,15 @@
 \\ Calls Test
 
 procedure calls {
-	call calls;
 	call others;
+	call somethingElse;
 }
 
 procedure others {
-	call calls;
+	x = 1;
+	call somethingElse;
+}
+
+procedure somethingElse {
+	y = 1;
 }

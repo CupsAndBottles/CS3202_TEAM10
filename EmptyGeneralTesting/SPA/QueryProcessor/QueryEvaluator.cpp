@@ -171,7 +171,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					set<int> s( result_int.begin(), result_int.end() );
 					result_int.assign( s.begin(), s.end() );
 
+					/*cout << "\nInput list into table: ";
+					for(int i=0; i<result_int.size(); ++i)
+						cout << result_int[i] << " ";
+					cout << "\n";*/
+
 					intermediateResult.InsertList(selectSyn.value , result_int);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == CONSTANT)
@@ -186,6 +192,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					result_int.assign( s.begin(), s.end() );
 
 					intermediateResult.InsertList(selectSyn.value , result_int);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == PROCEDURE)
@@ -193,6 +200,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					//procTable
 					vector<string> result = ProcTable::GetAllProcNames();
 					intermediateResult.InsertList(selectSyn.value , result);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == VARIABLE)
@@ -200,6 +208,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					//varTable
 					vector<string> result = VarTable::GetAllVarNames(); 
 					intermediateResult.InsertList(selectSyn.value , result);
+					intermediateResult.Print();
 				}
 
 				else
@@ -252,11 +261,23 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 			if(hasAnswer)
 			{
 				intermediateResult.GetResultSingle(selectSyn.value ,resultList);
+
+				
+				//if hasAnswre has result is empty that means select a such that parent(w,s)
+				//select synonym does not occur in any clause
+				//get all data of select synonym from pkb and return this
+				if(resultList.empty())
+				{
+					vector<string> data = GetDataFromPKB(selectSyn);
+					copy( data.begin(), data.end(), back_inserter( resultList ) );
+				}
+
+
 			}
 			else
 			{
 				resultList.clear();
-				return false;
+				return true;
 			}
 		}
 	}
@@ -272,13 +293,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		//select <a,w,v> such that...
 		if(hasAnswer)
 		{
-			intermediateResult.GetResultTuple(selectSynList ,resultList);
+			//intermediateResult.GetResultTuple(selectSynList ,resultList);
 		}
 
 		else
 		{
 			resultList.clear();
-			return false;
+			return true;
 		}
 	}
 
@@ -470,13 +491,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 					if(isParent) {}
 					else 
 					{
-						intermediateResult.Remove(arg2Syn.value , *it);
+						intermediateResult.Remove(arg1.value , *it);
 						--validCount;
 					}
 				}
 				else
 				{
-					if(isParent) intermediateResult.Insert(arg2Syn.value , *it);
+					if(isParent) intermediateResult.Insert(arg1.value , *it);
 					else --validCount;
 				}
 			}
@@ -513,13 +534,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 					if(!children.empty()) {}
 					else 
 					{
-						intermediateResult.Remove(arg2Syn.value , *it);
+						intermediateResult.Remove(arg1.value , *it);
 						--validCount;
 					}
 				}
 				else
 				{
-					if(!children.empty()) intermediateResult.Insert(arg2Syn.value , *it);
+					if(!children.empty()) intermediateResult.Insert(arg1.value , *it);
 					else --validCount;
 				}
 			}
@@ -2554,6 +2575,70 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	return true;
 }	
 
+void QueryEvaluator::ClearIntermediateResult()
+{
+	intermediateResult.Clear();
+}
+
+//get data of a particular synonym from pkn
+vector<string> QueryEvaluator::GetDataFromPKB(Synonym syn)
+{
+	vector<string> data;
+
+	if(syn.type == ASSIGN || syn.type == STMT || syn.type == WHILE ||
+		syn.type == IF || syn.type == CALL|| syn.type == PROG_LINE)
+	{
+		//stmtTypeTable
+		vector<int> result_int;
+		vector<string> result;
+		result_int = StmtTypeTable::GetAllStmtsOfType(syn.type);
+
+		//remove duplicate
+		set<int> s( result_int.begin(), result_int.end() );
+		result_int.assign( s.begin(), s.end() );
+
+		data = ITOS(result_int);
+		return data;
+	}
+
+	else if(syn.type == CONSTANT)
+	{
+		//constTable
+		vector<int> result_int;
+		vector<string> result;
+		result_int = ConstTable::GetAllConst();
+
+		//remove duplicate
+		set<int> s( result_int.begin(), result_int.end() );
+		result_int.assign( s.begin(), s.end() );
+
+		data = ITOS(result_int);
+		return data;
+	}
+
+	else if(syn.type == PROCEDURE)
+	{
+		//procTable
+		vector<string> result = ProcTable::GetAllProcNames();
+		return result;
+	}
+
+	else if(syn.type == VARIABLE)
+	{
+		//varTable
+		vector<string> result = VarTable::GetAllVarNames(); 
+		 
+		return result;
+
+	}
+
+	else
+	{
+		cout << "In GetDataFromPKB: Invalid select type.\n";
+		return vector<string>();
+	}		
+
+}
 
 
 

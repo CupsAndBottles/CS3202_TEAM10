@@ -33,6 +33,7 @@ protected:
 	//Evaluate With
 	bool EvaluateWith(WithClause);
 
+	vector<string> GetDataFromPKB(Synonym syn);
 	string ToString(int);
 
 	//Functions to convert between integer and string
@@ -44,5 +45,7 @@ protected:
 public:
 	QueryEvaluator(void);
 	bool EvaluateQuery(QueryData, list<string>&);
+	void ClearIntermediateResult();
+	inline void PrintIntermediateResult() { intermediateResult.Print(); }
 };
 

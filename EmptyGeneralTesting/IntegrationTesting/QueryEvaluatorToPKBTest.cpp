@@ -38,6 +38,11 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
 
+	std::cout << "\nResult: ";
+	for(std::list<std::string>::iterator i=resultList.begin(); i != resultList.end(); ++i)
+		std::cout << *i << " ";
+	std::cout << "\n";
+
 	std::list<std::string> actualResultList;  
 	actualResultList.push_back("1");
 	actualResultList.push_back("2");
@@ -52,13 +57,16 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "constant c;Select c";
+	cout << "Testing query: " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
 
 	actualResultList.clear();
 	actualResultList.push_back("0");
@@ -72,8 +80,10 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;Select w";
+	cout << "Testing query: " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -92,8 +102,10 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;stmt s;Select s";
+	cout << "Testing query: " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -118,8 +130,10 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;prog_line p;Select p";
+	cout << "Testing query: " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -144,8 +158,10 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v";
+	cout << "Testing query: " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -162,6 +178,13 @@ void QueryEvaluatorToPKBTest::TestSelectAll()
 	actualResultList.push_back("b");
 	actualResultList.push_back("c");
 	actualResultList.sort();
+
+	/*cout << "\Result:";
+	for(std::list<std::string>::iterator i = resultList.begin(); i != resultList.end(); ++i)
+	{
+		cout << *i << " ";
+	}
+	cout << "\n";*/
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 }
@@ -183,6 +206,8 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
 
+	qe.PrintIntermediateResult();
+
 	std::list<std::string> actualResultList;  
 	actualResultList.push_back("4");
 	actualResultList.push_back("6");
@@ -196,6 +221,7 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;Select w such that Parent(w,w)";
 	//std::cout << "Test query : " << query << "\n";
@@ -209,8 +235,11 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
+
+
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;stmt s;Select s such that Parent(s,a)";
 	//std::cout << "Test query : " << query << "\n";
@@ -219,6 +248,8 @@ void QueryEvaluatorToPKBTest::TestParent()
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+	
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -232,11 +263,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;stmt s;Select a such that Parent(w,s)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
 
@@ -249,17 +283,17 @@ void QueryEvaluatorToPKBTest::TestParent()
 	actualResultList.push_back("9");
 	actualResultList.sort();
 
-	CPPUNIT_ASSERT(resultList == actualResultList);
-	
-
-
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(s,_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
 
@@ -275,11 +309,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(_,s)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
 
@@ -298,11 +335,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Parent(w,5)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
@@ -316,11 +356,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(3,s)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
 
@@ -337,11 +380,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "prog_line n;Select n such that Parent(_,9)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, int(resultList.size()));
 
@@ -363,11 +409,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "prog_line n;Select n such that Parent(1,_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, int(resultList.size()));
 
@@ -379,11 +428,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Parent(5,6)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
 
@@ -399,11 +451,14 @@ void QueryEvaluatorToPKBTest::TestParent()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Parent(_,_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
 

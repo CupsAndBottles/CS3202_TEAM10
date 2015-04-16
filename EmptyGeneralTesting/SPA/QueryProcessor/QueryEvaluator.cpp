@@ -736,10 +736,11 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+
+			if(arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> beforeStmt, afterStmt;
 			bool valid = false;
@@ -776,8 +777,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 				for (vector<int>::iterator it_after = afterStmt.begin(); it_after != afterStmt.end(); ++it_after) {
 					bool isFollows = false;
 					//convert int to string to use with intermediateResult
-					string after_str = ITOS(*it_before);
-					string before_str = ITOS(*it_after);
+					string before_str = ITOS(*it_before);
+					string after_str = ITOS(*it_after);
 
 					if (rel == FOLLOWS)	isFollows = Follows::IsFollows(*it_before, *it_after);
 					else				isFollows = Follows::IsFollowsT(*it_before, *it_after);
@@ -787,14 +788,12 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 						if (isFollows) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, isDirectLink)) {
-
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, before_str, arg2Syn.value, after_str, isDirectLink)) {
 								//both have links
 								if (intermediateResult.HasLink(arg1Syn.value, after_str) && intermediateResult.HasLink(arg2Syn.value, before_str)) {
 									if (isDirectLink) {
 										intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
 									}
-
 									else {
 										//indirect link, do nothing
 									}
@@ -802,14 +801,15 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
+									intermediateResult.InsertPair(arg1Syn.value, before_str, arg2Syn.value, after_str);
 								}
 							}
-						} else {
+						} 
+						else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, after_str, arg2Syn.value, before_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, before_str, arg2Syn.value, after_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, before_str, arg2Syn.value, after_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_after, arg2Syn.value, *it_before);
 							--validCount;
@@ -835,6 +835,7 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 			}
 		}
 
+		//Follows(a,5)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
 			bool valid = false;
@@ -859,17 +860,17 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isFollows) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isFollows) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Follows(syn, _)
+		// Follows(a, _)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
 			bool valid = false;
@@ -894,11 +895,11 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isFollows) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isFollows) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -957,7 +958,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 			if (usingIntermediateResult) {
 				//remove if invalid, do nothing if valid
-				if (isFollows) {} else {
+				if (isFollows) {} 
+				else {
 					intermediateResult.Remove(arg2Syn.value, *it);
 					--validCount;
 				}

@@ -75,6 +75,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AffectsTest.cpp" />
+    <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="CallsProcTableTest.cpp" />
     <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
     <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
@@ -100,6 +102,8 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AffectsTest.h" />
+    <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="CallsProcTableTest.h" />
     <ClInclude Include="FollowsStmtTypeTableTest.h" />
     <ClInclude Include="ModifiesUsesCallsParentTest.h" />

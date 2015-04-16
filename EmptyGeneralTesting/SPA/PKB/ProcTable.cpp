@@ -57,6 +57,15 @@ vector<string> ProcTable::GetAllProcNames() {
 	return procNames;
 }
 
+vector<int> ProcTable::GetAllProcIndexes() {
+	vector<int> result;
+	for each (string procName in GetAllProcNames()) {
+		result.push_back(GetIndexOfProc(procName));
+	}
+
+	return result;
+}
+
 void ProcTable::SetFirstStmtNoOfProc(int procIndex, int firstStmtNo) {
 	if (procIndex >= 0 && procIndex < (int) procNames.size()) {
 		// assumes that stmt#s are inserted in order

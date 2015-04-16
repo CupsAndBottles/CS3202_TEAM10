@@ -176,8 +176,9 @@ void Uses::ClearData() {
 	sizeOfUses = 0;
 	bitVectorIsBuilt=false;
 	stmtToVarBitVector.clear();
-	procToVarBitVector.clear();	
-
+	procToVarBitVector.clear();
+	maxProcOrVar = 0;
+	maxStmtOrVar = 0;
 }
 
 // driver code to test out Uses

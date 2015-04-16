@@ -21,6 +21,7 @@ public:
 	static int GetIndexOfProc(string procName); 
 	static string GetProcName(int varIndex);
 	static vector<string> GetAllProcNames();
+	static vector<int> GetAllProcIndexes();
 	
 	static void SetFirstStmtNoOfProc(int procIndex, int firstStmtNo);
 	static void SetLastStmtNoOfProc(int procIndex, int lastStmtNo);

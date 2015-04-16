@@ -305,4 +305,5 @@ void Calls::ClearData() {
 	callingToCalledTTable.clear();
 	calledToCallingTTable.clear();
 
+	//maxNoOfProcs = 0;
 }

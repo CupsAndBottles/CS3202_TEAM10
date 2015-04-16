@@ -15,9 +15,9 @@ public:
 	static vector<int> GetStmtsAffectedBipBy(int stmtAffecting);
 	static vector<int> GetStmtsAffectingBip(int stmtAffected);
 
-	/*static bool IsAffectsT(int stmtAffecting, int stmtAffected);
+	static bool IsAffectsT(int stmtAffecting, int stmtAffected);
 	static vector<int> GetStmtsAffectedTBy(int stmtAffecting);
-	static vector<int> GetStmtsAffectingT(int stmtAffected);*/
+	static vector<int> GetStmtsAffectingT(int stmtAffected);
 
 private:
 	static bool CheckBipCFG(int stmtAffecting, int stmtAffected, int varModified);

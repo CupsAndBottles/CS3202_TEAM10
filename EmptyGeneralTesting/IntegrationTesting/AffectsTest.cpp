@@ -10,6 +10,7 @@ void AffectsTest::setUp() {
 }
 
 void AffectsTest::tearDown() {
+	ClearAllData();
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AffectsTest);

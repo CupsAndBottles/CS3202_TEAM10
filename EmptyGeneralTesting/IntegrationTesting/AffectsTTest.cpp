@@ -14,12 +14,12 @@ const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 void AffectsTTest::setUp() {
 	Program::ClearAll();
-	PKBCleaner::ClearAll();
 	ParserTester tester(TESTFILE_DIRECTORY);
 	tester.ParseSource("AffectsTTest.txt");
 }
 
 void AffectsTTest::tearDown() {
+	Program::ClearAll();
 }
 
 void AffectsTTest::TestIsAffectsT() {
@@ -49,7 +49,7 @@ void AffectsTTest::TestIsAffectsT() {
 	CPPUNIT_ASSERT(Affects::IsAffectsT(19, 22));
 	CPPUNIT_ASSERT(Affects::IsAffectsT(22, 23));
 	CPPUNIT_ASSERT(Affects::IsAffectsT(23, 24));
-	// CPPUNIT_ASSERT(Affects::IsAffectsT(22, 22)); this test keeps failing idk why
+	// CPPUNIT_ASSERT(Affects::IsAffectsT(22, 22)); // heisenbug
 	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT(Affects::IsAffectsT(24, 21)));
 
 }

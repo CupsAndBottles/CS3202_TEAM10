@@ -16,6 +16,7 @@
 #include "..\PKB\NodeTypeTable.h"
 
 void Program::ClearAll() { // clears all PKB elements
+	TNode::resetNodeCounter();
 	Program::ClearData();
 	Modifies::ClearData();
 	Uses::ClearData();
@@ -53,6 +54,7 @@ void Program::InsertStmt(TNode* stmt, int stmtNum) {
 }
 
 void Program::ClearData() { // leaky method
+	TNode::resetNodeCounter();
 	Program::program = TNode::ConstructProgramTNode("");
-	Program::stmtNumberMap = map<int, TNode*>();
+	Program::stmtNumberMap.clear();
 }

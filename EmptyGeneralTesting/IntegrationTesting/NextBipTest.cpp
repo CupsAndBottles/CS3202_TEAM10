@@ -117,7 +117,7 @@ void NextBipTest::TestGetNextBipTBefore() {
 	sort(nextBipTBefore4.begin(), nextBipTBefore4.end());
 
 	CPPUNIT_ASSERT_EQUAL(1, nextBipTBefore4.at(0));
-	cout << nextBipTBefore4.at(1);
+	CPPUNIT_ASSERT_EQUAL(2, nextBipTBefore4.at(1));
 	CPPUNIT_ASSERT_EQUAL(3, nextBipTBefore4.at(2));
 	CPPUNIT_ASSERT_EQUAL(6, nextBipTBefore4.at(3));
 	CPPUNIT_ASSERT_EQUAL(7, nextBipTBefore4.at(4));

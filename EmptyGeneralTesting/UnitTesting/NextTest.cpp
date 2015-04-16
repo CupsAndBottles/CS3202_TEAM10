@@ -22,7 +22,7 @@ void NextTest::TestSetNext() {
 	Next::ClearData();
 	CPPUNIT_ASSERT_EQUAL(0, Next::SizeOfNext());
 
-	// regular corerct insert
+	// regular correct insert
 	Next::SetNext(1, 2);
 	CPPUNIT_ASSERT_EQUAL(1, Next::SizeOfNext());
 	// repeated insertion, not allowed

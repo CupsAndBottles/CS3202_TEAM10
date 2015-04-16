@@ -513,28 +513,47 @@ void ParserTest::TestCallParsing() {
 	Program::ClearAll();
 	ParseSource("callTest.txt");
 	TNode program = Program::GetASTRootNode();
-	//TNode procedure = program.GetChild(0);
-	//vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
+	TNode procedure = program.GetChild(0);
+	vector<TNode*> stmts = procedure.GetChild(0).GetChildren();
 
-	////procedure calls{
-	//CPPUNIT_ASSERT_EQUAL((string)"calls", procedure.GetContent());
-	////	call calls;
-	//CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
-	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
-	//CPPUNIT_ASSERT_EQUAL((string)"calls", stmts[0]->GetContent());
-	////	call others;
-	//CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
-	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[1]->GetType());
-	//CPPUNIT_ASSERT_EQUAL((string)"others", stmts[1]->GetContent());
-	////}
+	//procedure calls{
+	CPPUNIT_ASSERT_EQUAL((string)"calls", procedure.GetContent());
+	//	call others;
+	CPPUNIT_ASSERT_EQUAL(1, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"others", stmts[0]->GetContent());
+	//	call somethingElse;
+	CPPUNIT_ASSERT_EQUAL(2, stmts[1]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[1]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"somethingElse", stmts[1]->GetContent());
+	//}
 
-	//procedure = program.GetChild(1);
-	//stmts = procedure.GetChild(0).GetChildren();
-	////procedure others{
-	//CPPUNIT_ASSERT_EQUAL((string)"others", procedure.GetContent());
-	////	call calls;
-	//CPPUNIT_ASSERT_EQUAL(3, stmts[0]->GetLineNumber());
-	//CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[0]->GetType());
-	//CPPUNIT_ASSERT_EQUAL((string)"calls", stmts[0]->GetContent());
+	procedure = program.GetChild(1);
+	stmts = procedure.GetChild(0).GetChildren();
+	//procedure others{
+	CPPUNIT_ASSERT_EQUAL((string)"others", procedure.GetContent());
+	// 	x = 1;
+	CPPUNIT_ASSERT_EQUAL(3, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::ASSIGNMENT, stmts[0]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"=", stmts[0]->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"x", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(stmts[0])->GetContent());
+
+	//	call somethingElse;
+	CPPUNIT_ASSERT_EQUAL(4, stmts[1]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::CALL, stmts[1]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"somethingElse", stmts[1]->GetContent());
+	//}
+
+	procedure = program.GetChild(2);
+	stmts = procedure.GetChild(0).GetChildren();
+	//procedure somethingElse{
+	CPPUNIT_ASSERT_EQUAL((string)"somethingElse", procedure.GetContent());
+	//	y = 1;
+	CPPUNIT_ASSERT_EQUAL(5, stmts[0]->GetLineNumber());
+	CPPUNIT_ASSERT_EQUAL(TNode::ASSIGNMENT, stmts[0]->GetType());
+	CPPUNIT_ASSERT_EQUAL((string)"=", stmts[0]->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"y", GetLHS(stmts[0])->GetContent());
+	CPPUNIT_ASSERT_EQUAL((string)"1", GetRHS(stmts[0])->GetContent());
 	//}
 }

@@ -1028,11 +1028,14 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	qd.ClearData();
 
 	std::string query = "assign a;variable v;Select a such that Modifies(a,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
+	
+	qe.PrintIntermediateResult();
 
 	std::list<std::string> actualResultList; 
 	actualResultList.push_back("1");
@@ -1048,13 +1051,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;variable v;Select v such that Modifies(s,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();  
 	actualResultList.push_back("a");
@@ -1069,13 +1076,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 	
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "prog_line n1,n2;variable v;Select n1 such that Modifies(n2,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1095,13 +1106,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(w,_)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1115,13 +1130,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a such that Modifies(a,\"x\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1132,13 +1151,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(w,\"tEst\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1151,13 +1174,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v such that Modifies(3,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();  
 	actualResultList.push_back("a");
@@ -1171,13 +1198,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(8,\"tEst\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1191,13 +1222,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(1,_)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1210,13 +1245,17 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v such that Modifies(6,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("y");
@@ -1227,18 +1266,68 @@ void QueryEvaluatorToPKBTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;Select w such that Modifies(a,\"x\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
 
+	qe.PrintIntermediateResult();
+
 	actualResultList.clear();
 	actualResultList.push_back("3");
 	actualResultList.push_back("5");
 	actualResultList.push_back("7");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+
+	qd.ClearData();
+	resultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "variable v a;procedure p;Select p such that Modifies(p,v)";
+	std::cout << "\nTest query : " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
+
+	actualResultList.clear();
+	actualResultList.push_back("test");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+
+	qd.ClearData();
+	resultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "variable v;procedure p;Select v such that Modifies(p,v)";
+	std::cout << "\nTest query : " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
+
+	actualResultList.clear();
+	actualResultList.push_back("x");
+	actualResultList.push_back("y");
+	actualResultList.push_back("tEst");
+	actualResultList.push_back("a");
 	actualResultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -1254,6 +1343,7 @@ void QueryEvaluatorToPKBTest::TestUses()
 	qd.ClearData();
 
 	std::string query = "assign a;variable v;Select a such that Uses(a,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -1272,13 +1362,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 	
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "prog_line n;variable v;Select v such that Uses(n,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
+	
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("x");
@@ -1295,13 +1389,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 	
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "prog_line n1,n2;variable v;Select n1 such that Uses(n2,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 9, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("1");
@@ -1321,13 +1419,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Uses(s,_)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 7, int(resultList.size()));
+	
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1344,13 +1446,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a such that Uses(a,\"x\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+	
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("2");
@@ -1359,15 +1465,21 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
+
+
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a such that Uses(a,\"b\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("9");
@@ -1378,13 +1490,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Uses(w,\"newVar\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1397,13 +1513,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v such that Uses(8,v)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	CPPUNIT_ASSERT(resultList == actualResultList);
@@ -1412,13 +1532,17 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Uses(3,\"tEst\")";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 	actualResultList.push_back("3");
@@ -1432,13 +1556,62 @@ void QueryEvaluatorToPKBTest::TestUses()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Uses(1,_)";
+	std::cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
+
+	actualResultList.clear();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "variable v;procedure p;Select v such that Uses(p,v)";
+	std::cout << "\nTest query : " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
+
+	actualResultList.clear();
+	actualResultList.push_back("x");
+	actualResultList.push_back("z");
+	actualResultList.push_back("tEst");
+	actualResultList.push_back("newVar");
+	actualResultList.push_back("b");
+	actualResultList.push_back("c");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "procedure p;Select p such that Uses(p,\"abc\")";
+	std::cout << "\nTest query : " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 0, int(resultList.size()));
+
+	qe.PrintIntermediateResult();
 
 	actualResultList.clear();
 

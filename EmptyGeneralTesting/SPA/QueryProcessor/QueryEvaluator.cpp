@@ -1690,63 +1690,61 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateCalls, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (arg1.value == arg2.value) {
+				cout << "In EvaluateCalls, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
-			vector<int> callingProc, calledProc;
-			bool valid = false;
-			bool usingIntermediateResult_called = false, usingIntermediateResult_calling = false;
+			vector<string> callingProc, calledProc;
+			bool usingIntermediateResult_calling = false, usingIntermediateResult_called = false;
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
 				std::cout << "No intermediate result for " << arg1.syn.value << ", get all procs\n";
-				callingProc = ProcTable::GetAllProcIndexes();
+				callingProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, callingProc);
-				usingIntermediateResult_called = true;
+				usingIntermediateResult_calling = true;
 			}
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
 				std::cout << "No intermediate result for " << arg2.syn.value << ", get all procs\n";
-				calledProc = ProcTable::GetAllProcIndexes();
+				calledProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, calledProc);
-				usingIntermediateResult_calling = true;
+				usingIntermediateResult_called = true;
 			}
 
 			//loop calledProc.size() * callingProc.size() times, if all invalid, validCount will be 0, return false
 			validCount = callingProc.size() * calledProc.size();
 
-			for (vector<int>::iterator it_calling = callingProc.begin(); it_calling != callingProc.end(); ++it_calling) {
-				for (vector<int>::iterator it_called = calledProc.begin(); it_called != calledProc.end(); ++it_called) {
+			for (vector<string>::iterator it_calling = callingProc.begin(); it_calling != callingProc.end(); ++it_calling) {
+				for (vector<string>::iterator it_called = calledProc.begin(); it_called != calledProc.end(); ++it_called) {
 					bool isCalls = false;
-					//convert int to string to use with intermediateResult
-					string called_str = ITOS(*it_calling);
-					string calling_str = ITOS(*it_called);
 
-					if (rel == CALLS)	isCalls = Calls::IsCalls(*it_calling, *it_called);
-					else				isCalls = Calls::IsCallsT(*it_calling, *it_called);
+					int procIndex1 = ProcTable::GetIndexOfProc(*it_calling);
+					int procIndex2 = ProcTable::GetIndexOfProc(*it_called);
+
+					if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+					else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 
 					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
-					if (usingIntermediateResult_called && usingIntermediateResult_calling) {
+					if (usingIntermediateResult_calling && usingIntermediateResult_called) {
 						if (isCalls) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, isDirectLink)) {
-
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_calling, arg2Syn.value, *it_called, isDirectLink)) {
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, called_str) && intermediateResult.HasLink(arg2Syn.value, calling_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, *it_calling) && intermediateResult.HasLink(arg2Syn.value, *it_called)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+										intermediateResult.InsertPair(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 									}
 
 									else {
@@ -1756,16 +1754,14 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+									intermediateResult.InsertPair(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, called_str, arg2Syn.value, calling_str);
-
-							//intermediateResult.RemovePair(arg1Syn.value, *it_called, arg2Syn.value, *it_calling);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_calling, arg2Syn.value, *it_called, dummy))
+								intermediateResult.Unlink(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 							--validCount;
 						}
 					}
@@ -1789,70 +1785,73 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			}
 		}
 
+		//Calls(p,"proc2")
 		else if (arg2.type == IDENT) {
-			vector<int> procs;
-			bool valid = false;
+			vector<string> procs;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				procs = ProcTable::GetAllProcIndexes();
+				procs = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				intermediateResult.GetList(arg1.syn.value, procs);
+				intermediateResult.GetList(arg1.value, procs);
 				usingIntermediateResult = true;
 			}
 
 			validCount = procs.size();
-			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
-				int arg2Value = atoi(arg2.value.c_str());
+
+			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				int procIndex1 = ProcTable::GetIndexOfProc(*it);
+				int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+
 				bool isCalls = false;
 
-				if (rel == CALLS)	isCalls = Calls::IsCalls(*it, arg2Value);
-				else				isCalls = Calls::IsCallsT(*it, arg2Value);
+				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+				else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 
 				if (usingIntermediateResult) {
 					if (isCalls) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isCalls) intermediateResult.Insert(arg1.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Calls(syn, _)
+		//Calls(p, _)
 		else if (arg2.type == UNDERSCORE) {
-			vector<int> procs;
-			bool valid = false;
+			vector<string> procs;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				procs = ProcTable::GetAllProcIndexes();
+				procs = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				intermediateResult.GetList(arg1.syn.value, procs);
+				intermediateResult.GetList(arg1.value, procs);
 				usingIntermediateResult = true;
 			}
 
 			validCount = procs.size();
 
-			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
-				vector<int> Calls;
+			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				vector<int> procIndices;
+				int procIndex = ProcTable::GetIndexOfProc(*it);
 
-				if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(*it);
-				else				Calls = Calls::GetProcsCalledTBy(*it);
+				if (rel == CALLS)	procIndices = Calls::GetProcsCalledBy(procIndex);
+				else				procIndices = Calls::GetProcsCalledTBy(procIndex);
 
 				if (usingIntermediateResult) {
-					if (!Calls.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+					if (!procIndices.empty()) {} else {
+						intermediateResult.Remove(arg1.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!Calls.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!procIndices.empty()) intermediateResult.Insert(arg1.value, *it);
 					else --validCount;
 				}
 			}
@@ -1871,13 +1870,13 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		return true;
 	}
 
-	//Calls (smth, syn)
+	//Calls("proc1"/_, q)
 	else if (arg2.type == SYNONYM) {
-		vector<int> procs;
+		vector<string> procs;
 		bool usingIntermediateResult = false;
 
 		if (intermediateResult.IsListEmpty(arg2.syn)) {
-			procs = ProcTable::GetAllProcIndexes();
+			procs = ProcTable::GetAllProcNames();
 		}
 
 		else {
@@ -1887,21 +1886,22 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 		int validCount = procs.size();
 
-		for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
+		for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
 			bool isCalls = false;
+			int procIndex2 = ProcTable::GetIndexOfProc(*it);
 
-			// Calls(1, syn)
+			// Calls("proc1",q)
 			if (arg1.type == IDENT) {
-				int arg1Value = STOI(arg1.value);
+				int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
 
-				if (rel == CALLS)	isCalls = Calls::IsCalls(arg1Value, *it);
-				else				isCalls = Calls::IsCallsT(arg1Value, *it);
+				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+				else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 			}
 
-			//Calls(_ , syn)
+			//Calls(_,q)
 			else if (arg1.type == UNDERSCORE) {
-				if (rel == CALLS)	isCalls = !Calls::GetProcsCalling(*it).empty();
-				else				isCalls = !Calls::GetProcsCallingT(*it).empty();
+				if (rel == CALLS)	isCalls = !(Calls::GetProcsCalling(procIndex2).empty());
+				else				isCalls = !(Calls::GetProcsCallingT(procIndex2).empty());
 			}
 
 			else {
@@ -1912,12 +1912,12 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			if (usingIntermediateResult) {
 				//remove if invalid, do nothing if valid
 				if (isCalls) {} else {
-					intermediateResult.Remove(arg2Syn.value, *it);
+					intermediateResult.Remove(arg2.value, *it);
 					--validCount;
 				}
 			} else {
 				//insert if valid, do nothing if invalid
-				if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+				if (isCalls) intermediateResult.Insert(arg2.value, *it);
 				else --validCount;
 			}
 		}
@@ -1930,38 +1930,48 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Calls(_,"proc2")
 	else if (arg1.type == UNDERSCORE && arg2.type == IDENT) {
-		int arg2Value = STOI(arg2.value);
+		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+
+		if(procIndex2 == -1)	return false;
 
 		vector<int> prev;
-		if (rel == CALLS)	prev = Calls::GetProcsCalling(arg2Value);
-		else				prev = Calls::GetProcsCallingT(arg2Value);
+		if (rel == CALLS)	prev = Calls::GetProcsCalling(procIndex2);
+		else				prev = Calls::GetProcsCallingT(procIndex2);
 
-		if (prev.empty()) return false;
+		if(prev.empty()) return false;
 
 		return true;
 	}
 
+	//Calls("proc1",_)
 	else if (arg1.type == IDENT && arg2.type == UNDERSCORE) {
-		int arg1Value = STOI(arg1.value);
+		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+
+		if(procIndex1 == -1)	return false;
 
 		vector<int> Calls;
-		if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(arg1Value);
-		else				Calls = Calls::GetProcsCalledTBy(arg1Value);
+		if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(procIndex1);
+		else				Calls = Calls::GetProcsCalledTBy(procIndex1);
 
-		if (Calls.empty()) return false;
+		if(Calls.empty()) return false;
 
 		return true;
 	}
 
+	//Calls("proc1","proc2")
 	else if (arg1.type == IDENT && arg2.type == IDENT) {
-		int arg1Value = STOI(arg1.value);
-		int arg2Value = STOI(arg2.value);
+		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
 
-		if (rel == CALLS)	return Calls::IsCalls(arg1Value, arg2Value);
-		else				return Calls::IsCallsT(arg1Value, arg2Value);
+		if(procIndex1 == -1 || procIndex2 == -1)	return false;
+
+		if (rel == CALLS)	return Calls::IsCalls(procIndex1, procIndex2);
+		else				return Calls::IsCallsT(procIndex1, procIndex2);
 	}
 
+	//Calls(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		return Calls::HasAnyCalls();
 	}

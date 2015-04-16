@@ -29,10 +29,10 @@ procedure test {
 		
 		while a {						\\ 21
 			b = z + c + 10;				\\ 22
-			newVar = b + a + c;			\\ 23
+			newVar = b + a - c;			\\ 23
 
 			while d {					\\ 24
-				a = z + 8 + c;			\\ 25
+				a = z + 8 * c;			\\ 25
 				b = 0;					\\ 26
 				c = s + a + c;			\\ 27
 			}

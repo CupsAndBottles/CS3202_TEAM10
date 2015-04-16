@@ -407,10 +407,12 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 	class StmtsHelper {
 		vector<bool> checkedStmts; // keeps track of stmts that have been checked for modifies but have led nowhere
 		int affectedStmt;
+		int currentProc;
 
 	public:
 		StmtsHelper(int affectedStmt) : affectedStmt(affectedStmt) {
 			checkedStmts = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
+			currentProc = ProcTable::GetProcOfStmt(affectedStmt);
 		};
 
 		bool findAffectedStmt(int currentStmt) {
@@ -432,7 +434,7 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 			*/
 
 			string nameOfVar = VarTable::GetVarName(var);
-			if (currentStmt > StmtTypeTable::GetNoOfStmts()) return false; // done
+			if (currentStmt > ProcTable::GetLastStmtNoOfProc(currentProc)) return false; // done
 
 			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
 				// if while is found, continue tail call with start of stmtlist
@@ -531,11 +533,13 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 	class StmtsHelper {
 		vector<bool> mappedAffects;
 		int startingStmt;
+		int currentProc;
 		
 	public:
 		set<int> affectedStmts;
 		StmtsHelper(int startingStmt) : startingStmt(startingStmt) {
 			mappedAffects = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
+			currentProc = ProcTable::GetProcOfStmt(startingStmt);
 		};
 
 		void findAffectedStmts(int currentStmt) {
@@ -546,8 +550,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 		}
 
 		void findAffectedStmts(int currentStmt, int var, vector<bool> checkedWhile) {
-			if (currentStmt > StmtTypeTable::GetNoOfStmts()) return; // done
-			if (mappedAffects[currentStmt]) return; // optimisation (some form of memoization)
+			if (currentStmt > ProcTable::GetLastStmtNoOfProc(currentProc)) return; // done
 
 			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
 				// if while is found, continue tail call with start of stmtlist
@@ -615,6 +618,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 						return findAffectedStmts(nextStmt, var, checkedWhile);
 					} else {
 						mappedAffects[currentStmt] = true;
+						affectedStmts.insert(currentStmt);
 						int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
 						if (varModified == var) {
 							return findAffectedStmts(nextStmt, varModified, checkedWhile);
@@ -665,22 +669,23 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 
 			for each (int var in varsUsed) {
 				for each (int stmt in previousStmts) {
-					findAffectingStmts(stmt, var, affectedStmt, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
+					findAffectingStmts(stmt, var, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
 				}
 			}
 		}
 
 		// have to use loops cos current algo is not tail optimisable
 		// keep track of previous node
-		void findAffectingStmts(int affectedStmt, int varUsed, int nextStmt, vector<bool> checkedWhile) {
+		void findAffectingStmts(int prevStmt, int varUsed, vector<bool> checkedWhile) {
 			vector<int> currentStmts;
-			currentStmts.push_back(affectedStmt);
+			currentStmts.push_back(prevStmt);
 
 			while (currentStmts.size() != 0) {
 				if (currentStmts.size() > 1) {
 					for each (int currentStmt in currentStmts) {
-						findAffectingStmts(currentStmt, varUsed, nextStmt, checkedWhile);
+						findAffectingStmts(currentStmt, varUsed, checkedWhile);
 					}
+					return;
 				} else {
 					int currentStmt = currentStmts[0];
 					vector<int> prevStmts;
@@ -713,24 +718,21 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 						}
 					} else {
 						// stmt found is assign
-						if (mappedAffects[currentStmt]) {
-							if (currentStmt == startStmt) {
-								affectingStmts.insert(currentStmt);
-							}
-							continue; // this stmt has already been mapped.
-						} else {
-							// perform checking here.
-							if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) {
+						// perform checking here.
+						if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) {
+							if (mappedAffects[currentStmt]) {
+								if (currentStmt == startStmt) {
+									affectingStmts.insert(currentStmt);
+								}
+								return;
+							} else {
 								affectingStmts.insert(currentStmt);
 								mappedAffects[currentStmt] = true;
 								return findAffectingStmts(currentStmt); // end here, subject found
-							} else {
-								prevStmts = Next::GetNextBefore(currentStmt);
 							}
 						}
+						prevStmts = Next::GetNextBefore(currentStmt);
 					}
-
-					nextStmt = currentStmt;
 					currentStmts = prevStmts;
 				}
 			}

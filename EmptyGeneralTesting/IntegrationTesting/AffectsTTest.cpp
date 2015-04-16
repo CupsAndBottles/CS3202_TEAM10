@@ -52,6 +52,10 @@ void AffectsTTest::TestIsAffectsT() {
 	// CPPUNIT_ASSERT(Affects::IsAffectsT(22, 22)); // heisenbug
 	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT(Affects::IsAffectsT(24, 21)));
 
+	// test whileInIf
+	CPPUNIT_ASSERT(Affects::IsAffectsT(26, 29));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(29, 31));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(26, 31));
 }
 
 void AffectsTTest::TestGetStmtsAffectedTBy() {

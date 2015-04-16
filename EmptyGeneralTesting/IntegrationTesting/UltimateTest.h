@@ -20,7 +20,6 @@ class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestParent);
 	CPPUNIT_TEST(TestParentT);
 	CPPUNIT_TEST(TestFollows);
-	CPPUNIT_TEST(TestUses);
 	CPPUNIT_TEST(TestModifies);
 	CPPUNIT_TEST(TestPattern);
 	CPPUNIT_TEST(TestCombination);

@@ -9,8 +9,7 @@
 #include "..\PKB\ProcTable.h"
 #include "..\PKB\Affects.h"
 #include "..\PKB\Next.h"
-#include "..\Parser\Tokenizer.h"
-#include "..\Parser\Parser.h"
+#include "..\PKB\Calls.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
 #include <iostream>
@@ -704,261 +703,294 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 
 bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 {
-	return true;
-	/*
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
 	Synonym arg1Syn = suchThat.arg1.syn;
 	Synonym arg2Syn = suchThat.arg2.syn;
 	RelationshipType rel = suchThat.relationship;
 
+	cout << "Evaluating Follows( " << arg1.value << " , " << arg2.value << ")\n";
 
-	if(arg1.type == SYNONYM) 
-	{
-		if(arg2.type == SYNONYM)
-		{
-			if(arg1Syn.value == arg2Syn.value) {
-				cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
-				return false;
+	if (arg1.type == SYNONYM) {
+		int validCount = 0;
+
+		if (arg2.type == SYNONYM) {
+			//if (arg1Syn.value == arg2Syn.value) {
+			//	cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
+			//	return false;
+			//}
+
+			vector<int> beforeStmt, afterStmt;
+			bool valid = false;
+			bool usingIntermediateResult_after = false, usingIntermediateResult_before = false;
+
+			//get appropriate stmt, while, if, prog_line
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				beforeStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
-			vector<int>* parent, *child;
-			vector<int> tempResultParent, tempResultChild;
-			vector<int> tempParent, tempChild;
-			
-			//get appropriate a/w/s/n
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					parent = &((*it).resultInt);
+			else {
+				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1.syn.value, beforeStmt);
+				usingIntermediateResult_after = true;
 			}
 
-			if(parent->empty())	tempParent = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempParent = *parent;
-
-			//cout << "\nstmts size: " << tempStmts.size();
-
-			//get appropriate v
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg2.value)
-					child = &((*it).resultInt);
+			//get appropriate stmt, assign, while, if, prog_line, call
+			if (intermediateResult.IsListEmpty(arg2.syn)) {
+				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				afterStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 			}
 
-			if(child->empty())	tempChild = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
-			else				tempChild = *child;
+			else {
+				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg2.syn.value, afterStmt);
+				usingIntermediateResult_before = true;
+			}
 
-			//cout << "\nvars size: " << tempVars.size();
-				
-			for(vector<int>::iterator it_parent = tempParent.begin(); it_parent != tempParent.end(); ++it_parent) {
-				for(vector<int>::iterator it_child = tempChild.begin(); it_child != tempChild.end(); ++it_child) {
-					bool isParent = false;
-		
-					if(rel == FOLLOWS)	isParent = Follows::IsFollows(*it_parent, *it_child);
-					else				isParent = Follows::IsFollowsT(*it_parent, *it_child);
+			//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
+			validCount = beforeStmt.size() * afterStmt.size();
 
-					if(isParent) {
-						tempResultParent.push_back(*it_parent);;
-						tempResultChild.push_back(*it_child);;
+			for (vector<int>::iterator it_before = beforeStmt.begin(); it_before != beforeStmt.end(); ++it_before) {
+				for (vector<int>::iterator it_after = afterStmt.begin(); it_after != afterStmt.end(); ++it_after) {
+					bool isFollows = false;
+					//convert int to string to use with intermediateResult
+					string after_str = ITOS(*it_before);
+					string before_str = ITOS(*it_after);
+
+					if (rel == FOLLOWS)	isFollows = Follows::IsFollows(*it_before, *it_after);
+					else				isFollows = Follows::IsFollowsT(*it_before, *it_after);
+
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_after && usingIntermediateResult_before) {
+						if (isFollows) {
+							//check HasLink(), if yes, do nothing, else make pair
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, isDirectLink)) {
+
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, after_str) && intermediateResult.HasLink(arg2Syn.value, before_str)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
+									}
+
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
+								}
+							}
+						} else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, after_str, arg2Syn.value, before_str);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_after, arg2Syn.value, *it_before);
+							--validCount;
+						}
 					}
-				}					
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (isFollows) {
+							//insert pair
+							intermediateResult.InsertPair(arg1Syn.value, *it_before, arg2Syn.value, *it_after);
+						} else {
+							//do nothing
+							--validCount;
+						}
+					}
+				}
 			}
 
-			//remove duplicates
-			set<int> s( tempResultParent.begin(), tempResultParent.end() );
-			tempResultParent.assign( s.begin(), s.end() );
-
-			set<int> t( tempResultChild.begin(), tempResultChild.end() );
-			tempResultChild.assign( t.begin(), t.end() );
-
-			cout << "\ntempResultStmts size: " << tempResultParent.size();
-			cout << "\ntempResultVars size: " << tempResultChild.size();
-
-			*parent = tempResultParent;
-			*child = tempResultChild;		
-
-			if(parent->empty() || child->empty())	return false;
-			else									return true;
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_after && usingIntermediateResult_before) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
 		}
 
-		else if(arg2.type == INTEGER)
-		{
-			vector<int>* stmts;
-			vector<int> tempStmts;
-			vector<int> tempResult;
+		else if (arg2.type == INTEGER) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
 
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					stmts = &((*it).resultInt);
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
-			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempStmts = *stmts;
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
 
-			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
-			{
+			validCount = stmts.size();
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 				int arg2Value = atoi(arg2.value.c_str());
 				bool isFollows = false;
 
-				if(rel == FOLLOWS)	isFollows = Follows::IsFollows(*it, arg2Value);
+				if (rel == FOLLOWS)	isFollows = Follows::IsFollows(*it, arg2Value);
 				else				isFollows = Follows::IsFollowsT(*it, arg2Value);
 
-				if(isFollows)		tempResult.push_back(*it);
-			}
-
-			*stmts = tempResult;
-
-			if(stmts->empty())	return false;
-			else				return true;
-		}
-
-		else if(arg2.type == UNDERSCORE)
-		{
-			vector<int>* stmts;
-			vector<int> tempStmts;
-			vector<int> tempResult;
-
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					stmts = &((*it).resultInt);
-			}
-
-			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempStmts = *stmts;
-
-			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
-				if(rel == FOLLOWS) {
-					int followsAfter = Follows::GetFollowsAfter(*it);
-					if(followsAfter != -1)
-						tempResult.push_back(*it);
-				}
-
-				else {
-					vector<int> followsAfter = Follows::GetFollowsTAfter(*it);
-					if(!followsAfter.empty())	
-						tempResult.push_back(*it);
+				if (usingIntermediateResult) {
+					if (isFollows) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
 				}
 			}
-
-			*stmts = tempResult;
-
-			if(stmts->empty())	return false;
-			else				return true;
 		}
 
-		else 
-		{
-			cout << "\nIn EvaluateParent, invalid Parent argument 2 type.\n";
+		// Follows(syn, _)
+		else if (arg2.type == UNDERSCORE) {
+			vector<int> stmts;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, stmts);
+				usingIntermediateResult = true;
+			}
+
+			validCount = stmts.size();
+
+			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+				bool isFollows;
+
+				if (rel == FOLLOWS)	isFollows = Follows::GetFollowsAfter(*it) != -1;
+				else				isFollows = !Follows::GetFollowsTAfter(*it).empty();
+
+				if (usingIntermediateResult) {
+					if (isFollows) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		else {
+			cout << "\nIn EvaluateFollows, invalid Follows argument 2 type.\n";
 			return false;
 		}
+
+		//all statements do not satisfy Follows()
+		if (validCount == 0) {
+			cout << "Follows() is not satisfied.\n";
+			return false;
+		}
+		return true;
 	}
 
-	else if(arg2.type == SYNONYM)
-	{
-		vector<int>* stmts;
-		vector<int> tempStmts;
-		vector<int> tempResult;
+	//Follows (smth, syn)
+	else if (arg2.type == SYNONYM) {
+		vector<int> stmts;
+		bool usingIntermediateResult = false;
 
-		for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-			if((*it).synonym.value == arg2.value)
-				stmts = &((*it).resultInt);
+		if (intermediateResult.IsListEmpty(arg2.syn)) {
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 		}
 
-		if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
-		else				tempStmts = *stmts;
+		else {
+			intermediateResult.GetList(arg2.syn.value, stmts);
+			usingIntermediateResult = true;
+		}
 
-		for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
-			if(arg1.type == INTEGER)
-			{
-				int arg1Value = atoi(arg1.value.c_str());
-				bool isFollows = false;
+		int validCount = stmts.size();
 
-				if(rel == FOLLOWS)	isFollows = Follows::IsFollows(arg1Value, *it);
+		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
+			bool isFollows = false;
+
+			// Follows(1, syn)
+			if (arg1.type == INTEGER) {
+				int arg1Value = STOI(arg1.value);
+
+				if (rel == FOLLOWS)	isFollows = Follows::IsFollows(arg1Value, *it);
 				else				isFollows = Follows::IsFollowsT(arg1Value, *it);
-
-				if(isFollows)		tempResult.push_back(*it);
 			}
 
-			else if(arg1.type == UNDERSCORE)
-			{
-				if(rel == FOLLOWS) {
-					int followsBefore = Follows::GetFollowsBefore(*it);
-					if(followsBefore != -1)
-						tempResult.push_back(*it);
-				}
-
-				else {
-					vector<int> followsBefore = Follows::GetFollowsTBefore(*it);
-					if(!followsBefore.empty())	
-						tempResult.push_back(*it);
-				}
+			//Follows(_ , syn)
+			else if (arg1.type == UNDERSCORE) {
+				if (rel == FOLLOWS)	isFollows = Follows::GetFollowsBefore(*it) != -1;
+				else				isFollows = !Follows::GetFollowsTBefore(*it).empty();
 			}
 
-			else 
-			{
-				cout << "\nIn EvaluateParent, invalid Parent argument 1 type.\n";
+			else {
+				cout << "\nIn EvaluateFollows, invalid argument 1 type.\n";
 				return false;
 			}
+
+			if (usingIntermediateResult) {
+				//remove if invalid, do nothing if valid
+				if (isFollows) {} else {
+					intermediateResult.Remove(arg2Syn.value, *it);
+					--validCount;
+				}
+			} else {
+				//insert if valid, do nothing if invalid
+				if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+				else --validCount;
+			}
 		}
 
-		*stmts = tempResult;
-
-		if(stmts->empty())	return false;
-		else				return true;
-	}
-
-	else if(arg1.type == UNDERSCORE && arg2.type == INTEGER)
-	{
-		int arg2Value = atoi(arg2.value.c_str());
-
-		if(rel == FOLLOWS)	
-		{
-			int followsBefore = Follows::GetFollowsBefore(arg2Value);
-			if(followsBefore == -1) return false;
+		//all statements do not satisfy Follows()
+		if (validCount == 0) {
+			cout << "Follows() is not satisfied.\n";
+			return false;
 		}
-		else 
-		{
-			vector<int> followsBefore = Follows::GetFollowsTBefore(arg2Value);
-			if(followsBefore.empty()) return false;
-		}
-
 		return true;
 	}
 
-	else if(arg1.type == INTEGER && arg2.type == UNDERSCORE)
-	{
-		int arg1Value = atoi(arg1.value.c_str());
+	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
+		int arg2Value = STOI(arg2.value);
+		bool isFollowing;
 
-		if(rel == FOLLOWS)	
-		{
-			int followsAfter = Follows::GetFollowsAfter(arg1Value);
-			if(followsAfter == -1) return false;
-		}
-		else 
-		{
-			vector<int> followsAfter = Follows::GetFollowsTAfter(arg1Value);
-			if(followsAfter.empty()) return false;
-		}
+		if (rel == FOLLOWS)	isFollowing = Follows::GetFollowsBefore(arg2Value) != -1;
+		else				isFollowing = !Follows::GetFollowsTBefore(arg2Value).empty();
 
-		return true;
+		return isFollowing;
 	}
 
-	else if(arg1.type == INTEGER && arg2.type == INTEGER)
-	{
-		int arg1Value = atoi(arg1.value.c_str());
-		int arg2Value = atoi(arg2.value.c_str());
-		
-		if(rel == FOLLOWS)	return Follows::IsFollows(arg1Value, arg2Value);
+	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
+		int arg1Value = STOI(arg1.value);
+		bool isFollows;
+
+		if (rel == FOLLOWS)	isFollows = Follows::GetFollowsAfter(arg1Value) != -1;
+		else				isFollows = !Follows::GetFollowsTAfter(arg1Value).empty();
+
+		return isFollows;
+	}
+
+	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
+		int arg1Value = STOI(arg1.value);
+		int arg2Value = STOI(arg2.value);
+
+		if (rel == FOLLOWS)	return Follows::IsFollows(arg1Value, arg2Value);
 		else				return Follows::IsFollowsT(arg1Value, arg2Value);
 	}
 
-	else if(arg1.type == UNDERSCORE && arg2.type == UNDERSCORE)
-	{
+	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		return Follows::HasAnyFollows();
 	}
 
 	else {
-		cout << "In EvaluateParent, no matching arguments.\n";		
+		cout << "In EvaluateFollows, no matching arguments.\n";
 		return false;
-	}*/
+	}
 }
 
 
@@ -1252,9 +1284,300 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 }
 
 
-bool QueryEvaluator::EvaluateCalls(SuchThatClause)
+bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 {
-	return true;
+	Argument arg1 = suchThat.arg1;
+	Argument arg2 = suchThat.arg2;
+	Synonym arg1Syn = suchThat.arg1.syn;
+	Synonym arg2Syn = suchThat.arg2.syn;
+	RelationshipType rel = suchThat.relationship;
+
+	cout << "Evaluating Calls( " << arg1.value << " , " << arg2.value << ")\n";
+
+	if (arg1.type == SYNONYM) {
+		int validCount = 0;
+
+		if (arg2.type == SYNONYM) {
+			//if (arg1Syn.value == arg2Syn.value) {
+			//	cout << "In EvaluateCalls, both arg1 and arg2 has the same synonym\n";
+			//	return false;
+			//}
+
+			vector<int> callingProc, calledProc;
+			bool valid = false;
+			bool usingIntermediateResult_called = false, usingIntermediateResult_calling = false;
+
+			//get appropriate proc
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				std::cout << "No intermediate result for " << arg1.syn.value << ", get all procs\n";
+				callingProc = ProcTable::GetAllProcIndexes();
+			}
+
+			else {
+				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1.syn.value, callingProc);
+				usingIntermediateResult_called = true;
+			}
+
+			//get appropriate proc
+			if (intermediateResult.IsListEmpty(arg2.syn)) {
+				std::cout << "No intermediate result for " << arg2.syn.value << ", get all procs\n";
+				calledProc = ProcTable::GetAllProcIndexes();
+			}
+
+			else {
+				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg2.syn.value, calledProc);
+				usingIntermediateResult_calling = true;
+			}
+
+			//loop calledProc.size() * callingProc.size() times, if all invalid, validCount will be 0, return false
+			validCount = callingProc.size() * calledProc.size();
+
+			for (vector<int>::iterator it_calling = callingProc.begin(); it_calling != callingProc.end(); ++it_calling) {
+				for (vector<int>::iterator it_called = calledProc.begin(); it_called != calledProc.end(); ++it_called) {
+					bool isCalls = false;
+					//convert int to string to use with intermediateResult
+					string called_str = ITOS(*it_calling);
+					string calling_str = ITOS(*it_called);
+
+					if (rel == CALLS)	isCalls = Calls::IsCalls(*it_calling, *it_called);
+					else				isCalls = Calls::IsCallsT(*it_calling, *it_called);
+
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_called && usingIntermediateResult_calling) {
+						if (isCalls) {
+							//check HasLink(), if yes, do nothing, else make pair
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, isDirectLink)) {
+
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, called_str) && intermediateResult.HasLink(arg2Syn.value, calling_str)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+									}
+
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+								}
+							}
+						} else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_called, arg2Syn.value, *it_calling);
+							--validCount;
+						}
+					}
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (isCalls) {
+							//insert pair
+							intermediateResult.InsertPair(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
+						} else {
+							//do nothing
+							--validCount;
+						}
+					}
+				}
+			}
+
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_called && usingIntermediateResult_calling) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
+		}
+
+		else if (arg2.type == IDENT) {
+			vector<int> procs;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				procs = ProcTable::GetAllProcIndexes();
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, procs);
+				usingIntermediateResult = true;
+			}
+
+			validCount = procs.size();
+			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				int arg2Value = atoi(arg2.value.c_str());
+				bool isCalls = false;
+
+				if (rel == CALLS)	isCalls = Calls::IsCalls(*it, arg2Value);
+				else				isCalls = Calls::IsCallsT(*it, arg2Value);
+
+				if (usingIntermediateResult) {
+					if (isCalls) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		// Calls(syn, _)
+		else if (arg2.type == UNDERSCORE) {
+			vector<int> procs;
+			bool valid = false;
+			bool usingIntermediateResult = false;
+
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				procs = ProcTable::GetAllProcIndexes();
+			}
+
+			else {
+				intermediateResult.GetList(arg1.syn.value, procs);
+				usingIntermediateResult = true;
+			}
+
+			validCount = procs.size();
+
+			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				vector<int> Calls;
+
+				if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(*it);
+				else				Calls = Calls::GetProcsCalledTBy(*it);
+
+				if (usingIntermediateResult) {
+					if (!Calls.empty()) {} else {
+						intermediateResult.Remove(arg2Syn.value, *it);
+						--validCount;
+					}
+				} else {
+					if (!Calls.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					else --validCount;
+				}
+			}
+		}
+
+		else {
+			cout << "\nIn EvaluateCalls, invalid Calls argument 2 type.\n";
+			return false;
+		}
+
+		//all statements do not satisfy Calls()
+		if (validCount == 0) {
+			cout << "Calls() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	//Calls (smth, syn)
+	else if (arg2.type == SYNONYM) {
+		vector<int> procs;
+		bool usingIntermediateResult = false;
+
+		if (intermediateResult.IsListEmpty(arg2.syn)) {
+			procs = ProcTable::GetAllProcIndexes();
+		}
+
+		else {
+			intermediateResult.GetList(arg2.syn.value, procs);
+			usingIntermediateResult = true;
+		}
+
+		int validCount = procs.size();
+
+		for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
+			bool isCalls = false;
+
+			// Calls(1, syn)
+			if (arg1.type == IDENT) {
+				int arg1Value = STOI(arg1.value);
+
+				if (rel == CALLS)	isCalls = Calls::IsCalls(arg1Value, *it);
+				else				isCalls = Calls::IsCallsT(arg1Value, *it);
+			}
+
+			//Calls(_ , syn)
+			else if (arg1.type == UNDERSCORE) {
+				if (rel == CALLS)	isCalls = !Calls::GetProcsCalling(*it).empty();
+				else				isCalls = !Calls::GetProcsCallingT(*it).empty();
+			}
+
+			else {
+				cout << "\nIn EvaluateCalls, invalid argument 1 type.\n";
+				return false;
+			}
+
+			if (usingIntermediateResult) {
+				//remove if invalid, do nothing if valid
+				if (isCalls) {} else {
+					intermediateResult.Remove(arg2Syn.value, *it);
+					--validCount;
+				}
+			} else {
+				//insert if valid, do nothing if invalid
+				if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+				else --validCount;
+			}
+		}
+
+		//all statements do not satisfy Calls()
+		if (validCount == 0) {
+			cout << "Calls() is not satisfied.\n";
+			return false;
+		}
+		return true;
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == IDENT) {
+		int arg2Value = STOI(arg2.value);
+
+		vector<int> prev;
+		if (rel == CALLS)	prev = Calls::GetProcsCalling(arg2Value);
+		else				prev = Calls::GetProcsCallingT(arg2Value);
+
+		if (prev.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == IDENT && arg2.type == UNDERSCORE) {
+		int arg1Value = STOI(arg1.value);
+
+		vector<int> Calls;
+		if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(arg1Value);
+		else				Calls = Calls::GetProcsCalledTBy(arg1Value);
+
+		if (Calls.empty()) return false;
+
+		return true;
+	}
+
+	else if (arg1.type == IDENT && arg2.type == IDENT) {
+		int arg1Value = STOI(arg1.value);
+		int arg2Value = STOI(arg2.value);
+
+		if (rel == CALLS)	return Calls::IsCalls(arg1Value, arg2Value);
+		else				return Calls::IsCallsT(arg1Value, arg2Value);
+	}
+
+	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
+		return Calls::HasAnyCalls();
+	}
+
+	else {
+		cout << "In EvaluateCalls, no matching arguments.\n";
+		return false;
+	}
 }
 
 
@@ -2040,10 +2363,8 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 			Pattern patternObj = CreatePatternObject(arg2Value);
 			if(patternObj.expr == "")	return false;
-			cout << "here";
 			vector<int> rightResult = PatternMatcher::MatchPatternFromRoot(patternObj,true);
 			if(rightResult.empty())		return false;
-			cout << "here";
 			//vector<string> rightResult;
 			//for(vector<int>::iterator it = rightResultInt.begin(); it != rightResultInt.end(); ++it)
 				//rightResult.push_back(*it);
@@ -2245,102 +2566,6 @@ string QueryEvaluator::ToString(int i)
 	s = out.str();
 
 	return s;
-}
-
-//Construct Pattern struct
-Pattern QueryEvaluator::CreatePatternObject(string expr)
-{
-	class Helper {
-		deque<Token> tokens;
-		Pattern* emptyPattern;
-	public:
-		Helper(string expr) {
-			expr.push_back(';');
-			vector<Token> tokenVector = Tokenizer::Tokenize(expr);
-			tokens = deque<Token>(tokenVector.begin(), tokenVector.end());
-			emptyPattern = new Pattern();
-		}
-
-		Token PeekAtTopToken() {
-			return tokens.front();
-		}
-
-		Token ConsumeTopToken() {
-			Token token = tokens.front();
-			tokens.pop_front();
-			return token;
-		}
-
-		bool TopTokenIsType(Token::Type type) {
-			return (tokens.front().type == type);
-		}
-
-		Token ConsumeTopTokenOfType(Token::Type type) {
-			// verifies that top token is of given type
-			// then consumes it
-			if (!TopTokenIsType(type)) throw (string) "Error in parsing pattern.";
-			return ConsumeTopToken();
-		}
-
-		Pattern* ParseExpr(bool isBracket) {
-			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
-			Pattern* result = emptyPattern;
-			while (!TopTokenIsType(terminatingCondition)) {
-				if (result->expr == "") { // empty pattern
-					if (TopTokenIsType(Token::OPEN_BRACE)) {
-						ConsumeTopTokenOfType(Token::OPEN_BRACE);
-						result = ParseExpr(true);
-					} else {
-						result = new Pattern(ConsumeTopToken().content);
-					}
-				} else {
-					result = ParseExpr(result, isBracket);
-				}
-			}
-			ConsumeTopTokenOfType(terminatingCondition);
-			return result;
-		}
-
-		Pattern* ParseExpr(Pattern* LHS, bool isBracket) {
-			// if next op is of lower precedence, construct RHS and return
-			// if next op is of equal precedence, construct and loop
-			// if next op is of higher precedence, perform recursive call
-			// since all operations are left associative, no attempt to worry about
-			//		assoiciativity is made
-
-			Token::Type terminatingCondition = isBracket ? Token::CLOSE_BRACE : Token::END_OF_STMT;
-
-			if (PeekAtTopToken().type == terminatingCondition) {
-				return LHS;
-			}
-
-			// TODO combine operator token types into one type for type checking.
-			Token op1 = ConsumeTopToken();
-			Pattern* RHS;
-			if (TopTokenIsType(Token::OPEN_BRACE)) {
-				ConsumeTopTokenOfType(Token::OPEN_BRACE);
-				RHS = ParseExpr(true);
-			} else {
-				RHS = new Pattern(ConsumeTopToken().content);
-			}
-
-			Token nextOp = PeekAtTopToken(); // peek
-			int comparison = Parser::compare(op1.type, nextOp.type);
-
-			if (comparison < 0) { // nextOp is of lower precedence than currentOp
-				RHS = ParseExpr(RHS, isBracket);
-			}
-			Pattern* expression = new Pattern(op1.content, LHS, RHS);
-			if (comparison > 0) { // nextOp is of higher precedence than currentOp
-				return expression;
-			} else { // equal precedence
-				return ParseExpr(expression, isBracket);
-			}
-		}
-	};
-
-	Helper helper(expr);
-	return *helper.ParseExpr(false);
 }
 
 

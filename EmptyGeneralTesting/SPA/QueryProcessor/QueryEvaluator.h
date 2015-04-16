@@ -34,7 +34,6 @@ protected:
 	bool EvaluateWith(WithClause);
 
 	string ToString(int);
-	Pattern CreatePatternObject(string);
 
 	//Functions to convert between integer and string
 	string ITOS(int num);

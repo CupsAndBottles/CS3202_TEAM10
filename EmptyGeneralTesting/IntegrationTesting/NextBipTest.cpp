@@ -27,6 +27,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(NextBipTest);
 void NextBipTest::ClearAllData() {
 	Program::ClearAll();
 	PKBCleaner::ClearAll();
+	TNode::resetNodeCounter();
 }
 
 NextBipTest::NextBipTest(void) {
@@ -112,7 +113,7 @@ void NextBipTest::TestGetNextBipTBefore() {
 	tester.ParseSource("NextBipCallOnceTest.txt");
 	// procedure test1
 	vector<int> nextBipTBefore4 = NextBip::GetNextBipTBefore(4);
-	//CPPUNIT_ASSERT_EQUAL(9, (int) nextBipTBefore4.size());
+	CPPUNIT_ASSERT_EQUAL(9, (int) nextBipTBefore4.size());
 	sort(nextBipTBefore4.begin(), nextBipTBefore4.end());
 
 	CPPUNIT_ASSERT_EQUAL(1, nextBipTBefore4.at(0));

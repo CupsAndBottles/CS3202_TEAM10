@@ -1822,7 +1822,7 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			}
 		}
 
-		//Calls(p, _)
+		//Calls(p,_)
 		else if (arg2.type == UNDERSCORE) {
 			vector<string> procs;
 			bool usingIntermediateResult = false;
@@ -1997,14 +1997,13 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateNext, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (rel == NEXT && arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateNext, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> prevStmt, nextStmt;
-			bool valid = false;
-			bool usingIntermediateResult_next = false, usingIntermediateResult_prev = false;
+			bool usingIntermediateResult_prev = false, usingIntermediateResult_next = false;
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2036,7 +2035,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			for (vector<int>::iterator it_prev = prevStmt.begin(); it_prev != prevStmt.end(); ++it_prev) {
 				for (vector<int>::iterator it_next = nextStmt.begin(); it_next != nextStmt.end(); ++it_next) {
 					bool isNext = false;
-					//convert int to string to use with intermediateResult
+	
 					string next_str = ITOS(*it_prev);
 					string prev_str = ITOS(*it_next);
 
@@ -2048,14 +2047,13 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 						if (isNext) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, isDirectLink)) {
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, prev_str, arg2Syn.value, next_str, isDirectLink)) {
 
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, next_str) && intermediateResult.HasLink(arg2Syn.value, prev_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, prev_str) && intermediateResult.HasLink(arg2Syn.value, next_str)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+										intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 									}
-
 									else {
 										//indirect link, do nothing
 									}
@@ -2063,14 +2061,14 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+									intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, prev_str, arg2Syn.value, next_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_next, arg2Syn.value, *it_prev);
 							--validCount;
@@ -2081,7 +2079,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 					else {
 						if (isNext) {
 							//insert pair
-							intermediateResult.InsertPair(arg1Syn.value, *it_prev, arg2Syn.value, *it_next);
+							intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 						} else {
 							//do nothing
 							--validCount;
@@ -2096,9 +2094,9 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			}
 		}
 
+		// Next(a,2)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2111,6 +2109,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			}
 
 			validCount = stmts.size();
+
 			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 				int arg2Value = atoi(arg2.value.c_str());
 				bool isNext = false;
@@ -2120,20 +2119,19 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isNext) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isNext) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isNext) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Next(syn, _)
+		// Next(a,_)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2155,11 +2153,11 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (!Next.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!Next.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!Next.empty()) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -2184,7 +2182,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		bool usingIntermediateResult = false;
 
 		if (intermediateResult.IsListEmpty(arg2.syn)) {
-			stmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 		}
 
 		else {
@@ -2197,7 +2195,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			bool isNext = false;
 
-			// Next(1, syn)
+			// Next(1, a)
 			if (arg1.type == INTEGER) {
 				int arg1Value = STOI(arg1.value);
 
@@ -2205,10 +2203,10 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 				else				isNext = Next::IsNextT(arg1Value, *it);
 			}
 
-			//Next(_ , syn)
+			//Next(_ , a)
 			else if (arg1.type == UNDERSCORE) {
-				if (rel == NEXT)	isNext = !Next::GetNextBefore(*it).empty();
-				else				isNext = !Next::GetNextTBefore(*it).empty();
+				if (rel == NEXT)	isNext = !(Next::GetNextBefore(*it).empty());
+				else				isNext = !(Next::GetNextTBefore(*it).empty());
 			}
 
 			else {
@@ -2237,6 +2235,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(_,2)
 	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
 		int arg2Value = STOI(arg2.value);
 
@@ -2249,6 +2248,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(1,_)
 	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
 		int arg1Value = STOI(arg1.value);
 
@@ -2261,6 +2261,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(1,2)
 	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
 		int arg1Value = STOI(arg1.value);
 		int arg2Value = STOI(arg2.value);
@@ -2269,6 +2270,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		else				return Next::IsNextT(arg1Value, arg2Value);
 	}
 
+	//Next(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		return Next::HasAnyNext();
 	}
@@ -2294,14 +2296,13 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateAffects, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateAffects, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> affectingStmt, affectedStmt;
-			bool valid = false;
-			bool usingIntermediateResult_affected = false, usingIntermediateResult_affecting = false;
+			bool usingIntermediateResult_affecting = false, usingIntermediateResult_affected = false;
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2312,7 +2313,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, affectingStmt);
-				usingIntermediateResult_affected = true;
+				usingIntermediateResult_affecting = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
@@ -2324,7 +2325,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, affectedStmt);
-				usingIntermediateResult_affecting = true;
+				usingIntermediateResult_affected = true;
 			}
 
 			//loop affectedStmt.size() * affectingStmt.size() times, if all invalid, validCount will be 0, return false
@@ -2333,24 +2334,24 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			for (vector<int>::iterator it_affecting = affectingStmt.begin(); it_affecting != affectingStmt.end(); ++it_affecting) {
 				for (vector<int>::iterator it_affected = affectedStmt.begin(); it_affected != affectedStmt.end(); ++it_affected) {
 					bool isAffects = false;
-					//convert int to string to use with intermediateResult
-					string affected_str = ITOS(*it_affecting);
-					string affecting_str = ITOS(*it_affected);
+
+					string affecting_str = ITOS(*it_affecting);
+					string affected_str = ITOS(*it_affected);
 
 					if (rel == AFFECTS)	isAffects = Affects::IsAffects(*it_affecting, *it_affected);
 					else				isAffects = Affects::IsAffectsT(*it_affecting, *it_affected);
 
 					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
-					if (usingIntermediateResult_affected && usingIntermediateResult_affecting) {
+					if (usingIntermediateResult_affecting && usingIntermediateResult_affected) {
 						if (isAffects) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, isDirectLink)) {
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affecting_str, arg2Syn.value, affected_str, isDirectLink)) {
 
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, affected_str) && intermediateResult.HasLink(arg2Syn.value, affecting_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, affecting_str) && intermediateResult.HasLink(arg2Syn.value, affected_str)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+										intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 									}
 
 									else {
@@ -2360,14 +2361,14 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+									intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affecting_str, arg2Syn.value, affected_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_affected, arg2Syn.value, *it_affecting);
 							--validCount;
@@ -2378,7 +2379,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 					else {
 						if (isAffects) {
 							//insert pair
-							intermediateResult.InsertPair(arg1Syn.value, *it_affecting, arg2Syn.value, *it_affected);
+							intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 						} else {
 							//do nothing
 							--validCount;
@@ -2393,9 +2394,9 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			}
 		}
 
+		//Affects(a,2)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2408,6 +2409,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			}
 
 			validCount = stmts.size();
+
 			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 				int arg2Value = atoi(arg2.value.c_str());
 				bool isAffects = false;
@@ -2417,20 +2419,19 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isAffects) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isAffects) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isAffects) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Affects(syn, _)
+		//Affects(a,_)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2452,11 +2453,11 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (!affects.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!affects.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!affects.empty()) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -2475,7 +2476,8 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
-	//Affects (smth, syn)
+	//Affects(_, a)
+	//Affects(1,a)
 	else if (arg2.type == SYNONYM) {
 		vector<int> stmts;
 		bool usingIntermediateResult = false;
@@ -2494,7 +2496,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			bool isAffects = false;
 			
-			// Affects(1, syn)
+			//Affects(_, a)
 			if (arg1.type == INTEGER) {
 				int arg1Value = STOI(arg1.value);
 
@@ -2502,7 +2504,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 				else				isAffects = Affects::IsAffectsT(arg1Value, *it);
 			}
 
-			//Affects(_ , syn)
+			//Affects(1,a)
 			else if (arg1.type == UNDERSCORE) {
 				if (rel == AFFECTS)	isAffects = !Affects::GetStmtsAffecting(*it).empty();
 				else				isAffects = !Affects::GetStmtsAffectingT(*it).empty();
@@ -2534,6 +2536,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(_,2)
 	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
 		int arg2Value = STOI(arg2.value);
 
@@ -2546,6 +2549,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(1,_)
 	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
 		int arg1Value = STOI(arg1.value);
 
@@ -2558,6 +2562,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(1,2)
 	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
 		int arg1Value = STOI(arg1.value);
 		int arg2Value = STOI(arg2.value);
@@ -2566,6 +2571,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		else				return Affects::IsAffectsT(arg1Value, arg2Value);
 	}
 
+	//Affects(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		// extremely computationally expensive
 		for (int stmt = 1; stmt < StmtTypeTable::GetMaxStmtIndex(); stmt++) {

@@ -171,7 +171,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					set<int> s( result_int.begin(), result_int.end() );
 					result_int.assign( s.begin(), s.end() );
 
+					/*cout << "\nInput list into table: ";
+					for(int i=0; i<result_int.size(); ++i)
+						cout << result_int[i] << " ";
+					cout << "\n";*/
+
 					intermediateResult.InsertList(selectSyn.value , result_int);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == CONSTANT)
@@ -186,6 +192,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					result_int.assign( s.begin(), s.end() );
 
 					intermediateResult.InsertList(selectSyn.value , result_int);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == PROCEDURE)
@@ -193,6 +200,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					//procTable
 					vector<string> result = ProcTable::GetAllProcNames();
 					intermediateResult.InsertList(selectSyn.value , result);
+					intermediateResult.Print();
 				}
 
 				else if(selectSyn.type == VARIABLE)
@@ -200,6 +208,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 					//varTable
 					vector<string> result = VarTable::GetAllVarNames(); 
 					intermediateResult.InsertList(selectSyn.value , result);
+					intermediateResult.Print();
 				}
 
 				else
@@ -252,11 +261,23 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 			if(hasAnswer)
 			{
 				intermediateResult.GetResultSingle(selectSyn.value ,resultList);
+
+				
+				//if hasAnswre has result is empty that means select a such that parent(w,s)
+				//select synonym does not occur in any clause
+				//get all data of select synonym from pkb and return this
+				if(resultList.empty())
+				{
+					vector<string> data = GetDataFromPKB(selectSyn);
+					copy( data.begin(), data.end(), back_inserter( resultList ) );
+				}
+
+
 			}
 			else
 			{
 				resultList.clear();
-				return false;
+				return true;
 			}
 		}
 	}
@@ -272,13 +293,13 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		//select <a,w,v> such that...
 		if(hasAnswer)
 		{
-			intermediateResult.GetResultTuple(selectSynList ,resultList);
+			//intermediateResult.GetResultTuple(selectSynList ,resultList);
 		}
 
 		else
 		{
 			resultList.clear();
-			return false;
+			return true;
 		}
 	}
 
@@ -470,13 +491,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 					if(isParent) {}
 					else 
 					{
-						intermediateResult.Remove(arg2Syn.value , *it);
+						intermediateResult.Remove(arg1.value , *it);
 						--validCount;
 					}
 				}
 				else
 				{
-					if(isParent) intermediateResult.Insert(arg2Syn.value , *it);
+					if(isParent) intermediateResult.Insert(arg1.value , *it);
 					else --validCount;
 				}
 			}
@@ -513,13 +534,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 					if(!children.empty()) {}
 					else 
 					{
-						intermediateResult.Remove(arg2Syn.value , *it);
+						intermediateResult.Remove(arg1.value , *it);
 						--validCount;
 					}
 				}
 				else
 				{
-					if(!children.empty()) intermediateResult.Insert(arg2Syn.value , *it);
+					if(!children.empty()) intermediateResult.Insert(arg1.value , *it);
 					else --validCount;
 				}
 			}
@@ -715,10 +736,11 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+
+			if(arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateFollows, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> beforeStmt, afterStmt;
 			bool valid = false;
@@ -755,8 +777,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 				for (vector<int>::iterator it_after = afterStmt.begin(); it_after != afterStmt.end(); ++it_after) {
 					bool isFollows = false;
 					//convert int to string to use with intermediateResult
-					string after_str = ITOS(*it_before);
-					string before_str = ITOS(*it_after);
+					string before_str = ITOS(*it_before);
+					string after_str = ITOS(*it_after);
 
 					if (rel == FOLLOWS)	isFollows = Follows::IsFollows(*it_before, *it_after);
 					else				isFollows = Follows::IsFollowsT(*it_before, *it_after);
@@ -766,14 +788,12 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 						if (isFollows) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, isDirectLink)) {
-
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, before_str, arg2Syn.value, after_str, isDirectLink)) {
 								//both have links
 								if (intermediateResult.HasLink(arg1Syn.value, after_str) && intermediateResult.HasLink(arg2Syn.value, before_str)) {
 									if (isDirectLink) {
 										intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
 									}
-
 									else {
 										//indirect link, do nothing
 									}
@@ -781,14 +801,15 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, after_str, arg2Syn.value, before_str);
+									intermediateResult.InsertPair(arg1Syn.value, before_str, arg2Syn.value, after_str);
 								}
 							}
-						} else {
+						} 
+						else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, after_str, arg2Syn.value, before_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, after_str, arg2Syn.value, before_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, before_str, arg2Syn.value, after_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, before_str, arg2Syn.value, after_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_after, arg2Syn.value, *it_before);
 							--validCount;
@@ -814,6 +835,7 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 			}
 		}
 
+		//Follows(a,5)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
 			bool valid = false;
@@ -838,17 +860,17 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isFollows) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isFollows) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Follows(syn, _)
+		// Follows(a, _)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
 			bool valid = false;
@@ -873,11 +895,11 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isFollows) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isFollows) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isFollows) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -936,7 +958,8 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 			if (usingIntermediateResult) {
 				//remove if invalid, do nothing if valid
-				if (isFollows) {} else {
+				if (isFollows) {} 
+				else {
 					intermediateResult.Remove(arg2Syn.value, *it);
 					--validCount;
 				}
@@ -996,54 +1019,53 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 {
-	return true;
-	/*
 	Argument arg1 = suchThat.arg1;
 	Argument arg2 = suchThat.arg2;
 	Synonym arg1Syn = suchThat.arg1.syn;
 	Synonym arg2Syn = suchThat.arg2.syn;
 	RelationshipType rel = suchThat.relationship;
 
-
-	if(arg1.type == SYNONYM)
+	//Modifies(a/s/w/if/call/n,v)
+	if(arg1.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
+								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == PROG_LINE))
 	{
-		cout << "\nhere1";
 		if(arg2.type == SYNONYM)
 		{
-			cout << "\nhere2";
-			//check if a is empty, if yes, get all awsn. check if v is empty, if yes, foreach a add v modified by a. if no, for each a, foreach v,check if a modify v
-			//if a is not empty, use current a. check if v is empty, if yes, foreach a add v modified by a. if no, for each a, foreach v,check if a modify v
-			vector<int>* stmts;
-			vector<string>* vars;
-			vector<int> tempResultStmts;
-			vector<string> tempResultVars;
-			vector<int> tempStmts;
-			vector<string> tempVars;
+			//------------Get intermediate result of type arg1------------
+			vector<int> stmts;
+			bool usingIntermediateResult_stmts = false;
 
-			//get appropriate a/w/s/n
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					stmts = &((*it).resultInt);
+			if (intermediateResult.IsListEmpty(arg1.syn)) {
+				//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 			}
 
-			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempStmts = *stmts;
-
-			//cout << "\nstmts size: " << tempStmts.size();
-
-			//get appropriate v
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg2.value)
-					vars = &((*it).resultVar);
+			else {
+				//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1Syn.value, stmts);
+				usingIntermediateResult_stmts = true;
 			}
 
-			if(vars->empty())	tempVars = VarTable::GetAllVarNames();
-			else				tempVars = *vars;
+			//------------Get intermediate result of type arg2------------
+			vector<string> vars;
+			bool usingIntermediateResult_vars = false;
 
-			//cout << "\nvars size: " << tempVars.size();
-				
-			for(vector<int>::iterator it_stmts = tempStmts.begin(); it_stmts != tempStmts.end(); ++it_stmts) {
-				for(vector<string>::iterator it_vars = tempVars.begin(); it_vars != tempVars.end(); ++it_vars) {
+			if(intermediateResult.IsListEmpty(arg2.syn)) {
+				vars = VarTable::GetAllVarNames();
+			}
+
+			else {
+				intermediateResult.GetList(arg2Syn.value , vars);
+				usingIntermediateResult_vars = true;
+			}
+
+
+			//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
+			int validCount = stmts.size() * vars.size();
+
+			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) {
+				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
+
 					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 					bool doesModifiesOrUses = false;
@@ -1051,117 +1073,371 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 					if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsStmtModifyingVar(*it_stmts,varIndex);
 					else					doesModifiesOrUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
 
-					if(doesModifiesOrUses) {
-						tempResultStmts.push_back(*it_stmts);
-						tempResultVars.push_back(*it_vars);
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_stmts && usingIntermediateResult_vars) {
+						if (doesModifiesOrUses) {
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars, isDirectLink)) {
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, *it_stmts) && intermediateResult.HasLink(arg2Syn.value, *it_vars)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
+									}
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
+								}
+							}
+						} 
+						else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars, dummy))
+								intermediateResult.Unlink(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_after, arg2Syn.value, *it_before);
+							--validCount;
+						}
+					}
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (doesModifiesOrUses) {
+							intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
+						} 
+						else {
+							--validCount;
+						}
 					}
 				}
 			}
 
-			//remove duplicates
-			set<int> s( tempResultStmts.begin(), tempResultStmts.end() );
-			tempResultStmts.assign( s.begin(), s.end() );
-
-			set<string> t( tempResultVars.begin(), tempResultVars.end() );
-			tempResultVars.assign( t.begin(), t.end() );
-
-			cout << "\ntempResultStmts size: " << tempResultStmts.size();
-			cout << "\ntempResultVars size: " << tempResultVars.size();
-
-			*stmts = tempResultStmts;
-			*vars = tempResultVars;		
-
-			if(stmts->empty() || vars->empty())	return false;
-			else								return true;
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_stmts && usingIntermediateResult_vars) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
 		}
 
-		if(arg2.type == IDENT)
+		else if(arg2.type == IDENT)
 		{
-			string ident = arg2.value;
-			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
-			ident = ident.substr(1, ident.length()-2);
+			//------------Get arg2 Var index------------
+			string ident_var = arg2.value;
+			ident_var.erase(std::remove_if(ident_var.begin(), ident_var.end(), [](char x){return isspace(x);}), ident_var.end());
+	
+			//eliminates " " and get the content
+			ident_var = ident_var.substr(1, ident_var.length()-2);
 
-			int varIndex = VarTable::GetIndexOfVar(ident);
-			
+			//get index of ident
+			int varIndex = VarTable::GetIndexOfVar(ident_var);
 			if(varIndex == -1) return false;
 
+			vector<int> stmts;
+			bool usingIntermediateResult = false;
 
-			vector<int>* stmts;
-			vector<int> tempResult;
-
-			//get pointer to interResultList synonym
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					stmts = &((*it).resultInt);
+			if(intermediateResult.IsListEmpty(arg1.syn))
+			{
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 			}
 
-			vector<int> tempStmts;
+			else 
+			{
+				intermediateResult.GetList(arg1.value , stmts);
+				usingIntermediateResult = true;
+			}
 
-			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempStmts = *stmts;
+			int validCount = stmts.size();
 
-			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) 
+			for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
 			{
 				bool doesModifiesOrUses = false;
 
 				if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsStmtModifyingVar(*it, varIndex);
 				else				doesModifiesOrUses = Uses::IsStmtUsingVar(*it, varIndex);
 
-				if(doesModifiesOrUses)	tempResult.push_back(*it);
+				if(usingIntermediateResult)
+				{
+					//remove if invalid, do nothing if valid
+					if(doesModifiesOrUses) {}
+					else
+					{
+						intermediateResult.Remove(arg1Syn.value , *it);
+						--validCount;
+					}
+				}
+
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(doesModifiesOrUses) intermediateResult.Insert(arg1Syn.value , *it);
+					else --validCount;
+				}
 			}
 
-			*stmts = tempResult;
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
 
-			if(stmts->empty())	return false;
-			else				return true;
+			return true;
 		}
 
-		if(arg2.type == UNDERSCORE)
+		//Modifies(a,_)
+		else if(arg2.type == UNDERSCORE)
 		{
-			vector<int>* stmts;
-			vector<int> tempResult;
+			vector<int> stmts;
+			bool usingIntermediateResult = false;
 
-			//get pointer to interResultList synonym
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg1.value)
-					stmts = &((*it).resultInt);
+			if(intermediateResult.IsListEmpty(arg1.syn))
+			{
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 			}
 
-			vector<int> tempStmts;
+			else 
+			{
+				intermediateResult.GetList(arg1.value , stmts);
+				usingIntermediateResult = true;
+			}
 
-			if(stmts->empty())	tempStmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			else				tempStmts = *stmts;
-			
-			for(vector<int>::iterator it = tempStmts.begin(); it != tempStmts.end(); ++it) {
+			int validCount = stmts.size();
+
+			for(vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) 
+			{
 				vector<int> var;
-			
+
 				if(rel == MODIFIES)	var = Modifies::GetVarModifiedByStmt(*it);
 				else				var = Uses::GetVarUsedByStmt(*it);
-				
-				//for extension to procedure
-				if(rel == MODIFIES) {
-					if(arg1.syn.type == PROCEDURE) {}
-					else {
-						var = Modifies::GetVarModifiedByStmt(*it);
-						var = Uses::GetVarUsedByStmt(*it);
-					}
-				}
-				else {
-					if(arg1.syn.type == PROCEDURE) {}
-					else {
-						var = Modifies::GetVarModifiedByStmt(*it);
-						var = Uses::GetVarUsedByStmt(*it);
+
+				if(usingIntermediateResult)
+				{
+					//remove if invalid, do nothing if valid
+					if(!var.empty()) {}
+					else
+					{
+						intermediateResult.Remove(arg1Syn.value , *it);
+						--validCount;
 					}
 				}
 
-				if(!var.empty())
-					tempResult.push_back(*it);
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(!var.empty())	intermediateResult.Insert(arg1Syn.value , *it);
+					else --validCount;
+				}
 			}
 
-			*stmts = tempResult;
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
 
-			if(stmts->empty())	return false;
-			else				return true;
+			return true;
+		}
+
+		else 
+		{
+			cout << "\nIn EvaluateModifies, invalid Modifies argument 2 type.\n";
+			return false;
+		}
+	}
+
+	//Modifies(p,v)
+	else if(arg1.type == SYNONYM && arg1Syn.type == PROCEDURE)
+	{
+		//------------Get intermediate result of type arg1------------
+		vector<string> procs;
+		bool usingIntermediateResult_procs = false;
+
+		if (intermediateResult.IsListEmpty(arg1.syn)) {
+			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			procs = ProcTable::GetAllProcNames();
+		}
+
+		else {
+			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			intermediateResult.GetList(arg1Syn.value, procs);
+			usingIntermediateResult_procs = true;
+		}
+
+		//Modifies(p,v)
+		if(arg2.type == SYNONYM)
+		{
+			//------------Get intermediate result of type arg2------------
+			vector<string> vars;
+			bool usingIntermediateResult_vars = false;
+
+			if(intermediateResult.IsListEmpty(arg2.syn)) {
+				vars = VarTable::GetAllVarNames();
+			}
+
+			else {
+				intermediateResult.GetList(arg2Syn.value , vars);
+				usingIntermediateResult_vars = true;
+			}
+
+
+			//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
+			int validCount = procs.size() * vars.size();
+
+			for (vector<string>::iterator it_procs = procs.begin(); it_procs != procs.end(); ++it_procs) {
+				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
+
+					int varIndex = VarTable::GetIndexOfVar(*it_vars);
+					int procIndex = ProcTable::GetIndexOfProc(*it_procs);
+
+					bool doesModifiesOrUses = false;
+		
+					if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsProcModifyingVar(procIndex,varIndex);
+					else					doesModifiesOrUses = Uses::IsProcUsingVar(procIndex,varIndex);
+
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_procs && usingIntermediateResult_vars) {
+						if (doesModifiesOrUses) {
+							bool isDirectLink;
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars, isDirectLink)) {
+								//both have links
+								if (intermediateResult.HasLink(arg1Syn.value, *it_procs) && intermediateResult.HasLink(arg2Syn.value, *it_vars)) {
+									if (isDirectLink) {
+										intermediateResult.InsertPair(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars);
+									}
+									else {
+										//indirect link, do nothing
+									}
+								}
+
+								//at least one no links
+								else {
+									intermediateResult.InsertPair(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars);
+								}
+							}
+						} 
+						else {
+							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+							bool dummy;
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars, dummy))
+								intermediateResult.Unlink(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars);
+
+							//intermediateResult.RemovePair(arg1Syn.value, *it_after, arg2Syn.value, *it_before);
+							--validCount;
+						}
+					}
+
+					//at least one of the synonym list is new, or both
+					else {
+						if (doesModifiesOrUses) {
+							intermediateResult.InsertPair(arg1Syn.value, *it_procs, arg2Syn.value, *it_vars);
+						} 
+						else {
+							--validCount;
+						}
+					}
+				}
+			}
+
+			//after looping, do a update to remove any element without link between this 2 column
+			if (usingIntermediateResult_procs && usingIntermediateResult_vars) {
+				intermediateResult.RemoveElementsWithoutLink(arg1Syn.value, arg2Syn.value);
+			}
+		}
+
+		//Modifies(p,"x")
+		else if(arg2.type == IDENT)
+		{
+			//------------Get arg2 Var index------------
+			string ident_var = arg2.value;
+			ident_var.erase(std::remove_if(ident_var.begin(), ident_var.end(), [](char x){return isspace(x);}), ident_var.end());
+	
+			//eliminates " " and get the content
+			ident_var = ident_var.substr(1, ident_var.length()-2);
+
+			//get index of ident
+			int varIndex = VarTable::GetIndexOfVar(ident_var);
+			if(varIndex == -1) return false;
+
+			int validCount = procs.size();
+
+			for(vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) 
+			{
+				bool doesModifiesOrUses = false;
+				int procIndex = ProcTable::GetIndexOfProc(*it);
+
+				if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsProcModifyingVar(procIndex, varIndex);
+				else				doesModifiesOrUses = Uses::IsProcUsingVar(procIndex, varIndex);
+
+				if(usingIntermediateResult_procs)
+				{
+					//remove if invalid, do nothing if valid
+					if(doesModifiesOrUses) {}
+					else
+					{
+						intermediateResult.Remove(arg1Syn.value , *it);
+						--validCount;
+					}
+				}
+
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(doesModifiesOrUses) intermediateResult.Insert(arg1Syn.value , *it);
+					else --validCount;
+				}
+			}
+
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
+
+			return true;
+		}
+
+		//Modifies(p,_)
+		else if(arg2.type == UNDERSCORE)
+		{
+			int validCount = procs.size();
+
+			for(vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) 
+			{
+				vector<int> var;
+				int procIndex = ProcTable::GetIndexOfProc(*it);
+
+				if(rel == MODIFIES)	var = Modifies::GetVarModifiedByProc(procIndex);
+				else				var = Uses::GetVarUsedByProc(procIndex);
+
+				if(usingIntermediateResult_procs)
+				{
+					//remove if invalid, do nothing if valid
+					if(!var.empty()) {}
+					else
+					{
+						intermediateResult.Remove(arg1Syn.value , *it);
+						--validCount;
+					}
+				}
+
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(!var.empty())	intermediateResult.Insert(arg1Syn.value , *it);
+					else --validCount;
+				}
+			}
+
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
+
+			return true;
 		}
 
 		else 
@@ -1173,26 +1449,28 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 
 	else if(arg1.type == INTEGER)
 	{
+		//Modifies(5,v)
 		if(arg2.type == SYNONYM)
 		{
-			//check if v is empty, if yes, get all v modified by arg1 integer
-			//if v is not empty, for each v, check if it is modified by arg 1 integer, if yes add it in a temp vector, then finally replace 
-			vector<string>* vars;
-			vector<string> tempResult;
+			vector<string> vars;
+			bool usingIntermediateResult = false;
 
-			//get pointer to interResultList synonym
-			for(vector<IntermediateResult>::iterator it = interResultList.begin(); it != interResultList.end(); ++it) {
-				if((*it).synonym.value == arg2.value)
-					vars = &((*it).resultVar);
+			if(intermediateResult.IsListEmpty(arg2.syn))
+			{
+				vars = VarTable::GetAllVarNames();
 			}
 
-			int arg1Value = atoi(arg1.value.c_str());
-			vector<string> tempVars;
+			else 
+			{
+				intermediateResult.GetList(arg2.value , vars);
+				usingIntermediateResult = true;
+			}
 
-			if(vars->empty())	tempVars = VarTable::GetAllVarNames();
-			else				tempVars = *vars;
-				
-			for(vector<string>::iterator it = tempVars.begin(); it != tempVars.end(); ++it) {
+			int validCount = vars.size();
+
+			for(vector<string>::iterator it = vars.begin(); it != vars.end(); ++it) 
+			{
+				int arg1Value = STOI(arg1.value);
 				int varIndex = VarTable::GetIndexOfVar(*it);
 
 				bool doesModifiesOrUses = false;
@@ -1200,16 +1478,36 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 				if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsStmtModifyingVar(arg1Value,varIndex);
 				else					doesModifiesOrUses = Uses::IsStmtUsingVar(arg1Value,varIndex);
 
-				if(doesModifiesOrUses)	tempResult.push_back(*it);
+				if(usingIntermediateResult)
+				{
+					//remove if invalid, do nothing if valid
+					if(doesModifiesOrUses) {}
+					else
+					{
+						intermediateResult.Remove(arg2Syn.value , *it);
+						--validCount;
+					}
+				}
+
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(doesModifiesOrUses) intermediateResult.Insert(arg2Syn.value , *it);
+					else --validCount;
+				}
 			}
 
-			*vars = tempResult;
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
 
-			if(vars->empty())	return false;
-			else				return true;
+			return true;
 		}
 
-		if(arg2.type == IDENT)
+		//Modifies(5,"x")
+		else if(arg2.type == IDENT)
 		{
 			string ident = arg2.value;
 			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
@@ -1219,6 +1517,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 
 			//get index of ident
 			int varIndex = VarTable::GetIndexOfVar(ident);
+			if(varIndex == -1) return false;
 
 			int arg1Value = atoi(arg1.value.c_str());
 			bool doesModifiesOrUses = false;
@@ -1231,7 +1530,8 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 			else return true;
 		}
 
-		if(arg2.type == UNDERSCORE)
+		//Modifies(5,_)
+		else if(arg2.type == UNDERSCORE)
 		{
 			int arg1Value = atoi(arg1.value.c_str());
 
@@ -1253,19 +1553,112 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 	
 	else if(arg1.type == IDENT) //for procedure name, Modifies("procedure",v) etc
 	{
+		//------------Get arg1 Proc index------------
+		string ident = arg1.value;
+		ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+	
+		//eliminates " " and get the content
+		ident = ident.substr(1, ident.length()-2);
+
+		//get index of ident
+		int procIndex = ProcTable::GetIndexOfProc(ident);
+		if(procIndex == -1) return false;
+
+
+		//Modifies("Solo",v)
 		if(arg2.type == SYNONYM)
 		{
+			//------------Get intermediate result of type arg2------------
+			vector<string> vars;
+			bool usingIntermediateResult = false;
 
+			if(intermediateResult.IsListEmpty(arg2.syn))
+			{
+				vars = VarTable::GetAllVarNames();
+			}
+
+			else 
+			{
+				intermediateResult.GetList(arg2.value , vars);
+				usingIntermediateResult = true;
+			}
+
+			int validCount = vars.size();
+
+			//------------Check if Modifies("proc",v) or Uses("proc",v)-----------
+			for(vector<string>::iterator it = vars.begin(); it != vars.end(); ++it) 
+			{
+				int varIndex = VarTable::GetIndexOfVar(*it);
+
+				bool doesModifiesOrUses = false;
+		
+				if(rel == MODIFIES)		doesModifiesOrUses = Modifies::IsProcModifyingVar(procIndex,varIndex);
+				else					doesModifiesOrUses = Uses::IsProcUsingVar(procIndex,varIndex);
+
+				if(usingIntermediateResult)
+				{
+					//remove if invalid, do nothing if valid
+					if(doesModifiesOrUses) {}
+					else
+					{
+						intermediateResult.Remove(arg2Syn.value , *it);
+						--validCount;
+					}
+				}
+
+				else
+				{
+					//insert if valid, do nothing if invalid
+					if(doesModifiesOrUses) intermediateResult.Insert(arg2Syn.value , *it);
+					else --validCount;
+				}
+			}
+
+			if(validCount == 0)
+			{
+				cout << "Modifies() or Uses() is not satisfied.\n";			
+				return false;
+			}
+
+			return true;
 		}
 
-		if(arg2.type == IDENT)
+		//Modifies("Solo","x")
+		else if(arg2.type == IDENT)
 		{
+			//------------Get arg2 Var index------------
+			string ident_var = arg2.value;
+			ident_var.erase(std::remove_if(ident_var.begin(), ident_var.end(), [](char x){return isspace(x);}), ident_var.end());
+	
+			//eliminates " " and get the content
+			ident_var = ident_var.substr(1, ident_var.length()-2);
 
+			//get index of ident
+			int varIndex = VarTable::GetIndexOfVar(ident_var);
+			if(varIndex == -1) return false;
+
+			//------------Check if Modifies("proc","x") or Uses("proc","x")-----------
+			bool doesModifiesOrUses = false;
+
+			if(rel == MODIFIES)	doesModifiesOrUses = Modifies::IsProcModifyingVar(procIndex, varIndex);
+			else				doesModifiesOrUses = Uses::IsProcUsingVar(procIndex, varIndex);
+
+			if(doesModifiesOrUses)	return true;
+		
+			else return true;
 		}
 
-		if(arg2.type == UNDERSCORE)
+		//Modifies("Solo",_)
+		else if(arg2.type == UNDERSCORE)
 		{
+			//------------Check if Modifies("proc",_) or Uses("proc",_)-----------
+			vector<int> var;
+			if(rel == MODIFIES)	var = Modifies::GetVarModifiedByProc(procIndex);
+			else				var = Uses::GetVarUsedByProc(procIndex);
 
+			if(var.empty()) return false;
+
+			return true;
 		}
 
 		else 
@@ -1280,7 +1673,6 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 		cout << "\nIn EvaluateModifies, invalid Modifies argument 1 type.\n";
 		return false;
 	}
-	*/
 }
 
 bool QueryEvaluator::EvaluateUses(SuchThatClause suchThat) {
@@ -1302,63 +1694,61 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateCalls, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (arg1.value == arg2.value) {
+				cout << "In EvaluateCalls, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
-			vector<int> callingProc, calledProc;
-			bool valid = false;
-			bool usingIntermediateResult_called = false, usingIntermediateResult_calling = false;
+			vector<string> callingProc, calledProc;
+			bool usingIntermediateResult_calling = false, usingIntermediateResult_called = false;
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
 				std::cout << "No intermediate result for " << arg1.syn.value << ", get all procs\n";
-				callingProc = ProcTable::GetAllProcIndexes();
+				callingProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, callingProc);
-				usingIntermediateResult_called = true;
+				usingIntermediateResult_calling = true;
 			}
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
 				std::cout << "No intermediate result for " << arg2.syn.value << ", get all procs\n";
-				calledProc = ProcTable::GetAllProcIndexes();
+				calledProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, calledProc);
-				usingIntermediateResult_calling = true;
+				usingIntermediateResult_called = true;
 			}
 
 			//loop calledProc.size() * callingProc.size() times, if all invalid, validCount will be 0, return false
 			validCount = callingProc.size() * calledProc.size();
 
-			for (vector<int>::iterator it_calling = callingProc.begin(); it_calling != callingProc.end(); ++it_calling) {
-				for (vector<int>::iterator it_called = calledProc.begin(); it_called != calledProc.end(); ++it_called) {
+			for (vector<string>::iterator it_calling = callingProc.begin(); it_calling != callingProc.end(); ++it_calling) {
+				for (vector<string>::iterator it_called = calledProc.begin(); it_called != calledProc.end(); ++it_called) {
 					bool isCalls = false;
-					//convert int to string to use with intermediateResult
-					string called_str = ITOS(*it_calling);
-					string calling_str = ITOS(*it_called);
 
-					if (rel == CALLS)	isCalls = Calls::IsCalls(*it_calling, *it_called);
-					else				isCalls = Calls::IsCallsT(*it_calling, *it_called);
+					int procIndex1 = ProcTable::GetIndexOfProc(*it_calling);
+					int procIndex2 = ProcTable::GetIndexOfProc(*it_called);
+
+					if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+					else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 
 					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
-					if (usingIntermediateResult_called && usingIntermediateResult_calling) {
+					if (usingIntermediateResult_calling && usingIntermediateResult_called) {
 						if (isCalls) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, isDirectLink)) {
-
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_calling, arg2Syn.value, *it_called, isDirectLink)) {
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, called_str) && intermediateResult.HasLink(arg2Syn.value, calling_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, *it_calling) && intermediateResult.HasLink(arg2Syn.value, *it_called)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+										intermediateResult.InsertPair(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 									}
 
 									else {
@@ -1368,16 +1758,14 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, called_str, arg2Syn.value, calling_str);
+									intermediateResult.InsertPair(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, called_str, arg2Syn.value, calling_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, called_str, arg2Syn.value, calling_str);
-
-							//intermediateResult.RemovePair(arg1Syn.value, *it_called, arg2Syn.value, *it_calling);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, *it_calling, arg2Syn.value, *it_called, dummy))
+								intermediateResult.Unlink(arg1Syn.value, *it_calling, arg2Syn.value, *it_called);
 							--validCount;
 						}
 					}
@@ -1401,70 +1789,73 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			}
 		}
 
+		//Calls(p,"proc2")
 		else if (arg2.type == IDENT) {
-			vector<int> procs;
-			bool valid = false;
+			vector<string> procs;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				procs = ProcTable::GetAllProcIndexes();
+				procs = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				intermediateResult.GetList(arg1.syn.value, procs);
+				intermediateResult.GetList(arg1.value, procs);
 				usingIntermediateResult = true;
 			}
 
 			validCount = procs.size();
-			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
-				int arg2Value = atoi(arg2.value.c_str());
+
+			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				int procIndex1 = ProcTable::GetIndexOfProc(*it);
+				int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+
 				bool isCalls = false;
 
-				if (rel == CALLS)	isCalls = Calls::IsCalls(*it, arg2Value);
-				else				isCalls = Calls::IsCallsT(*it, arg2Value);
+				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+				else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 
 				if (usingIntermediateResult) {
 					if (isCalls) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isCalls) intermediateResult.Insert(arg1.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Calls(syn, _)
+		//Calls(p,_)
 		else if (arg2.type == UNDERSCORE) {
-			vector<int> procs;
-			bool valid = false;
+			vector<string> procs;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				procs = ProcTable::GetAllProcIndexes();
+				procs = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				intermediateResult.GetList(arg1.syn.value, procs);
+				intermediateResult.GetList(arg1.value, procs);
 				usingIntermediateResult = true;
 			}
 
 			validCount = procs.size();
 
-			for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
-				vector<int> Calls;
+			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
+				vector<int> procIndices;
+				int procIndex = ProcTable::GetIndexOfProc(*it);
 
-				if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(*it);
-				else				Calls = Calls::GetProcsCalledTBy(*it);
+				if (rel == CALLS)	procIndices = Calls::GetProcsCalledBy(procIndex);
+				else				procIndices = Calls::GetProcsCalledTBy(procIndex);
 
 				if (usingIntermediateResult) {
-					if (!Calls.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+					if (!procIndices.empty()) {} else {
+						intermediateResult.Remove(arg1.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!Calls.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!procIndices.empty()) intermediateResult.Insert(arg1.value, *it);
 					else --validCount;
 				}
 			}
@@ -1483,13 +1874,13 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		return true;
 	}
 
-	//Calls (smth, syn)
+	//Calls("proc1"/_, q)
 	else if (arg2.type == SYNONYM) {
-		vector<int> procs;
+		vector<string> procs;
 		bool usingIntermediateResult = false;
 
 		if (intermediateResult.IsListEmpty(arg2.syn)) {
-			procs = ProcTable::GetAllProcIndexes();
+			procs = ProcTable::GetAllProcNames();
 		}
 
 		else {
@@ -1499,21 +1890,22 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 		int validCount = procs.size();
 
-		for (vector<int>::iterator it = procs.begin(); it != procs.end(); ++it) {
+		for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
 			bool isCalls = false;
+			int procIndex2 = ProcTable::GetIndexOfProc(*it);
 
-			// Calls(1, syn)
+			// Calls("proc1",q)
 			if (arg1.type == IDENT) {
-				int arg1Value = STOI(arg1.value);
+				int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
 
-				if (rel == CALLS)	isCalls = Calls::IsCalls(arg1Value, *it);
-				else				isCalls = Calls::IsCallsT(arg1Value, *it);
+				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
+				else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 			}
 
-			//Calls(_ , syn)
+			//Calls(_,q)
 			else if (arg1.type == UNDERSCORE) {
-				if (rel == CALLS)	isCalls = !Calls::GetProcsCalling(*it).empty();
-				else				isCalls = !Calls::GetProcsCallingT(*it).empty();
+				if (rel == CALLS)	isCalls = !(Calls::GetProcsCalling(procIndex2).empty());
+				else				isCalls = !(Calls::GetProcsCallingT(procIndex2).empty());
 			}
 
 			else {
@@ -1524,12 +1916,12 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			if (usingIntermediateResult) {
 				//remove if invalid, do nothing if valid
 				if (isCalls) {} else {
-					intermediateResult.Remove(arg2Syn.value, *it);
+					intermediateResult.Remove(arg2.value, *it);
 					--validCount;
 				}
 			} else {
 				//insert if valid, do nothing if invalid
-				if (isCalls) intermediateResult.Insert(arg2Syn.value, *it);
+				if (isCalls) intermediateResult.Insert(arg2.value, *it);
 				else --validCount;
 			}
 		}
@@ -1542,38 +1934,48 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Calls(_,"proc2")
 	else if (arg1.type == UNDERSCORE && arg2.type == IDENT) {
-		int arg2Value = STOI(arg2.value);
+		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+
+		if(procIndex2 == -1)	return false;
 
 		vector<int> prev;
-		if (rel == CALLS)	prev = Calls::GetProcsCalling(arg2Value);
-		else				prev = Calls::GetProcsCallingT(arg2Value);
+		if (rel == CALLS)	prev = Calls::GetProcsCalling(procIndex2);
+		else				prev = Calls::GetProcsCallingT(procIndex2);
 
-		if (prev.empty()) return false;
+		if(prev.empty()) return false;
 
 		return true;
 	}
 
+	//Calls("proc1",_)
 	else if (arg1.type == IDENT && arg2.type == UNDERSCORE) {
-		int arg1Value = STOI(arg1.value);
+		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+
+		if(procIndex1 == -1)	return false;
 
 		vector<int> Calls;
-		if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(arg1Value);
-		else				Calls = Calls::GetProcsCalledTBy(arg1Value);
+		if (rel == CALLS)	Calls = Calls::GetProcsCalledBy(procIndex1);
+		else				Calls = Calls::GetProcsCalledTBy(procIndex1);
 
-		if (Calls.empty()) return false;
+		if(Calls.empty()) return false;
 
 		return true;
 	}
 
+	//Calls("proc1","proc2")
 	else if (arg1.type == IDENT && arg2.type == IDENT) {
-		int arg1Value = STOI(arg1.value);
-		int arg2Value = STOI(arg2.value);
+		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
 
-		if (rel == CALLS)	return Calls::IsCalls(arg1Value, arg2Value);
-		else				return Calls::IsCallsT(arg1Value, arg2Value);
+		if(procIndex1 == -1 || procIndex2 == -1)	return false;
+
+		if (rel == CALLS)	return Calls::IsCalls(procIndex1, procIndex2);
+		else				return Calls::IsCallsT(procIndex1, procIndex2);
 	}
 
+	//Calls(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		return Calls::HasAnyCalls();
 	}
@@ -1599,14 +2001,13 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateNext, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (rel == NEXT && arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateNext, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> prevStmt, nextStmt;
-			bool valid = false;
-			bool usingIntermediateResult_next = false, usingIntermediateResult_prev = false;
+			bool usingIntermediateResult_prev = false, usingIntermediateResult_next = false;
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -1638,7 +2039,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			for (vector<int>::iterator it_prev = prevStmt.begin(); it_prev != prevStmt.end(); ++it_prev) {
 				for (vector<int>::iterator it_next = nextStmt.begin(); it_next != nextStmt.end(); ++it_next) {
 					bool isNext = false;
-					//convert int to string to use with intermediateResult
+	
 					string next_str = ITOS(*it_prev);
 					string prev_str = ITOS(*it_next);
 
@@ -1650,14 +2051,13 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 						if (isNext) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, isDirectLink)) {
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, prev_str, arg2Syn.value, next_str, isDirectLink)) {
 
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, next_str) && intermediateResult.HasLink(arg2Syn.value, prev_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, prev_str) && intermediateResult.HasLink(arg2Syn.value, next_str)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+										intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 									}
-
 									else {
 										//indirect link, do nothing
 									}
@@ -1665,14 +2065,14 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+									intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, next_str, arg2Syn.value, prev_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, next_str, arg2Syn.value, prev_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, prev_str, arg2Syn.value, next_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_next, arg2Syn.value, *it_prev);
 							--validCount;
@@ -1683,7 +2083,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 					else {
 						if (isNext) {
 							//insert pair
-							intermediateResult.InsertPair(arg1Syn.value, *it_prev, arg2Syn.value, *it_next);
+							intermediateResult.InsertPair(arg1Syn.value, prev_str, arg2Syn.value, next_str);
 						} else {
 							//do nothing
 							--validCount;
@@ -1698,9 +2098,9 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			}
 		}
 
+		// Next(a,2)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -1713,6 +2113,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			}
 
 			validCount = stmts.size();
+
 			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 				int arg2Value = atoi(arg2.value.c_str());
 				bool isNext = false;
@@ -1722,20 +2123,19 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isNext) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isNext) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isNext) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Next(syn, _)
+		// Next(a,_)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -1757,11 +2157,11 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (!Next.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!Next.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!Next.empty()) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -1786,7 +2186,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		bool usingIntermediateResult = false;
 
 		if (intermediateResult.IsListEmpty(arg2.syn)) {
-			stmts = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
 		}
 
 		else {
@@ -1799,7 +2199,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			bool isNext = false;
 
-			// Next(1, syn)
+			// Next(1, a)
 			if (arg1.type == INTEGER) {
 				int arg1Value = STOI(arg1.value);
 
@@ -1807,10 +2207,10 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 				else				isNext = Next::IsNextT(arg1Value, *it);
 			}
 
-			//Next(_ , syn)
+			//Next(_ , a)
 			else if (arg1.type == UNDERSCORE) {
-				if (rel == NEXT)	isNext = !Next::GetNextBefore(*it).empty();
-				else				isNext = !Next::GetNextTBefore(*it).empty();
+				if (rel == NEXT)	isNext = !(Next::GetNextBefore(*it).empty());
+				else				isNext = !(Next::GetNextTBefore(*it).empty());
 			}
 
 			else {
@@ -1839,6 +2239,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(_,2)
 	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
 		int arg2Value = STOI(arg2.value);
 
@@ -1851,6 +2252,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(1,_)
 	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
 		int arg1Value = STOI(arg1.value);
 
@@ -1863,6 +2265,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Next(1,2)
 	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
 		int arg1Value = STOI(arg1.value);
 		int arg2Value = STOI(arg2.value);
@@ -1871,6 +2274,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 		else				return Next::IsNextT(arg1Value, arg2Value);
 	}
 
+	//Next(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		return Next::HasAnyNext();
 	}
@@ -1896,14 +2300,13 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		int validCount = 0;
 
 		if (arg2.type == SYNONYM) {
-			//if (arg1Syn.value == arg2Syn.value) {
-			//	cout << "In EvaluateAffects, both arg1 and arg2 has the same synonym\n";
-			//	return false;
-			//}
+			if (arg1Syn.value == arg2Syn.value) {
+				cout << "In EvaluateAffects, both arg1 and arg2 has the same synonym\n";
+				return false;
+			}
 
 			vector<int> affectingStmt, affectedStmt;
-			bool valid = false;
-			bool usingIntermediateResult_affected = false, usingIntermediateResult_affecting = false;
+			bool usingIntermediateResult_affecting = false, usingIntermediateResult_affected = false;
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -1914,7 +2317,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, affectingStmt);
-				usingIntermediateResult_affected = true;
+				usingIntermediateResult_affecting = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
@@ -1926,7 +2329,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, affectedStmt);
-				usingIntermediateResult_affecting = true;
+				usingIntermediateResult_affected = true;
 			}
 
 			//loop affectedStmt.size() * affectingStmt.size() times, if all invalid, validCount will be 0, return false
@@ -1935,24 +2338,24 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			for (vector<int>::iterator it_affecting = affectingStmt.begin(); it_affecting != affectingStmt.end(); ++it_affecting) {
 				for (vector<int>::iterator it_affected = affectedStmt.begin(); it_affected != affectedStmt.end(); ++it_affected) {
 					bool isAffects = false;
-					//convert int to string to use with intermediateResult
-					string affected_str = ITOS(*it_affecting);
-					string affecting_str = ITOS(*it_affected);
+
+					string affecting_str = ITOS(*it_affecting);
+					string affected_str = ITOS(*it_affected);
 
 					if (rel == AFFECTS)	isAffects = Affects::IsAffects(*it_affecting, *it_affected);
 					else				isAffects = Affects::IsAffectsT(*it_affecting, *it_affected);
 
 					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
-					if (usingIntermediateResult_affected && usingIntermediateResult_affecting) {
+					if (usingIntermediateResult_affecting && usingIntermediateResult_affected) {
 						if (isAffects) {
 							//check HasLink(), if yes, do nothing, else make pair
 							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, isDirectLink)) {
+							if (!intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affecting_str, arg2Syn.value, affected_str, isDirectLink)) {
 
 								//both have links
-								if (intermediateResult.HasLink(arg1Syn.value, affected_str) && intermediateResult.HasLink(arg2Syn.value, affecting_str)) {
+								if (intermediateResult.HasLink(arg1Syn.value, affecting_str) && intermediateResult.HasLink(arg2Syn.value, affected_str)) {
 									if (isDirectLink) {
-										intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+										intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 									}
 
 									else {
@@ -1962,14 +2365,14 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 								//at least one no links
 								else {
-									intermediateResult.InsertPair(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+									intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 								}
 							}
 						} else {
 							//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
 							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affected_str, arg2Syn.value, affecting_str, dummy))
-								intermediateResult.Unlink(arg1Syn.value, affected_str, arg2Syn.value, affecting_str);
+							if (intermediateResult.HasLinkBetweenColumns(arg1Syn.value, affecting_str, arg2Syn.value, affected_str, dummy))
+								intermediateResult.Unlink(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 
 							//intermediateResult.RemovePair(arg1Syn.value, *it_affected, arg2Syn.value, *it_affecting);
 							--validCount;
@@ -1980,7 +2383,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 					else {
 						if (isAffects) {
 							//insert pair
-							intermediateResult.InsertPair(arg1Syn.value, *it_affecting, arg2Syn.value, *it_affected);
+							intermediateResult.InsertPair(arg1Syn.value, affecting_str, arg2Syn.value, affected_str);
 						} else {
 							//do nothing
 							--validCount;
@@ -1995,9 +2398,9 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			}
 		}
 
+		//Affects(a,2)
 		else if (arg2.type == INTEGER) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2010,6 +2413,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 			}
 
 			validCount = stmts.size();
+
 			for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 				int arg2Value = atoi(arg2.value.c_str());
 				bool isAffects = false;
@@ -2019,20 +2423,19 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (isAffects) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (isAffects) intermediateResult.Insert(arg2Syn.value, *it);
+					if (isAffects) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
 		}
 
-		// Affects(syn, _)
+		//Affects(a,_)
 		else if (arg2.type == UNDERSCORE) {
 			vector<int> stmts;
-			bool valid = false;
 			bool usingIntermediateResult = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
@@ -2054,11 +2457,11 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 				if (usingIntermediateResult) {
 					if (!affects.empty()) {} else {
-						intermediateResult.Remove(arg2Syn.value, *it);
+						intermediateResult.Remove(arg1Syn.value, *it);
 						--validCount;
 					}
 				} else {
-					if (!affects.empty()) intermediateResult.Insert(arg2Syn.value, *it);
+					if (!affects.empty()) intermediateResult.Insert(arg1Syn.value, *it);
 					else --validCount;
 				}
 			}
@@ -2077,7 +2480,8 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
-	//Affects (smth, syn)
+	//Affects(_, a)
+	//Affects(1,a)
 	else if (arg2.type == SYNONYM) {
 		vector<int> stmts;
 		bool usingIntermediateResult = false;
@@ -2096,7 +2500,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		for (vector<int>::iterator it = stmts.begin(); it != stmts.end(); ++it) {
 			bool isAffects = false;
 			
-			// Affects(1, syn)
+			//Affects(_, a)
 			if (arg1.type == INTEGER) {
 				int arg1Value = STOI(arg1.value);
 
@@ -2104,7 +2508,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 				else				isAffects = Affects::IsAffectsT(arg1Value, *it);
 			}
 
-			//Affects(_ , syn)
+			//Affects(1,a)
 			else if (arg1.type == UNDERSCORE) {
 				if (rel == AFFECTS)	isAffects = !Affects::GetStmtsAffecting(*it).empty();
 				else				isAffects = !Affects::GetStmtsAffectingT(*it).empty();
@@ -2136,6 +2540,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(_,2)
 	else if (arg1.type == UNDERSCORE && arg2.type == INTEGER) {
 		int arg2Value = STOI(arg2.value);
 
@@ -2148,6 +2553,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(1,_)
 	else if (arg1.type == INTEGER && arg2.type == UNDERSCORE) {
 		int arg1Value = STOI(arg1.value);
 
@@ -2160,6 +2566,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		return true;
 	}
 
+	//Affects(1,2)
 	else if (arg1.type == INTEGER && arg2.type == INTEGER) {
 		int arg1Value = STOI(arg1.value);
 		int arg2Value = STOI(arg2.value);
@@ -2168,6 +2575,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 		else				return Affects::IsAffectsT(arg1Value, arg2Value);
 	}
 
+	//Affects(_,_)
 	else if (arg1.type == UNDERSCORE && arg2.type == UNDERSCORE) {
 		// extremely computationally expensive
 		for (int stmt = 1; stmt < StmtTypeTable::GetMaxStmtIndex(); stmt++) {
@@ -2558,6 +2966,70 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	return true;
 }	
 
+void QueryEvaluator::ClearIntermediateResult()
+{
+	intermediateResult.Clear();
+}
+
+//get data of a particular synonym from pkn
+vector<string> QueryEvaluator::GetDataFromPKB(Synonym syn)
+{
+	vector<string> data;
+
+	if(syn.type == ASSIGN || syn.type == STMT || syn.type == WHILE ||
+		syn.type == IF || syn.type == CALL|| syn.type == PROG_LINE)
+	{
+		//stmtTypeTable
+		vector<int> result_int;
+		vector<string> result;
+		result_int = StmtTypeTable::GetAllStmtsOfType(syn.type);
+
+		//remove duplicate
+		set<int> s( result_int.begin(), result_int.end() );
+		result_int.assign( s.begin(), s.end() );
+
+		data = ITOS(result_int);
+		return data;
+	}
+
+	else if(syn.type == CONSTANT)
+	{
+		//constTable
+		vector<int> result_int;
+		vector<string> result;
+		result_int = ConstTable::GetAllConst();
+
+		//remove duplicate
+		set<int> s( result_int.begin(), result_int.end() );
+		result_int.assign( s.begin(), s.end() );
+
+		data = ITOS(result_int);
+		return data;
+	}
+
+	else if(syn.type == PROCEDURE)
+	{
+		//procTable
+		vector<string> result = ProcTable::GetAllProcNames();
+		return result;
+	}
+
+	else if(syn.type == VARIABLE)
+	{
+		//varTable
+		vector<string> result = VarTable::GetAllVarNames(); 
+		 
+		return result;
+
+	}
+
+	else
+	{
+		cout << "In GetDataFromPKB: Invalid select type.\n";
+		return vector<string>();
+	}		
+
+}
 
 
 

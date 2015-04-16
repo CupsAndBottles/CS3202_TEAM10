@@ -1675,11 +1675,6 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 	}
 }
 
-bool QueryEvaluator::EvaluateUses(SuchThatClause suchThat) {
-	return true;
-}
-
-
 bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 {
 	Argument arg1 = suchThat.arg1;

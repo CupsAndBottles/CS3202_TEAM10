@@ -36,7 +36,6 @@ public:
 	void TestFollows();
 	void TestFollowsT();
 	void TestModifies();
-	void TestUses();
 
 	void TestPattern();
 

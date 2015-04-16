@@ -521,7 +521,7 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN) ||
 		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
 	// stmtAffecting is guaranteed to be assignment
-	StmtsHelper helper(stmtAffected);
+	StmtsHelper helper = StmtsHelper(stmtAffected);
 	return helper.findAffectedStmt(stmtAffecting);
 }
 

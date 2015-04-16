@@ -17,6 +17,7 @@ protected:
 
 	//Evaluate Relationship
 	bool EvaluateModifies(SuchThatClause);
+	bool EvaluateUses(SuchThatClause);
 	bool EvaluateParent(SuchThatClause);
 	bool EvaluateFollows(SuchThatClause);
 	bool EvaluateCalls(SuchThatClause);

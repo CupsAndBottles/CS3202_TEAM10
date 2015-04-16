@@ -1283,6 +1283,10 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 	*/
 }
 
+bool QueryEvaluator::EvaluateUses(SuchThatClause suchThat) {
+	return true;
+}
+
 
 bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 {

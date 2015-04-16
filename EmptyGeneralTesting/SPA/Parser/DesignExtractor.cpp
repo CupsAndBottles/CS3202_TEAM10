@@ -47,6 +47,7 @@ void ComputeCalls();
 void ComputeModifiesAndUsesForProcedures();
 void ComputeNext();
 void ComputeNextBip();
+void ConstructBV();
 
 void DesignExtractor::Extract() {
 	ComputeNodeTypeTable();
@@ -55,6 +56,7 @@ void DesignExtractor::Extract() {
 	ComputeNextBip();
 	ComputeModifiesAndUsesForProcedures();
 	ComputeModifiesAndUses();
+	ConstructBV();
 }
 
 void ComputeNodeTypeTable() {
@@ -258,4 +260,11 @@ void ComputeNextBip() {
 		NextBip::setReturnPoint(calledProc, call);
 	}
 
+}
+
+void ConstructBV() {
+	Modifies::CreateBitVector();
+	Uses::CreateBitVector();
+	Calls::CreateBitVector();
+	Next::CreateBitVector();
 }

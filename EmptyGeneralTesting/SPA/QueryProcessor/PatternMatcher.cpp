@@ -81,6 +81,8 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMat
 
 	vector<int> results;
 
+	if (object.expr == "") return results; // malformed object, or blank object.
+
 	for each (int currentStmt in stmtsToMatch) {
 		TNode& currentStmtTNode = Program::GetStmtFromNumber(currentStmt);
 		// go to RHS (ignore left of assignment statement. Match expression)
@@ -92,7 +94,7 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMat
 	return results;
 }
 
-Pattern CreatePatternObject(string expr)
+Pattern PatternMatcher::CreatePatternObject(string expr)
 {
 	class Helper {
 		deque<Token> tokens;
@@ -193,5 +195,16 @@ vector<int> PatternMatcher::MatchPatternFromRoot(string expr) {
 }
 
 vector<int> PatternMatcher::MatchPatternFromRoot(string expr, vector<int> stmtsToMatch) {
+	Pattern patternObj = Pattern();
+	bool notExactMatch = false;
+	if (expr.length() != 0) {
+		notExactMatch = expr.at(0) == '_';
+		vector<char> resultantExpr;
+		for each (char c in expr) {
+			if (c != '\"' && c != '_') resultantExpr.push_back(c);
+		}
+		patternObj = CreatePatternObject(string(resultantExpr.begin(), resultantExpr.end()));
+	}
 
+	return MatchPatternFromRoot(patternObj, notExactMatch, stmtsToMatch);
 }

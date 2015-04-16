@@ -20,6 +20,7 @@ class PatternMatcher {
     public:
         PatternMatcher() {};
 
+		static Pattern CreatePatternObject(string expr);
 		static vector<int> MatchPatternFromRoot(string expr);
 		static vector<int> MatchPatternFromRoot(string expr, vector<int> stmtsToMatch);
 		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch);

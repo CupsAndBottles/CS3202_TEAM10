@@ -38,6 +38,53 @@ PatternMatcherTest::PatternMatcherTest() {
 	// empty body
 }
 
+void PatternMatcherTest::testCreatePatternObject() {
+	std::string expr = "x";
+	Pattern patternObj = PatternMatcher::CreatePatternObject(expr);
+
+	CPPUNIT_ASSERT(patternObj.expr == "x");
+	CPPUNIT_ASSERT(patternObj.leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern == NULL);
+
+
+
+	expr = "111";
+	patternObj = PatternMatcher::CreatePatternObject(expr);
+
+	CPPUNIT_ASSERT(patternObj.expr == "111");
+	CPPUNIT_ASSERT(patternObj.leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern == NULL);
+
+
+
+	expr = "x+y";
+	patternObj = PatternMatcher::CreatePatternObject(expr);
+
+	CPPUNIT_ASSERT(patternObj.expr == "+");
+	CPPUNIT_ASSERT(patternObj.leftPattern != NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern != NULL);
+	CPPUNIT_ASSERT(patternObj.leftPattern->expr == "x");
+	CPPUNIT_ASSERT(patternObj.leftPattern->leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.leftPattern->rightPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern->expr == "y");
+	CPPUNIT_ASSERT(patternObj.rightPattern->leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
+
+
+	expr = " 3 +  fnJw ";
+	patternObj = PatternMatcher::CreatePatternObject(expr);
+
+	CPPUNIT_ASSERT(patternObj.expr == "+");
+	CPPUNIT_ASSERT(patternObj.leftPattern != NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern != NULL);
+	CPPUNIT_ASSERT(patternObj.leftPattern->expr == "3");
+	CPPUNIT_ASSERT(patternObj.leftPattern->leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.leftPattern->rightPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern->expr == "fnJw");
+	CPPUNIT_ASSERT(patternObj.rightPattern->leftPattern == NULL);
+	CPPUNIT_ASSERT(patternObj.rightPattern->rightPattern == NULL);
+}
+
 void PatternMatcherTest::matchSingleVariable() {
 	string expr = "x";
 	TNode* exprTree = ParseExpr(expr);

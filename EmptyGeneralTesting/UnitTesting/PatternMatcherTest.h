@@ -5,6 +5,7 @@
 
 class PatternMatcherTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(PatternMatcherTest);
+	CPPUNIT_TEST(testCreatePatternObject);
 	CPPUNIT_TEST(matchSingleVariable);
 	CPPUNIT_TEST(matchExprsWithTwoVariables);
 	CPPUNIT_TEST(matchExprsWithMultipleVariables);
@@ -18,6 +19,7 @@ public:
 
 	TNode* ParseExpr(string expr);
 
+	void testCreatePatternObject();
 	void matchSingleVariable();
 	void matchExprsWithTwoVariables();
 	void matchExprsWithMultipleVariables();

@@ -123,6 +123,7 @@ void UltimateTest2::TestCallsT() {
 
 	query = "procedure p; Select p such that Calls*(\"Solo\",p)";
 
+
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
@@ -136,10 +137,52 @@ void UltimateTest2::TestCallsT() {
 	actualResultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
+	
+}
+
+
+void UltimateTest2::TestWith()
+{
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+
+	query = "assign a; Select a such that Modifies(a,\"n\") with a.stmt# = 5";
+
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	qe.PrintIntermediateResult();
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	
+
+	actualResultList.push_back("5");
+
+	qe.PrintIntermediateResult();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
 
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
+
+	query = "assign a; Select a with a.stmt# = 5";
+
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	qe.PrintIntermediateResult();
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
 	
+
 }

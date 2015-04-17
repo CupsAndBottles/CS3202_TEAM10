@@ -932,7 +932,6 @@ void UltimateTest::TestNext() {
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 13, int(resultList.size()));
 
 	resultList.sort();
-	list<string>::iterator resultListIter = resultList.begin();
 
 	actualResultList.push_back("1");
 	actualResultList.push_back("2");
@@ -949,8 +948,6 @@ void UltimateTest::TestNext() {
 	actualResultList.push_back("26");
 	actualResultList.sort();
 	resultList.sort();
-
-
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
@@ -1547,4 +1544,79 @@ void UltimateTest::TestCombination() {
 
 void UltimateTest::TestWith() {
 
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+	query = "assign a; variable v;Select a such that Uses(a, v) with v.varName = \"z\"";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 5, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("7");
+	actualResultList.push_back("14");
+	actualResultList.push_back("17");
+	actualResultList.push_back("22");
+	actualResultList.push_back("25");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+
+	//query = "assign a; variable v;Select v such that Uses(a, v) with a.stmt# = 7";
+
+	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	//resultList.sort();
+
+	//actualResultList.push_back("z");
+	//actualResultList.push_back("x");
+	//actualResultList.sort();
+	//resultList.sort();
+
+	//CPPUNIT_ASSERT(resultList == actualResultList);
+
+	//qd.ClearData();
+	//resultList.clear();
+	//actualResultList.clear();
+	//qe.ClearIntermediateResult();
+
+	//query = "stmt s; variable v;Select v such that Uses(s, v) with s.stmt# = 7";
+
+	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	//resultList.sort();
+
+	//actualResultList.push_back("z");
+	//actualResultList.push_back("x");
+	//actualResultList.sort();
+	//resultList.sort();
+
+	//CPPUNIT_ASSERT(resultList == actualResultList);
+
+	//qd.ClearData();
+	//resultList.clear();
+	//actualResultList.clear();
+	//qe.ClearIntermediateResult();
 }

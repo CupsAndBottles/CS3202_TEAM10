@@ -3371,6 +3371,146 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 bool QueryEvaluator::EvaluateWith(WithClause with)
 {
+	Argument arg1 = with.arg1;
+	Argument arg2 = with.arg2;
+	Synonym arg1Syn = with.arg1.syn;
+	Synonym arg2Syn = with.arg2.syn;
+	ArgumentType arg1Type = with.arg1.type;
+	ArgumentType arg2Type = with.arg2.type;
+	
+	//a = s
+	//a = 5
+
+	//p = v
+	//v = "x"	
+	if(arg1.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
+								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == CONSTANT ||  arg1Syn.type == PROG_LINE))
+	{
+		if(arg2.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
+								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == CONSTANT ||  arg1Syn.type == PROG_LINE))
+		{
+
+		}
+		
+		else if(arg2.type == INTEGER)
+		{
+			//------------Get intermediate result of type arg1------------
+			vector<int> stmts;
+
+			if(!intermediateResult.IsListEmpty(arg1.syn)) {
+				//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+			}
+
+			else {
+				//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				intermediateResult.GetList(arg1Syn.value, stmts);
+			}
+			return true;
+
+			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				if(*it_stmts != STOI(arg2.value))
+				{
+					intermediateResult.Remove(arg1Syn.value, *it_stmts);
+				}
+			}
+
+			if(intermediateResult.IsListEmpty(arg1Syn))
+				intermediateResult.Insert(arg1Syn.value , arg2.value);
+
+
+			return true;
+		}
+
+		else return false;
+	}
+
+	else if(arg1.type == SYNONYM && arg1Syn.type == PROCEDURE)
+	{
+
+		//------------Get intermediate result of type arg1------------
+		vector<string> stmts;
+
+		if(!intermediateResult.IsListEmpty(arg1.syn)) {
+			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			stmts = ProcTable::GetAllProcNames();
+		}
+
+		else {
+			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			intermediateResult.GetList(arg1Syn.value, stmts);
+		}
+
+
+		if(arg2.type == SYNONYM && (arg1Syn.type == PROCEDURE || arg1Syn.type == VARIABLE ))
+		{
+		}
+
+		else if(arg2.type == IDENT)
+		{
+			string ident = arg2.value;
+			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+			ident = ident.substr(1, ident.length()-2);
+
+			//if table is empty, insert ident
+			//if not, loop through element, if element not == ident, remove it
+			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				if(*it_stmts != ident)
+				{
+					intermediateResult.Remove(arg1Syn.value , *it_stmts);
+				}
+			}
+
+			if(intermediateResult.IsListEmpty(arg1Syn))
+				intermediateResult.Insert(arg1Syn.value , ident);
+		}
+
+		else return false;
+
+	}
+
+
+	else if(arg1.type == SYNONYM && arg1Syn.type == VARIABLE)
+	{
+		
+		//------------Get intermediate result of type arg1------------
+		vector<string> stmts;
+
+		if(!intermediateResult.IsListEmpty(arg1.syn)) {
+			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			stmts = VarTable::GetAllVarNames();		}
+
+		else {
+			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			intermediateResult.GetList(arg1Syn.value, stmts);
+		}
+
+		if(arg2.type == IDENT)
+		{
+			string ident = arg2.value;
+			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+			ident = ident.substr(1, ident.length()-2);
+
+			//if table is empty, insert ident
+			//if not, loop through element, if element not == ident, remove it
+			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				if(*it_stmts != ident)
+				{
+					intermediateResult.Remove(arg1Syn.value , *it_stmts);
+				}
+			}
+
+			if(intermediateResult.IsListEmpty(arg1Syn))
+				intermediateResult.Insert(arg1Syn.value , ident);
+		}
+
+		else return false;
+	}
+	
+	else return false;
 
 	return true;
 }	

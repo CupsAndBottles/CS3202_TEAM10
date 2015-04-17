@@ -31,7 +31,9 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 	vector<PatternClause> patterns = queryData.GetPatterns();
 	vector<SuchThatClause> suchThats = queryData.GetSuchThats();
 	vector<WithClause> withs = queryData.GetWiths();
-	std::vector<std::pair<ClauseType,int>> clauseSequence = queryData.GetClauseSequence();
+	Optimizer optimizer = Optimizer();
+	std::vector<std::pair<ClauseType,int>> clauseSequence = optimizer.optimize(queryData);
+	//std::vector<std::pair<ClauseType,int>> clauseSequence = queryData.GetClauseSequence();
 	bool hasAnswer = true;
 	bool isSelectAll = false;
 

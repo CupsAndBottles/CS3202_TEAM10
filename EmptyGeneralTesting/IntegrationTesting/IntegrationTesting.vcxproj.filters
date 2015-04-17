@@ -13,6 +13,7 @@
     <ClCompile Include="UltimateTest.cpp" />
     <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="AffectsTest.cpp" />
+    <ClCompile Include="UltimateTest2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\pkbTest.txt" />
@@ -39,5 +40,6 @@
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
     <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="AffectsTest.h" />
+    <ClInclude Include="UltimateTest2.h" />
   </ItemGroup>
 </Project>

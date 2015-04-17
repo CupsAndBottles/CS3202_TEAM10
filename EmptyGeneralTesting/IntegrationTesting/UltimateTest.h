@@ -23,11 +23,11 @@ class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestUses);
 	CPPUNIT_TEST(TestModifies);
 	CPPUNIT_TEST(TestPattern);
-	/*CPPUNIT_TEST(TestCombination);
+	CPPUNIT_TEST(TestCombination);
 	CPPUNIT_TEST(TestNext);
 	CPPUNIT_TEST(TestNextT);
 	CPPUNIT_TEST(TestAffects);
-	CPPUNIT_TEST(TestAffectsT);*/
+	CPPUNIT_TEST(TestAffectsT);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

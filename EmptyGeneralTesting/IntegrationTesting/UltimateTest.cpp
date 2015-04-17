@@ -970,14 +970,16 @@ void UltimateTest::TestNext() {
 	actualResultList.push_back("9");
 	actualResultList.push_back("15");
 	actualResultList.push_back("21");
-	actualResultList.push_back("24");
+	actualResultList.push_back("6");
 	actualResultList.sort();
 	resultList.sort();
+
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "while w;assign a;Select a such that Next(w,a)";
@@ -988,21 +990,21 @@ void UltimateTest::TestNext() {
 	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 7, int(resultList.size()));
 
 	actualResultList.push_back("7");
-	actualResultList.push_back("9");
+	actualResultList.push_back("10");
 	actualResultList.push_back("12");
 	actualResultList.push_back("16");
 	actualResultList.push_back("18");
 	actualResultList.push_back("22");
 	actualResultList.push_back("25");
 	actualResultList.sort();
-
-
+	resultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "while w;assign a;Select a such that Next(a,w)";
@@ -1010,15 +1012,13 @@ void UltimateTest::TestNext() {
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 10, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 8, int(resultList.size()));
 
 	actualResultList.push_back("5");
 	actualResultList.push_back("8");
 	actualResultList.push_back("10");
 	actualResultList.push_back("14");
-	actualResultList.push_back("5");
 	actualResultList.push_back("17");
-	actualResultList.push_back("10");
 	actualResultList.push_back("20");
 	actualResultList.push_back("23");
 	actualResultList.push_back("27");
@@ -1029,6 +1029,7 @@ void UltimateTest::TestNext() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "while w;Select w such that Next(_,w)";
@@ -1051,6 +1052,7 @@ void UltimateTest::TestNext() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 }
 
 void UltimateTest::TestNextT() {}

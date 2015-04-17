@@ -14,7 +14,9 @@ void UltimateTest::setUp() {
 	Parser::Parse(string(TESTFILE_DIRECTORY).append("ultimate-source.txt"));
 }
 
-void UltimateTest::tearDown() {}
+void UltimateTest::tearDown() {
+	Program::ClearAll();
+}
 
 
 void UltimateTest::TestSelectAll()
@@ -1053,11 +1055,218 @@ void UltimateTest::TestNext() {
 	qe.ClearIntermediateResult();
 }
 
-void UltimateTest::TestNextT() {}
+void UltimateTest::TestNextT() {
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
 
-void UltimateTest::TestAffects() {}
+	qd.ClearData();
 
-void UltimateTest::TestAffectsT() {}
+	query = "assign a;Select a1 such that NextT(1,a)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 26, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("6");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("9");
+	actualResultList.push_back("10");
+	actualResultList.push_back("11");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("14");
+	actualResultList.push_back("15");
+	actualResultList.push_back("16");
+	actualResultList.push_back("17");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("20");
+	actualResultList.push_back("21");
+	actualResultList.push_back("22");
+	actualResultList.push_back("23");
+	actualResultList.push_back("24");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+}
+
+void UltimateTest::TestAffects() {
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+	query = "assign a1,a2;Select a1 such that Affects(a1,a2)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 13, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("1");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("13");
+	actualResultList.push_back("16");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+
+	query = "assign a;Select a such that Affects(a,10)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+}
+
+void UltimateTest::TestAffectsT() {
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+	query = "assign a1,a2;Select a1 such that AffectsT(a1,a2)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 13, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("1");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("13");
+	actualResultList.push_back("16");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+
+	query = "assign a;Select a such that AffectsT(a,7)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("1");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+
+	query = "assign a;Select a such that AffectsT(1,a)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("2");
+	actualResultList.push_back("7");
+	actualResultList.push_back("10");
+	actualResultList.push_back("12");
+	actualResultList.push_back("17");
+	actualResultList.push_back("20");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+}
 
 void UltimateTest::TestPattern() {
 	QueryData qd;
@@ -1543,7 +1752,6 @@ void UltimateTest::TestCombination() {
 }
 
 void UltimateTest::TestWith() {
-
 	QueryData qd;
 	QueryPreProcessor qv;
 	QueryEvaluator qe;
@@ -1619,4 +1827,123 @@ void UltimateTest::TestWith() {
 	//resultList.clear();
 	//actualResultList.clear();
 	//qe.ClearIntermediateResult();
+
+
+	query = "procedure p;Select p with p.procName = \"Solo\"";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("Solo");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+}
+
+void UltimateTest::TestAnd() {
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query;
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+	query = "assign a; variable v;Select a such that Uses(a, v) and Modifies(a, v)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("13");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "stmt s1, s2; Select s1 such that Follows(s1, s2) and Next(s1, s2)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 20, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("9");
+	actualResultList.push_back("10");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("15");
+	actualResultList.push_back("16");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("20");
+	actualResultList.push_back("22");
+	actualResultList.push_back("23");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+
+	query = "stmt s1, s2; Select s2 such that Parent(s1, s2) and Next(s1, s2)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 7, int(resultList.size()));
+
+	resultList.sort();
+
+	actualResultList.push_back("7");
+	actualResultList.push_back("10");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("16");
+	actualResultList.push_back("22");
+	actualResultList.push_back("25");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 }

@@ -94,6 +94,26 @@ void UltimateTest2::TestCalls() {
 	resultList.clear();
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
+
+
+	query = "procedure p; Select p such that Calls(\"Solo\",p)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+
+	actualResultList.push_back("Duo");
+	actualResultList.push_back("Trio");
+	actualResultList.push_back("Quartet");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 }
 
 void UltimateTest2::TestCallsT() {
@@ -106,7 +126,7 @@ void UltimateTest2::TestCallsT() {
 
 	qd.ClearData();
 
-	//query = "procedure p; Select p such that CallsT(\"Solo\",p)";
+	//query = "procedure p; Select p such that Calls*(\"Solo\",p)";
 
 	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));

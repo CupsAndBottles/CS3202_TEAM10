@@ -1348,7 +1348,6 @@ void UltimateTest::TestPattern() {
 	CPPUNIT_ASSERT(resultList == actualResultList);
 }
 
-// edit these test cases. they are wrong
 void UltimateTest::TestCombination() {
 	QueryData qd;
 	QueryPreProcessor qv;
@@ -1544,4 +1543,8 @@ void UltimateTest::TestCombination() {
 	actualResultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
+}
+
+void UltimateTest::TestWith() {
+
 }

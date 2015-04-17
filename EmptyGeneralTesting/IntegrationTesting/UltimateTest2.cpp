@@ -121,13 +121,8 @@ void UltimateTest2::TestCallsT() {
 
 	qd.ClearData();
 
-<<<<<<< HEAD
-
 	query = "procedure p; Select p such that Calls*(\"Solo\",p)";
 
-=======
-	query = "procedure p; Select p such that Calls*(\"Solo\",p)";
->>>>>>> origin/dev
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));

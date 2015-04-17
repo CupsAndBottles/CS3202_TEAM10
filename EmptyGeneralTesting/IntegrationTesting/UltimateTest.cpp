@@ -960,7 +960,7 @@ void UltimateTest::TestNext() {
 	qe.ClearIntermediateResult();
 
 
-	/*query = "while w1,w2;Select w2 such that Next(w1,w2)";
+	query = "while w1,w2;Select w2 such that Next(w1,w2)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -975,8 +975,8 @@ void UltimateTest::TestNext() {
 	resultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
-	*/
-	/*qd.ClearData();
+	
+	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
@@ -996,11 +996,7 @@ void UltimateTest::TestNext() {
 	actualResultList.push_back("22");
 	actualResultList.push_back("25");
 	actualResultList.sort();
-<<<<<<< HEAD
-
-=======
 	resultList.sort();
->>>>>>> origin/dev
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
@@ -1008,12 +1004,8 @@ void UltimateTest::TestNext() {
 
 	qd.ClearData();
 	resultList.clear();
-<<<<<<< HEAD
-	actualResultList.clear();*/
-=======
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
->>>>>>> origin/dev
 
 
 	query = "while w;assign a;Select a such that Next(a,w)";
@@ -1356,6 +1348,10 @@ void UltimateTest::TestPattern() {
 	CPPUNIT_ASSERT(resultList == actualResultList);
 }
 
+void UltimateTest::TestWith() {
+
+}
+
 // edit these test cases. they are wrong
 void UltimateTest::TestCombination() {
 	QueryData qd;
@@ -1457,7 +1453,7 @@ void UltimateTest::TestCombination() {
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	/*
+	
 	qd.ClearData();
 	resultList.clear();
 	qe.ClearIntermediateResult();
@@ -1470,14 +1466,13 @@ void UltimateTest::TestCombination() {
 
 	qe.PrintIntermediateResult();
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
 	actualResultList.clear();
 	actualResultList.push_back("14");
-	actualResultList.push_back("25");
 	actualResultList.sort();
 
-	CPPUNIT_ASSERT(resultList == actualResultList);*/
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
 	qd.ClearData();

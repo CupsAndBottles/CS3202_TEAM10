@@ -968,76 +968,39 @@ void UltimateTest::TestPattern() {
 	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	query = "assign a;variable v;Select v pattern a(_,_)";
+	query = "assign a;variable v;Select a pattern a(v,_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 21, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 21, int(resultList.size()));
 
-	//actualResultList.clear();
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("2");
-	//actualResultList.push_back("3");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("10");
-	//actualResultList.push_back("12");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("14");
-	//actualResultList.push_back("16");
-	//actualResultList.push_back("17");
-	//actualResultList.push_back("18");
-	//actualResultList.push_back("19");
-	//actualResultList.push_back("20");
-	//actualResultList.push_back("22");
-	//actualResultList.push_back("23");
-	//actualResultList.push_back("25");
-	//actualResultList.push_back("26");
-	//actualResultList.push_back("27");
-	//actualResultList.sort();
+	actualResultList.clear();
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("10");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("14");
+	actualResultList.push_back("16");
+	actualResultList.push_back("17");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("20");
+	actualResultList.push_back("22");
+	actualResultList.push_back("23");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//qe.ClearIntermediateResult();
-
-	//query = "assign a;variable v;Select a pattern a(v,_)";
-
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
-
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 21, int(resultList.size()));
-
-	//actualResultList.clear();
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("2");
-	//actualResultList.push_back("3");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("10");
-	//actualResultList.push_back("12");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("14");
-	//actualResultList.push_back("16");
-	//actualResultList.push_back("17");
-	//actualResultList.push_back("18");
-	//actualResultList.push_back("19");
-	//actualResultList.push_back("20");
-	//actualResultList.push_back("22");
-	//actualResultList.push_back("23");
-	//actualResultList.push_back("25");
-	//actualResultList.push_back("26");
-	//actualResultList.push_back("27");
-	//actualResultList.sort();
-
-	//CPPUNIT_ASSERT(resultList == actualResultList);
-	//
 
 	qd.ClearData();
 	resultList.clear();
@@ -1046,53 +1009,54 @@ void UltimateTest::TestPattern() {
 	query = "assign a;Select a pattern a(_,_\"x + 1\"_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
 
-	//actualResultList.clear();
-	//actualResultList.push_back("2");
-	//actualResultList.push_back("20");
-	//actualResultList.sort();
+	actualResultList.clear();
+	actualResultList.push_back("2");
+	actualResultList.push_back("20");
+	actualResultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
-
-
-	//qd.ClearData();
-	//resultList.clear();
-
-	//query = "assign a;Select a pattern a(_,_\"1\"_)";
-
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
-
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 5, int(resultList.size()));
-
-	//actualResultList.clear();
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("2");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("20");
-	//actualResultList.sort();
-
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 
-	//query = "assign a;Select a pattern a(_,_\"tEst\"_)";
+	query = "assign a;Select a pattern a(_,_\"1\"_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 6, int(resultList.size()));
 
-	//actualResultList.clear();
-	//actualResultList.push_back("10");
+	actualResultList.clear();
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
+	actualResultList.push_back("7");
+	actualResultList.push_back("13");
+	actualResultList.push_back("19");
+	actualResultList.push_back("20");
+	actualResultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+
+	query = "assign a;Select a pattern a(_,_\"tEst\"_)";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("10");
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
 	qd.ClearData();
@@ -1102,103 +1066,104 @@ void UltimateTest::TestPattern() {
 	query = "assign a;Select a pattern a(\"tEst\",_\" z + x\"_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//actualResultList.clear();
-	//actualResultList.push_back("7");
+	actualResultList.clear();
+	actualResultList.push_back("7");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(_,\"0\")";
+	query = "assign a;Select a pattern a(_,\"0\")";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
 
-	//actualResultList.clear();
-	//actualResultList.push_back("26");
+	actualResultList.clear();
+	actualResultList.push_back("16");
+	actualResultList.push_back("26");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(_,_\"b + a - c\"_)";
+	query = "assign a;Select a pattern a(_,_\"b + a - c\"_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	
+	actualResultList.clear();
+	actualResultList.push_back("23");
 
-	//actualResultList.push_back("23");
-	//actualResultList.clear();
-
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(_,_\"8 * c\"_)";
+	query = "assign a;Select a pattern a(_,_\"8 * c\"_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//actualResultList.push_back("25");
-	//actualResultList.clear();
+	actualResultList.clear();
+	actualResultList.push_back("25");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(_,\"s + a + c\")";
+	query = "assign a;Select a pattern a(_,\"s + a + c\")";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//actualResultList.push_back("27");
-	//actualResultList.clear();
+	actualResultList.clear();
+	actualResultList.push_back("27");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(_,\"s + a + c\")";
+	query = "assign a;Select a pattern a(_,\"s + a + c\")";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//actualResultList.push_back("27");
-	//actualResultList.clear();
+	actualResultList.clear();
+	actualResultList.push_back("27");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
+	qd.ClearData();
+	resultList.clear();
 	qe.ClearIntermediateResult();
 
 	//query = "while w;Select w pattern w(\"tEst\",_)";
@@ -1208,8 +1173,8 @@ void UltimateTest::TestPattern() {
 
 	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//actualResultList.push_back("15");
 	//actualResultList.clear();
+	//actualResultList.push_back("15");
 
 	//CPPUNIT_ASSERT(resultList == actualResultList);
 

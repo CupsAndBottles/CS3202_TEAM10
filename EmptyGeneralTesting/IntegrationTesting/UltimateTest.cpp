@@ -960,7 +960,7 @@ void UltimateTest::TestNext() {
 	qe.ClearIntermediateResult();
 
 
-	/*query = "while w1,w2;Select w2 such that Next(w1,w2)";
+	query = "while w1,w2;Select w2 such that Next(w1,w2)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -975,8 +975,8 @@ void UltimateTest::TestNext() {
 	resultList.sort();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
-	*/
-	/*qd.ClearData();
+	
+	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
@@ -996,24 +996,16 @@ void UltimateTest::TestNext() {
 	actualResultList.push_back("22");
 	actualResultList.push_back("25");
 	actualResultList.sort();
-<<<<<<< HEAD
 
-=======
-	resultList.sort();
->>>>>>> origin/dev
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
-
+	
 
 	qd.ClearData();
 	resultList.clear();
-<<<<<<< HEAD
-	actualResultList.clear();*/
-=======
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
->>>>>>> origin/dev
 
 
 	query = "while w;assign a;Select a such that Next(a,w)";

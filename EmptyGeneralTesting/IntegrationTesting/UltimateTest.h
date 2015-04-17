@@ -16,7 +16,7 @@
 
 class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(UltimateTest);
-	CPPUNIT_TEST(TestSelectAll);
+	/*CPPUNIT_TEST(TestSelectAll);
 	CPPUNIT_TEST(TestParent);
 	CPPUNIT_TEST(TestParentT);
 	CPPUNIT_TEST(TestFollows);
@@ -27,8 +27,8 @@ class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestNext);
 	CPPUNIT_TEST(TestNextT);
 	CPPUNIT_TEST(TestAffects);
-	CPPUNIT_TEST(TestAffectsT);
-	CPPUNIT_TEST(TestWith);
+	CPPUNIT_TEST(TestAffectsT);*/
+	//CPPUNIT_TEST(TestWith);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

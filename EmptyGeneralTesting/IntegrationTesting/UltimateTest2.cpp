@@ -29,42 +29,37 @@ void UltimateTest2::TestPatternForIf() {
 
 	qd.ClearData();
 
-	//query = "if i; Select i pattern i(\"z\",_)";
+	query = "if i; Select i pattern i(\"z\",_,_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
 
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("24");
-	//actualResultList.sort();
+	actualResultList.push_back("8");
+	actualResultList.push_back("24");
+	actualResultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
-
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
-
-	//query = "if i;variable v;Select v pattern i(v,_)";
-	//std::cout << "\nTest query : " << query << "\n";
-
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
-
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
-
-	//actualResultList.clear();
-	//actualResultList.push_back("z");
-	//actualResultList.sort();
-
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
 	qe.ClearIntermediateResult();
+
+	query = "if i;variable v;Select v pattern i(v,_,_)";
+	std::cout << "\nTest query : " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	actualResultList.clear();
+	actualResultList.push_back("z");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
 }
 
 void UltimateTest2::TestCalls() {
@@ -106,19 +101,21 @@ void UltimateTest2::TestCallsT() {
 
 	qd.ClearData();
 
-	//query = "procedure p; Select p such that CallsT(\"Solo\",p)";
+	query = "procedure p; Select p such that Calls*(\"Solo\",p)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
 
-	//actualResultList.push_back("Solo");
-	//actualResultList.push_back("Duo");
-	//actualResultList.push_back("Trio");
-	//actualResultList.sort();
+	qe.PrintIntermediateResult();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	actualResultList.push_back("Duo");
+	actualResultList.push_back("Trio");
+	actualResultList.push_back("Quartet");
+	actualResultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	qd.ClearData();
 	resultList.clear();

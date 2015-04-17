@@ -2034,7 +2034,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, prevStmt);
-				usingIntermediateResult_next = true;
+				usingIntermediateResult_prev = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
@@ -2046,7 +2046,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, nextStmt);
-				usingIntermediateResult_prev = true;
+				usingIntermediateResult_next = true;
 			}
 
 			//loop nextStmt.size() * prevStmt.size() times, if all invalid, validCount will be 0, return false
@@ -2056,8 +2056,8 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 				for (vector<int>::iterator it_next = nextStmt.begin(); it_next != nextStmt.end(); ++it_next) {
 					bool isNext = false;
 	
-					string next_str = ITOS(*it_prev);
-					string prev_str = ITOS(*it_next);
+					string prev_str = ITOS(*it_prev);
+					string next_str = ITOS(*it_next);
 
 					if (rel == NEXT)	isNext = Next::IsNext(*it_prev, *it_next);
 					else				isNext = Next::IsNextT(*it_prev, *it_next);
@@ -3456,7 +3456,6 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 	else if(arg1.type == SYNONYM && arg1Syn.type == PROCEDURE)
 	{
-
 		//------------Get intermediate result of type arg1------------
 		vector<string> stmts;
 
@@ -3541,7 +3540,7 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	//with "x" = "y"
 	else if(arg1.type == IDENT)
 	{
-		if(arg1.type == IDENT)
+		if(arg2.type == IDENT)
 		{
 			if(arg1.value == arg2.value)	return true;
 			else return false;
@@ -3553,7 +3552,7 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	//with 1 = 3
 	else if(arg1.type == INTEGER)
 	{
-		if(arg1.type == INTEGER)
+		if(arg2.type == INTEGER)
 		{
 			if(STOI(arg1.value) == STOI(arg2.value))	return true;
 			else return false;

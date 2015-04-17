@@ -1,5 +1,3 @@
-91
-cat: All Queries
 1 - Follows :: 
 stmt s;
 Select s such that Follows (_, _)

@@ -3399,6 +3399,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 bool QueryEvaluator::EvaluateWith(WithClause with)
 {
+	cout << "In EvaluateWith\n";
 	Argument arg1 = with.arg1;
 	Argument arg2 = with.arg2;
 	Synonym arg1Syn = with.arg1.syn;
@@ -3470,7 +3471,7 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		}
 
 
-		if(arg2.type == SYNONYM && (arg1Syn.type == PROCEDURE || arg1Syn.type == VARIABLE ))
+		if(arg2.type == SYNONYM && (arg2Syn.type == PROCEDURE || arg2Syn.type == VARIABLE ))
 		{
 		}
 
@@ -3490,8 +3491,8 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 				}
 			}
 
-			if(intermediateResult.IsListEmpty(arg1Syn))
-				intermediateResult.Insert(arg1Syn.value , ident);
+			//if(intermediateResult.IsListEmpty(arg1Syn))
+				//intermediateResult.Insert(arg1Syn.value , ident);
 		}
 
 		else return false;
@@ -3507,7 +3508,8 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 		if(!intermediateResult.IsListEmpty(arg1.syn)) {
 			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
-			stmts = VarTable::GetAllVarNames();		}
+			stmts = VarTable::GetAllVarNames();		
+		}
 
 		else {
 			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
@@ -3516,22 +3518,25 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 		if(arg2.type == IDENT)
 		{
+			
 			string ident = arg2.value;
 			ident.erase(std::remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
 			ident = ident.substr(1, ident.length()-2);
-
+			cout << "here " << ident << "\n";
 			//if table is empty, insert ident
 			//if not, loop through element, if element not == ident, remove it
 			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 			{
 				if(*it_stmts != ident)
 				{
+					cout << "Removing " << *it_stmts << "\n";
 					intermediateResult.Remove(arg1Syn.value , *it_stmts);
 				}
+
 			}
 
-			if(intermediateResult.IsListEmpty(arg1Syn))
-				intermediateResult.Insert(arg1Syn.value , ident);
+			//if(intermediateResult.IsListEmpty(arg1Syn))
+				//intermediateResult.Insert(arg1Syn.value , ident);
 		}
 
 		else return false;

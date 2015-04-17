@@ -1698,6 +1698,7 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 	RelationshipType rel = suchThat.relationship;
 
 	cout << "Evaluating Calls( " << arg1.value << " , " << arg2.value << ")\n";
+	cout << arg1.type << " " << arg2.type << "\n";
 
 	if (arg1.type == SYNONYM) {
 		int validCount = 0;
@@ -1816,9 +1817,14 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 			validCount = procs.size();
 
+			string ident = arg2.value;
+			ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+			ident = ident.substr(1, ident.length()-2);
+			int procIndex2 = ProcTable::GetIndexOfProc(ident);
+
 			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
+
 				int procIndex1 = ProcTable::GetIndexOfProc(*it);
-				int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
 
 				if(procIndex1 == -1 || procIndex2 == -1) return false;
 
@@ -1891,6 +1897,7 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 	//Calls("proc1"/_, q)
 	else if (arg2.type == SYNONYM) {
+	
 		vector<string> procs;
 		bool usingIntermediateResult = false;
 
@@ -1911,7 +1918,16 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 			// Calls("proc1",q)
 			if (arg1.type == IDENT) {
-				int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+				string ident = arg1.value;
+				ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+				ident = ident.substr(1, ident.length()-2);
+
+				int procIndex1 = ProcTable::GetIndexOfProc(ident);
+
+				cout << "here\n";
+				cout <<arg1.value << "\n";
+					cout << procIndex1 << " " << procIndex2 << "\n";
+
 				if(procIndex1 == -1 || procIndex2 == -1) return false;
 
 				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
@@ -1952,7 +1968,11 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 	//Calls(_,"proc2")
 	else if (arg1.type == UNDERSCORE && arg2.type == IDENT) {
-		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+		string ident = arg2.value;
+		ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+		ident = ident.substr(1, ident.length()-2);
+
+		int procIndex2 = ProcTable::GetIndexOfProc(ident);
 
 		if(procIndex2 == -1)	return false;
 
@@ -1967,7 +1987,11 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 	//Calls("proc1",_)
 	else if (arg1.type == IDENT && arg2.type == UNDERSCORE) {
-		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+		string ident = arg1.value;
+		ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
+		ident = ident.substr(1, ident.length()-2);
+
+		int procIndex1 = ProcTable::GetIndexOfProc(ident);
 
 		if(procIndex1 == -1)	return false;
 
@@ -1982,8 +2006,16 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 	//Calls("proc1","proc2")
 	else if (arg1.type == IDENT && arg2.type == IDENT) {
-		int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
-		int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
+		string ident1 = arg1.value;
+		ident1.erase(remove_if(ident1.begin(), ident1.end(), [](char x){return isspace(x);}), ident1.end());
+		ident1 = ident1.substr(1, ident1.length()-2);
+
+		string ident2 = arg2.value;
+		ident2.erase(remove_if(ident2.begin(), ident2.end(), [](char x){return isspace(x);}), ident2.end());
+		ident2 = ident2.substr(1, ident2.length()-2);
+
+		int procIndex1 = ProcTable::GetIndexOfProc(ident1);
+		int procIndex2 = ProcTable::GetIndexOfProc(ident2);
 
 		if(procIndex1 == -1 || procIndex2 == -1)	return false;
 
@@ -3407,11 +3439,6 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	ArgumentType arg1Type = with.arg1.type;
 	ArgumentType arg2Type = with.arg2.type;
 	
-	//a = s
-	//a = 5
-
-	//p = v
-	//v = "x"	
 	if(arg1.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
 								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == CONSTANT ||  arg1Syn.type == PROG_LINE))
 	{

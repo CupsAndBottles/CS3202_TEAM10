@@ -10,8 +10,10 @@
 #include "..\PKB\Affects.h"
 #include "..\PKB\Next.h"
 #include "..\PKB\Calls.h"
+#include "..\PKB\Contains.h"
 #include "..\QueryProcessor\QueryPreProcessor.h"
 #include "..\QueryProcessor\QueryData.h"
+#include "..\Program\Program.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator> 
@@ -1743,6 +1745,8 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 					int procIndex1 = ProcTable::GetIndexOfProc(*it_calling);
 					int procIndex2 = ProcTable::GetIndexOfProc(*it_called);
 
+					if(procIndex1 == -1 || procIndex2 == -1) return false;
+
 					if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
 					else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
 
@@ -1816,6 +1820,8 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 				int procIndex1 = ProcTable::GetIndexOfProc(*it);
 				int procIndex2 = ProcTable::GetIndexOfProc(arg2.value);
 
+				if(procIndex1 == -1 || procIndex2 == -1) return false;
+
 				bool isCalls = false;
 
 				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
@@ -1852,6 +1858,8 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			for (vector<string>::iterator it = procs.begin(); it != procs.end(); ++it) {
 				vector<int> procIndices;
 				int procIndex = ProcTable::GetIndexOfProc(*it);
+
+				if(procIndex == -1) return false;
 
 				if (rel == CALLS)	procIndices = Calls::GetProcsCalledBy(procIndex);
 				else				procIndices = Calls::GetProcsCalledTBy(procIndex);
@@ -1904,6 +1912,7 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 			// Calls("proc1",q)
 			if (arg1.type == IDENT) {
 				int procIndex1 = ProcTable::GetIndexOfProc(arg1.value);
+				if(procIndex1 == -1 || procIndex2 == -1) return false;
 
 				if (rel == CALLS)	isCalls = Calls::IsCalls(procIndex1, procIndex2);
 				else				isCalls = Calls::IsCallsT(procIndex1, procIndex2);
@@ -2025,7 +2034,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, prevStmt);
-				usingIntermediateResult_next = true;
+				usingIntermediateResult_prev = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
@@ -2037,7 +2046,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 			else {
 				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, nextStmt);
-				usingIntermediateResult_prev = true;
+				usingIntermediateResult_next = true;
 			}
 
 			//loop nextStmt.size() * prevStmt.size() times, if all invalid, validCount will be 0, return false
@@ -2047,8 +2056,8 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 				for (vector<int>::iterator it_next = nextStmt.begin(); it_next != nextStmt.end(); ++it_next) {
 					bool isNext = false;
 	
-					string next_str = ITOS(*it_prev);
-					string prev_str = ITOS(*it_next);
+					string prev_str = ITOS(*it_prev);
+					string next_str = ITOS(*it_next);
 
 					if (rel == NEXT)	isNext = Next::IsNext(*it_prev, *it_next);
 					else				isNext = Next::IsNextT(*it_prev, *it_next);
@@ -3073,7 +3082,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 		}
 
 		//pattern w(v,_)
-		else if(arg1Type == IDENT)
+		else if(arg1Type == SYNONYM && arg1Syn.type == VARIABLE)
 		{
 			//------------Get intermediate result of type arg2------------
 			vector<string> vars;
@@ -3096,10 +3105,15 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
-					bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					bool isContains = false;
+					if(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent() == *it_vars)
+						isContains = true;
+
+					//cout << *it_stmts << "iscontain " << *it_vars << " is " << isContains << "\n";
 
 					if (usingIntermediateResult_while && usingIntermediateResult_vars) {
-						if (isUses) {
+						if (isContains) {
 							bool isDirectLink;
 							if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
 								if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
@@ -3127,7 +3141,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 					//at least one of the synonym list is new, or both
 					else {
-						if (isUses) {
+						if (isContains) {
 							intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
 						} 
 						else {
@@ -3144,7 +3158,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 		}
 
 		//pattern w("x",_)
-		else if(arg1Type == SYNONYM && arg1Syn.type == VARIABLE)
+		else if(arg1Type == IDENT)
 		{
 			string ident = arg1Value;
 			ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
@@ -3157,11 +3171,18 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				validCount = stmts.size();
 				for(vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 				{
-					bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					//bool isContains = Contains::IsStmtContainsVar(*it_stmts , varIndex);
+					//cout << "iscontain " << *it_stmts << " is " << isContains << "\n";
+					bool isContains = false;
+					if(VarTable::GetIndexOfVar(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent()) == varIndex)
+						isContains=true;
+
+					cout << "iscontain " << *it_stmts << " is " << isContains << "\n";
 
 					if(usingIntermediateResult_while)
 					{
-						if(isUses) {}
+						if(isContains) {}
 						else 
 						{
 							intermediateResult.Remove(patternSyn.value , *it_stmts);
@@ -3170,7 +3191,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					}
 					else
 					{
-						if(isUses) intermediateResult.Insert(patternSyn.value , *it_stmts);
+						if(isContains) intermediateResult.Insert(patternSyn.value , *it_stmts);
 						else --validCount;
 					}
 				}
@@ -3235,7 +3256,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 		}
 
 		//pattern ifs("x",_,_)
-		else if(arg1Type == IDENT)
+		else if(arg1Type == SYNONYM && arg1Syn.type == VARIABLE)
 		{
 			//------------Get intermediate result of type arg2------------
 			vector<string> vars;
@@ -3258,10 +3279,13 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
-					bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					bool isContains = false;
+					if(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent() == *it_vars)
+						isContains = true;
 
 					if (usingIntermediateResult_if && usingIntermediateResult_vars) {
-						if (isUses) {
+						if (isContains) {
 							bool isDirectLink;
 							if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
 								if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
@@ -3289,7 +3313,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 					//at least one of the synonym list is new, or both
 					else {
-						if (isUses) {
+						if (isContains) {
 							intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
 						} 
 						else {
@@ -3306,7 +3330,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 		}
 
 		//pattern ifs(v,_,_)
-		else if(arg1Type == SYNONYM && arg1Syn.type == VARIABLE)
+		else if(arg1Type == IDENT)
 		{
 			string ident = arg1Value;
 			ident.erase(remove_if(ident.begin(), ident.end(), [](char x){return isspace(x);}), ident.end());
@@ -3319,11 +3343,15 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				validCount = stmts.size();
 				for(vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 				{
-					bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
+
+					bool isContains = false;
+					if(VarTable::GetIndexOfVar(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent()) == varIndex)
+						isContains=true;
 
 					if(usingIntermediateResult_if)
 					{
-						if(isUses) {}
+						if(isContains) {}
 						else 
 						{
 							intermediateResult.Remove(patternSyn.value , *it_stmts);
@@ -3332,7 +3360,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					}
 					else
 					{
-						if(isUses) intermediateResult.Insert(patternSyn.value , *it_stmts);
+						if(isContains) intermediateResult.Insert(patternSyn.value , *it_stmts);
 						else --validCount;
 					}
 				}
@@ -3428,7 +3456,6 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 	else if(arg1.type == SYNONYM && arg1Syn.type == PROCEDURE)
 	{
-
 		//------------Get intermediate result of type arg1------------
 		vector<string> stmts;
 
@@ -3505,6 +3532,30 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 			if(intermediateResult.IsListEmpty(arg1Syn))
 				intermediateResult.Insert(arg1Syn.value , ident);
+		}
+
+		else return false;
+	}
+
+	//with "x" = "y"
+	else if(arg1.type == IDENT)
+	{
+		if(arg2.type == IDENT)
+		{
+			if(arg1.value == arg2.value)	return true;
+			else return false;
+		}
+
+		else return false;
+	}
+
+	//with 1 = 3
+	else if(arg1.type == INTEGER)
+	{
+		if(arg2.type == INTEGER)
+		{
+			if(STOI(arg1.value) == STOI(arg2.value))	return true;
+			else return false;
 		}
 
 		else return false;

@@ -28,6 +28,7 @@ class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestNextT);
 	CPPUNIT_TEST(TestAffects);
 	CPPUNIT_TEST(TestAffectsT);
+	//CPPUNIT_TEST(TestWith);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,6 +47,7 @@ public:
 	void TestNextT();
 	void TestAffects();
 	void TestAffectsT();
+	void TestWith();
 
 	void TestCombination();
 };

@@ -87,6 +87,7 @@
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
     <ClCompile Include="source\IntegrationTest.cpp" />
     <ClCompile Include="UltimateTest.cpp" />
+    <ClCompile Include="UltimateTest2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InteractionsBtwnComponents.txt" />
@@ -113,6 +114,7 @@
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
     <ClInclude Include="UltimateTest.h" />
+    <ClInclude Include="UltimateTest2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

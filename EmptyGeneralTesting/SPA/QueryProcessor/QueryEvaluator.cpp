@@ -3450,6 +3450,7 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		
 		else if(arg2.type == INTEGER)
 		{
+			cout << "syn and int\n";
 			//------------Get intermediate result of type arg1------------
 			vector<int> stmts;
 
@@ -3462,7 +3463,6 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 				//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1Syn.value, stmts);
 			}
-			return true;
 
 			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 			{
@@ -3472,8 +3472,8 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 				}
 			}
 
-			if(intermediateResult.IsListEmpty(arg1Syn))
-				intermediateResult.Insert(arg1Syn.value , arg2.value);
+			//if(intermediateResult.IsListEmpty(arg1Syn))
+			//	intermediateResult.Insert(arg1Syn.value , arg2.value);
 
 
 			return true;

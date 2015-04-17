@@ -1070,14 +1070,10 @@ void UltimateTest::TestNextT() {
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 20, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 16, int(resultList.size()));
 
 	resultList.sort();
 
-	actualResultList.push_back("2");
-	actualResultList.push_back("3");
-	actualResultList.push_back("4");
-	actualResultList.push_back("5");
 	actualResultList.push_back("7");
 	actualResultList.push_back("8");
 	actualResultList.push_back("10");
@@ -1816,18 +1812,18 @@ void UltimateTest::TestWith() {
 
 	actualResultList.push_back("z");
 	actualResultList.push_back("x");
-	//actualResultList.sort();
-	//resultList.sort();
+	actualResultList.sort();
+	resultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
-	query = "procedure p;Select p with p.procName = \"Solo\"";
+	query = "procedure p;Select p with p.procName = \"test\"";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -1836,7 +1832,7 @@ void UltimateTest::TestWith() {
 
 	resultList.sort();
 
-	actualResultList.push_back("Solo");
+	actualResultList.push_back("test");
 	actualResultList.sort();
 	resultList.sort();
 
@@ -1865,8 +1861,6 @@ void UltimateTest::TestAnd() {
 
 	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
 
-	//resultList.sort();
-
 	//actualResultList.push_back("13");
 	//actualResultList.push_back("27");
 	//actualResultList.sort();
@@ -1885,8 +1879,6 @@ void UltimateTest::TestAnd() {
 	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
 	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 20, int(resultList.size()));
-
-	//resultList.sort();
 
 	//actualResultList.push_back("1");
 	//actualResultList.push_back("2");
@@ -1926,8 +1918,6 @@ void UltimateTest::TestAnd() {
 
 	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 7, int(resultList.size()));
 
-	//resultList.sort();
-
 	//actualResultList.push_back("7");
 	//actualResultList.push_back("10");
 	//actualResultList.push_back("12");
@@ -1935,7 +1925,9 @@ void UltimateTest::TestAnd() {
 	//actualResultList.push_back("16");
 	//actualResultList.push_back("22");
 	//actualResultList.push_back("25");
+	//actualResultList.sort();
+	//resultList.sort();
 
-	CPPUNIT_ASSERT(resultList == actualResultList);
+	//CPPUNIT_ASSERT(resultList == actualResultList);
 
 }

@@ -64,9 +64,9 @@ public:
 
 	// specialisations, feel free to add your own or make them
 	static bool IsStmtContains(int stmtNumber, NodeType nodetypeContained);
-	static bool IsStmtContains(int stmtNumber, int nodeContained);
+	static bool IsStmtContainsNode(int stmtNumber, int nodeContained);
 	static bool IsContainsStmt(NodeType nodetypeContaining, int stmtNumber);
-	static bool IsContainsStmt(int nodeContained, int stmtNumber);
+	static bool IsNodeContainsStmt(int nodeContained, int stmtNumber);
 
 	static bool IsStmtContainsVar(int stmtNumber, int varIndex);
 	static bool IsStmtContainsConst(int stmtNumber, int constant);

@@ -295,7 +295,7 @@ bool Contains::IsStmtContains(int stmtNumber, NodeType nodetypeContained){
 	return IsContains(Program::GetStmtFromNumber(stmtNumber).GetNodeIndex(), nodetypeContained);
 }
 
-bool Contains::IsStmtContains(int stmtNumber, int nodeContained) {
+bool Contains::IsStmtContainsNode(int stmtNumber, int nodeContained) {
 	return IsContains(Program::GetStmtFromNumber(stmtNumber).GetNodeIndex(), nodeContained);
 }
 
@@ -303,7 +303,7 @@ bool Contains::IsContainsStmt(NodeType nodetypeContaining, int stmtNumber) {
 	return IsContains(nodetypeContaining, Program::GetStmtFromNumber(stmtNumber).GetNodeIndex());
 }
 
-bool Contains::IsContainsStmt(int nodeContained, int stmtNumber) {
+bool Contains::IsNodeContainsStmt(int nodeContained, int stmtNumber) {
 	return IsContains(nodeContained, Program::GetStmtFromNumber(stmtNumber).GetNodeIndex());
 }
 

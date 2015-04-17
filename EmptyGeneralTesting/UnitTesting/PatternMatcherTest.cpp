@@ -132,3 +132,32 @@ void PatternMatcherTest::matchExprsWithMultipleVariables() {
 	CPPUNIT_ASSERT_EQUAL(false, PatternMatcher::MatchPatternAtLeaves(exprTree, yPlus1, true));
 }
 
+
+void PatternMatcherTest::matchNewOperators() {
+	string expr = "a + b * c + d";
+	TNode* exprTree = ParseExpr(expr);
+	Program::ClearAll();
+
+	string queryStr = "a + b * c + d";
+	Pattern patternObj = PatternMatcher::CreatePatternObject(queryStr);
+
+	CPPUNIT_ASSERT(PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, true));
+
+	queryStr = "b * c";
+	patternObj = PatternMatcher::CreatePatternObject(queryStr);
+
+	CPPUNIT_ASSERT(PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, true));
+	CPPUNIT_ASSERT(!PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, false));
+
+	queryStr = "b + c";
+	patternObj = PatternMatcher::CreatePatternObject(queryStr);
+
+	CPPUNIT_ASSERT(!PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, true));
+	CPPUNIT_ASSERT(!PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, false));
+
+	queryStr = "a + b * c";
+	patternObj = PatternMatcher::CreatePatternObject(queryStr);
+
+	CPPUNIT_ASSERT(PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, true));
+	CPPUNIT_ASSERT(!PatternMatcher::MatchPatternAtLeaves(exprTree, patternObj, false));
+}

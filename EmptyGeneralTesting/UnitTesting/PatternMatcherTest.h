@@ -23,6 +23,7 @@ public:
 	void matchSingleVariable();
 	void matchExprsWithTwoVariables();
 	void matchExprsWithMultipleVariables();
+	void matchNewOperators();
 
 };
 

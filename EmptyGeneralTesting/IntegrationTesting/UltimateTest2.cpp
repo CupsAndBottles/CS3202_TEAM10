@@ -168,4 +168,42 @@ void UltimateTest2::TestWith()
 	qe.PrintIntermediateResult();
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
+
+
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
+
+	query = "assign a; Select a with a.stmt# = 5";
+
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	qe.PrintIntermediateResult();
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	
+
+	actualResultList.push_back("5");
+
+	qe.PrintIntermediateResult();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+
+	query = "assign a; Select BOOLEAN with 1=2";
+
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	qe.PrintIntermediateResult();
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+
+	
+
+	actualResultList.push_back("false");
+
+	qe.PrintIntermediateResult();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
 }

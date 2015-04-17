@@ -3431,7 +3431,6 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 
 bool QueryEvaluator::EvaluateWith(WithClause with)
 {
-	cout << "In EvaluateWith\n";
 	Argument arg1 = with.arg1;
 	Argument arg2 = with.arg2;
 	Synonym arg1Syn = with.arg1.syn;
@@ -3442,41 +3441,96 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	if(arg1.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
 								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == CONSTANT ||  arg1Syn.type == PROG_LINE))
 	{
+		vector<int> stmts;
+		bool usingIntermediateResult = false;
+
+		if(intermediateResult.IsListEmpty(arg1.syn)) {
+			std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
+
+		}
+
+		else {
+			std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			intermediateResult.GetList(arg1Syn.value, stmts);
+			usingIntermediateResult = true;
+		}
+
 		if(arg2.type == SYNONYM && (arg1Syn.type == ASSIGN || arg1Syn.type == STMT || arg1Syn.type == WHILE || 
 								arg1Syn.type == IF || arg1Syn.type == CALL || arg1Syn.type == CONSTANT ||  arg1Syn.type == PROG_LINE))
 		{
 
+			vector<int> stmts2;
+
+			if(intermediateResult.IsListEmpty(arg2Syn)) {
+				stmts2 = StmtTypeTable::GetAllStmtsOfType(arg2Syn.type);
+			}
+
+			else {
+				intermediateResult.GetList(arg2Syn.value, stmts2);
+			}
+
+			int validCount = stmts.size();
+			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				//not found
+				if(find(stmts2.begin() , stmts2.end() , *it_stmts) == stmts2.end())
+				{
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+
+				}
+			}
+
+			if(validCount == 0)
+				return false;
 		}
 		
 		else if(arg2.type == INTEGER)
 		{
-			cout << "syn and int\n";
-			//------------Get intermediate result of type arg1------------
-			vector<int> stmts;
-
-			if(!intermediateResult.IsListEmpty(arg1.syn)) {
-				//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
-				stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
-			}
-
-			else {
-				//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
-				intermediateResult.GetList(arg1Syn.value, stmts);
-			}
+			int validCount = stmts.size();
+			cout << "validcount: " << validCount << "\n";
 
 			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 			{
 				if(*it_stmts != STOI(arg2.value))
 				{
-					intermediateResult.Remove(arg1Syn.value, *it_stmts);
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+
 				}
 			}
+			cout << "validcount: " << validCount << "\n";
+			if(validCount == 0)
+				return false;
 
-			//if(intermediateResult.IsListEmpty(arg1Syn))
-			//	intermediateResult.Insert(arg1Syn.value , arg2.value);
-
-
-			return true;
 		}
 
 		else return false;
@@ -3486,8 +3540,9 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 	{
 		//------------Get intermediate result of type arg1------------
 		vector<string> stmts;
+		bool usingIntermediateResult = false;
 
-		if(!intermediateResult.IsListEmpty(arg1.syn)) {
+		if(intermediateResult.IsListEmpty(arg1.syn)) {
 			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			stmts = ProcTable::GetAllProcNames();
 		}
@@ -3495,11 +3550,49 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		else {
 			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, stmts);
+			usingIntermediateResult = true;
 		}
 
 
 		if(arg2.type == SYNONYM && (arg2Syn.type == PROCEDURE || arg2Syn.type == VARIABLE ))
 		{
+			vector<string> stmts2;
+
+			if(intermediateResult.IsListEmpty(arg2Syn)) {
+				if(arg2Syn.type == PROCEDURE) stmts2 = ProcTable::GetAllProcNames();
+				else							stmts2 = VarTable::GetAllVarNames();
+			}
+
+			else {
+				intermediateResult.GetList(arg2Syn.value, stmts2);
+			}
+
+			int validCount = stmts.size();
+			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				//not found
+				if(find(stmts2.begin() , stmts2.end() , *it_stmts) == stmts2.end())
+				{
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+				}
+			}
+
+			if(validCount == 0)
+				return false;
 		}
 
 		else if(arg2.type == IDENT)
@@ -3510,20 +3603,35 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 
 			//if table is empty, insert ident
 			//if not, loop through element, if element not == ident, remove it
+			int validCount = stmts.size();
 			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 			{
 				if(*it_stmts != ident)
 				{
-					intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+
 				}
 			}
-
-			//if(intermediateResult.IsListEmpty(arg1Syn))
-				//intermediateResult.Insert(arg1Syn.value , ident);
+			if(validCount == 0)
+				return false;
 		}
 
 		else return false;
-
 	}
 
 
@@ -3532,8 +3640,9 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		
 		//------------Get intermediate result of type arg1------------
 		vector<string> stmts;
+		bool usingIntermediateResult = false;
 
-		if(!intermediateResult.IsListEmpty(arg1.syn)) {
+		if(intermediateResult.IsListEmpty(arg1.syn)) {
 			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			stmts = VarTable::GetAllVarNames();		
 		}
@@ -3541,9 +3650,51 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		else {
 			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, stmts);
+			usingIntermediateResult = true;
 		}
 
-		if(arg2.type == IDENT)
+		if(arg2.type == SYNONYM && (arg2Syn.type == PROCEDURE || arg2Syn.type == VARIABLE ))
+		{
+			vector<string> stmts2;
+
+			if(intermediateResult.IsListEmpty(arg2Syn)) {
+				if(arg2Syn.type == PROCEDURE) stmts2 = ProcTable::GetAllProcNames();
+				else							stmts2 = VarTable::GetAllVarNames();
+			}
+
+			else {
+				intermediateResult.GetList(arg2Syn.value, stmts2);
+			}
+
+			int validCount = stmts.size();
+			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				//not found
+				if(find(stmts2.begin() , stmts2.end() , *it_stmts) == stmts2.end())
+				{
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+				}
+			}
+
+			if(validCount == 0)
+				return false;
+		}
+
+		else if(arg2.type == IDENT)
 		{
 			
 			string ident = arg2.value;
@@ -3552,18 +3703,34 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 			cout << "here " << ident << "\n";
 			//if table is empty, insert ident
 			//if not, loop through element, if element not == ident, remove it
+			int validCount = stmts.size();
 			for (vector<string>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
 			{
 				if(*it_stmts != ident)
 				{
-					cout << "Removing " << *it_stmts << "\n";
-					intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					if(usingIntermediateResult)
+					{			
+						intermediateResult.Remove(arg1Syn.value , *it_stmts);
+					}
+					--validCount;
+				}
+
+				else
+				{
+					if(usingIntermediateResult)
+					{}
+
+					else
+					{
+						intermediateResult.Insert(arg1Syn.value , *it_stmts);
+					}
+
 				}
 
 			}
+			if(validCount == 0)
+				return false;
 
-			//if(intermediateResult.IsListEmpty(arg1Syn))
-				//intermediateResult.Insert(arg1Syn.value , ident);
 		}
 
 		else return false;

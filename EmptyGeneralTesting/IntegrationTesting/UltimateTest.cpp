@@ -63,6 +63,7 @@ void UltimateTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "constant c;Select c";
 
@@ -87,6 +88,7 @@ void UltimateTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;Select w";
 
@@ -110,6 +112,7 @@ void UltimateTest::TestSelectAll()
 	
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;stmt s;Select s";
 
@@ -154,6 +157,7 @@ void UltimateTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;while w;prog_line p;Select p";
 
@@ -198,6 +202,7 @@ void UltimateTest::TestSelectAll()
 
 	resultList.clear();
 	qd.ClearData();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v";
 
@@ -267,6 +272,7 @@ void UltimateTest::TestModifies()
 	
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;variable v;Select v such that Modifies(s,v)";
 
@@ -292,6 +298,7 @@ void UltimateTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(w,_)";
 
@@ -315,6 +322,7 @@ void UltimateTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a such that Modifies(a,\"x\")";
 
@@ -332,6 +340,7 @@ void UltimateTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "while w;Select w such that Modifies(w,\"tEst\")";
 
@@ -353,6 +362,7 @@ void UltimateTest::TestModifies()
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "variable v;Select v such that Modifies(11,v)";
 
@@ -412,7 +422,7 @@ void UltimateTest::TestParent() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
-
+	qe.ClearIntermediateResult();
 
 	query = "while w1;while w2;Select w2 such that Parent(w1,w2)";
 
@@ -433,7 +443,7 @@ void UltimateTest::TestParent() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
-
+	qe.ClearIntermediateResult();
 
 	query = "while w1;while w2;Select w1 such that Parent(w1,w2)";
 
@@ -452,7 +462,7 @@ void UltimateTest::TestParent() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
-
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(6,s)";
 
@@ -476,7 +486,7 @@ void UltimateTest::TestParent() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
-
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(s,10)";
 
@@ -493,7 +503,7 @@ void UltimateTest::TestParent() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
-
+	qe.ClearIntermediateResult();
 
 	query = "stmt s;Select s such that Parent(s,_)";
 
@@ -557,6 +567,7 @@ void UltimateTest::TestParentT() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "assign a;Select a such that Parent*(6,a)";
@@ -589,6 +600,7 @@ void UltimateTest::TestParentT() {
 	qd.ClearData();
 	resultList.clear();
 	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "while w;Select w such that Parent*(6,w)";
@@ -637,38 +649,39 @@ void UltimateTest::TestPattern() {
 	std::string query = "assign a;Select a pattern a(_,_)";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 21, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 21, int(resultList.size()));
 
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("2");
-	//actualResultList.push_back("3");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("10");
-	//actualResultList.push_back("12");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("14");
-	//actualResultList.push_back("16");
-	//actualResultList.push_back("17");
-	//actualResultList.push_back("18");
-	//actualResultList.push_back("19");
-	//actualResultList.push_back("20");
-	//actualResultList.push_back("22");
-	//actualResultList.push_back("23");
-	//actualResultList.push_back("25");
-	//actualResultList.push_back("26");
-	//actualResultList.push_back("27");
-	//actualResultList.sort();
+	actualResultList.push_back("1");
+	actualResultList.push_back("2");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("10");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("14");
+	actualResultList.push_back("16");
+	actualResultList.push_back("17");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("20");
+	actualResultList.push_back("22");
+	actualResultList.push_back("23");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;variable v;Select v pattern a(_,_)";
 
@@ -705,6 +718,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	//qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a pattern a(v,_)";
 
@@ -742,6 +756,7 @@ void UltimateTest::TestPattern() {
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a pattern a(_,_\"x + 1\"_)";
 
@@ -797,6 +812,7 @@ void UltimateTest::TestPattern() {
 
 	qd.ClearData();
 	resultList.clear();
+	qe.ClearIntermediateResult();
 
 	query = "assign a;Select a pattern a(\"tEst\",_\" z + x\"_)";
 
@@ -813,6 +829,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;Select a pattern a(_,\"0\")";
 
@@ -829,6 +846,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;Select a pattern a(_,_\"b + a - c\"_)";
 
@@ -845,6 +863,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;Select a pattern a(_,_\"8 * c\"_)";
 
@@ -861,6 +880,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;Select a pattern a(_,\"s + a + c\")";
 
@@ -877,6 +897,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;Select a pattern a(_,\"s + a + c\")";
 
@@ -893,6 +914,7 @@ void UltimateTest::TestPattern() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "while w;Select w pattern w(\"tEst\",_)";
 
@@ -909,12 +931,12 @@ void UltimateTest::TestPattern() {
 }
 
 void UltimateTest::TestCombination() {
-	//QueryData qd;
-	//QueryPreProcessor qv;
-	//QueryEvaluator qe;
-	//std::list<std::string> resultList;
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::list<std::string> resultList;
 
-	//qd.ClearData();
+	qd.ClearData();
 
 	//std::string query = "assign a;variable v;Select a such that Modifies(a,v) pattern a(v,_\"z+x\"_)";
 
@@ -933,6 +955,7 @@ void UltimateTest::TestCombination() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a such that Modifies(a,v) pattern a(v,_)";
 
@@ -968,8 +991,9 @@ void UltimateTest::TestCombination() {
 	//CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	///*qd.ClearData();
+	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a such that Modifies(a,_) pattern a(\"newVar\",\"b+a+c\")";
 
@@ -987,6 +1011,7 @@ void UltimateTest::TestCombination() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a such that Modifies(a,_) pattern a(\"z\",_)";
 
@@ -1005,6 +1030,7 @@ void UltimateTest::TestCombination() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a such that Modifies(a,_) pattern a(_,_\"z+8\"_)";
 
@@ -1023,6 +1049,7 @@ void UltimateTest::TestCombination() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select a such that Modifies(a,_) pattern a(_,_)";
 
@@ -1060,6 +1087,7 @@ void UltimateTest::TestCombination() {
 
 	//qd.ClearData();
 	//resultList.clear();
+	qe.ClearIntermediateResult();
 
 	//query = "assign a;variable v;Select v such that Modifies(a,v) pattern a(v,_\"newVar\"_)";
 

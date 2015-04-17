@@ -69,6 +69,7 @@ void QueryData::ClearData()
 	selectClauses.clear();
 	suchThatClauses.clear();
 	patternClauses.clear();
+		clauseSequence.clear();
 }
 
 /*

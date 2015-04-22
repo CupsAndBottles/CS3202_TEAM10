@@ -6,6 +6,7 @@
 #include "RelTable.h"
 #include "..\..\AutoTester\source\AbstractWrapper.h"
 
+using namespace std;
 
 const std::string QueryPreProcessor::de[] = {"stmt", "assign", "while", "if", "variable", "procedure", "prog_line", "constant", "call"};
 const std::string QueryPreProcessor::rel[] = {"Modifies", "Uses", "Parent", "Parent*", "Follows", "Follows*", "Calls", "Calls*", "Next", "Next*", "Affects", "Affects*"};
@@ -22,7 +23,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 
 	//tokenize query
 	if(!Tokenize(query,tokenList)) {
-		std::cout << "Invalid Query: Invalid Syntax.\n";
+		cout << "Invalid Query: Invalid Syntax.\n";
 		return false;
 	}
 
@@ -89,7 +90,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 	std::vector<Declaration> dec = queryData.GetDeclarations();
 	if(declarationSize == 0)	
 	{
-		std::cout << "Invalid Query: No declaration.\n";
+		cout << "Invalid Query: No declaration.\n";
 		return false;
 	}
 
@@ -134,7 +135,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 			//if no data in selectclause
 			if(queryData.GetSizeOfClause(SELECT) == 0)	
 			{
-				std::cout << "Invalid Query: No synonym in Select<>\n";
+				cout << "Invalid Query: No synonym in Select<>\n";
 				return false;
 			}
 		}
@@ -167,7 +168,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 	//no select
 	else 
 	{
-		std::cout << "Invalid Query: No select\n";
+		cout << "Invalid Query: No select\n";
 		return false;
 	}
 
@@ -266,7 +267,7 @@ bool QueryPreProcessor::ValidateQuery(std::string query, QueryData &queryData)
 
 		while(IsPattern(token) || repeat)	//pattern or and
 		{		
-			//std::cout << "In Pattern\n";
+			//cout << "In Pattern\n";
 			//pattern a("x",_)
 			//pattern if("x",_,_)
 			//pattern w("w",_)
@@ -451,13 +452,13 @@ bool QueryPreProcessor::ValidateDeclaration(Synonym &synonym, std::string type)
 {
 	//check duplicated declaration
 	if(QueryData::IsSynonymExist(synonym.value)) {
-		std::cout << "Synonym already declared.\n";
+		cout << "Synonym already declared.\n";
 		return false;
 	}
 
 	//convert type(string) to enum
 	if(!GetEnumSynonymType(type,synonym.type)) {
-		std::cout << "Invalid Query: No matching design entity type for declaration.\n";
+		cout << "Invalid Query: No matching design entity type for declaration.\n";
 		return false;
 	}
 
@@ -482,7 +483,7 @@ bool QueryPreProcessor::ValidateSelect(Synonym &synonym)
 		return true;
 
 	else {
-		std::cout << "Invalid Query: In ValidateSelect, synonym is not declared.\n";
+		cout << "Invalid Query: In ValidateSelect, synonym is not declared.\n";
 		return false;
 	}
 }
@@ -492,7 +493,7 @@ bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &
 {
 	//convert relationship string to enum
 	if(!GetEnumRelationshipType(rel,rel_enum)) {
-		std::cout << "Invalid Query: No matching relationship type for such that.\n";
+		cout << "Invalid Query: No matching relationship type for such that.\n";
 		return false;
 	}
 
@@ -511,7 +512,7 @@ bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &
 	}
 		
 	else {
-		std::cout << "Invalid Query: In ValidateRelationship, Argument 1 type not found.\n";
+		cout << "Invalid Query: In ValidateRelationship, Argument 1 type not found.\n";
 		return false;
 	}
 
@@ -527,14 +528,14 @@ bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &
 				//check whether synonym type is one of the allowed type
 				if(std::find(argSynonymType.begin(), argSynonymType.end(), synonymType) != argSynonymType.end()) {}
 				else {
-					std::cout << "Invalid Query: In ValidateRelationship, Argument 1 Synonym type not allowed.\n";
+					cout << "Invalid Query: In ValidateRelationship, Argument 1 Synonym type not allowed.\n";
 					return false;
 				}
 			}
 		}
 
 		else {
-			std::cout << "Invalid Query: In ValidateRelationship, Argument 1 type not allowed.\n";
+			cout << "Invalid Query: In ValidateRelationship, Argument 1 type not allowed.\n";
 			return false;
 		}
 
@@ -551,7 +552,7 @@ bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &
 		}
 		
 		else {
-			std::cout << "Invalid Query: In ValidateRelationship, Argument 2 type not found.\n";
+			cout << "Invalid Query: In ValidateRelationship, Argument 2 type not found.\n";
 			return false;
 		}
 
@@ -566,21 +567,21 @@ bool QueryPreProcessor::ValidateRelationship(std::string rel, RelationshipType &
 				//check whether synonym type is one of the allowed type
 				if(std::find(argSynonymType.begin(), argSynonymType.end(), synonymType) != argSynonymType.end()) {}
 				else {
-					std::cout << "Invalid Query: In ValidateRelationship, Argument 2 Synonym type not allowed.\n";
+					cout << "Invalid Query: In ValidateRelationship, Argument 2 Synonym type not allowed.\n";
 					return false;
 				}
 			}
 		}
 
 		else {
-			std::cout << "Invalid Query: In ValidateRelationship, Argument 2 type not allowed.\n";
+			cout << "Invalid Query: In ValidateRelationship, Argument 2 type not allowed.\n";
 			return false;
 		}
 
 		return true;
 	}
 	catch(const std::invalid_argument &e) {
-		std::cout << e.what() << std::endl;
+		cout << e.what() << std::endl;
 		return false;
 	}
 }
@@ -1074,11 +1075,11 @@ bool QueryPreProcessor::IsExpression(std::string str)
 	{
 		int length = str.length() - 2;
 		str = str.substr(1, length);
-		std::cout << str << "  here\n";
+		cout << str << "  here\n";
 	}
 
 	else return false;
-	std::cout << str << "  here2\n";
+	cout << str << "  here2\n";
 	std::vector<std::string> tokenList;
 	std::string delim = "+-*()";
 
@@ -1224,7 +1225,7 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 		//(x+y)+z
 		if(OBIndex_prev == 0 && CBIndex_prev != exp.size() - 1)
 		{
-			std::cout << "Checking from the right\n";
+			cout << "Checking from the right\n";
 
 			std::vector<std::string> right(exp.begin() + CBIndex_prev + 1 , exp.end());
 
@@ -1232,14 +1233,14 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 			//cannot (x+y) or (x+y)+ or (x+y)z
 			if(right.empty() || right.size() % 2 != 0)	return false;
 
-			std::cout << "right size: " << right.size() << "\n";
+			cout << "right size: " << right.size() << "\n";
 
 			for(int i = 0; i < right.size(); ++i)
 			{
 				//even index must be operator
 				if(i % 2 == 0)
 				{
-					std::cout << "even: " << right[i] << "\n";
+					cout << "even: " << right[i] << "\n";
 					if(!(IsOperator(right[i])))
 						return false;	
 				}
@@ -1247,7 +1248,7 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 				//odd index must be name/integer
 				else
 				{
-					std::cout << "odd: " << right[i] << "\n";
+					cout << "odd: " << right[i] << "\n";
 					if(!(IsName(right[i]) || IsInteger(right[i])))
 						return false;
 				}
@@ -1257,7 +1258,7 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 		//x+(y*z)
 		else if(CBIndex_prev == exp.size() - 1 && OBIndex_prev != 0)
 		{
-			std::cout << "Checking from the left\n";
+			cout << "Checking from the left\n";
 
 			std::vector<std::string> left(exp.begin() , exp.begin() + OBIndex_prev);
 
@@ -1285,7 +1286,7 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 		//x*(a+b)-y
 		else
 		{
-			std::cout << "Checking from left and right\n";
+			cout << "Checking from left and right\n";
 
 			std::vector<std::string> left(exp.begin() , exp.begin() + OBIndex_prev);
 			std::vector<std::string> right(exp.begin() + CBIndex_prev + 1 , exp.end());
@@ -1333,7 +1334,7 @@ bool QueryPreProcessor::IsValidExpression(std::vector<std::string>& exp , int OB
 
 void QueryPreProcessor::TokenizeExpression(std::string exp, std::vector<std::string> &tokens, std::string &delim)
 {
-	std::cout << "In TokenizeExpression: "  << exp << "\n";
+	cout << "In TokenizeExpression: "  << exp << "\n";
 	std::size_t prev = 0, pos;
 	while ((pos = exp.find_first_of(delim, prev)) != std::string::npos)
 	{
@@ -1590,7 +1591,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 		//integer 0-9
 		if (currentChar >= 48 && currentChar <= 57) 
 		{
-			//std::cout << "In Integer\n";
+			//cout << "In Integer\n";
 			if (alphaString == "")	integer = integer + currentChar;	
 			else					alphaString = alphaString + currentChar;	//the integer belong to part of a string
 		} 
@@ -1598,7 +1599,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 		//character A-Z | a-z | # | .
 		else if ((currentChar >= 65 && currentChar <= 90) || (currentChar >= 97 && currentChar <= 122) || (currentChar == 35)) 
 		{
-			//std::cout << "In alphabet\n";
+			//cout << "In alphabet\n";
 			if (integer != "")	return false;	//should not happen
 			else				alphaString = alphaString + currentChar;
 		} 
@@ -1606,7 +1607,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 		// symbol, whitespace or endline
 		else 
 		{ 
-			//std::cout << "In Others\n";
+			//cout << "In Others\n";
 			//push back integer/string first 
 			if (integer != "") 
 			{ 
@@ -1908,7 +1909,7 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 				}
 
 				else {
-					std::cout << "Invalid character " << std::string(1,currentChar) << "\n";
+					cout << "Invalid character " << std::string(1,currentChar) << "\n";
 					return false;
 				}
 			}
@@ -1924,8 +1925,8 @@ bool QueryPreProcessor::Tokenize(std::string query, std::vector<std::string> &to
 void QueryPreProcessor::DebugMessage(std::string msg)
 {
 	#ifdef DEBUG_MSG
-		std::cout << "Invalid query: ";
-		std::cout << msg;
+		cout << "Invalid query: ";
+		cout << msg;
 	#endif
 }
 
@@ -1935,49 +1936,49 @@ void QueryPreProcessor::DebugMessage(std::string msg , FUNCTION function)
 	if(function == TOKENIZER)
 	{
 		#ifdef DEBUG_MSG_TOKENIZER
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 
 	else if(function == VALIDATEQUERY)
 	{
 		#ifdef DEBUG_MSG_VALIDATEQUERY
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 	
 	else if(function == ISVALIDATTRREF)
 	{
 		#ifdef DEBUG_MSG_ISVALIDATTRREF
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 
 	else if(function == ISVALIDATTRREF)
 	{
 		#ifdef DEBUG_MSG_ISVALIDATTRREF
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 
 	else if(function == VALIDATERELATIONSHIP)
 	{
 		#ifdef DEBUG_MSG_VALIDATERELATIONSHIP
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 
 	else if(function == VALIDATEPATTERN)
 	{
 		#ifdef DEBUG_MSG_VALIDATEPATTERN
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 
 	else if(function == VALIDATEWITH)
 	{
 		#ifdef DEBUG_MSG_VALIDATEWITH
-			std::cout << msg;
+			cout << msg;
 		#endif
 	}
 

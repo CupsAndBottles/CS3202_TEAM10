@@ -1505,7 +1505,7 @@ void UltimateTest::TestPattern() {
 	qe.ClearIntermediateResult();
 
 	query = "while w;Select w pattern w(\"tEst\",_)";
-	std::cout << "\nTest query : " << query << "\n";
+	cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
@@ -1525,7 +1525,7 @@ void UltimateTest::TestPattern() {
 	qe.ClearIntermediateResult();
 
 	query = "while w;variable v;Select v pattern w(v,_)";
-	std::cout << "\nTest query : " << query << "\n";
+	cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));

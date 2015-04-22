@@ -161,12 +161,11 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 		currStmt = uncheckedStmts.front();
 		//cout << "\n currStmt: " << currStmt << "\n";
 		if (!stmtsIsChecked.at(currStmt)) {
-			switch (StmtTypeTable::GetStmtTypeOf(currStmt)) {
-			case ASSIGN:
+			if (StmtTypeTable::GetStmtTypeOf(currStmt) == ASSIGN) {
 				if (Uses::IsStmtUsingVar(currStmt, varModified)) {
 					affectedStmts.push_back(currStmt);
 				}
-				
+
 				if (Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 					// don't check for anything after this stmt
 				} else {
@@ -175,35 +174,29 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 						uncheckedStmts.push(nextOfCurrStmt.at(0));
 					}
 				}
-				break;
-			case WHILE:
+			} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == WHILE) {
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
 				if (Uses::IsStmtUsingVar(currStmt, varModified)) {
 					// find a way to check that the used variable occurs in the stmtLst contained by while, 
 					// not used as a control variable in while
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 				}
-				if ((int) nextOfCurrStmt.size() > 1) {
+				if ((int)nextOfCurrStmt.size() > 1) {
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				}
-				break;
-			case IF:
+			} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == IF) {
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				
+
 				if (!Modifies::IsStmtModifyingVar(currStmt, varModified) && !Uses::IsStmtUsingVar(currStmt, varModified)) {
 					uncheckedStmts.push(Follows::GetFollowsAfter(currStmt));
 				} else {
 					uncheckedStmts.push(nextOfCurrStmt.at(0));
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				}
-				break;
-			case CALL: {
-				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
-				if (Uses::IsProcUsingVar(procCalled, varModified)) {
-					affectedStmts.push_back(currStmt);
-				}
-				
-				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+			} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == CALL) {
+			int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
+			
+			if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
 					// don't check for anything after this stmt
 				} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
@@ -211,11 +204,9 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 						uncheckedStmts.push(nextOfCurrStmt.at(0));
 					}
 				}
-			} break;
-			default:
+			} else {
 				//1. "longer method, without using bitvector"
 				//2. do bit vector optimisaion of while and if
-				break;
 			}
 
 			stmtsIsChecked.at(currStmt) = true;
@@ -257,13 +248,12 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	if (StmtTypeTable::GetStmtTypeOf(currStmt) == ASSIGN) {
 		if (!stmtsIsChecked.at(currStmt)) {
 			int varModified = Modifies::GetVarModifiedByStmt(currStmt).at(0);
-			vector<int>::iterator it = varsUsed.begin();
-			while (it != varsUsed.end()) {
-				if (varModified == *it) {
+
+			for each (int varUsed in vector<int>(varsUsed.begin(), varsUsed.end())) { // create copy of varsUsed
+				if (varUsed == varModified) {
+					varsUsed.erase(find(varsUsed.begin(), varsUsed.end(), varUsed));
 					affectedStmts.push_back(currStmt);
-					it = varsUsed.erase(it);
-				} else {
-					it++;
+					break; // check for strange behaviour
 				}
 			}
 			stmtsIsChecked.at(currStmt) = true;
@@ -273,19 +263,16 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == WHILE) {
 		vector<int>::iterator it = nextBeforeCurrStmt.begin();
 		if (!stmtsIsChecked.at(currStmt)) {
-			while (it != nextBeforeCurrStmt.end()) {
-				if (*it > currStmt) {
-					nextBeforeCurrStmt.erase(it, nextBeforeCurrStmt.end());
-					it = nextBeforeCurrStmt.end();
-				} else {
-					it++;
+			for each (int stmt in vector<int>(nextBeforeCurrStmt.begin(), nextBeforeCurrStmt.end())) {
+				if (stmt > currStmt) {
+					nextBeforeCurrStmt.erase(find(nextBeforeCurrStmt.begin(), nextBeforeCurrStmt.end(), stmt));
+					break;
 				}
 			}
 			stmtsIsChecked.at(currStmt) = true;
 		} else {
 			nextBeforeCurrStmt.clear();
 		}
-
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == IF) {
 		vector<int> nextAfterIf = Next::GetNextAfter(currStmt);
 		if ((int) nextAfterIf.size() == 2) {
@@ -296,14 +283,9 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == CALL) {
 		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 		if (!stmtsIsChecked.at(currStmt)) {
-			int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
-			vector<int>::iterator it = varsUsed.begin();
-			while (it != varsUsed.end()) {
-				if (varModified == *it) {
-					affectedStmts.push_back(currStmt);
-					it = varsUsed.erase(it);
-				} else {
-					it++;
+			for each (int varUsed in vector<int>(varsUsed.begin(), varsUsed.end())) { // create copy of varsUsed
+				if (Modifies::IsProcModifyingVar(procCalled, varUsed)) {
+					varsUsed.erase(find(varsUsed.begin(), varsUsed.end(), varUsed));
 				}
 			}
 			stmtsIsChecked.at(currStmt) = true;
@@ -521,7 +503,7 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 
 	// TODO do error checking to check if stmts are in the same procedures.
 	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN) ||
-		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) return false;
 	// stmtAffecting is guaranteed to be assignment
 	StmtsHelper helper = StmtsHelper(stmtAffected);
 	return helper.findAffectedStmt(stmtAffecting);
@@ -637,7 +619,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 	};
 
 	// guarantee that stmt is assignment.
-	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN)) return vector<int>();
 
 	StmtsHelper helper(stmtAffecting);
 	helper.findAffectedStmts(stmtAffecting);
@@ -740,7 +722,7 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 	};
 
 	// guarantee that stmt is assignment.
-	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) return vector<int>();
 
 	StmtsHelper helper(stmtAffected);
 	helper.findAffectingStmts(stmtAffected);

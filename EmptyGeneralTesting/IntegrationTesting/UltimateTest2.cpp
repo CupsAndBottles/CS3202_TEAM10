@@ -48,7 +48,7 @@ void UltimateTest2::TestPatternForIf() {
 	qe.ClearIntermediateResult();
 
 	query = "if i;variable v;Select v pattern i(v,_,_)";
-	std::cout << "\nTest query : " << query << "\n";
+	cout << "\nTest query : " << query << "\n";
 
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));

@@ -356,13 +356,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 			//get appropriate stmt, while, if, prog_line
 			if(intermediateResult.IsListEmpty(arg1.syn))
 			{
-				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 				parent = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
 			else 
 			{
-				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value , parent);
 				usingIntermediateResult_parent = true;
 			}
@@ -370,13 +370,13 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 			//get appropriate stmt, assign, while, if, prog_line, call
 			if(intermediateResult.IsListEmpty(arg2.syn))
 			{
-				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
 				child = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 			}
 
 			else 
 			{
-				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value , child);
 				usingIntermediateResult_child = true;
 			}
@@ -759,24 +759,24 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 				beforeStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, beforeStmt);
 				usingIntermediateResult_before = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
-				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
 				afterStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, afterStmt);
 				usingIntermediateResult_after = true;
 			}
@@ -1051,12 +1051,12 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 			bool usingIntermediateResult_stmts = false;
 
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				//cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 				stmts = StmtTypeTable::GetAllStmtsOfType(arg1Syn.type);
 			}
 
 			else {
-				//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				//cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1Syn.value, stmts);
 				usingIntermediateResult_stmts = true;
 			}
@@ -1271,12 +1271,12 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 		bool usingIntermediateResult_procs = false;
 
 		if (intermediateResult.IsListEmpty(arg1.syn)) {
-			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			//cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			procs = ProcTable::GetAllProcNames();
 		}
 
 		else {
-			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			//cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, procs);
 			usingIntermediateResult_procs = true;
 		}
@@ -1716,24 +1716,24 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				std::cout << "No intermediate result for " << arg1.syn.value << ", get all procs\n";
+				cout << "No intermediate result for " << arg1.syn.value << ", get all procs\n";
 				callingProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, callingProc);
 				usingIntermediateResult_calling = true;
 			}
 
 			//get appropriate proc
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
-				std::cout << "No intermediate result for " << arg2.syn.value << ", get all procs\n";
+				cout << "No intermediate result for " << arg2.syn.value << ", get all procs\n";
 				calledProc = ProcTable::GetAllProcNames();
 			}
 
 			else {
-				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, calledProc);
 				usingIntermediateResult_called = true;
 			}
@@ -2061,24 +2061,24 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 				prevStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, prevStmt);
 				usingIntermediateResult_prev = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
-				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
 				nextStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, nextStmt);
 				usingIntermediateResult_next = true;
 			}
@@ -2360,24 +2360,24 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 
 			//get appropriate stmt, while, if, prog_line
 			if (intermediateResult.IsListEmpty(arg1.syn)) {
-				std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 				affectingStmt = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+				cout << "Get " << arg1.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg1.syn.value, affectingStmt);
 				usingIntermediateResult_affecting = true;
 			}
 
 			//get appropriate stmt, assign, while, if, prog_line, call
 			if (intermediateResult.IsListEmpty(arg2.syn)) {
-				std::cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
+				cout << "No intermediate result for " << arg2.syn.value << ", get all stmts\n";
 				affectedStmt = StmtTypeTable::GetAllStmtsOfType(arg2.syn.type);
 			}
 
 			else {
-				std::cout << "Get " << arg2.syn.value << " from intermediate result table";
+				cout << "Get " << arg2.syn.value << " from intermediate result table";
 				intermediateResult.GetList(arg2.syn.value, affectedStmt);
 				usingIntermediateResult_affected = true;
 			}
@@ -3447,13 +3447,13 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		bool usingIntermediateResult = false;
 
 		if(intermediateResult.IsListEmpty(arg1.syn)) {
-			std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			stmts = StmtTypeTable::GetAllStmtsOfType(arg1.syn.type);
 
 		}
 
 		else {
-			std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, stmts);
 			usingIntermediateResult = true;
 		}
@@ -3545,12 +3545,12 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		bool usingIntermediateResult = false;
 
 		if(intermediateResult.IsListEmpty(arg1.syn)) {
-			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			//cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			stmts = ProcTable::GetAllProcNames();
 		}
 
 		else {
-			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			//cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, stmts);
 			usingIntermediateResult = true;
 		}
@@ -3645,12 +3645,12 @@ bool QueryEvaluator::EvaluateWith(WithClause with)
 		bool usingIntermediateResult = false;
 
 		if(intermediateResult.IsListEmpty(arg1.syn)) {
-			//std::cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
+			//cout << "No intermediate result for " << arg1.syn.value << ", get all stmts\n";
 			stmts = VarTable::GetAllVarNames();		
 		}
 
 		else {
-			//std::cout << "Get " << arg1.syn.value << " from intermediate result table";
+			//cout << "Get " << arg1.syn.value << " from intermediate result table";
 			intermediateResult.GetList(arg1Syn.value, stmts);
 			usingIntermediateResult = true;
 		}

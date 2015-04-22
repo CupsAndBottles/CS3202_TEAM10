@@ -31,7 +31,7 @@ void IntermediateResult::Insert(string synonym , int value)
 		}
 	}
 	
-	std::cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_INT \n";
+	cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_INT \n";
 
 	return;
 }
@@ -47,7 +47,7 @@ void IntermediateResult::Insert(string synonym , string value)
 		}
 	}
 
-	std::cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_STR \n";
+	cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_STR \n";
 
 	return;
 }
@@ -913,7 +913,7 @@ void IntermediateResult::GetList(std::string synonym, std::vector<int>& list)
 		}
 	}
 
-	std::cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList_INT\n";
+	cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList_INT\n";
 
 	return;
 }
@@ -935,7 +935,7 @@ void IntermediateResult::GetList(std::string synonym, std::vector<std::string>& 
 		}
 	}
 
-	std::cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList\n";
+	cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList\n";
 
 	return;
 }
@@ -955,7 +955,7 @@ bool IntermediateResult::IsListEmpty(Synonym synonym)
 	}
 	
 
-	std::cout << "In IntermediateResult::IsListEmpty, " << synonym.value << " not found in both synonymList\n";
+	cout << "In IntermediateResult::IsListEmpty, " << synonym.value << " not found in both synonymList\n";
 
 	return empty;
 }
@@ -975,7 +975,7 @@ void IntermediateResult::Print()
 	}
 
 
-	std::cout << "\n";
+	cout << "\n";
 	
 	for(it_synonymList it = synonymList.begin(); it != synonymList.end(); ++it)
 	{

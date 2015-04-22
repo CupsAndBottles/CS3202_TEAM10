@@ -4,6 +4,7 @@
 #include "IntermediateResult.h"
 #include <vector>
 #include <list>
+#include "optimizer.h"
 
 using namespace std;
 

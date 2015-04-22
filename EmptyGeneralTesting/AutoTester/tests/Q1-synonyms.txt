@@ -1,5 +1,3 @@
-108
-cat: Simple Queries
 1 - Statement :: 
 stmt s;
 Select s

@@ -26,6 +26,8 @@ CPPUNIT_TEST_SUITE_REGISTRATION(NextBipTest);
 
 void NextBipTest::ClearAllData() {
 	Program::ClearAll();
+	PKBCleaner::ClearAll();
+	TNode::resetNodeCounter();
 }
 
 NextBipTest::NextBipTest(void) {

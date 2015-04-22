@@ -315,6 +315,10 @@ int Optimizer::weightStars(Argument arg1,Argument arg2){
 	switch(arg1.type){
 	case(SYNONYM):{
 		if(arg1.syn.type == VARIABLE) weight1 = numOfVar;
+		else if(arg1.syn.type == PROCEDURE) weight1 = numOfProc;
+		else if(arg1.syn.type == CONSTANT) weight1 = numOfCon;
+		else if(arg1.syn.type == PROG_LINE) weight1 = numOfProgLine;
+		else if(arg1.syn.type == STMT) weight1 = numOfStmt;
 		else weight1 = StmtTypeTable::GetNoOfStmtsOfType(arg1.syn.type);
 		break;
 					}
@@ -344,6 +348,10 @@ int Optimizer::weightStars(Argument arg1,Argument arg2){
 	switch(arg2.type){
 	case(SYNONYM):{
 		if(arg2.syn.type == VARIABLE) weight2 = numOfVar;
+		else if(arg2.syn.type == PROCEDURE) weight2 = numOfProc;
+		else if(arg2.syn.type == CONSTANT) weight2 = numOfCon;
+		else if(arg2.syn.type == PROG_LINE) weight2 = numOfProgLine;
+		else if(arg2.syn.type == STMT) weight2 = numOfStmt;
 		else weight2 = StmtTypeTable::GetNoOfStmtsOfType(arg2.syn.type);
 		break;
 					}

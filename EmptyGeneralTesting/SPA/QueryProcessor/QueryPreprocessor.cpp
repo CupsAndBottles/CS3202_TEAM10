@@ -844,7 +844,7 @@ bool QueryPreProcessor::ValidateWith(Argument& arg1, Argument& arg2, std::string
 		
 		else if(attrName1 == VARNAME || attrName1 == PROCNAME)
 		{
-			DebugMessage("LHS attrName is STMT/VALUE\n" , VALIDATEWITH);
+			DebugMessage("LHS attrName is VARIABLE/PROCEDURE\n" , VALIDATEWITH);
 
 			if(IsIdent(rhs))
 			{
@@ -859,9 +859,9 @@ bool QueryPreProcessor::ValidateWith(Argument& arg1, Argument& arg2, std::string
 			{
 				DebugMessage("RHS is valid attrRef\n" , VALIDATEWITH);
 				
-				if(attrName2 == VARIABLE || attrName2 == PROCEDURE)
+				if(attrName2 == VARNAME || attrName2 == PROCNAME)
 				{
-					DebugMessage("RHS attrName is VARIABLE\\PROCEDURE\n" , VALIDATEWITH);
+					DebugMessage("RHS attrName is VARIABLE/PROCEDURE\n" , VALIDATEWITH);
 					arg2.type = SYNONYM;
 					arg2.value = syn2.value;
 					arg2.syn = syn2;

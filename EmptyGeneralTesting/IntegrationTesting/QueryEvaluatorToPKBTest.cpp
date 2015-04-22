@@ -2218,24 +2218,24 @@ void QueryEvaluatorToPKBTest::TestSuchThatPattern()
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
-	//qd.ClearData();
-	//resultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	qe.ClearIntermediateResult();
 
-	//query = "assign a;Select a pattern a(\" y \",_) such that Uses(a,\" tEst \")";
-	//cout << "\nTest query : " << query << "\n";
+	query = "assign a;Select a pattern a(\" y \",_) such that Uses(a,\" tEst \")";
+	cout << "\nTest query : " << query << "\n";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); 
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd)); 
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList)); 
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
-	//qe.PrintIntermediateResult();
+	qe.PrintIntermediateResult();
 
-	//actualResultList.clear();
-	//actualResultList.push_back("6");
+	actualResultList.clear();
+	actualResultList.push_back("6");
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	
 	//qd.ClearData();

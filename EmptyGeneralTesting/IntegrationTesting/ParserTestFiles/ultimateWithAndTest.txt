@@ -1,0 +1,33 @@
+procedure One{ 
+	a=1;									//1
+	b=2*4;									//2
+	c=a*b;									//3				
+	call Two;								//4
+
+	if b {									//5
+		while c {							//6
+			abc= lalala - b + abc;			//7	
+			if lalala {						//8
+				def= abc + a + 2 + 10;		//9
+				call Three;					//10
+			}
+		}
+		c = c+ b - def;						//11
+		b= def * c - 2;						//12
+	}
+}
+
+Procedure Two {								
+	b= 99 + 12;								//13
+	while a {								//14
+		t = def * abc - 111;				//15
+		abc = def + t - b;					//16
+
+	}
+}
+
+Procedure Three {
+	c = 11;									//17
+	d= a;									//18
+	t= t*t + abc;							//19
+}

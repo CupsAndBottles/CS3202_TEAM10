@@ -87,5 +87,6 @@
     <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="Test.txt" />
+    <None Include="Source.txt" />
   </ItemGroup>
 </Project>

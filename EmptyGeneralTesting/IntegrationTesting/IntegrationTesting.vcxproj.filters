@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="source\IntegrationTest.cpp" />
     <ClCompile Include="CallsProcTableTest.cpp" />
     <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
     <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
@@ -14,6 +13,10 @@
     <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="AffectsTest.cpp" />
     <ClCompile Include="UltimateTest2.cpp" />
+    <ClCompile Include="SiblingAndContainsTest.cpp" />
+    <ClCompile Include="AffectsBipTest.cpp" />
+    <ClCompile Include="ParserToPKBTest2.cpp" />
+    <ClCompile Include="IntegrationTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParserTestFiles\pkbTest.txt" />
@@ -41,5 +44,8 @@
     <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="AffectsTest.h" />
     <ClInclude Include="UltimateTest2.h" />
+    <ClInclude Include="SiblingAndContainsTest.h" />
+    <ClInclude Include="AffectsBipTest.h" />
+    <ClInclude Include="ParserToPKBTest2.h" />
   </ItemGroup>
 </Project>

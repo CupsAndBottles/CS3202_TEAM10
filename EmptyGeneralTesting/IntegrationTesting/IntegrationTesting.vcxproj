@@ -75,6 +75,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AffectsBipTest.cpp" />
     <ClCompile Include="AffectsTest.cpp" />
     <ClCompile Include="AffectsTTest.cpp" />
     <ClCompile Include="CallsProcTableTest.cpp" />
@@ -83,9 +84,11 @@
     <ClCompile Include="NextBipTest.cpp" />
     <ClCompile Include="ParentStmtTypeTableTest.cpp" />
     <ClCompile Include="ParserToPKBTest.cpp" />
+    <ClCompile Include="ParserToPKBTest2.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
-    <ClCompile Include="source\IntegrationTest.cpp" />
+    <ClCompile Include="SiblingAndContainsTest.cpp" />
+    <ClCompile Include="IntegrationTest.cpp" />
     <ClCompile Include="UltimateTest.cpp" />
     <ClCompile Include="UltimateTest2.cpp" />
   </ItemGroup>
@@ -103,6 +106,7 @@
     <None Include="ParserTestFiles\ultimate-source.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AffectsBipTest.h" />
     <ClInclude Include="AffectsTest.h" />
     <ClInclude Include="AffectsTTest.h" />
     <ClInclude Include="CallsProcTableTest.h" />
@@ -111,8 +115,10 @@
     <ClInclude Include="NextBipTest.h" />
     <ClInclude Include="ParentStmtTypeTableTest.h" />
     <ClInclude Include="ParserToPKBTest.h" />
+    <ClInclude Include="ParserToPKBTest2.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
+    <ClInclude Include="SiblingAndContainsTest.h" />
     <ClInclude Include="UltimateTest.h" />
     <ClInclude Include="UltimateTest2.h" />
   </ItemGroup>

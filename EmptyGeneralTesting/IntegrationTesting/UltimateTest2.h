@@ -16,17 +16,14 @@
 
 class UltimateTest2 : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(UltimateTest2);
-<<<<<<< HEAD
-	/*CPPUNIT_TEST(TestPatternForIf);
+	CPPUNIT_TEST(TestPatternForIf);
 	CPPUNIT_TEST(TestCalls);
 	CPPUNIT_TEST(TestCallsT);
-	CPPUNIT_TEST(TestWith);*/
-=======
-	//CPPUNIT_TEST(TestPatternForIf);
-	//CPPUNIT_TEST(TestCalls);
-	//CPPUNIT_TEST(TestCallsT);
-	//CPPUNIT_TEST(TestWith);
->>>>>>> origin/dev
+	CPPUNIT_TEST(TestWith);
+	CPPUNIT_TEST(TestPatternForIf);
+	CPPUNIT_TEST(TestCalls);
+	CPPUNIT_TEST(TestCallsT);
+	CPPUNIT_TEST(TestWith);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

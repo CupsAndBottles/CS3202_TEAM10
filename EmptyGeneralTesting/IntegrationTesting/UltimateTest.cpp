@@ -1646,7 +1646,7 @@ void UltimateTest::TestCombination() {
 
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	/*
+	
 	qd.ClearData();
 	resultList.clear();
 	qe.ClearIntermediateResult();
@@ -1659,14 +1659,13 @@ void UltimateTest::TestCombination() {
 
 	qe.PrintIntermediateResult();
 
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 1, int(resultList.size()));
 
 	actualResultList.clear();
 	actualResultList.push_back("14");
-	actualResultList.push_back("25");
 	actualResultList.sort();
 
-	CPPUNIT_ASSERT(resultList == actualResultList);*/
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
 
 	qd.ClearData();

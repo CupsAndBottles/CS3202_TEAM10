@@ -415,7 +415,7 @@ void QueryPreProcessorTest::TokenizeTest()
 	ss << "Select <a, w,v> such that Modifies( 3 , \"x\" ) and Affect*( n ,a2) ";
 	ss << "pattern a( \"  y  \"  , _ \" y *5 -7 \" _) and pattern i(\"y\",_,_) and pattern w(_,_) ";
 	ss << "with a.stmt# = a2.stmt# and c.value = 5 and v.varName = \"lol\" p.procName = v.varName and n = 5;";
-	std::cout << ss;
+	cout << ss;
 	query = ss.str();
 
 	qv.Tokenize(query,tokenList);
@@ -491,19 +491,19 @@ void QueryPreProcessorTest::TokenizeTest()
 	correctList.push_back("5"); 
 	correctList.push_back(";"); 
 
-	//std::cout << "tokenList size: " << tokenList.size() << "\n";
-	//std::cout << "correctList size: " << correctList.size() << "\n";
+	//cout << "tokenList size: " << tokenList.size() << "\n";
+	//cout << "correctList size: " << correctList.size() << "\n";
 
 
 /*	for(int i=0; i<tokenList.size(); ++i) {
-		//std::cout << "Testing " << tokenList[i] << " and " << correctList[i] << "\n";
-		std::cout << tokenList[i] << "\n";
+		//cout << "Testing " << tokenList[i] << " and " << correctList[i] << "\n";
+		cout << tokenList[i] << "\n";
 	}*/
 
 	CPPUNIT_ASSERT(tokenList.size() == correctList.size());
 
 	for(int i=0; i<tokenList.size(); ++i) {
-		//std::cout << "Testing " << tokenList[i] << " and " << correctList[i] << "\n";
+		//cout << "Testing " << tokenList[i] << " and " << correctList[i] << "\n";
 		CPPUNIT_ASSERT(tokenList[i] == correctList[i]);
 	}
 }
@@ -1868,14 +1868,14 @@ void QueryPreProcessorTest::TokenizeExpressionTest()
 
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		std::cout << tokens[i]  << "\n";
+		cout << tokens[i]  << "\n";
 	}
 
 	//qp.TokenizeExpression(exp , tokens , delim);
 	CPPUNIT_ASSERT(tokens.size() == 1);
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		//std::cout << tokens[i] << " = " << correctResult[i] << "\n";
+		//cout << tokens[i] << " = " << correctResult[i] << "\n";
 		CPPUNIT_ASSERT(tokens[i] == correctResult[i]);
 	}
 
@@ -1891,14 +1891,14 @@ void QueryPreProcessorTest::TokenizeExpressionTest()
 
 	/*for(int i=0; i<tokens.size(); ++i)
 	{
-		std::cout << tokens[i]  << "\n";
+		cout << tokens[i]  << "\n";
 	}*/
 
 	//qp.TokenizeExpression(exp , tokens , delim);
 	CPPUNIT_ASSERT(tokens.size() == correctResult.size());
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		//std::cout << tokens[i] << " = " << correctResult[i] << "\n";
+		//cout << tokens[i] << " = " << correctResult[i] << "\n";
 		CPPUNIT_ASSERT(tokens[i] == correctResult[i]);
 	}
 
@@ -1916,14 +1916,14 @@ void QueryPreProcessorTest::TokenizeExpressionTest()
 
 	/*for(int i=0; i<tokens.size(); ++i)
 	{
-		std::cout << tokens[i]  << "\n";
+		cout << tokens[i]  << "\n";
 	}*/
 
 	//qp.TokenizeExpression(exp , tokens , delim);
 	CPPUNIT_ASSERT(tokens.size() == correctResult.size());
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		//std::cout << tokens[i] << " = " << correctResult[i] << "\n";
+		//cout << tokens[i] << " = " << correctResult[i] << "\n";
 		CPPUNIT_ASSERT(tokens[i] == correctResult[i]);
 	}
 
@@ -1943,14 +1943,14 @@ void QueryPreProcessorTest::TokenizeExpressionTest()
 
 	/*for(int i=0; i<tokens.size(); ++i)
 	{
-		std::cout << tokens[i]  << "\n";
+		cout << tokens[i]  << "\n";
 	}*/
 
 	//qp.TokenizeExpression(exp , tokens , delim);
 	CPPUNIT_ASSERT(tokens.size() == correctResult.size());
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		//std::cout << tokens[i] << " = " << correctResult[i] << "\n";
+		//cout << tokens[i] << " = " << correctResult[i] << "\n";
 		CPPUNIT_ASSERT(tokens[i] == correctResult[i]);
 	}
 
@@ -1972,14 +1972,14 @@ void QueryPreProcessorTest::TokenizeExpressionTest()
 
 	/*for(int i=0; i<tokens.size(); ++i)
 	{
-		std::cout << tokens[i]  << "\n";
+		cout << tokens[i]  << "\n";
 	}*/
 
 	//qp.TokenizeExpression(exp , tokens , delim);
 	CPPUNIT_ASSERT(tokens.size() == correctResult.size());
 	for(int i=0; i<tokens.size(); ++i)
 	{
-		//std::cout << tokens[i] << " = " << correctResult[i] << "\n";
+		//cout << tokens[i] << " = " << correctResult[i] << "\n";
 		CPPUNIT_ASSERT(tokens[i] == correctResult[i]);
 	}
 

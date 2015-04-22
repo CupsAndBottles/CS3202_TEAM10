@@ -16,30 +16,30 @@ void RelTableTest::TestGetRelTableData()
 	int size = RelTable::GetTableSize();
 	CPPUNIT_ASSERT(size == 6);
 	
-	/*std::cout << "table size : " << RelTable::GetTableSize() << "\n";
-	std::cout << "modifies arg1 size : " << RelTable::GetRelArgType(MODIFIES, ARG1).size() << "\n";
+	/*cout << "table size : " << RelTable::GetTableSize() << "\n";
+	cout << "modifies arg1 size : " << RelTable::GetRelArgType(MODIFIES, ARG1).size() << "\n";
 	std::vector<ArgumentType> argType = RelTable::GetRelArgType(MODIFIES, ARG1);
 	for(std::vector<ArgumentType>::iterator it = argType.begin(); it != argType.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << "\n";
+		cout << *it << " ";
+	cout << "\n";
 
-	std::cout << "modifies arg2 size : " << RelTable::GetRelArgType(MODIFIES, ARG2).size() << "\n";
+	cout << "modifies arg2 size : " << RelTable::GetRelArgType(MODIFIES, ARG2).size() << "\n";
 	argType = RelTable::GetRelArgType(MODIFIES, ARG2);
 	for(std::vector<ArgumentType>::iterator it = argType.begin(); it != argType.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << "\n";
+		cout << *it << " ";
+	cout << "\n";
 
-	std::cout << "modifies arg1 synonym size : " << RelTable::GetRelArgSynonymType(MODIFIES, ARG1).size() << "\n";
+	cout << "modifies arg1 synonym size : " << RelTable::GetRelArgSynonymType(MODIFIES, ARG1).size() << "\n";
 	std::vector<SynonymType> argSynType = RelTable::GetRelArgSynonymType(MODIFIES, ARG1);
 	for(std::vector<SynonymType>::iterator it = argSynType.begin(); it != argSynType.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << "\n";
+		cout << *it << " ";
+	cout << "\n";
 
-	std::cout << "modifies arg2 synonym size : " << RelTable::GetRelArgSynonymType(MODIFIES, ARG2).size() << "\n";
+	cout << "modifies arg2 synonym size : " << RelTable::GetRelArgSynonymType(MODIFIES, ARG2).size() << "\n";
 	argSynType = RelTable::GetRelArgSynonymType(MODIFIES, ARG2);
 	for(std::vector<SynonymType>::iterator it = argSynType.begin(); it != argSynType.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << "\n";*/
+		cout << *it << " ";
+	cout << "\n";*/
 	
 	//MODIFIES table
 	std::vector<ArgumentType> argType = RelTable::GetRelArgType(MODIFIES, ARG1);

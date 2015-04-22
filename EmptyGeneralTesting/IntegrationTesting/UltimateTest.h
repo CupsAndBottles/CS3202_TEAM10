@@ -27,16 +27,11 @@ class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST(TestNext);
 	CPPUNIT_TEST(TestNextT);
 	CPPUNIT_TEST(TestAffects);
-<<<<<<< HEAD
-	CPPUNIT_TEST(TestAffectsT);*/
-	//CPPUNIT_TEST(TestWith);
-	//CPPUNIT_TEST(TestAnd);
-	CPPUNIT_TEST(TestTuple);
-=======
 	CPPUNIT_TEST(TestAffectsT);
 	CPPUNIT_TEST(TestWith);
 	CPPUNIT_TEST(TestAnd);
->>>>>>> origin/dev
+	CPPUNIT_TEST(TestTuple);
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:

@@ -424,7 +424,7 @@ bool QueryEvaluator::EvaluateParent(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_parent << " and ";
 									cout << arg2Syn.value << " " << *it_child << " , does modifies , insert pairs.\n";
-
+									--validCount;
 									//intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
 								}
 							} 
@@ -837,7 +837,7 @@ bool QueryEvaluator::EvaluateFollows(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_before << " and ";
 									cout << arg2Syn.value << " " << *it_after << " , does modifies , insert pairs.\n";
-
+									--validCount;
 									//intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
 								}
 							} 
@@ -1164,7 +1164,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_stmts << " and ";
 									cout << arg2Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
-
+									--validCount;
 									//intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
 								}
 							} 
@@ -1426,7 +1426,7 @@ bool QueryEvaluator::EvaluateModifies(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_procs << " and ";
 									cout << arg2Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
-
+									--validCount;
 									//intermediateResult.InsertPair(arg1Syn.value, *it_stmts, arg2Syn.value, *it_vars);
 								}
 							} 
@@ -1906,6 +1906,7 @@ bool QueryEvaluator::EvaluateCalls(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_calling << " and ";
 									cout << arg2Syn.value << " " << *it_called << " , does modifies , insert pairs.\n";
+									--validCount;
 								}
 							} 
 							else {
@@ -2285,6 +2286,7 @@ bool QueryEvaluator::EvaluateNext(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_prev << " and ";
 									cout << arg2Syn.value << " " << *it_next << " , does modifies , insert pairs.\n";
+									--validCount;
 								}
 							} 
 							else {
@@ -2611,6 +2613,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_affecting << " and ";
 									cout << arg2Syn.value << " " << *it_affected << " , does modifies , insert pairs.\n";
+									--validCount;
 								}
 							} 
 							else {
@@ -2628,6 +2631,7 @@ bool QueryEvaluator::EvaluateAffects(SuchThatClause suchThat)
 								{
 									cout << "Has no link between " << arg1Syn.value << " " << *it_affecting << " and ";
 									cout << arg2Syn.value << " " << *it_affected << " , does not modifies , do nothing.\n";
+
 								}
 
 								--validCount;
@@ -2937,37 +2941,82 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
 				validCount = stmts.size() * vars.size();
 
-				for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) {
-					for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
 
+				for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+				{
+					for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) 
+					{
 						int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 						bool isModifies = Modifies::IsStmtModifyingVar(*it_stmts,varIndex);
 
-						if (usingIntermediateResult_assign && usingIntermediateResult_vars) {
-							if (isModifies) {
-								bool isDirectLink;
-								if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
-									if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
-										if (isDirectLink) {
-											intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-										}
-										else {
-											//indirect link, do nothing
-										}
+						//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+						if (usingIntermediateResult_assign && usingIntermediateResult_vars) 
+						{
+							//if both got result, we only want to unlink, no need to add link
+							if(intermediateResult.HasLinkBetweenColumns(patternSyn.value , arg1Syn.value))
+							{
+								cout << "There are links between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+							
+								if (isModifies) 
+								{
+									bool isDirectLink;
+
+									//if does modifies and has link, do nothing
+									if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) 
+									{
+										//string direct = "";
+										//if(!isDirectLink) direct = "no ";
+
+										cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does modifies , do nothing\n";
 									}
 
-									//at least one no links
-									else {
-										intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+									//if does modifies, but no link, don't link
+									else
+									{
+										cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
+										--validCount;
 									}
+								} 
+								else {
+									//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+									bool dummy;
+									if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
+									{
+										cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does not modifies , unlink.\n";
+
+										intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+									}
+
+									else
+									{
+										cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does not modifies , do nothing.\n";
+									}
+
+									--validCount;
 								}
-							} 
-							else {
-								bool dummy;
-								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
-									intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-								--validCount;
+							}
+
+							//no links at all between 2 synonym columns, just insert
+							else 
+							{
+								cout << "There are no link between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+
+								if (isModifies) 
+								{
+									cout << *it_stmts << " does modifies " << *it_vars << " , insert pairs\n";
+									intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								}
+
+								else {
+									//do nothing
+									cout << *it_stmts << " does not modifies " << *it_vars << " , do nothing\n";
+									--validCount;
+								}
 							}
 						}
 
@@ -2983,10 +3032,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					}
 				}
 
-				//after looping, do a update to remove any element without link between this 2 column
-				//if (usingIntermediateResult_assign && usingIntermediateResult_vars) {
-					intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
-				//}
+				intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
 			}
 			  
 			//pattern a("x",_)
@@ -3105,38 +3151,82 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
 				validCount = stmts.size() * vars.size();
 				cout << "validCount : " <<stmts.size() << " x " << vars.size() <<"\n";
-				for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) {
-					for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
 
+				for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+				{
+					for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) 
+					{
 						int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 						bool isModifies = Modifies::IsStmtModifyingVar(*it_stmts,varIndex);
 
-						if (usingIntermediateResult_assign && usingIntermediateResult_vars) {
-							if (isModifies) {
-								bool isDirectLink;
-								if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
-									if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
-										if (isDirectLink) {
-											intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-										}
-										else {
-											//indirect link, do nothing
-										}
+						//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+						if (usingIntermediateResult_assign && usingIntermediateResult_vars) 
+						{
+							//if both got result, we only want to unlink, no need to add link
+							if(intermediateResult.HasLinkBetweenColumns(patternSyn.value , arg1Syn.value))
+							{
+								cout << "There are links between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+							
+								if (isModifies) 
+								{
+									bool isDirectLink;
+
+									//if does modifies and has link, do nothing
+									if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) 
+									{
+										//string direct = "";
+										//if(!isDirectLink) direct = "no ";
+
+										cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does modifies , do nothing\n";
 									}
 
-									//at least one no links
-									else {
-										intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+									//if does modifies, but no link, don't link
+									else
+									{
+										cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
+										--validCount;
 									}
+								} 
+								else {
+									//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+									bool dummy;
+									if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
+									{
+										cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does not modifies , unlink.\n";
+
+										intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+									}
+
+									else
+									{
+										cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+										cout << arg1Syn.value << " " << *it_vars << " , does not modifies , do nothing.\n";
+									}
+
+									--validCount;
 								}
-								break;
-							} 
-							else {
-								bool dummy;
-								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
-									intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-								--validCount;
+							}
+
+							//no links at all between 2 synonym columns, just insert
+							else 
+							{
+								cout << "There are no link between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+
+								if (isModifies) 
+								{
+									cout << *it_stmts << " does modifies " << *it_vars << " , insert pairs\n";
+									intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								}
+
+								else {
+									//do nothing
+									cout << *it_stmts << " does not modifies " << *it_vars << " , do nothing\n";
+									--validCount;
+								}
 							}
 						}
 
@@ -3152,11 +3242,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					}
 				}
 
-				//after looping, do a update to remove any element without link between this 2 column
-				//if (usingIntermediateResult_assign && usingIntermediateResult_vars) {
-					intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
-				//}
-
+				intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
 
 				//update stmts
 				intermediateResult.GetList(patternSyn.value, stmts);
@@ -3176,15 +3262,6 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 						}
 						cout << "here\n";
 					}
-				/*}
-				else
-				{
-					//insert all right result into table
-					for(vector<int>::iterator it = rightResult.begin(); it != rightResult.end(); ++it)
-						intermediateResult.Insert(patternSyn.value , *it);
-
-					return true;
-				}*/		
 			}
 
 			//pattern a("x",_"x+y"_)
@@ -3330,9 +3407,10 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 			//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
 			validCount = stmts.size() * vars.size();
 
-			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) {
-				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
-
+			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) 
+				{
 					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
@@ -3340,32 +3418,73 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					if(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent() == *it_vars)
 						isContains = true;
 
-					//cout << *it_stmts << "iscontain " << *it_vars << " is " << isContains << "\n";
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_while && usingIntermediateResult_vars) 
+					{
+						//if both got result, we only want to unlink, no need to add link
+						if(intermediateResult.HasLinkBetweenColumns(patternSyn.value , arg1Syn.value))
+						{
+							cout << "There are links between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+							
+							if (isContains) 
+							{
+								bool isDirectLink;
 
-					if (usingIntermediateResult_while && usingIntermediateResult_vars) {
-						if (isContains) {
-							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
-								if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
-									if (isDirectLink) {
-										intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-									}
-									else {
-										//indirect link, do nothing
-									}
+								//if does modifies and has link, do nothing
+								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) 
+								{
+									//string direct = "";
+									//if(!isDirectLink) direct = "no ";
+
+									cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does modifies , do nothing\n";
 								}
 
-								//at least one no links
-								else {
-									intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								//if does modifies, but no link, don't link
+								else
+								{
+									cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
+									--validCount;
 								}
+							} 
+							else {
+								//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+								bool dummy;
+								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
+								{
+									cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does not modifies , unlink.\n";
+
+									intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								}
+
+								else
+								{
+									cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does not modifies , do nothing.\n";
+								}
+
+								--validCount;
 							}
-						} 
-						else {
-							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
-								intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-							--validCount;
+						}
+
+						//no links at all between 2 synonym columns, just insert
+						else 
+						{
+							cout << "There are no link between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+
+							if (isContains) 
+							{
+								cout << *it_stmts << " does modifies " << *it_vars << " , insert pairs\n";
+								intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+							}
+
+							else {
+								//do nothing
+								cout << *it_stmts << " does not modifies " << *it_vars << " , do nothing\n";
+								--validCount;
+							}
 						}
 					}
 
@@ -3381,10 +3500,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				}
 			}
 
-			//after looping, do a update to remove any element without link between this 2 column
-			//if (usingIntermediateResult_while && usingIntermediateResult_vars) {
-				intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
-			//}
+			intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
 		}
 
 		//pattern w("x",_)
@@ -3504,9 +3620,11 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 			//loop afterStmt.size() * beforeStmt.size() times, if all invalid, validCount will be 0, return false
 			validCount = stmts.size() * vars.size();
 
-			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) {
-				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) {
 
+			for (vector<int>::iterator it_stmts = stmts.begin(); it_stmts != stmts.end(); ++it_stmts) 
+			{
+				for (vector<string>::iterator it_vars = vars.begin(); it_vars != vars.end(); ++it_vars) 
+				{
 					int varIndex = VarTable::GetIndexOfVar(*it_vars);
 
 					//bool isUses = Uses::IsStmtUsingVar(*it_stmts,varIndex);
@@ -3514,30 +3632,73 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 					if(Program::GetStmtFromNumber(*it_stmts).GetChild(0).GetContent() == *it_vars)
 						isContains = true;
 
-					if (usingIntermediateResult_if && usingIntermediateResult_vars) {
-						if (isContains) {
-							bool isDirectLink;
-							if (!intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) {
-								if (intermediateResult.HasLink(patternSyn.value, *it_stmts) && intermediateResult.HasLink(arg1Syn.value, *it_vars)) {
-									if (isDirectLink) {
-										intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-									}
-									else {
-										//indirect link, do nothing
-									}
+					//both synonym list taken from result, so both must exist in result, question is whether there is a link between them
+					if (usingIntermediateResult_if && usingIntermediateResult_vars) 
+					{
+						//if both got result, we only want to unlink, no need to add link
+						if(intermediateResult.HasLinkBetweenColumns(patternSyn.value , arg1Syn.value))
+						{
+							cout << "There are links between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+							
+							if (isContains) 
+							{
+								bool isDirectLink;
+
+								//if does modifies and has link, do nothing
+								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, isDirectLink)) 
+								{
+									//string direct = "";
+									//if(!isDirectLink) direct = "no ";
+
+									cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does modifies , do nothing\n";
 								}
 
-								//at least one no links
-								else {
-									intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								//if does modifies, but no link, don't link
+								else
+								{
+									cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does modifies , insert pairs.\n";
+									--validCount;
 								}
+							} 
+							else {
+								//dont remove, if has link just remove the link, if no link do nothing, update table to remove excess
+								bool dummy;
+								if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
+								{
+									cout << "Has link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does not modifies , unlink.\n";
+
+									intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+								}
+
+								else
+								{
+									cout << "Has no link between " << patternSyn.value << " " << *it_stmts << " and ";
+									cout << arg1Syn.value << " " << *it_vars << " , does not modifies , do nothing.\n";
+								}
+
+								--validCount;
 							}
-						} 
-						else {
-							bool dummy;
-							if (intermediateResult.HasLinkBetweenColumns(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars, dummy))
-								intermediateResult.Unlink(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
-							--validCount;
+						}
+
+						//no links at all between 2 synonym columns, just insert
+						else 
+						{
+							cout << "There are no link between column " << patternSyn.value << " and " << arg1Syn.value << "\n";
+
+							if (isContains) 
+							{
+								cout << *it_stmts << " does modifies " << *it_vars << " , insert pairs\n";
+								intermediateResult.InsertPair(patternSyn.value, *it_stmts, arg1Syn.value, *it_vars);
+							}
+
+							else {
+								//do nothing
+								cout << *it_stmts << " does not modifies " << *it_vars << " , do nothing\n";
+								--validCount;
+							}
 						}
 					}
 
@@ -3553,10 +3714,7 @@ bool QueryEvaluator::EvaluatePattern(PatternClause pattern)
 				}
 			}
 
-			//after looping, do a update to remove any element without link between this 2 column
-			//if (usingIntermediateResult_if && usingIntermediateResult_vars) {
-				intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
-			//}
+			intermediateResult.RemoveElementsWithoutLink(patternSyn.value, arg1Syn.value);
 		}
 
 		//pattern ifs(v,_,_)

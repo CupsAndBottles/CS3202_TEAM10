@@ -81,7 +81,9 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 					// don't check for anything after this stmt
 				} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
+					if (!nextOfCurrStmt.empty()) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+					}
 				}	
 				break;
 			case WHILE:
@@ -91,34 +93,39 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				} else if ((int) nextOfCurrStmt.size() > 1 && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 					return true;
 				} else {
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
+					if (!nextOfCurrStmt.empty()) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+					}
 				}
 				break;
 			case IF: {
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
 				int endOfIfElse = Follows::GetFollowsAfter(currStmt);
 				
-				if (stmtAffected < nextOfCurrStmt.at(1)) {
-					// modification in 1st block
-					if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
-						return true;
+				if((int) nextOfCurrStmt.size() > 1) {
+					if (stmtAffected < nextOfCurrStmt.at(1)) {
+						// modification in 1st block
+						if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
+							return true;
+						} else {
+							uncheckedStmts.push(nextOfCurrStmt.at(0));	
+						}
+					} else if (endOfIfElse > 0 && stmtAffected >= nextOfCurrStmt.at(1) && stmtAffected < endOfIfElse) {
+						// modification in 2nd block
+						if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
+							return true;
+						} else {
+							uncheckedStmts.push(nextOfCurrStmt.at(1));	
+						}
+					} else if (endOfIfElse > 0 && stmtAffected >= endOfIfElse && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
+						// if-else does not modify at all, skip all if-else
+						uncheckedStmts.push(Follows::GetFollowsAfter(currStmt));
 					} else {
-						uncheckedStmts.push(nextOfCurrStmt.at(0));	
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+						uncheckedStmts.push(nextOfCurrStmt.at(1));
 					}
-				} else if (endOfIfElse > 0 && stmtAffected >= nextOfCurrStmt.at(1) && stmtAffected < endOfIfElse) {
-					// modification in 2nd block
-					if (!Modifies::IsStmtModifyingVar(currStmt, varModified)) {
-						return true;
-					} else {
-						uncheckedStmts.push(nextOfCurrStmt.at(1));	
-					}
-				} else if (endOfIfElse > 0 && stmtAffected >= endOfIfElse && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
-					// if-else does not modify at all, skip all if-else
-					uncheckedStmts.push(Follows::GetFollowsAfter(currStmt));
-				} else {
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
-					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				}
+
 			} break;
 			case CALL: {
 				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
@@ -126,7 +133,9 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 					// don't check for anything after this stmt
 				} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
+					if (!nextOfCurrStmt.empty()) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+					}
 				}
 			} break;
 			default:
@@ -151,7 +160,10 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 	vector<bool> stmtsIsChecked(StmtTypeTable::GetNoOfStmts() + 1, false);
 	
 	vector<int> nextOfCurrStmt = Next::GetNextAfter(stmtAffecting);
-	uncheckedStmts.push(nextOfCurrStmt.at(0));
+
+	if (!nextOfCurrStmt.empty()) {
+		uncheckedStmts.push(nextOfCurrStmt.at(0));
+	}
 
 	int currStmt;
 
@@ -181,7 +193,9 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 				if (Uses::IsStmtUsingVar(currStmt, varModified)) {
 					// find a way to check that the used variable occurs in the stmtLst contained by while, 
 					// not used as a control variable in while
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
+					if (!nextOfCurrStmt.empty()) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+					}
 				}
 				if ((int) nextOfCurrStmt.size() > 1) {
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
@@ -193,17 +207,20 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 				if (!Modifies::IsStmtModifyingVar(currStmt, varModified) && !Uses::IsStmtUsingVar(currStmt, varModified)) {
 					uncheckedStmts.push(Follows::GetFollowsAfter(currStmt));
 				} else {
-					uncheckedStmts.push(nextOfCurrStmt.at(0));
-					uncheckedStmts.push(nextOfCurrStmt.at(1));
+					if ((int) nextOfCurrStmt.size() > 1) {
+						uncheckedStmts.push(nextOfCurrStmt.at(0));
+						uncheckedStmts.push(nextOfCurrStmt.at(1));
+					}
 				}
 				break;
 			case CALL: {
 				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
-				if (Uses::IsProcUsingVar(procCalled, varModified)) {
+
+				if (procCalled >= 0 && Uses::IsProcUsingVar(procCalled, varModified)) {
 					affectedStmts.push_back(currStmt);
 				}
 				
-				if (Modifies::IsProcModifyingVar(procCalled, varModified)) {
+				if (procCalled >= 0 && Modifies::IsProcModifyingVar(procCalled, varModified)) {
 					// don't check for anything after this stmt
 				} else {
 					nextOfCurrStmt = Next::GetNextAfter(currStmt);
@@ -296,17 +313,20 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == CALL) {
 		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 		if (!stmtsIsChecked.at(currStmt)) {
-			int varModified = Modifies::GetVarModifiedByProc(procCalled).at(0);
-			vector<int>::iterator it = varsUsed.begin();
-			while (it != varsUsed.end()) {
-				if (varModified == *it) {
-					affectedStmts.push_back(currStmt);
-					it = varsUsed.erase(it);
-				} else {
-					it++;
+			vector<int> varsModifiedByProc = Modifies::GetVarModifiedByProc(procCalled);
+			if (!varsModifiedByProc.empty()) {
+				int varModified = varsModifiedByProc.at(0);
+				vector<int>::iterator it = varsUsed.begin();
+				while (it != varsUsed.end()) {
+					if (varModified == *it) {
+						affectedStmts.push_back(currStmt);
+						it = varsUsed.erase(it);
+					} else {
+						it++;
+					}
 				}
+				stmtsIsChecked.at(currStmt) = true;
 			}
-			stmtsIsChecked.at(currStmt) = true;
 		} else {
 			nextBeforeCurrStmt.clear();
 		}

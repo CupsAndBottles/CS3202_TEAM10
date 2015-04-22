@@ -304,7 +304,7 @@ bool QueryEvaluator::EvaluateQuery(QueryData queryData, list<string> &resultList
 		//select <a,w,v> such that...
 		if(hasAnswer)
 		{
-			//intermediateResult.GetResultTuple(selectSynList ,resultList);
+			intermediateResult.GetResultTuple(selectSynList ,resultList);
 		}
 
 		else

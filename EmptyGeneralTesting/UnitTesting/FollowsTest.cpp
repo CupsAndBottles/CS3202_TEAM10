@@ -17,10 +17,10 @@ void FollowsTest::tearDown() {
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FollowsTest);
 
-void FollowsTest::testConstructor() {
+/*void FollowsTest::testConstructor() {
 	CPPUNIT_ASSERT_EQUAL(0, Follows::SizeOfFollows());
 
-}
+}*/ // not required in static class
 
 void FollowsTest::testSetFollows() {
 	Follows::ClearData();

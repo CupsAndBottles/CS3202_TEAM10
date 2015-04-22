@@ -38,7 +38,23 @@ void UsesTest::TestSingleStmt() {
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == false);
 	
 }
+void UsesTest::TestBitVector() {
+	Uses::ClearData();
+	Uses::SetStmtUsesVar(0,1);
+	Uses::SetStmtUsesVar(1,2);
+	Uses::SetProcUsesVar(2,3);
+	Uses::SetProcUsesVar(3,4);
+	
+	Uses::CreateBitVector();
+	CPPUNIT_ASSERT(Uses::IsStmtUsingVarBV(0,1));
+	CPPUNIT_ASSERT(Uses::IsStmtUsingVarBV(1,2));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVarBV(2,3));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVarBV(3,4));
 
+	Uses::ClearData();
+	CPPUNIT_ASSERT(Uses::HasAnyUses()==false);
+
+}
 void UsesTest::TestMultipleStmts() {
 	Uses::ClearData();
 	CPPUNIT_ASSERT(Uses::HasAnyUses() == false);
@@ -56,6 +72,7 @@ void UsesTest::TestMultipleStmts() {
 	CPPUNIT_ASSERT(Uses::IsStmtUsingVar(4, 3));
 
 	vector<int> stmtsUsingVar0 = Uses::GetStmtUsingVar(0);
+
 	CPPUNIT_ASSERT_EQUAL(1, (int)stmtsUsingVar0.size());
 	CPPUNIT_ASSERT_EQUAL(1, stmtsUsingVar0[0]);
 
@@ -308,3 +325,186 @@ void UsesTest::TestUses() {
 
 }
 
+void UsesTest::TestNoProc() {
+	Uses::ClearData();
+	CPPUNIT_ASSERT(!Uses::HasAnyUses());
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(4, 3));
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::SizeOfUses());
+
+}
+
+void UsesTest::TestSingleProc() {
+	Uses::ClearData();
+	CPPUNIT_ASSERT(!Uses::HasAnyUses());
+
+	//Uses::SetProcUsesVar*/
+	Uses::SetProcUsesVar(2, 3);
+	Uses::SetProcUsesVar(2, 3); // test repeated additions
+	CPPUNIT_ASSERT_EQUAL(1, (int) Uses::SizeOfUses());
+	
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(2, 3));
+	CPPUNIT_ASSERT(!Uses::IsStmtUsingVar(2, 3)); // test correct proc tables used not stmt tables
+
+	//Uses::GetProcUsingVar*/
+	vector<int> procsUsingVar3 = Uses::GetProcUsingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsUsingVar3.size());
+	CPPUNIT_ASSERT(procsUsingVar3[0] == 2);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(3).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetProcUsingVar(0).size());
+
+	//Uses::GetVarUsedByProc*/
+	vector<int> varsUsedByProc2 = Uses::GetVarUsedByProc(2);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsUsedByProc2.size());
+	CPPUNIT_ASSERT(varsUsedByProc2[0] == 3);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByStmt(2).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByProc(0).size());
+}
+
+void UsesTest::TestMultipleProcs() {
+	Uses::ClearData();
+	CPPUNIT_ASSERT(!Uses::HasAnyUses());
+
+	//Uses::SetProcUsesVar*/
+	Uses::SetProcUsesVar(1, 0);
+	Uses::SetProcUsesVar(2, 1);
+	Uses::SetProcUsesVar(3, 2);
+	Uses::SetProcUsesVar(4, 3);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Uses::SizeOfUses());
+	
+	//Uses::IsProcModifying*/
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(1, 0));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(2, 1));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(3, 2));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(4, 3));
+	// false results
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(0, 0));
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(3, 4));
+	
+	CPPUNIT_ASSERT(!Uses::IsStmtUsingVar(1, 0));
+	CPPUNIT_ASSERT(!Uses::IsStmtUsingVar(4, 3));
+
+	//Uses::GetProcModifying*/
+	vector<int> procsUsesVar0 = Uses::GetProcUsingVar(0);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsUsesVar0.size());
+	CPPUNIT_ASSERT(procsUsesVar0[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(0).size());
+
+	vector<int> procsUsesVar3 = Uses::GetProcUsingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsUsesVar3.size());
+	CPPUNIT_ASSERT(procsUsesVar3[0] == 4);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(3).size());
+
+	// test empty result
+	vector<int> procsUsesVar4 = Uses::GetProcUsingVar(4);
+	CPPUNIT_ASSERT_EQUAL(0, (int) procsUsesVar4.size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(4).size());
+
+	//Uses::GetVarUsedByProc*/
+	vector<int> varsUsedByProc1 = Uses::GetVarUsedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsUsedByProc1.size());
+	CPPUNIT_ASSERT(varsUsedByProc1[0] == 0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(1).size());
+
+	vector<int> varsUsedByProc4 = Uses::GetVarUsedByProc(4);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsUsedByProc4.size());
+	CPPUNIT_ASSERT(varsUsedByProc4[0] == 3);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(4).size());
+
+	// test empty result
+	vector<int> varsUsedByProc0 = Uses::GetVarUsedByProc(0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) varsUsedByProc0.size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByProc(0).size());
+
+}
+
+void UsesTest::TestMultipleProcsUsingSingleVar() {
+	Uses::ClearData();
+	CPPUNIT_ASSERT(!Uses::HasAnyUses());
+
+	//Uses::SetProcUsesVar*/
+	Uses::SetProcUsesVar(1, 0);
+	Uses::SetProcUsesVar(2, 0);
+	Uses::SetProcUsesVar(3, 0);
+	Uses::SetProcUsesVar(4, 0);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Uses::SizeOfUses());
+
+	//Uses::IsProcUsingVar*/
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(1, 0));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(4, 0));
+	// false results
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(0, 0));
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(5, 0));
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(0, 1));
+
+	//Uses::GetProcUsingVar*/
+	vector<int> GetProcUsingVar0 = Uses::GetProcUsingVar(0);
+	CPPUNIT_ASSERT_EQUAL(4, (int) GetProcUsingVar0.size());
+	CPPUNIT_ASSERT(GetProcUsingVar0[0] == 1);
+	CPPUNIT_ASSERT(GetProcUsingVar0[1] == 2);
+	CPPUNIT_ASSERT(GetProcUsingVar0[2] == 3);
+	CPPUNIT_ASSERT(GetProcUsingVar0[3] == 4);
+	//empty results
+	vector<int> GetProcUsingVar1 = Uses::GetProcUsingVar(1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) GetProcUsingVar1.size());
+
+	//Uses::GetVarUsedByProc*/
+	vector<int> varsUsedByProc1 = Uses::GetVarUsedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsUsedByProc1.size());
+	CPPUNIT_ASSERT(varsUsedByProc1[0] == 0);
+
+	vector<int> varsUsedByProc4 = Uses::GetVarUsedByProc(4);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsUsedByProc4.size());
+	CPPUNIT_ASSERT(varsUsedByProc4[0] == 0);
+
+	//empty results
+	vector<int> varsUsedByProc0 = Uses::GetVarUsedByProc(0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) varsUsedByProc0.size());
+
+}
+
+void UsesTest::TestSingleProcUsingMultipleVars() {
+	Uses::ClearData();
+	CPPUNIT_ASSERT(!Uses::HasAnyUses());
+
+	//Uses::SetProcUsesVar*/
+	Uses::SetProcUsesVar(1, 0);
+	Uses::SetProcUsesVar(1, 1);
+	Uses::SetProcUsesVar(1, 2);
+	Uses::SetProcUsesVar(1, 3);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Uses::SizeOfUses());
+	
+	//Uses::IsProcUsingVar*/
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(1, 0));
+	CPPUNIT_ASSERT(Uses::IsProcUsingVar(1, 3));
+	//false results
+	CPPUNIT_ASSERT(!Uses::IsProcUsingVar(0, 1));
+	CPPUNIT_ASSERT(!Uses::IsStmtUsingVar(1, 3));
+
+	//Uses::GetProcUsingVar*/
+	vector<int> procsUsingVar0 = Uses::GetProcUsingVar(0);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsUsingVar0.size());
+	CPPUNIT_ASSERT(procsUsingVar0[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(0).size());
+
+	vector<int> procsUsingVar3 = Uses::GetProcUsingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsUsingVar3.size());
+	CPPUNIT_ASSERT(procsUsingVar3[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(3).size());
+
+	// empty results
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(-1).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetStmtUsingVar(4).size());
+
+	//Uses::GetVarUsedByProc*/
+	vector<int> varsUsedByProc1 = Uses::GetVarUsedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(4, (int) varsUsedByProc1.size());
+	CPPUNIT_ASSERT(varsUsedByProc1[0] == 0);
+	CPPUNIT_ASSERT(varsUsedByProc1[3] == 3);
+	
+	// empty results
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByProc(0).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Uses::GetVarUsedByStmt(0).size());
+}

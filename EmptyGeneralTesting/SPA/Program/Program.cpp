@@ -2,30 +2,59 @@
 
 #include "Program.h"
 #include "..\Parser\Token.h"
-#include "TNode\ProcedureTNode.h"
-#include "TNode\AssignmentTNode.h"
-#include "TNode\ConstantTNode.h"
-#include "TNode\WhileTNode.h"
+#include "..\PKB\Modifies.h"
+#include "..\PKB\Uses.h"
+#include "..\PKB\ProcTable.h"
+#include "..\PKB\Calls.h"
+#include "..\PKB\ConstTable.h"
+#include "..\PKB\Follows.h"
+#include "..\PKB\Next.h"
+#include "..\PKB\Parent.h"
+#include "..\PKB\StmtTypeTable.h"
+#include "..\PKB\VarTable.h"
+#include "..\PKB\NextBip.h"
+#include "..\PKB\NodeTypeTable.h"
 
-ProgramTNode Program::program;
-map<int, StmtTNode*> Program::stmtNumberMap;
+void Program::ClearAll() { // clears all PKB elements
+	TNode::resetNodeCounter();
+	Program::ClearData();
+	Modifies::ClearData();
+	Uses::ClearData();
+	ProcTable::ClearData();
+	Calls::ClearData();
+	ConstTable::ClearData();
+	Follows::ClearData();
+	Next::ClearData();
+	Parent::ClearData();
+	StmtTypeTable::ClearData();
+	NodeTypeTable::ClearData();
+	VarTable::ClearData();
+	NextBip::ClearData();
+}
 
 Program::Program() {}
 
-ProgramTNode& Program::GetASTRootNode() {
+TNode Program::program = TNode::ConstructProgramTNode("");
+map<int, TNode*> Program::stmtNumberMap = map<int, TNode*>();
+
+TNode& Program::GetASTRootNode() {
 	return program;
 }
 
-StmtTNode& Program::GetStmtFromNumber(int stmtNum) {
+TNode& Program::GetStmtFromNumber(int stmtNum) {
 	return *(stmtNumberMap[stmtNum]);
 }
 
-void Program::InsertStmt(StmtTNode* stmt, int stmtNum) {
+int Program::GetNumOfStmts() {
+	return stmtNumberMap.size();
+}
+
+void Program::InsertStmt(TNode* stmt, int stmtNum) {
 	stmtNumberMap[stmtNum] = stmt;
 }
 
 void Program::ClearData() { // leaky method
-	program = ProgramTNode();
-	stmtNumberMap.clear();
+	TNode::resetNodeCounter();
+	Program::program = TNode::ConstructProgramTNode("");
+	Program::stmtNumberMap.clear();
 }
-

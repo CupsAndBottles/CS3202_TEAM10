@@ -1,0 +1,78 @@
+\\ NextBip Test 
+
+\\ calling one procedure more than once
+procedure GG1 {
+	x = 1;			\\ 1
+	call assign;		\\ 2
+	y = 2;			\\ 3
+	call assign;		\\ 4
+	z = 3;			\\ 5
+}
+
+procedure GG2 {
+	x = 1;			\\ 6
+	call whileStart;	\\ 7
+	y = 2;			\\ 8
+	call whileStart;	\\ 9
+	z = 3;			\\ 10
+	x = 1;			\\ 11
+	call ifStart;		\\ 12
+	y = 2;			\\ 13
+	call ifStart;		\\ 14
+	z = 3;			\\ 15
+}
+
+procedure GG3 {
+	x = 1;			\\ 16
+	call whileEnd;		\\ 17
+	y = 2;			\\ 18
+	call whileEnd;		\\ 19
+	z = 3;			\\ 20
+	x = 1;			\\ 21
+	call ifEnd;		\\ 22
+	y = 2;			\\ 23
+	call ifEnd;		\\ 24
+	z = 3;			\\ 25
+}
+
+procedure assign {
+	alpha = 1;		\\ 26
+	bravo = 2;		\\ 27
+	charlie = 3;		\\ 28
+	delta = 4;		\\ 29
+}
+
+
+\\ multiple afters
+procedure whileStart {
+	while w {		\\ 30
+		ah = choo;	\\ 31
+	}
+	sn = eeze;		\\ 32
+}
+
+procedure ifStart {
+	if i then {		\\ 33
+		ha = ha;	\\ 34
+	} else {
+		ho = ho;	\\ 35
+	}
+	santa = claus;		\\ 36
+}
+
+\\ multiple befores
+procedure whileEnd {
+	sn = eeze;		\\ 37
+	while w {		\\ 38
+		ah = choo;	\\ 39
+	}
+}
+
+procedure ifEnd {
+	santa = claus;		\\ 40
+	if i then {		\\ 41
+		ha = ha;	\\ 42
+	} else {
+		ho = ho;	\\ 43
+	}
+}

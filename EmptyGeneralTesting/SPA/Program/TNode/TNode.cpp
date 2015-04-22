@@ -1,4 +1,6 @@
 #include "TNode.h"
+#include "../../Parser/Token.h"
+#include <sstream>
 
 const string TNode::enumStringDeclarations[] = {
 	"Procedure",
@@ -6,17 +8,20 @@ const string TNode::enumStringDeclarations[] = {
 	"Assignment",
 	"Variable",
 	"Constant",
-	"BinaryOperator",
+	"Operator",
 	"StmtList",
 	"While",
+	"Call",
+	"If"
 };
 
-TNode::TNode(Type type)
-	: type(type) {
-}
+int TNode::nodeCounter;
 
-TNode::TNode(Type type, string content)
-	: type(type), content(content) {
+TNode::TNode(Type type, string name)
+	: type(type), name(name), rightSibling(nullptr)
+	, logicalParent(nullptr), content(""), lineNumber(0) {
+	nodeIndex = nodeCounter;
+	nodeCounter++;
 }
 
 void TNode::ThrowUnsupportedOperationException() {
@@ -59,6 +64,10 @@ void TNode::SetRightSibling(TNode* rightSibling) {
 	rightSibling = rightSibling;
 }
 
+void TNode::SetLogicalParent(TNode* logicalParent) {
+	logicalParent = logicalParent;
+}
+
 void TNode::AddChild(TNode* child) {
 	if (child == nullptr) {
 		throw(string) "Null pointer!";
@@ -78,12 +87,77 @@ string TNode::GetContent() {
 	return content;
 }
 
-void TNode::BuildName(string str) {
-	name = str.append(name);
+int TNode::GetLineNumber() {
+	return lineNumber;
+}
+
+int TNode::GetNodeIndex() {
+	return nodeIndex;
 }
 
 string TNode::EnumToString(TNode::Type type) {
 	return enumStringDeclarations[type];
 }
 
+TNode TNode::ConstructIfTNode(int lineNumber) {
+	return ConstructStmtTNode(TNode::IF, lineNumber);
+}
 
+TNode TNode::ConstructWhileTNode(int lineNumber) {
+	return ConstructStmtTNode(TNode::WHILE, lineNumber);
+}
+
+TNode TNode::ConstructCallTNode(int lineNumber, string procName) {
+	TNode result = ConstructStmtTNode(TNode::CALL, lineNumber);
+	result.content = procName;
+	result.name = procName.append(result.name);
+	return result;
+}
+
+TNode TNode::ConstructAssignmentTNode(int lineNumber) {
+	TNode result = ConstructStmtTNode(TNode::ASSIGNMENT, lineNumber);
+	result.content = Token::OperatorAssign;
+	return result;
+}
+
+TNode TNode::ConstructConstTNode(string value) {
+	TNode result(TNode::CONSTANT, value + ":" + EnumToString(TNode::CONSTANT));
+	result.content = value;
+	return result;
+}
+
+TNode TNode::ConstructVarTNode(string symbol) {
+	TNode result(TNode::VARIABLE, symbol + ":" + EnumToString(TNode::VARIABLE));
+	result.content = symbol;
+	return result;
+}
+
+TNode TNode::ConstructOperatorTNode(string symbol) {
+	TNode result(TNode::OPERATOR, symbol + ":" + EnumToString(TNode::OPERATOR));
+	result.content = symbol;
+	return result;
+}
+
+TNode TNode::ConstructStmtListTNode(string name) {
+	return TNode(TNode::STMT_LIST, name +":" + EnumToString(TNode::STMT_LIST));
+}
+
+TNode TNode::ConstructProcedureTNode(string name) {
+	TNode result(TNode::PROCEDURE, ":" + EnumToString(TNode::PROCEDURE));
+	result.content = name;
+	return result;
+}
+
+TNode TNode::ConstructProgramTNode(string name) {
+	return TNode(TNode::PROGRAM, ":" + EnumToString(TNode::PROGRAM));
+}
+
+TNode TNode::ConstructStmtTNode(Type type, int lineNumber) {
+	TNode result(type, ":" + EnumToString(type));
+	result.lineNumber = lineNumber;
+	return result;
+}
+
+void TNode::resetNodeCounter() {
+	nodeCounter = 0;
+}

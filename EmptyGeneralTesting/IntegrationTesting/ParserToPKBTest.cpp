@@ -5,11 +5,15 @@
 #include "..\SPA\Parser\Parser.h"
 #include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\PKB\StmtTypeTable.h"
+#include "..\SPA\PKB\ConstTable.h"
 #include "..\SPA\PKB\Follows.h"
 #include "..\SPA\PKB\Parent.h"
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
+#include "..\SPA\PKB\Next.h"
+#include "..\SPA\PKB\ProcTable.h"
 #include "..\SPA\Program\Program.h"
+#include "..\SPA\Parser\ParserTester.h"
 
 #include <iostream>
 #include <string>
@@ -20,25 +24,17 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserToPKBTest);
 const string TESTFILE_DIRECTORY = "ParserTestFiles/";
 
 ParserToPKBTest::ParserToPKBTest() {
-	Program::ClearData();
-	Parent::ClearData();
-	Uses::ClearData();
-	Modifies::ClearData();
-	Follows::ClearData();
-	VarTable::ClearData();
-	ConstTable::ClearData();
-}
-
-void ParseSource(string filename) {
-	Parser::Parse(string(TESTFILE_DIRECTORY).append(filename));
+	Program::ClearAll();
 }
 
 void ParserToPKBTest::setUp() { 
-	ParseSource("pkbTest.txt");
+	Program::ClearAll();
+	ParserTester tester(TESTFILE_DIRECTORY);
+	tester.ParseSource("pkbTest.txt");
 }
 
 void ParserToPKBTest::tearDown() {
-	// empty body
+	Program::ClearAll();
 }
 
 
@@ -54,20 +50,20 @@ void ParserToPKBTest::TestNothing() {
 // insert other methods below here
 void ParserToPKBTest::TestVarTable() {
 	// check if VarTable has correct number of variables
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 8, VarTable::GetSize());
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("1st variable of VarTable", 0, VarTable::GetIndexOf("x"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("2nd variable of VarTable", 1, VarTable::GetIndexOf("y"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("3rd variable of VarTable", 2, VarTable::GetIndexOf("z"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("4th variable of VarTable", 3, VarTable::GetIndexOf("tEst"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("5th variable of VarTable", 4, VarTable::GetIndexOf("newVar"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("6th variable of VarTable", 5, VarTable::GetIndexOf("a"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("7th variable of VarTable", 6, VarTable::GetIndexOf("b"));
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("8th variable of VarTable", 7, VarTable::GetIndexOf("c"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in VarTable", 8, VarTable::GetNoOfVars());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("1st variable of VarTable", 0, VarTable::GetIndexOfVar("x"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("2nd variable of VarTable", 1, VarTable::GetIndexOfVar("y"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("3rd variable of VarTable", 2, VarTable::GetIndexOfVar("z"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("4th variable of VarTable", 3, VarTable::GetIndexOfVar("tEst"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("5th variable of VarTable", 4, VarTable::GetIndexOfVar("newVar"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("6th variable of VarTable", 5, VarTable::GetIndexOfVar("a"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("7th variable of VarTable", 6, VarTable::GetIndexOfVar("b"));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("8th variable of VarTable", 7, VarTable::GetIndexOfVar("c"));
 }
 
 void ParserToPKBTest::TestModifies() {
 	// check if modifiesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 11, Modifies::SizeOfModifies());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies", 15, Modifies::SizeOfModifies());
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 1st variable", Modifies::IsStmtModifyingVar(1, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 2nd variable", Modifies::IsStmtModifyingVar(2, 1));
 	CPPUNIT_ASSERT_MESSAGE("test correct Modifies relationship for 3rd variable", Modifies::IsStmtModifyingVar(4, 3));
@@ -84,7 +80,7 @@ void ParserToPKBTest::TestModifies() {
 
 void ParserToPKBTest::TestUses() {
 	// check if usesTable is updated
-	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 17, Uses::SizeOfUses());
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses", 23, Uses::SizeOfUses());
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 1st variable", Uses::IsStmtUsingVar(2, 0));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 2nd variable", Uses::IsStmtUsingVar(3, 2));
 	CPPUNIT_ASSERT_MESSAGE("test correct Uses relationship for 3rd variable", Uses::IsStmtUsingVar(4, 2));
@@ -137,6 +133,39 @@ void ParserToPKBTest::TestFollows() {
 	//CPPUNIT_ASSERT(Follows::IsFollowsT(4, 6));
 	//CPPUNIT_ASSERT(Follows::IsFollowsT(9, 4));
 
+}
+
+void ParserToPKBTest::TestNext() {
+	// check if next is working in DE
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Next", 11 ,Next::SizeOfNext());
+	CPPUNIT_ASSERT_MESSAGE("1st variable of Next", Next::IsNext(1, 2));
+	CPPUNIT_ASSERT_MESSAGE("2nd variable of Next", Next::IsNext(2, 3));
+	CPPUNIT_ASSERT_MESSAGE("3rd variable of Next", Next::IsNext(3, 4));
+	CPPUNIT_ASSERT_MESSAGE("4th variable of Next", Next::IsNext(4, 5));
+	CPPUNIT_ASSERT_MESSAGE("5th variable of Next", Next::IsNext(5, 7));
+	CPPUNIT_ASSERT_MESSAGE("6th variable of Next", Next::IsNext(7, 9));
+	CPPUNIT_ASSERT_MESSAGE("7th variable of Next", Next::IsNext(5, 6));
+	CPPUNIT_ASSERT_MESSAGE("8th variable of Next", Next::IsNext(6, 5));
+	CPPUNIT_ASSERT_MESSAGE("9th variable of Next", Next::IsNext(7, 8));
+	CPPUNIT_ASSERT_MESSAGE("10th variable of Next", Next::IsNext(8, 7));
+	CPPUNIT_ASSERT_MESSAGE("11th variable of Next", Next::IsNext(9, 3));
+}
+
+void ParserToPKBTest::TestModifiesForProcs() {
+	// check if modifies for procs is computed correctly
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Modifies for Procedures", 
+		4, (int)Modifies::GetVarModifiedByProc(ProcTable::GetIndexOfProc("test")).size());
+
+	CPPUNIT_ASSERT_MESSAGE("1st variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 0));
+	CPPUNIT_ASSERT_MESSAGE("2nd variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 1));
+	CPPUNIT_ASSERT_MESSAGE("3rd variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 3));
+	CPPUNIT_ASSERT_MESSAGE("4th variable of Modifies - Proc", Modifies::IsProcModifyingVar(0, 5));
+}
+
+void ParserToPKBTest::TestUsesForProcs() {
+	// check if uses for procs is computed correctly
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("number of variables in Uses for Procedures", 
+		6, (int)Uses::GetVarUsedByProc(ProcTable::GetIndexOfProc("test")).size());
 }
 
 void ParserToPKBTest::TestStmtTypeTable() {

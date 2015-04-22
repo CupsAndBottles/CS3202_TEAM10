@@ -13,6 +13,30 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ModifiesTest);
 ModifiesTest::ModifiesTest() {
 }
 
+void ModifiesTest::TestNoStmt() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
+	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(1, 3));
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::SizeOfModifies());
+
+}
+void ModifiesTest::TestBitVector() {
+	Modifies::ClearData();
+	Modifies::SetStmtModifiesVar(1, 0);
+	Modifies::SetStmtModifiesVar(2, 0);
+	Modifies::SetProcModifiesVar(3, 0);
+	Modifies::SetProcModifiesVar(4, 0);
+	Modifies::CreateBitVector();
+
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVarBV(1,0));
+	CPPUNIT_ASSERT(Modifies::IsStmtModifyingVarBV(2,0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVarBV(3,0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVarBV(4,0));
+
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
+
+}
 void ModifiesTest::TestSingleStmt() {
 
 	Modifies::ClearData();
@@ -134,7 +158,6 @@ void ModifiesTest::TestMultipleStmtsModifyingSingleVar() {
 }
 
 void ModifiesTest::TestSingleStmtModifyingMultipleVars() {
-
 	Modifies::ClearData();
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
 
@@ -306,4 +329,188 @@ void ModifiesTest::TestModifies() {
 	CPPUNIT_ASSERT(Modifies::HasAnyModifies() == false);
 
 
+}
+
+void ModifiesTest::TestNoProc() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(4, 3));
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::SizeOfModifies());
+
+}
+
+void ModifiesTest::TestSingleProc() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
+
+	//Modifies::SetProcModifiesVar
+	Modifies::SetProcModifiesVar(2, 3);
+	Modifies::SetProcModifiesVar(2, 3); // test repeated additions
+	CPPUNIT_ASSERT_EQUAL(1, (int) Modifies::SizeOfModifies());
+	
+	//Modifies::IsProcModifyingVar
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(2, 3));
+	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(2, 3)); // test correct proc tables used not stmt tables
+	
+	//Modifies::GetProcModifyingVar
+	vector<int> procsModifyingVar3 = Modifies::GetProcModifyingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsModifyingVar3.size());
+	CPPUNIT_ASSERT(procsModifyingVar3[0] == 2);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(3).size());
+
+	//Modifies::GetVarModifiedByProc
+	vector<int> varsModifiedByProc2 = Modifies::GetVarModifiedByProc(2);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc2.size());
+	CPPUNIT_ASSERT(varsModifiedByProc2[0] == 3);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByStmt(2).size());
+}
+
+void ModifiesTest::TestMultipleProcs() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
+
+	//Modifies::SetProcModifiesVar
+	Modifies::SetProcModifiesVar(1, 0);
+	Modifies::SetProcModifiesVar(2, 1);
+	Modifies::SetProcModifiesVar(3, 2);
+	Modifies::SetProcModifiesVar(4, 3);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Modifies::SizeOfModifies());
+	
+	//Modifies::IsProcModifying
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(2, 1));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(3, 2));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(4, 3));
+	// false results
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(0, 0));
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(3, 4));
+	
+	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(1, 0));
+	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(4, 3));
+
+	//Modifies::GetProcModifying
+	vector<int> procsModifiesVar0 = Modifies::GetProcModifyingVar(0);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsModifiesVar0.size());
+	CPPUNIT_ASSERT(procsModifiesVar0[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(0).size());
+
+	vector<int> procsModifiesVar3 = Modifies::GetProcModifyingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsModifiesVar3.size());
+	CPPUNIT_ASSERT(procsModifiesVar3[0] == 4);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(3).size());
+
+	// test empty result
+	vector<int> procsModifiesVar4 = Modifies::GetProcModifyingVar(4);
+	CPPUNIT_ASSERT_EQUAL(0, (int) procsModifiesVar4.size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(4).size());
+
+	//Modifies::GetVarModifiedByProc
+	vector<int> varsModifiedByProc1 = Modifies::GetVarModifiedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc1.size());
+	CPPUNIT_ASSERT(varsModifiedByProc1[0] == 0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(1).size());
+
+	vector<int> varsModifiedByProc4 = Modifies::GetVarModifiedByProc(4);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc4.size());
+	CPPUNIT_ASSERT(varsModifiedByProc4[0] == 3);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(4).size());
+
+	// test empty result
+	vector<int> varsModifiedByProc0 = Modifies::GetVarModifiedByProc(0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) varsModifiedByProc0.size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByProc(0).size());
+	
+}
+
+void ModifiesTest::TestMultipleProcsModifyingSingleVar() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
+
+	//Modifies::SetProcModifiesVar
+	Modifies::SetProcModifiesVar(1, 0);
+	Modifies::SetProcModifiesVar(2, 0);
+	Modifies::SetProcModifiesVar(3, 0);
+	Modifies::SetProcModifiesVar(4, 0);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Modifies::SizeOfModifies());
+
+	//Modifies::IsProcModifyingVar
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(4, 0));
+	// false results
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(0, 0));
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(5, 0));
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(0, 1));
+
+	//Modifies::GetProcModifyingVar
+	vector<int> GetProcModifyingVar0 = Modifies::GetProcModifyingVar(0);
+	CPPUNIT_ASSERT_EQUAL(4, (int) GetProcModifyingVar0.size());
+	CPPUNIT_ASSERT(GetProcModifyingVar0[0] == 1);
+	CPPUNIT_ASSERT(GetProcModifyingVar0[1] == 2);
+	CPPUNIT_ASSERT(GetProcModifyingVar0[2] == 3);
+	CPPUNIT_ASSERT(GetProcModifyingVar0[3] == 4);
+	//empty results
+	vector<int> GetProcModifyingVar1 = Modifies::GetProcModifyingVar(1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) GetProcModifyingVar1.size());
+
+	//Modifies::GetVarModifiedByProc
+	vector<int> varsModifiedByProc1 = Modifies::GetVarModifiedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc1.size());
+	CPPUNIT_ASSERT(varsModifiedByProc1[0] == 0);
+
+	vector<int> varsModifiedByProc4 = Modifies::GetVarModifiedByProc(4);
+	CPPUNIT_ASSERT_EQUAL(1, (int) varsModifiedByProc4.size());
+	CPPUNIT_ASSERT(varsModifiedByProc4[0] == 0);
+
+	//empty results
+	vector<int> varsModifiedByProc0 = Modifies::GetVarModifiedByProc(0);
+	CPPUNIT_ASSERT_EQUAL(0, (int) varsModifiedByProc0.size());
+	
+}
+
+void ModifiesTest::TestSingleProcModifyingMultipleVars() {
+	Modifies::ClearData();
+	CPPUNIT_ASSERT(!Modifies::HasAnyModifies());
+
+	//Modifies::SetProcModifiesVar
+	Modifies::SetProcModifiesVar(1, 0);
+	Modifies::SetProcModifiesVar(1, 1);
+	Modifies::SetProcModifiesVar(1, 2);
+	Modifies::SetProcModifiesVar(1, 3);
+
+	CPPUNIT_ASSERT_EQUAL(4, (int) Modifies::SizeOfModifies());
+	
+	//Modifies::IsProcModifyingVar
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(1, 0));
+	CPPUNIT_ASSERT(Modifies::IsProcModifyingVar(1, 3));
+	//false results
+	CPPUNIT_ASSERT(!Modifies::IsProcModifyingVar(0, 1));
+	CPPUNIT_ASSERT(!Modifies::IsStmtModifyingVar(1, 3));
+
+	//Modifies::GetProcModifyingVar
+	vector<int> procsModifyingVar0 = Modifies::GetProcModifyingVar(0);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsModifyingVar0.size());
+	CPPUNIT_ASSERT(procsModifyingVar0[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(0).size());
+
+	vector<int> procsModifyingVar3 = Modifies::GetProcModifyingVar(3);
+	CPPUNIT_ASSERT_EQUAL(1, (int) procsModifyingVar3.size());
+	CPPUNIT_ASSERT(procsModifyingVar3[0] == 1);
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(3).size());
+
+	// empty results
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(-1).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetStmtModifyingVar(4).size());
+
+	//Modifies::GetVarModifiedByProc
+	vector<int> varsModifiedByProc1 = Modifies::GetVarModifiedByProc(1);
+	CPPUNIT_ASSERT_EQUAL(4, (int) varsModifiedByProc1.size());
+	CPPUNIT_ASSERT(varsModifiedByProc1[0] == 0);
+	CPPUNIT_ASSERT(varsModifiedByProc1[3] == 3);
+	
+	// empty results
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByProc(0).size());
+	CPPUNIT_ASSERT_EQUAL(0, (int) Modifies::GetVarModifiedByStmt(0).size());
+	
 }

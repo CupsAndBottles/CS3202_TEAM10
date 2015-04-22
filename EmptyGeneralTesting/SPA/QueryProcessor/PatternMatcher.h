@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 #include "..\Program\TNode\TNode.h"
@@ -5,9 +6,7 @@
 using namespace std;
 
 struct Pattern {
-	Pattern() : expr(""), leftPattern(nullptr), rightPattern(nullptr) {};
-
-	Pattern(string e, Pattern* l, Pattern* r) :
+	Pattern(string e = "", Pattern* l = NULL, Pattern* r = NULL) :
 		expr(e), leftPattern(l), rightPattern(r) {
 	};
 
@@ -19,8 +18,12 @@ struct Pattern {
 
 class PatternMatcher {
     public:
-        PatternMatcher() { };
+        PatternMatcher() {};
 
+		static Pattern CreatePatternObject(string expr);
+		static vector<int> MatchPatternFromRoot(string expr);
+		static vector<int> MatchPatternFromRoot(string expr, vector<int> stmtsToMatch);
 		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch);
+		static vector<int> MatchPatternFromRoot(Pattern object, bool partialMatch, vector<int> stmtsToMatch);
 		static bool MatchPatternAtLeaves(TNode* node, Pattern object, bool partialMatch);
 };

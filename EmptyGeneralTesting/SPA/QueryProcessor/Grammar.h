@@ -8,12 +8,18 @@ enum RelationshipType {
 	PARENTT,
 	FOLLOWS,
 	FOLLOWST,
-	//CALLS,
-	//CALLST,
-	//NEXT,
-	//NEXTT,
-	//AFFECTS,
-	//AFFECTST
+	CALLS,
+	CALLST,
+	NEXT,
+	NEXTT,
+	AFFECTS,
+	AFFECTST,
+	CONTAINS,
+	CONTAINST,
+	SIBLING,
+	AFFECTSBIP,
+	NEXTBIP,
+	NEXTBIPT,
 	INVALID_RELATIONSHIP_TYPE
 };
 
@@ -30,14 +36,49 @@ enum SynonymType {
 	ASSIGN,
 	STMT,
 	WHILE,
-	//IF,
+	IF,
+	CALL,		
 	VARIABLE,
 	CONSTANT,
-	//PROCEDURE,
+	PROCEDURE,
 	PROG_LINE,
-	//CALL,
-	//BOOLEAN,
+	BOOLEAN,
 	INVALID_SYNONYM_TYPE
+};
+
+enum AttrNameType {
+	STMTNUM,
+	VALUE,
+	PROCNAME,
+	VARNAME,
+	INVALID_ATTRNAME_TYPE
+};
+
+enum ClauseType {
+	DECLARATION,
+	SELECT,
+	SUCHTHAT,
+	WITH,
+	PATTERN,
+	INVALID_CLAUSE_TYPE
+};
+
+enum NodeType {
+	ASSIGN_NODE,
+	WHILE_NODE,
+	WHILEBODY_NODE,
+	IF_NODE,
+	THENBODY_NODE,
+	ELSEBODY_NODE,
+	VARIABLE_NODE,
+	CONSTANT_NODE,
+	PLUS_NODE,
+	MINUS_NODE,
+	MULTIPLY_NODE,
+	PROCEDURE_NODE,
+	PROCEDUREBODY_NODE,
+	PROGRAM_NODE,
+	CALL_NODE
 };
 
 struct Synonym {
@@ -81,7 +122,7 @@ struct SelectClause {
 
 struct PatternClause {
 	Synonym synonym;
-	Argument arg1, arg2;
+	Argument arg1, arg2;	//since arg2 and arg3 of if are _, just ignore, only need 1
 
 	PatternClause(Synonym s, Argument a1, Argument a2) : synonym(s) , arg1(a1) , arg2(a2) {}
 };
@@ -91,4 +132,10 @@ struct SuchThatClause {
 	Argument arg1, arg2;
 
 	SuchThatClause(RelationshipType r, Argument a1, Argument a2) : relationship(r) , arg1(a1), arg2(a2) {}
+};
+
+struct WithClause {
+	Argument arg1,arg2;
+
+	WithClause(Argument a1, Argument a2) : arg1(a1), arg2(a2) {}
 };

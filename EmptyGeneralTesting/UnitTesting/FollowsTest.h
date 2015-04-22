@@ -5,7 +5,7 @@
 class FollowsTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(FollowsTest);
 	
-	CPPUNIT_TEST(testConstructor);
+	//CPPUNIT_TEST(testConstructor);
 	CPPUNIT_TEST(testSetFollows);
 	CPPUNIT_TEST(testIsFollows);
 	CPPUNIT_TEST(testGetFollowsBefore);
@@ -23,7 +23,7 @@ public:
 	void setUp();
 	void tearDown();
 
-	void testConstructor();
+	//void testConstructor();
 	void testSetFollows();
 	void testIsFollows();
 	void testGetFollowsBefore();

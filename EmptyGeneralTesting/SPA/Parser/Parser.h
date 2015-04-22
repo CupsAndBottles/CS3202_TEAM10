@@ -2,18 +2,10 @@
 
 #include "Token.h"
 #include "..\Program\Program.h"
-#include "..\Program\TNode\AssignmentTNode.h"
-#include "..\Program\TNode\WhileTNode.h"
-#include "..\PKB\Follows.h"
-#include "..\PKB\Modifies.h"
-#include "..\PKB\Uses.h"
-#include "..\PKB\Parent.h"
-#include "..\PKB\StmtTypeTable.h"
-#include "..\PKB\VarTable.h"
-#include "..\PKB\ConstTable.h"
 
 #include <vector>
 #include <deque>
+#include <map>
 
 using namespace std;
 
@@ -29,6 +21,8 @@ protected:
 
 	deque<Token> tokens;
 	int currentLineNumber;
+	int currentProcNumber;
+	static map<Token::Type, int> operatorPrecedenceMap;
 
 	Token ConsumeTopToken();
 	Token PeekAtTopToken();
@@ -38,12 +32,17 @@ protected:
 
 	void Parse();
 
-	StmtListTNode* ParseStmtList(string, StmtTNode*);
-	StmtTNode* ParseStmt();
-	StmtTNode* ParseStmt(StmtTNode*);
-	AssignmentTNode* ParseAssignmentStmt();
-	WhileTNode* ParseWhileStmt();
-	TNode* ParseExpr();
+	TNode* ParseProcedure();
+	TNode* ParseStmtList(string, TNode*);
+	TNode* ParseStmt();
+	TNode* ParseStmt(TNode*);
+	TNode* ParseAssignmentStmt();
+	TNode* ParseCallStmt();
+	TNode* ParseIfStmt();
+	TNode* ParseWhileStmt();
+	TNode* ParseExpr(bool isBracket);
 	TNode* ParseExpr(TNode*, bool);
-	AtomicTNode* ParseAtomicToken();
+	TNode* ParseAtomicToken();
+	TNode* ParseConstTNode();
+	TNode* ParseVariableTNode(bool isModifies);
 };

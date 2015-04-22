@@ -1,6 +1,5 @@
 #pragma once
 
-//#include<stdio.h>
 #include<string>
 #include<vector>
 
@@ -17,12 +16,12 @@ public:
 
 	// Methods
 	static int InsertVar(string varName);
-	static int GetIndexOf(string varName); 
+	static int GetIndexOfVar(string varName); 
 	static string GetVarName(int varIndex);
-	static vector<string> GetAllVar();
+	static vector<string> GetAllVarNames();
+	static int GetNoOfVars();
 	
-	// methods to aid testing
-	static int GetSize();
+	// method(s) to aid testing
 	static void ClearData();
 
 private:

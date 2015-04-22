@@ -1,0 +1,57 @@
+\\ NextBip Test 
+
+procedure test1 {
+	a = 7;			\\ 1
+	call one;		\\ 2
+	b = 77;			\\ 3
+	call two;		\\ 4
+	c = 777;		\\ 5
+}
+
+\\ nested calls
+procedure test2 {
+	a = 7;			\\ 6
+	call test1;		\\ 7
+	b = 8;			\\ 8
+}
+
+\\ test multiple paths
+procedure multPaths {
+	a = 1;			\\ 9
+	call whileEnd;	\\ 10
+	c = 3;			\\ 11
+	call ifEnd;		\\ 12
+	e = 5;			\\ 13
+}
+
+\\ ze procedurezzz
+\\ assign stmts only
+procedure one {
+	alpha = 1;		\\ 14
+	bravo = 2;		\\ 15
+	charlie = 3;		\\ 16
+	delta = 4;		\\ 17
+}
+
+procedure two {
+	england = 5;		\\ 18
+	finland = 6;		\\ 19
+	germany = 7;		\\ 20
+}
+
+\\ multiple befores
+procedure whileEnd {
+	sn = eeze;		\\ 21
+	while w {		\\ 22
+		ah = choo;	\\ 23
+	}
+}
+
+procedure ifEnd {
+	santa = claus;		\\ 24
+	if i then {		\\ 25
+		ha = ha;	\\ 26
+	} else {
+		ho = ho;	\\ 27
+	}
+}

@@ -47,6 +47,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)lib\cppunit_debug.lib;$(SolutionDir)$(Configuration)\SPA.lib;$(SolutionDir)lib\cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>$(TargetPath)</Command>
@@ -72,30 +73,53 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="ParserTestFiles\additionTest.txt" />
+    <None Include="ParserTestFiles\bracketsTest.txt" />
+    <None Include="ParserTestFiles\callTest.txt" />
+    <None Include="ParserTestFiles\ifTest.txt" />
+    <None Include="ParserTestFiles\nestedWhileTest.txt" />
+    <None Include="ParserTestFiles\operatorsTest.txt" />
+    <None Include="ParserTestFiles\procTest.txt" />
+    <None Include="ParserTestFiles\sample_SIMPLE_source.txt" />
+    <None Include="ParserTestFiles\simpleAssignmentTest.txt" />
+    <None Include="ParserTestFiles\Source.txt" />
+    <None Include="ParserTestFiles\whileTest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CallsTest.cpp" />
+    <ClCompile Include="ConstTableTest.cpp" />
     <ClCompile Include="FollowsTest.cpp" />
     <ClCompile Include="ModifiesTest.cpp" />
+    <ClCompile Include="NextTest.cpp" />
     <ClCompile Include="ParentTest.cpp" />
     <ClCompile Include="ParserTest.cpp" />
     <ClCompile Include="PatternMatcherTest.cpp" />
+    <ClCompile Include="ProcTableTest.cpp" />
     <ClCompile Include="QueryDataTest.cpp" />
     <ClCompile Include="QueryEvaluatorTest.cpp" />
     <ClCompile Include="QueryPreprocessorTest.cpp" />
     <ClCompile Include="RelTableTest.cpp" />
+    <ClCompile Include="StmtTypeTableTest.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="TokenizerTest.cpp" />
     <ClCompile Include="UsesTest.cpp" />
     <ClCompile Include="VarTableTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CallsTest.h" />
+    <ClInclude Include="ConstTableTest.h" />
     <ClInclude Include="FollowsTest.h" />
     <ClInclude Include="ModifiesTest.h" />
+    <ClInclude Include="NextTest.h" />
     <ClInclude Include="ParentTest.h" />
     <ClInclude Include="ParserTest.h" />
     <ClInclude Include="PatternMatcherTest.h" />
+    <ClInclude Include="ProcTableTest.h" />
     <ClInclude Include="QueryDataTest.h" />
     <ClInclude Include="QueryEvaluatorTest.h" />
     <ClInclude Include="QueryPreprocessorTest.h" />
     <ClInclude Include="RelTableTest.h" />
+    <ClInclude Include="StmtTypeTableTest.h" />
     <ClInclude Include="TokenizerTest.h" />
     <ClInclude Include="UsesTest.h" />
     <ClInclude Include="VarTableTest.h" />

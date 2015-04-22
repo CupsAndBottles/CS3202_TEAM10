@@ -1,7 +1,8 @@
 #include <cppunit\config\SourcePrefix.h>
 #include "..\SPA\PKB\VarTable.h"
-#include "VarTableTest.h"
 #include "..\SPA\Exception\IndexNotFoundException.h"
+
+#include "VarTableTest.h"
 
 #include <iostream>
 #include <string>
@@ -32,7 +33,7 @@ void VarTableTest::testInsert() {
 
 	// x2 inserted first to check that the order of x1 and x2 are nto being rearranged
 	
-	size = VarTable::GetSize();
+	size = VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(3, size);
 	
 	varName = VarTable::GetVarName(0);
@@ -67,27 +68,27 @@ void VarTableTest::testGetIndexOf() {
 	VarTable::InsertVar("c");
 	VarTable::InsertVar("123");
 
-	varIndex = VarTable::GetIndexOf("b");
+	varIndex = VarTable::GetIndexOfVar("b");
 	CPPUNIT_ASSERT_EQUAL(0, varIndex);
-	varIndex = VarTable::GetIndexOf("a");
+	varIndex = VarTable::GetIndexOfVar("a");
 	CPPUNIT_ASSERT_EQUAL(1, varIndex);
-	varIndex = VarTable::GetIndexOf("123");
+	varIndex = VarTable::GetIndexOfVar("123");
 	CPPUNIT_ASSERT_EQUAL(3, varIndex);
 
 	// test for variables that do not exist
-	varIndex = VarTable::GetIndexOf("z");
+	varIndex = VarTable::GetIndexOfVar("z");
 	CPPUNIT_ASSERT_EQUAL(-1, varIndex);
 	
 	// test white spaces...
 
 }
 
-void VarTableTest::testGetSize() {
+void VarTableTest::testGetNoOfVars() {
 	VarTable::ClearData();
 	int size;
 
 	// test for empty varTable
-	size =  VarTable::GetSize();
+	size =  VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(0, size);
 
 	// test for repeated insertions
@@ -95,7 +96,7 @@ void VarTableTest::testGetSize() {
 	VarTable::InsertVar("a");
 	VarTable::InsertVar("b");
 	VarTable::InsertVar("a");
-	size = VarTable::GetSize();
+	size = VarTable::GetNoOfVars();
 	CPPUNIT_ASSERT_EQUAL(2, size);
 
 }
@@ -117,7 +118,24 @@ void VarTableTest::testGetVarName() {
 	varName = VarTable::GetVarName(1);
 	CPPUNIT_ASSERT("b" == varName);
 
+
 }
 
-// insert other methods below here
-// add a comment before each method to indicate its purpose
+void VarTableTest::testGetAllVarNames() {
+	CPPUNIT_ASSERT_EQUAL(0, VarTable::GetNoOfVars());
+	
+	// test empty list
+	CPPUNIT_ASSERT_EQUAL(0, (int) VarTable::GetAllVarNames().size());
+
+	VarTable::InsertVar("x");
+	VarTable::InsertVar("y123");
+	VarTable::InsertVar("zz");
+	
+	// test regular var names
+	vector<string> allVarNames = VarTable::GetAllVarNames();
+	CPPUNIT_ASSERT_EQUAL(3, (int) allVarNames.size());
+	CPPUNIT_ASSERT("x" == allVarNames.at(0));
+	CPPUNIT_ASSERT("y123" == allVarNames.at(1));
+	CPPUNIT_ASSERT("zz" == allVarNames.at(2));
+
+}

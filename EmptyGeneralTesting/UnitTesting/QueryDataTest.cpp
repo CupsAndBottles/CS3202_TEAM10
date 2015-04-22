@@ -9,8 +9,8 @@
 
 using namespace std;
 
-void QueryDataTest::setUp() {};
-void QueryDataTest::tearDown() {};
+void QueryDataTest::setUp() {}
+void QueryDataTest::tearDown() {}
 
 CPPUNIT_TEST_SUITE_REGISTRATION(QueryDataTest);
 

@@ -4,40 +4,49 @@
 #include <utility>
 #include <vector>
 #include <map>
-#include <set>
 
 using namespace std;
 
 class Modifies {
     public:
-       // methods
-       // Default constructor
+		// methods
+		// Default constructor
         Modifies();
 
         // API
         static void SetStmtModifiesVar(int stmtModifying, int varModified); 
         static bool IsStmtModifyingVar(int stmtModifying, int varModified);
-        static vector<int> GetStmtModifyingVar(int varModified);		// Modifies (_, "x")
-        static vector<int> GetVarModifiedByStmt(int stmtModifying);	// Modifies (2, _)
-		// Select s such that Modifies(w, "x")
-		// 1. go VarTable, GetIndexOf("x")
-		// 2. GetStmtModifyingVar(index of x)
-		// 3. StmtTypeTable, filter w
+        static bool IsStmtModifyingVarBV(int stmtModifying, int varModified);
+        static vector<int> GetStmtModifyingVar(int varModified);
+		static vector<int> GetVarModifiedByStmt(int stmtModifying);
+		vector<int> Modifies::GetStmtsModifyingBV(int varModified);
+		vector<int> Modifies::GetVarsModifiedByBV(int stmtModifying);
+
+		static void SetProcModifiesVar(int procModifying, int varModified);
+		static bool IsProcModifyingVar(int procModifying, int varModified);
+		static bool IsProcModifyingVarBV(int procModifying, int varModified);
+		static vector<int> GetProcModifyingVar(int varModified);
+		static vector<int> GetVarModifiedByProc(int procModifying);
 
         static bool HasAnyModifies();
+		static void CreateBitVector();
+		// helper methods for testing
         static int SizeOfModifies();
 		static void ClearData();
 
-        // APIs out of scope of assigment 4
-        /*void SetModifiesProc(int procModifying, int varModified);
-          bool IsModifiesProc(int procModifying, int varModified);
-          vector<int> GetModifiesProc(int varModified);
-          vector<int> GetModifiedByProc(int procModifying);*/
-
     private:
-        static map <int, vector<int> > StmtToVarTable;
-        static map <int, vector<int> > VarToStmtTable;
-        // insert other private methods here
+        static map <int, vector<int>> stmtToVarTable;
+        static map <int, vector<int>> varToStmtTable;
+		static vector<vector<bool>> stmtToVarBitVector;
+
+		static map <int, vector<int>> procToVarTable;
+		static map <int, vector<int>> varToProcTable;
+		static vector<vector<bool>> procToVarBitVector;
+		
+		static int maxStmtOrVar;
+		static int maxProcOrVar;
+		static bool bitVectorIsBuilt;
+		static int sizeOfModifies;
 
 };
 #endif

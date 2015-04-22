@@ -14,7 +14,7 @@ RelTableTest::RelTableTest() {}
 void RelTableTest::TestGetRelTableData()
 {
 	int size = RelTable::GetTableSize();
-	CPPUNIT_ASSERT(size == 3);
+	CPPUNIT_ASSERT(size == 6);
 	
 	/*std::cout << "table size : " << RelTable::GetTableSize() << "\n";
 	std::cout << "modifies arg1 size : " << RelTable::GetRelArgType(MODIFIES, ARG1).size() << "\n";

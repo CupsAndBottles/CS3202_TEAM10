@@ -1,15 +1,10 @@
 #include "ParserToPKBTest2.h"
 
-#include "..\SPA\Parser\Parser.h"
-#include "..\SPA\PKB\VarTable.h"
-#include "..\SPA\PKB\StmtTypeTable.h"
-#include "..\SPA\PKB\ConstTable.h"
-#include "..\SPA\PKB\Follows.h"
-#include "..\SPA\PKB\Parent.h"
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
-#include "..\SPA\PKB\Next.h"
+#include "..\SPA\PKB\Affects.h"
 #include "..\SPA\PKB\ProcTable.h"
+#include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\Program\Program.h"
 #include "..\SPA\Parser\ParserTester.h"
 
@@ -73,6 +68,20 @@ void ParserToPKBTest2::TestModifies() {
 	CPPUNIT_ASSERT(IsVarIn("x", varsModified));
 	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
 	CPPUNIT_ASSERT(IsVarIn("z", varsModified));
+
+
+	varsModified = Modifies::GetVarModifiedByStmt(10);
+	CPPUNIT_ASSERT((int)varsModified.size() == 2);
+	CPPUNIT_ASSERT(IsVarIn("m", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
+
+	varsModified = Modifies::GetVarModifiedByStmt(8);
+	CPPUNIT_ASSERT((int)varsModified.size() == 5);
+	CPPUNIT_ASSERT(IsVarIn("m", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("x", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("z", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("k", varsModified));
 }
 
 void ParserToPKBTest2::TestUses(){
@@ -181,4 +190,12 @@ void ParserToPKBTest2::TestUsesForProcs() {
 
 void ParserToPKBTest2::TestAffects(){}
 
-void ParserToPKBTest2::TestAffectsT(){}
+void ParserToPKBTest2::TestAffectsT(){
+	// IsAffectsT
+	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 2));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 3));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 5));
+	// GetStmtsAffectedT
+
+	// GetStmtsAffectingT
+}

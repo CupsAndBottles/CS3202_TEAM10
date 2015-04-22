@@ -1,15 +1,10 @@
 #include "ParserToPKBTest2.h"
 
-#include "..\SPA\Parser\Parser.h"
-#include "..\SPA\PKB\VarTable.h"
-#include "..\SPA\PKB\StmtTypeTable.h"
-#include "..\SPA\PKB\ConstTable.h"
-#include "..\SPA\PKB\Follows.h"
-#include "..\SPA\PKB\Parent.h"
 #include "..\SPA\PKB\Modifies.h"
 #include "..\SPA\PKB\Uses.h"
-#include "..\SPA\PKB\Next.h"
+#include "..\SPA\PKB\Affects.h"
 #include "..\SPA\PKB\ProcTable.h"
+#include "..\SPA\PKB\VarTable.h"
 #include "..\SPA\Program\Program.h"
 #include "..\SPA\Parser\ParserTester.h"
 
@@ -73,6 +68,20 @@ void ParserToPKBTest2::TestModifies() {
 	CPPUNIT_ASSERT(IsVarIn("x", varsModified));
 	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
 	CPPUNIT_ASSERT(IsVarIn("z", varsModified));
+
+
+	varsModified = Modifies::GetVarModifiedByStmt(10);
+	CPPUNIT_ASSERT((int)varsModified.size() == 2);
+	CPPUNIT_ASSERT(IsVarIn("m", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
+
+	varsModified = Modifies::GetVarModifiedByStmt(8);
+	CPPUNIT_ASSERT((int)varsModified.size() == 5);
+	CPPUNIT_ASSERT(IsVarIn("m", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("x", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("y", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("z", varsModified));
+	CPPUNIT_ASSERT(IsVarIn("k", varsModified));
 }
 
 void ParserToPKBTest2::TestUses(){
@@ -179,6 +188,34 @@ void ParserToPKBTest2::TestUsesForProcs() {
 	CPPUNIT_ASSERT(IsVarIn("y", varsUsed));
 }
 
-void ParserToPKBTest2::TestAffects(){}
+void ParserToPKBTest2::TestAffects(){
+	// IsAffects
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 2));
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 3));
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 5));
+	CPPUNIT_ASSERT(!Affects::IsAffects(1, 7));
 
-void ParserToPKBTest2::TestAffectsT(){}
+	CPPUNIT_ASSERT(Affects::IsAffects(2, 3));
+	CPPUNIT_ASSERT(!Affects::IsAffects(2, 5));
+
+	CPPUNIT_ASSERT(!Affects::IsAffects(3, 9));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 12));
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 13));
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 11));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(19, 22));
+	CPPUNIT_ASSERT(!Affects::IsAffects(21, 21));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(25, 26));
+	CPPUNIT_ASSERT(Affects::IsAffects(26, 26));
+	CPPUNIT_ASSERT(Affects::IsAffects(26, 27));
+}
+
+void ParserToPKBTest2::TestAffectsT(){
+	// IsAffectsT
+
+	// GetStmtsAffectedT
+
+	// GetStmtsAffectingT
+}

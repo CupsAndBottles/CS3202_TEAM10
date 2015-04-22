@@ -310,7 +310,7 @@ bool IntermediateResult::Unlink(string synonym_1, string value_1, string synonym
 
 							if(it_value1_found != linksOfValue2ToSynonym1->end())
 							{
-								cout << "found!\n";
+								//cout << "found!\n";
 								synonymList[synonym_2][index_2].links[synonym_1].erase(it_value1_found);
 
 								//if links of synonym_2 empty after erase, remove the synonym_2 form link
@@ -318,7 +318,7 @@ bool IntermediateResult::Unlink(string synonym_1, string value_1, string synonym
 								if(synonymList[synonym_2][index_2].links[synonym_1].empty())
 									synonymList[synonym_2][index_2].links.erase(synonym_1);
 
-								cout << "After found\n";
+								//cout << "After found\n";
 								return true;
 							}
 
@@ -780,7 +780,7 @@ void IntermediateResult::RemoveElementsWithoutLink(string synonym_1, string syno
 
 			if(HasLinkBetweenColumns(column1 , column2))
 			{
-				cout << "Has link between " << column1 << " and " << column2 << "\n";
+				//cout << "Has link between " << column1 << " and " << column2 << "\n";
 
 
 				//vector<Element> localCopy_elements = it->second;
@@ -789,7 +789,7 @@ void IntermediateResult::RemoveElementsWithoutLink(string synonym_1, string syno
 					bool needToDelete = false;
 					int offset = distance(it->second.begin() , it_elements);
 
-					cout << "element " << offset << "\n";
+					//cout << "element " << offset << "\n";
 
 					if(it_elements->links.empty())
 					{

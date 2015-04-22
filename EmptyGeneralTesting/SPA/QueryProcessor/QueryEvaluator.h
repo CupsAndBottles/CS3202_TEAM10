@@ -23,10 +23,6 @@ protected:
 	bool EvaluateCalls(SuchThatClause);
 	bool EvaluateNext(SuchThatClause);
 	bool EvaluateAffects(SuchThatClause);
-	bool EvaluateContains(SuchThatClause);
-	bool EvaluateSibling(SuchThatClause);
-	bool EvaluateAffectsBip(SuchThatClause);
-	bool EvaluateNextBip(SuchThatClause);
 
 	//Evvaluate Pattern
 	bool EvaluatePattern(PatternClause);

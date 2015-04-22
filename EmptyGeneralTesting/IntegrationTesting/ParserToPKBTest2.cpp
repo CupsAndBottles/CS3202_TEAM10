@@ -188,13 +188,33 @@ void ParserToPKBTest2::TestUsesForProcs() {
 	CPPUNIT_ASSERT(IsVarIn("y", varsUsed));
 }
 
-void ParserToPKBTest2::TestAffects(){}
+void ParserToPKBTest2::TestAffects(){
+	// IsAffects
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 2));
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 3));
+	CPPUNIT_ASSERT(Affects::IsAffects(1, 5));
+	CPPUNIT_ASSERT(!Affects::IsAffects(1, 7));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(2, 3));
+	CPPUNIT_ASSERT(!Affects::IsAffects(2, 5));
+
+	CPPUNIT_ASSERT(!Affects::IsAffects(3, 9));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 12));
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 13));
+	CPPUNIT_ASSERT(Affects::IsAffects(11, 11));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(19, 22));
+	CPPUNIT_ASSERT(!Affects::IsAffects(21, 21));
+
+	CPPUNIT_ASSERT(Affects::IsAffects(25, 26));
+	CPPUNIT_ASSERT(Affects::IsAffects(26, 26));
+	CPPUNIT_ASSERT(Affects::IsAffects(26, 27));
+}
 
 void ParserToPKBTest2::TestAffectsT(){
 	// IsAffectsT
-	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 2));
-	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 3));
-	CPPUNIT_ASSERT(Affects::IsAffectsT(1, 5));
+
 	// GetStmtsAffectedT
 
 	// GetStmtsAffectingT

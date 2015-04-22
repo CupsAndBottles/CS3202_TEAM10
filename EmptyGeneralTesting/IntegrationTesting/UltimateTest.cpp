@@ -996,10 +996,8 @@ void UltimateTest::TestNext() {
 	actualResultList.push_back("25");
 	actualResultList.sort();
 
-
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	
 
 	qd.ClearData();
 	resultList.clear();
@@ -1256,10 +1254,10 @@ void UltimateTest::TestAffectsT() {
 
 	//CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 }
 
 void UltimateTest::TestPattern() {

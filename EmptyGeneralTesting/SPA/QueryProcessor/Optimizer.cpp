@@ -260,27 +260,27 @@ int Optimizer::weightSuchThat(SuchThatClause sc){
 	
 	switch(sc.relationship){
 	case(MODIFIES):{
-		weight = numOfModifies;
+		weight = min(numOfModifies,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(USES):{
-		weight = numOfUses;
+		weight = min(numOfUses,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(FOLLOWS):{
-		weight = numOfFollows;
+		weight = min(numOfFollows,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(PARENT):{
-		weight = numOfParent;
+		weight = min(numOfParent,weightStars(sc.arg1,sc.arg2));
 		break;
 				 }
 	case(CALLS):{
-		weight = numOfCall;
+		weight = min(numOfCall,weightStars(sc.arg1,sc.arg2));
 		break;
 				}
 	case(NEXT):{
-		weight = numOfNext;
+		weight = min(numOfNext,weightStars(sc.arg1,sc.arg2));
 		break;
 			   }
 	case(PARENTT):
@@ -290,6 +290,7 @@ int Optimizer::weightSuchThat(SuchThatClause sc){
 	case(CONTAINS):
 	case(CONTAINST):
 	case(SIBLING):
+	case(AFFECTS):
 	case(AFFECTSBIP):
 	case(NEXTBIP):
 	case(NEXTBIPT):{

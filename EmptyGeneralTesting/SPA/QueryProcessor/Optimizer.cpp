@@ -260,27 +260,27 @@ int Optimizer::weightSuchThat(SuchThatClause sc){
 	
 	switch(sc.relationship){
 	case(MODIFIES):{
-		weight = numOfModifies;
+		weight = min(numOfModifies,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(USES):{
-		weight = numOfUses;
+		weight = min(numOfUses,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(FOLLOWS):{
-		weight = numOfFollows;
+		weight = min(numOfFollows,weightStars(sc.arg1,sc.arg2));
 		break;
 				   }
 	case(PARENT):{
-		weight = numOfParent;
+		weight = min(numOfParent,weightStars(sc.arg1,sc.arg2));
 		break;
 				 }
 	case(CALLS):{
-		weight = numOfCall;
+		weight = min(numOfCall,weightStars(sc.arg1,sc.arg2));
 		break;
 				}
 	case(NEXT):{
-		weight = numOfNext;
+		weight = min(numOfNext,weightStars(sc.arg1,sc.arg2));
 		break;
 			   }
 	case(PARENTT):
@@ -290,6 +290,7 @@ int Optimizer::weightSuchThat(SuchThatClause sc){
 	case(CONTAINS):
 	case(CONTAINST):
 	case(SIBLING):
+	case(AFFECTS):
 	case(AFFECTSBIP):
 	case(NEXTBIP):
 	case(NEXTBIPT):{
@@ -314,6 +315,10 @@ int Optimizer::weightStars(Argument arg1,Argument arg2){
 	switch(arg1.type){
 	case(SYNONYM):{
 		if(arg1.syn.type == VARIABLE) weight1 = numOfVar;
+		else if(arg1.syn.type == PROCEDURE) weight1 = numOfProc;
+		else if(arg1.syn.type == CONSTANT) weight1 = numOfCon;
+		else if(arg1.syn.type == PROG_LINE) weight1 = numOfProgLine;
+		else if(arg1.syn.type == STMT) weight1 = numOfStmt;
 		else weight1 = StmtTypeTable::GetNoOfStmtsOfType(arg1.syn.type);
 		break;
 					}
@@ -343,6 +348,10 @@ int Optimizer::weightStars(Argument arg1,Argument arg2){
 	switch(arg2.type){
 	case(SYNONYM):{
 		if(arg2.syn.type == VARIABLE) weight2 = numOfVar;
+		else if(arg2.syn.type == PROCEDURE) weight2 = numOfProc;
+		else if(arg2.syn.type == CONSTANT) weight2 = numOfCon;
+		else if(arg2.syn.type == PROG_LINE) weight2 = numOfProgLine;
+		else if(arg2.syn.type == STMT) weight2 = numOfStmt;
 		else weight2 = StmtTypeTable::GetNoOfStmtsOfType(arg2.syn.type);
 		break;
 					}

@@ -88,6 +88,7 @@
     <None Include="pkbTest.txt" />
     <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
+    <None Include="Source.txt" />
     <None Include="Test.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

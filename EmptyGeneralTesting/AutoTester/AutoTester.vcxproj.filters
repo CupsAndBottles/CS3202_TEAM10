@@ -27,4 +27,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="tests\Source.txt" />
+    <None Include="tests\Q1-synonyms.txt" />
+    <None Include="tests\Q2-simpleQueries.txt" />
+    <None Include="tests\Q3-simpleQueries2.txt" />
+    <None Include="tests\Q4-with.txt" />
+    <None Include="tests\Queries.txt" />
+    <None Include="tests\S1-synonyms.txt" />
+    <None Include="tests\S2-simpleQueries.txt" />
+    <None Include="tests\S3-simpleQueries2.txt" />
+    <None Include="tests\S4-with.txt" />
+  </ItemGroup>
 </Project>

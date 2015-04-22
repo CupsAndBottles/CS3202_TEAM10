@@ -64,21 +64,23 @@ public:
 	void MakeLink(string synonym_1, string value_1, string synonym_2, int value_2_int);
 	void MakeLink(string synonym_1, string value_1, string synonym_2, string value_2);	
 
-	void Unlink(string synonym_1, int value_1_int, string synonym_2, int value_2_int);
-	void Unlink(string synonym_1, int value_1_int, string synonym_2, string value_2);
-	void Unlink(string synonym_1, string value_1, string synonym_2, int value_2_int);
-	void Unlink(string synonym_1, string value_1, string synonym_2, string value_2);	
+	bool Unlink(string synonym_1, int value_1_int, string synonym_2, int value_2_int, string skipSynonym = "");
+	bool Unlink(string synonym_1, int value_1_int, string synonym_2, string value_2, string skipSynonym = "");
+	bool Unlink(string synonym_1, string value_1, string synonym_2, int value_2_int, string skipSynonym = "");
+	bool Unlink(string synonym_1, string value_1, string synonym_2, string value_2, string skipSynonym = "");
 
-	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, int value_2_int, bool& IsDirectLink , string skipSynonym = "");
-	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, string value_2, bool& IsDirectLink , string skipSynonym = "");
-	bool HasLinkBetweenColumns(string synonym_1, string value_1, string synonym_2, int value_2_int, bool& IsDirectLink , string skipSynonym = "");
-	bool HasLinkBetweenColumns(string synonym_1, string value_1, string synonym_2, string value_2, bool& IsDirectLink , string skipSynonym = "");
+	bool HasLinkBetweenColumns(string synonym_1, string synonym_2);
+
+	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, int value_2_int, bool& IsDirectLink, string skipSynonym = "");
+	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, string value_2, bool& IsDirectLink, string skipSynonym = "");
+	bool HasLinkBetweenColumns(string synonym_1, string value_1, string synonym_2, int value_2_int, bool& IsDirectLink, string skipSynonym = "");
+	bool HasLinkBetweenColumns(string synonym_1, string value_1, string synonym_2, string value_2, bool& IsDirectLink, string skipSynonym = "");
 	
-	bool HasLinkToColumn(string synonym_1, int value_1_int, string synonym_2);
-	bool HasLinkToColumn(string synonym_1, string value_1, string synonym_2);  //check whether value1 has link to synonym2
+	bool HasDirectLinkToColumn(string synonym_1, int value_1_int, string synonym_2);
+	bool HasDirectLinkToColumn(string synonym_1, string value_1, string synonym_2);  //check whether value1 has link to synonym2
 
 	bool HasLink(string synonym_1, int value_1_int);
-	bool HasLink(string synonym_1, string value_1);
+	bool HasLink(string synonym_1, string value_1="");
 
 
 	void Remove(string synonym , string value);			
@@ -98,4 +100,5 @@ public:
 	SynonymType GetSynonymType(std::string val);			//get SynonymType of a synonym
 	void UpdateTable(string synonym_1, string synonym_2);	//remove any element without link between this 2 column, used after evaluate modifies(a,v) where a and v both have elements
 	void Print();
+	void Clear();
 };

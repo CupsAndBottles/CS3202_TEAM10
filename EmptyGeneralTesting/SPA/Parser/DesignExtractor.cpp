@@ -209,6 +209,19 @@ void ComputeModifiesAndUses() {
 	vector<int> assignmentStmts = StmtTypeTable::GetAllStmtsOfType(ASSIGN);
 	vector<int> callStmts = StmtTypeTable::GetAllStmtsOfType(CALL);
 
+	for each (int stmt in callStmts) {
+		int proc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(stmt).GetContent());
+		vector<int> usedVars = Uses::GetVarUsedByProc(proc);
+		// compute modifies and uses for calls here as well
+		vector<int> modifiedVars = Modifies::GetVarModifiedByProc(proc);
+		for each (int var in usedVars) {
+			Uses::SetStmtUsesVar(stmt, var);
+		}
+		for each (int var in modifiedVars) {
+			Modifies::SetStmtModifiesVar(stmt, var);
+		}
+	}
+
 	set<int> currentChildren;
 	currentChildren.insert(assignmentStmts.begin(), assignmentStmts.end());
 	currentChildren.insert(callStmts.begin(), callStmts.end());
@@ -221,23 +234,9 @@ void ComputeModifiesAndUses() {
 			if (parent == -1) continue;
 			vector<int> usedVars, modifiedVars;
 
-			if (StmtTypeTable::GetStmtTypeOf(stmt) == CALL) {
-				// should only encounter this code on the first pass. Maybe can optimise
-				int proc = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(stmt).GetContent());
-				usedVars = Uses::GetVarUsedByProc(proc);
-				// compute modifies and uses for calls here as well
-				modifiedVars = Modifies::GetVarModifiedByProc(proc);
-				for each (int var in usedVars) {
-					Uses::SetStmtUsesVar(stmt, var);
-				}
-				for each (int var in modifiedVars) {
-					Modifies::SetStmtModifiesVar(stmt, var);
-				}
-			} else { // assign or while or whatever
-				usedVars = Uses::GetVarUsedByStmt(stmt);
-				modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
-			}
-
+			usedVars = Uses::GetVarUsedByStmt(stmt);
+			modifiedVars = Modifies::GetVarModifiedByStmt(stmt);
+			
 			for each (int var in usedVars) {
 				Uses::SetStmtUsesVar(parent, var);
 			}

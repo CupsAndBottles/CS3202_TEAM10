@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -85,6 +85,18 @@
   <ItemGroup>
     <ClInclude Include="source\AbstractWrapper.h" />
     <ClInclude Include="source\TestWrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests\Q1-synonyms.txt" />
+    <None Include="tests\Q2-simpleQueries.txt" />
+    <None Include="tests\Q3-simpleQueries2.txt" />
+    <None Include="tests\Q4-with.txt" />
+    <None Include="tests\Queries.txt" />
+    <None Include="tests\S1-synonyms.txt" />
+    <None Include="tests\S2-simpleQueries.txt" />
+    <None Include="tests\S3-simpleQueries2.txt" />
+    <None Include="tests\S4-with.txt" />
+    <None Include="tests\Source.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

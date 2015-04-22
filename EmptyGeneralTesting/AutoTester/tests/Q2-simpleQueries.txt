@@ -1,5 +1,3 @@
-108
-cat: All Queries
 1 - Parent :: 
 stmt s, s1;
 Select s such that Parent (s, s1) with s1.stmt# = 3

@@ -52,12 +52,229 @@ void AffectsTTest::TestIsAffectsT() {
 	// CPPUNIT_ASSERT(Affects::IsAffectsT(22, 22)); // heisenbug
 	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT(Affects::IsAffectsT(24, 21)));
 
+	// test whileInIf
+	CPPUNIT_ASSERT(Affects::IsAffectsT(26, 29));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(29, 31));
+	CPPUNIT_ASSERT(Affects::IsAffectsT(26, 31));
 }
 
 void AffectsTTest::TestGetStmtsAffectedTBy() {
+	vector<int> expectedResult;
+	vector<int> actualResult;
 
+	// test sequential
+	actualResult = Affects::GetStmtsAffectedTBy(1);
+	CPPUNIT_ASSERT_EQUAL(3, (int)actualResult.size());
+
+	expectedResult.push_back(2);
+	expectedResult.push_back(3);
+	expectedResult.push_back(4);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	// test whileLoop
+	actualResult = Affects::GetStmtsAffectedTBy(5);
+	CPPUNIT_ASSERT_EQUAL(2, (int)actualResult.size());
+
+	expectedResult.push_back(7);
+	expectedResult.push_back(10);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectedTBy(8);
+	CPPUNIT_ASSERT_EQUAL(1, (int)actualResult.size());
+
+	expectedResult.push_back(8);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectedTBy(9);
+	CPPUNIT_ASSERT_EQUAL(1, (int)actualResult.size());
+
+	expectedResult.push_back(10);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	// test ifStmt
+	actualResult = Affects::GetStmtsAffectedTBy(11);
+	CPPUNIT_ASSERT_EQUAL(5, (int)actualResult.size());
+
+	expectedResult.push_back(13);
+	expectedResult.push_back(14);
+	expectedResult.push_back(15);
+	expectedResult.push_back(16);
+	expectedResult.push_back(17);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectedTBy(14);
+	CPPUNIT_ASSERT_EQUAL(1, (int)actualResult.size());
+
+	expectedResult.push_back(17);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectedTBy(15);
+	CPPUNIT_ASSERT_EQUAL(0, (int)actualResult.size());
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
 }
 
 void AffectsTTest::TestGetStmtsAffectingT() {
+	vector<int> expectedResult;
+	vector<int> actualResult;
 
+	// test sequential
+	actualResult = Affects::GetStmtsAffectingT(4);
+	CPPUNIT_ASSERT_EQUAL(2, (int)actualResult.size());
+
+	expectedResult.push_back(1);
+	expectedResult.push_back(2);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	// test whileLoop
+	actualResult = Affects::GetStmtsAffectingT(10);
+	CPPUNIT_ASSERT_EQUAL(3, (int)actualResult.size());
+
+	expectedResult.push_back(5);
+	expectedResult.push_back(7);
+	expectedResult.push_back(9);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectingT(8);
+	CPPUNIT_ASSERT_EQUAL(1, (int)actualResult.size());
+
+	expectedResult.push_back(8);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	// test ifStmt
+	actualResult = Affects::GetStmtsAffectingT(16);
+	CPPUNIT_ASSERT_EQUAL(2, (int)actualResult.size());
+
+	expectedResult.push_back(11);
+	expectedResult.push_back(13);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectingT(17);
+	CPPUNIT_ASSERT_EQUAL(2, (int)actualResult.size());
+
+	expectedResult.push_back(11);
+	expectedResult.push_back(14);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectingT(16);
+	CPPUNIT_ASSERT_EQUAL(2, (int)actualResult.size());
+
+	expectedResult.push_back(11);
+	expectedResult.push_back(13);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
+
+
+	actualResult = Affects::GetStmtsAffectingT(15);
+	CPPUNIT_ASSERT_EQUAL(1, (int)actualResult.size());
+
+	expectedResult.push_back(11);
+
+	sort(expectedResult.begin(), expectedResult.end());
+	sort(actualResult.begin(), actualResult.end());
+
+	CPPUNIT_ASSERT(expectedResult == actualResult);
+
+	expectedResult.clear();
+	actualResult.clear();
 }

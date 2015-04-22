@@ -84,6 +84,7 @@ vector<int> PatternMatcher::MatchPatternFromRoot(Pattern object, bool partialMat
 	if (object.expr == "") return results; // malformed object, or blank object.
 
 	for each (int currentStmt in stmtsToMatch) {
+		if (!StmtTypeTable::CheckIfStmtOfType(currentStmt, ASSIGN)) continue;
 		TNode& currentStmtTNode = Program::GetStmtFromNumber(currentStmt);
 		// go to RHS (ignore left of assignment statement. Match expression)
 		if (MatchPatternAtLeaves(&currentStmtTNode.GetChild(1), object, partialMatch)) {

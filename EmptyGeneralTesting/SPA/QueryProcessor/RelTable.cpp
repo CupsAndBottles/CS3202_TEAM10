@@ -24,8 +24,8 @@ Argument 2 synonym - procedure
 
 Next (Synonym | _ | Integer , Synonym | _ | Integer)
 Next*(Synonym | _ | Integer , Synonym | _ | Integer)
-Argument 1 synonym - ASSIGN, WHILE, IF, CALL, prog_line
-Argument 2 synonym - ASSIGN, WHILE, IF, CALL, prog_line
+Argument 1 synonym - STMT, ASSIGN, WHILE, IF, CALL, prog_line
+Argument 2 synonym - STMT, ASSIGN, WHILE, IF, CALL, prog_line
 
 Affects (Synonym | _ | Integer , Synonym | _ | Integer)
 Affects*(Synonym | _ | Integer , Synonym | _ | Integer)
@@ -55,8 +55,8 @@ const SynonymType RelTable::s2_calls[] = {PROCEDURE};
 
 const ArgumentType RelTable::a1_next[] = {SYNONYM, UNDERSCORE, INTEGER};
 const ArgumentType RelTable::a2_next[] = {SYNONYM, UNDERSCORE, INTEGER};
-const SynonymType RelTable::s1_next[] = {ASSIGN, WHILE, IF, CALL, PROG_LINE};
-const SynonymType RelTable::s2_next[] = {ASSIGN, WHILE, IF, CALL,PROG_LINE};
+const SynonymType RelTable::s1_next[] = {STMT, ASSIGN, WHILE, IF, CALL, PROG_LINE};
+const SynonymType RelTable::s2_next[] = {STMT, ASSIGN, WHILE, IF, CALL,PROG_LINE};
 
 const ArgumentType RelTable::a1_affects[] = {SYNONYM, UNDERSCORE, INTEGER};
 const ArgumentType RelTable::a2_affects[] = {SYNONYM, UNDERSCORE, INTEGER};

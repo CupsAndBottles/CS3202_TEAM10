@@ -16,14 +16,20 @@
 
 class UltimateTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(UltimateTest);
-	//CPPUNIT_TEST(TestSelectAll);
-	//CPPUNIT_TEST(TestParent);
-	//CPPUNIT_TEST(TestParentT);
-	//CPPUNIT_TEST(TestFollows);
-	//CPPUNIT_TEST(TestUses);
-	//CPPUNIT_TEST(TestModifies);
-	//CPPUNIT_TEST(TestPattern);
-	//CPPUNIT_TEST(TestCombination);
+	/*CPPUNIT_TEST(TestSelectAll);
+	CPPUNIT_TEST(TestParent);
+	CPPUNIT_TEST(TestParentT);
+	CPPUNIT_TEST(TestFollows);
+	CPPUNIT_TEST(TestUses);
+	CPPUNIT_TEST(TestModifies);
+	CPPUNIT_TEST(TestPattern);
+	CPPUNIT_TEST(TestCombination);
+	CPPUNIT_TEST(TestNext);
+	CPPUNIT_TEST(TestNextT);
+	CPPUNIT_TEST(TestAffects);
+	CPPUNIT_TEST(TestAffectsT);*/
+	CPPUNIT_TEST(TestWith);
+	//CPPUNIT_TEST(TestAnd);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -37,8 +43,13 @@ public:
 	void TestFollowsT();
 	void TestModifies();
 	void TestUses();
-
 	void TestPattern();
+	void TestNext();
+	void TestNextT();
+	void TestAffects();
+	void TestAffectsT();
+	void TestWith();
+	void TestAnd();
 
 	void TestCombination();
 };

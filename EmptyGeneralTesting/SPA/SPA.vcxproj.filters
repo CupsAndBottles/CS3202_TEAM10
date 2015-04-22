@@ -38,6 +38,7 @@
     <ClCompile Include="Program\TNode\TNode.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="PKB\NextBipWithState.cpp" />
+    <ClCompile Include="QueryProcessor\Optimizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PKB\NodeTypeTable.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="program\tnode\tnode.h" />
     <ClInclude Include="program\program.h" />
     <ClInclude Include="PKB\NextBipWithState.h" />
+    <ClInclude Include="QueryProcessor\optimizer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AffectsTTest.txt" />
@@ -87,5 +89,6 @@
     <None Include="procTest.txt" />
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="Test.txt" />
+    <None Include="Source.txt" />
   </ItemGroup>
 </Project>

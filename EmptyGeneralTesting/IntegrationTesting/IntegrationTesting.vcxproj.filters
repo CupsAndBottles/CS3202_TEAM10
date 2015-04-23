@@ -10,34 +10,12 @@
     <None Include="ParserTestFiles\AffectsWhileCallsTest.txt" />
     <None Include="ParserTestFiles\NextBipCallOnceTest.txt" />
     <None Include="ParserTestFiles\NextBipCallTwiceTest.txt" />
-    <None Include="InteractionsBtwnComponents.txt" />
-    <None Include="ModifiesUsesCallsParentText.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IntegrationTest.cpp" />
-    <ClCompile Include="ModifiesUsesCallsParentTest.cpp" />
-    <ClCompile Include="CallsProcTableTest.cpp" />
-    <ClCompile Include="FollowsStmtTypeTableTest.cpp" />
-    <ClCompile Include="ParentStmtTypeTableTest.cpp" />
-    <ClCompile Include="ParserToPKBTest.cpp" />
     <ClCompile Include="ParserToPKBTest2.cpp" />
-    <ClCompile Include="AffectsTest.cpp" />
-    <ClCompile Include="AffectsTTest.cpp" />
-    <ClCompile Include="UltimateTest.cpp" />
-    <ClCompile Include="UltimateTest2.cpp" />
-    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
+    <ClCompile Include="IntegrationTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ModifiesUsesCallsParentTest.h" />
-    <ClInclude Include="CallsProcTableTest.h" />
-    <ClInclude Include="FollowsStmtTypeTableTest.h" />
-    <ClInclude Include="ParentStmtTypeTableTest.h" />
-    <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="ParserToPKBTest2.h" />
-    <ClInclude Include="AffectsTest.h" />
-    <ClInclude Include="AffectsTTest.h" />
-    <ClInclude Include="UltimateTest.h" />
-    <ClInclude Include="UltimateTest2.h" />
-    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
   </ItemGroup>
 </Project>

@@ -224,9 +224,9 @@ void ParserToPKBTest2::TestAffects(){
 	validResults[26][26] = true;
 	validResults[26][27] = true;
 
-	excluded[22] = true;
-	excluded[27] = true;
-	excluded[28] = true;
+	//excluded[22] = true;
+	//excluded[27] = true;
+	//excluded[28] = true;
 
 	for (int affecting = 1; affecting <= noOfStmts; affecting++) {
 		for (int affected = 1; affected <= noOfStmts; affected++) {

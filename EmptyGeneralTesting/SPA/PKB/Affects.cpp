@@ -63,13 +63,16 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 	vector<bool> stmtsIsChecked(StmtTypeTable::GetNoOfStmts() + 1, false);
 	
 	vector<int> nextOfCurrStmt = Next::GetNextAfter(stmtAffecting);
-	uncheckedStmts.push(nextOfCurrStmt.at(0));
+
+	if (!nextOfCurrStmt.empty()) {
+		uncheckedStmts.push(nextOfCurrStmt.at(0));
+	}
 
 	int currStmt;
 	
 	while (!uncheckedStmts.empty()) {
 		currStmt = uncheckedStmts.front();
-
+		//cout << "\ncheck CFG currstmt: " << currStmt;
 		if (!stmtsIsChecked.at(currStmt)) {
 			switch (StmtTypeTable::GetStmtTypeOf(currStmt)) {
 			case ASSIGN:
@@ -215,11 +218,6 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 				break;
 			case CALL: {
 				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
-
-				// the next 3 lines are problematic
-				//if (procCalled >= 0 && Uses::IsProcUsingVar(procCalled, varModified)) {
-				//	affectedStmts.push_back(currStmt);
-				//}
 				
 				if (procCalled >= 0 && Modifies::IsProcModifyingVar(procCalled, varModified)) {
 					// don't check for anything after this stmt
@@ -320,7 +318,6 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 				vector<int>::iterator it = varsUsed.begin();
 				while (it != varsUsed.end()) {
 					if (varModified == *it) {
-						//affectedStmts.push_back(currStmt); // this stmt is wrong
 						it = varsUsed.erase(it);
 					} else {
 						it++;

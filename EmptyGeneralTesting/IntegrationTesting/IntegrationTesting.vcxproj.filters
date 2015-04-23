@@ -26,6 +26,7 @@
     <ClCompile Include="UltimateTest.cpp" />
     <ClCompile Include="UltimateTest2.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
+    <ClCompile Include="UltimateWithAndTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModifiesUsesCallsParentTest.h" />
@@ -39,5 +40,6 @@
     <ClInclude Include="UltimateTest.h" />
     <ClInclude Include="UltimateTest2.h" />
     <ClInclude Include="QueryEvaluatorToPKBTest.h" />
+    <ClInclude Include="UltimateWithAndTest.h" />
   </ItemGroup>
 </Project>

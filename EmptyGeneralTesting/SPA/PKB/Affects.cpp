@@ -427,23 +427,24 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 
 	class StmtsHelper {
 		vector<bool> checkedStmts; // keeps track of stmts that have been checked for modifies but have led nowhere
-		int affectedStmt;
-		int currentProc;
+		int endPoint;
 
 	public:
-		StmtsHelper(int affectedStmt) : affectedStmt(affectedStmt) {
+		StmtsHelper(int affectedStmt) {
 			checkedStmts = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
-			currentProc = ProcTable::GetProcOfStmt(affectedStmt);
+			endPoint = affectedStmt;
 		};
 
 		bool findAffectedStmt(int currentStmt) {
 			checkedStmts[currentStmt] = true;
+			vector<int> nextStmts = Next::GetNextAfter(currentStmt);
+			if (nextStmts.empty()) return false;
 			int nextStmt = Next::GetNextAfter(currentStmt)[0];
 			int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-			return findAffectedStmt(nextStmt, varModified, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
+			return findAffectedStmt(currentStmt, nextStmt, varModified, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
 		}
 
-		bool findAffectedStmt(int currentStmt, int var, vector<bool> checkedWhile) {
+		bool findAffectedStmt(int initialStmt, int comingStmt, int var, vector<bool> checkedWhile) {
 			/*
 			tail recursive
 			calls itself upon finding next stmt in chain, updating stmtAffecting with new stmtAffecting
@@ -454,89 +455,86 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 			return or of results
 			*/
 
-			string nameOfVar = VarTable::GetVarName(var);
-			if (currentStmt > ProcTable::GetLastStmtNoOfProc(currentProc)) return false; // done
+			vector<int> currentStmts;
+			currentStmts.push_back(comingStmt);
+			bool result = false;
 
-			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
-				// if while is found, continue tail call with start of stmtlist
-				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
-				if (checkedWhile[currentStmt]) {
-					if (followingStmts.size() == 2) {
-						return findAffectedStmt(max(followingStmts[0], followingStmts[1]), var, checkedWhile); // false branch of while
-					} else {
-						return false; // end of proc reached
-					}
-				} else {
-					if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
-						if (followingStmts.size() == 2) {
-							return findAffectedStmt(max(followingStmts[0], followingStmts[1]), var, checkedWhile); // false branch of while
-						} else {
-							return false; // end of proc reached
-						}
-					} else {
-						checkedWhile[currentStmt] = true;
-						return findAffectedStmt(currentStmt + 1, var, checkedWhile); // start of stmtlist
-					}
-				}
-			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
-				// if else is found, perform 2 tail calls
+			while (currentStmts.size() != 0) {
+				if (result) return true; // immediately return 
+				vector<int> nextStmts;
+				int currentStmt = currentStmts[0]; // guaranteed
 
-				if (!Uses::IsStmtUsingVar(currentStmt, var) && !Modifies::IsStmtModifyingVar(currentStmt, var)) { // optimisation
-					int afterStmtList = Follows::GetFollowsAfter(currentStmt);
-
-					if (afterStmtList == -1) {
-						return false;
-					} else {
-						return findAffectedStmt(afterStmtList, var, checkedWhile);
-					}
-				}
-
-				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
-				return findAffectedStmt(followingStmts[0], var, checkedWhile) || findAffectedStmt(followingStmts[1], var, checkedWhile);
-
-			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
-				// check if call type modifies variable
-				// if it does, break
-				if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), var)) {
-					return false;
-				} else {
-					return findAffectedStmt(Next::GetNextAfter(currentStmt)[0], var, checkedWhile);
-				}
-			} else {
-				// stmt found was assignment stmt
-				// this is where you do the checking for the truth val
-				// affectedStmt guaranteed to be assignment
-
-				vector<int> nextStmts = Next::GetNextAfter(currentStmt);
-				int nextStmt;
-				if (nextStmts.size() == 0) { // check if is end of proc or not
-					nextStmt = StmtTypeTable::GetNoOfStmts() + 1; // must end by next iteration
-				} else {
-					nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
-				}
-
-				if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
-					if (currentStmt == affectedStmt) {
-						return true; // stmt found
-					} else {
-						if (checkedStmts[currentStmt]) {
-							return findAffectedStmt(nextStmt, var, checkedWhile);
-						} else {
-							checkedStmts[currentStmt] = true;
-							int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-							if (varModified == var) {
-								return findAffectedStmt(nextStmt, varModified, checkedWhile);
-							} else {
-								return (findAffectedStmt(nextStmt, varModified, checkedWhile) || findAffectedStmt(nextStmt, var, checkedWhile));
+				if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+					// if while is found, continue tail call with start of stmtlist
+					vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+					if (checkedWhile[currentStmt] || !Uses::IsStmtUsingVar(currentStmt, var)) {
+						for each (int stmt in followingStmts) {
+							if (stmt > currentStmt + 1) { // step out of loop
+								nextStmts.push_back(stmt);
 							}
 						}
+					} else {
+						vector<bool> stepOut = checkedWhile;
+						checkedWhile[currentStmt] = true;
+						for each (int stmt in followingStmts) {
+							if (stmt == currentStmt + 1) {
+								result |= findAffectedStmt(initialStmt, stmt, var, checkedWhile);
+							} else {
+								result |= findAffectedStmt(initialStmt, stmt, var, stepOut);
+							}
+						}
+						currentStmts.clear();
 					}
-				} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
-					return false; // another valid modifies was found
+				} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+					// if else is found, perform 2 tail calls
+
+					if (!Uses::IsStmtUsingVar(currentStmt, var) && !Modifies::IsStmtModifyingVar(currentStmt, var)) { // optimisation
+						int afterStmtList = Follows::GetFollowsAfter(currentStmt);
+
+						if (afterStmtList != -1) {
+							nextStmts.push_back(afterStmtList);
+						}
+					} else {
+						for each (int stmt in Next::GetNextAfter(currentStmt)) {
+							result |= findAffectedStmt(initialStmt, stmt, var, checkedWhile);
+						}
+						currentStmts.clear();
+					}
+				} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
+					// check if call type modifies variable
+					// if it does, break
+					int calledProcIndex = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent());
+					if (!Modifies::IsProcModifyingVar(calledProcIndex, var)) {
+						nextStmts = Next::GetNextAfter(currentStmt);
+					}
 				} else {
-					return findAffectedStmt(nextStmt, var, checkedWhile);
+					// stmt found was assignment
+					// this is where you do the checking for the truth val
+
+					if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
+						if (currentStmt == endPoint) {
+							result = true;
+						} else {
+							if (!checkedStmts[currentStmt]) {
+								checkedStmts[currentStmt] = true;
+								int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+								if (varModified == var) {
+									return findAffectedStmt(currentStmt);
+								} else {
+									result |= findAffectedStmt(currentStmt);
+								}
+							}
+						}
+					} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
+						if (currentStmt != initialStmt) { // ran into not same stmt 
+							return false; // another valid modifies was found
+						}
+					}
+					nextStmts = Next::GetNextAfter(currentStmt);
 				}
+				currentStmts = nextStmts;
 			}
+			return result;
 		}
 	};
 
@@ -553,106 +551,109 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 
 	class StmtsHelper {
 		vector<bool> mappedAffects;
-		int startingStmt;
 		int currentProc;
 		
 	public:
 		set<int> affectedStmts;
-		StmtsHelper(int startingStmt) : startingStmt(startingStmt) {
+		StmtsHelper(int startingStmt) {
 			mappedAffects = vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false);
 			currentProc = ProcTable::GetProcOfStmt(startingStmt);
 		};
 
 		void findAffectedStmts(int currentStmt) {
 			mappedAffects[currentStmt] = true;
+			vector<int> nextStmts = Next::GetNextAfter(currentStmt);
+			if (nextStmts.empty()) return;
 			int nextStmt = Next::GetNextAfter(currentStmt)[0];
 			int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-			return findAffectedStmts(nextStmt, varModified, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
+			return findAffectedStmts(currentStmt, nextStmt, varModified, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
 		}
 
-		void findAffectedStmts(int currentStmt, int var, vector<bool> checkedWhile) {
-			if (currentStmt > ProcTable::GetLastStmtNoOfProc(currentProc)) return; // done
+		// add case, if currentStmt = examinedStmt, skip
+		void findAffectedStmts(int initialStmt, int comingStmt, int var, vector<bool> checkedWhile) {
+			vector<int> currentStmts;
+			currentStmts.push_back(comingStmt);
 
-			if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
-				// if while is found, continue tail call with start of stmtlist
-				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
-				if (checkedWhile[currentStmt]) {
-					if (followingStmts.size() == 2) {
-						findAffectedStmts(max(followingStmts[0], followingStmts[1]), var, checkedWhile); // false branch of while
-					} else {
-						return; // end of proc reached
-					}
-				} else {
-					if (!Uses::IsStmtUsingVar(currentStmt, var)) { // optimisation
-						if (followingStmts.size() == 2) {
-							findAffectedStmts(max(followingStmts[0], followingStmts[1]), var, checkedWhile); // false branch of while
-						} else {
-							return; // end of proc reached
+			while (currentStmts.size() != 0) {
+				vector<int> nextStmts;
+				int currentStmt = currentStmts[0]; // guaranteed
+
+				if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::WHILE)) {
+					// if while is found, continue tail call with start of stmtlist
+					vector<int> followingStmts = Next::GetNextAfter(currentStmt);
+					if (checkedWhile[currentStmt] || !Uses::IsStmtUsingVar(currentStmt, var)) {
+						for each (int stmt in followingStmts) {
+							if (stmt > currentStmt + 1) { // step out of loop
+								nextStmts.push_back(stmt);
+							}
 						}
 					} else {
+						vector<bool> stepOut = checkedWhile;
 						checkedWhile[currentStmt] = true;
-						findAffectedStmts(currentStmt + 1, var, checkedWhile); // start of stmtlist
-					}
-				}
-			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
-				// if else is found, perform 2 tail calls
-
-				if (!Uses::IsStmtUsingVar(currentStmt, var) && !Modifies::IsStmtModifyingVar(currentStmt, var)) { // optimisation
-					int afterStmtList = Follows::GetFollowsAfter(currentStmt);
-
-					if (afterStmtList == -1) {
-						return;
-					} else {
-						return findAffectedStmts(afterStmtList, var, checkedWhile);
-					}
-				}
-
-				vector<int> followingStmts = Next::GetNextAfter(currentStmt);
-				findAffectedStmts(followingStmts[0], var, checkedWhile);
-				findAffectedStmts(followingStmts[1], var, checkedWhile);
-
-			} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
-				// check if call type modifies variable
-				// if it does, break
-				if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), var)) {
-					return;
-				} else {
-					return findAffectedStmts(Next::GetNextAfter(currentStmt)[0], var, checkedWhile);
-				}
-			} else {
-				// stmt found was assignment
-				// this is where you do the checking for the truth val
-
-				vector<int> nextStmts = Next::GetNextAfter(currentStmt);
-				int nextStmt;
-				if (nextStmts.size() == 0) { // check if is end of proc or not
-					nextStmt = currentStmt + 1; // must end by next iteration
-				} else {
-					nextStmt = Next::GetNextAfter(currentStmt)[0]; // carry on
-				}
-
-				if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
-					if (mappedAffects[currentStmt]) {
-						if (currentStmt == startingStmt) {
-							affectedStmts.insert(startingStmt);
+						for each (int stmt in followingStmts) {
+							if (stmt == currentStmt + 1) {
+								findAffectedStmts(initialStmt, stmt, var, checkedWhile);
+							} else {
+								findAffectedStmts(initialStmt, stmt, var, stepOut);
+							}
 						}
-						return findAffectedStmts(nextStmt, var, checkedWhile);
+						currentStmts.clear();
+					}
+				} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::IF)) {
+					// if else is found, perform 2 tail calls
+
+					if (!Uses::IsStmtUsingVar(currentStmt, var) && !Modifies::IsStmtModifyingVar(currentStmt, var)) { // optimisation
+						int afterStmtList = Follows::GetFollowsAfter(currentStmt);
+
+						if (afterStmtList != -1) {
+							nextStmts.push_back(afterStmtList);
+						}
 					} else {
-						mappedAffects[currentStmt] = true;
-						affectedStmts.insert(currentStmt);
-						int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
-						if (varModified == var) {
-							return findAffectedStmts(nextStmt, varModified, checkedWhile);
+						for each (int stmt in Next::GetNextAfter(currentStmt)) {
+							findAffectedStmts(initialStmt, stmt, var, checkedWhile);
+						}
+						currentStmts.clear();
+					}
+				} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
+					// check if call type modifies variable
+					// if it does, break
+					int calledProcIndex = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent());
+					if (!Modifies::IsProcModifyingVar(calledProcIndex, var)) {
+						nextStmts = Next::GetNextAfter(currentStmt);
+					}
+				} else {
+					// stmt found was assignment
+					// this is where you do the checking for the truth val
+
+					if (Uses::IsStmtUsingVar(currentStmt, var)) { // check uses first, because stmt can modify and use the same variable
+						if (mappedAffects[currentStmt]) {
+							if (currentStmt == initialStmt) {
+								affectedStmts.insert(currentStmt);
+							}
+							nextStmts = Next::GetNextAfter(currentStmt);
 						} else {
-							findAffectedStmts(nextStmt, varModified, checkedWhile);
-							findAffectedStmts(nextStmt, var, checkedWhile);
+							mappedAffects[currentStmt] = true;
+							affectedStmts.insert(currentStmt);
+							int varModified = Modifies::GetVarModifiedByStmt(currentStmt)[0];
+							if (varModified == var) {
+								return findAffectedStmts(currentStmt);
+							} else {
+								findAffectedStmts(currentStmt);
+								nextStmts = Next::GetNextAfter(currentStmt);
+							}
 						}
+					} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
+						if (currentStmt == initialStmt) { // ran into same stmt 
+							nextStmts = Next::GetNextAfter(currentStmt);
+						} else {
+							return; // another valid modifies was found
+						}
+					} else {
+						nextStmts = Next::GetNextAfter(currentStmt);
 					}
-				} else if (Modifies::IsStmtModifyingVar(currentStmt, var)) {
-					return; // another valid modifies was found
-				} else {
-					return findAffectedStmts(nextStmt, var, checkedWhile);
 				}
+
+				currentStmts = nextStmts;
 			}
 		}
 	};
@@ -690,21 +691,21 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 
 			for each (int var in varsUsed) {
 				for each (int stmt in previousStmts) {
-					findAffectingStmts(stmt, var, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
+					findAffectingStmts(affectedStmt, stmt, var, vector<bool>(StmtTypeTable::GetNoOfStmts() + 1, false));
 				}
 			}
 		}
 
 		// have to use loops cos current algo is not tail optimisable
 		// keep track of previous node
-		void findAffectingStmts(int prevStmt, int varUsed, vector<bool> checkedWhile) {
+		void findAffectingStmts(int initialStmt, int prevStmt, int varUsed, vector<bool> checkedWhile) {
 			vector<int> currentStmts;
 			currentStmts.push_back(prevStmt);
 
 			while (currentStmts.size() != 0) {
 				if (currentStmts.size() > 1) {
 					for each (int currentStmt in currentStmts) {
-						findAffectingStmts(currentStmt, varUsed, checkedWhile);
+						findAffectingStmts(initialStmt, currentStmt, varUsed, checkedWhile);
 					}
 					return;
 				} else {
@@ -716,14 +717,13 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 								if (stmt < currentStmt) prevStmts.push_back(stmt); // exit loop
 							}
 						} else {
+							for each (int stmt in Next::GetNextBefore(currentStmt)) {
+								if (stmt < currentStmt) prevStmts.push_back(stmt); // exit loop
+							}
 							if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) {
 								checkedWhile[currentStmt] = true;
 								for each (int stmt in Next::GetNextBefore(currentStmt)) {
 									if (stmt > currentStmt) prevStmts.push_back(stmt); // enter loop
-								}
-							} else { // optimised call
-								for each (int stmt in Next::GetNextBefore(currentStmt)) {
-									if (stmt < currentStmt) prevStmts.push_back(stmt); // exit loop
 								}
 							}
 						}
@@ -742,10 +742,11 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 						// perform checking here.
 						if (Modifies::IsStmtModifyingVar(currentStmt, varUsed)) {
 							if (mappedAffects[currentStmt]) {
-								if (currentStmt == startStmt) {
+								if (currentStmt == initialStmt) {
 									affectingStmts.insert(currentStmt);
+								} else {
+									return;
 								}
-								return;
 							} else {
 								affectingStmts.insert(currentStmt);
 								mappedAffects[currentStmt] = true;

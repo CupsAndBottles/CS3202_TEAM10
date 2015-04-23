@@ -282,10 +282,74 @@ void ParserToPKBTest2::TestAffects(){
 	//testFile.close();
 }
 
-void ParserToPKBTest2::TestAffectsT(){
+void ParserToPKBTest2::TestAffectsT() {
+	int noOfStmts = StmtTypeTable::GetMaxStmtIndex();
+	map<int, map<int, bool>> validResults;
+	map<int, bool> excluded;
+
+	// initialise
+	map <int, bool> blankMap;
+	for (int i = 1; i <= noOfStmts; i++) {
+		blankMap[i] = false;
+	}
+	excluded = blankMap;
+	for (int i = 1; i <= noOfStmts; i++) {
+		validResults[i] = blankMap;
+	}
+
+	validResults[1][2] = true;
+	validResults[1][3] = true;
+	validResults[1][5] = true;
+	validResults[2][3] = true;
+	validResults[11][11] = true;
+	validResults[11][12] = true;
+	validResults[11][13] = true;
+	validResults[19][22] = true;
+	validResults[21][19] = true;
+	validResults[21][22] = true;
+	validResults[25][26] = true;
+	validResults[26][26] = true;
+	validResults[26][27] = true;
+	validResults[25][27] = true;
+
 	// IsAffectsT
+
+	ofstream testFile;
+	testFile.open("results.txt");
+	for (int affecting = 1; affecting <= noOfStmts; affecting++) {
+		for (int affected = 1; affected <= noOfStmts; affected++) {
+			if (!excluded[affecting] && !excluded[affected]) {
+				//testFile << affecting << " " << affected << " " << validResults[affecting][affected] << " " << Affects::IsAffectsT(affecting, affected) << "\n";
+				CPPUNIT_ASSERT_EQUAL(validResults[affecting][affected], Affects::IsAffectsT(affecting, affected));
+			}
+		}
+	}
+	testFile.close();
 
 	// GetStmtsAffectedTBy
 
+	// reinitialise
+	excluded = blankMap;
+
+	for (int affecting = 1; affecting <= noOfStmts; affecting++) {
+		if (!excluded[affecting]) {
+			vector<int> results = Affects::GetStmtsAffectedTBy(affecting);
+			for (int affected = 1; affected <= noOfStmts; affected++) {
+				CPPUNIT_ASSERT_EQUAL(validResults[affecting][affected], IsStmtIn(affected, results));
+			}
+		}
+	}
+
 	// GetStmtsAffectingT
+
+	excluded = blankMap;
+
+	for (int affected = 1; affected <= noOfStmts; affected++) {
+		if (!excluded[affected]) {
+			vector<int> results = Affects::GetStmtsAffectingT(affected);
+			for (int affecting = 1; affecting <= noOfStmts; affecting++) {
+				CPPUNIT_ASSERT_EQUAL(validResults[affecting][affected], IsStmtIn(affecting, results));
+			}
+		}
+	}
 }

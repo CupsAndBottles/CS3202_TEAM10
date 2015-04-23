@@ -35,7 +35,7 @@ procedure ifInWhile {
 		if ifCond then {				\\ 20
 			thenBranch = outsideIf;		\\ 21
 		} else {
-			elseBranch = outsideIf;		\\ 22
+			elseBranch = outsideIf + elseBranch;		\\ 22
 		}
 		thenBranch = elseBranch;		\\ 23
 		outsideIf = thenBranch;			\\ 24

@@ -5,6 +5,7 @@
 #include "Program\Program.h"
 #include "Parser\Parser.h"
 #include "PKB\Modifies.h"
+#include "PKB\Affects.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ void main() {
 
 	Parser::Parse("Source.txt");
 
-	vector<int> varsModified = Modifies::GetVarModifiedByStmt(4);
+	Affects::IsAffectsT(1, 5);
 }
 
 

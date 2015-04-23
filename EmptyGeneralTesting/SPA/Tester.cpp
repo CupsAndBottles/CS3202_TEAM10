@@ -14,7 +14,7 @@ void main() {
 
 	Parser::Parse("Source.txt");
 
-	Affects::IsAffectsT(1, 5);
+	Affects::GetStmtsAffectingT(5);
 }
 
 

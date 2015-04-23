@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <set>
+#include <ctime>
 
 Affects::Affects(void) {
 }
@@ -673,6 +674,7 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 		repeat for every var
 		add stmts to result, recurse for every stmt.
 	*/
+
 	class StmtsHelper {
 		vector<bool> mappedAffects;
 		int startStmt;
@@ -732,9 +734,7 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 						prevStmts = Next::GetNextBefore(currentStmt);
 					} else if (StmtTypeTable::CheckIfStmtOfType(currentStmt, SynonymType::CALL)) {
 						// if call modifies var, break
-						if (Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), varUsed)) {
-							continue;
-						} else {
+						if (!Modifies::IsProcModifyingVar(ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currentStmt).GetContent()), varUsed)) {
 							prevStmts = Next::GetNextBefore(currentStmt);
 						}
 					} else {

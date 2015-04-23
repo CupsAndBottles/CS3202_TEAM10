@@ -314,17 +314,13 @@ void ParserToPKBTest2::TestAffectsT() {
 
 	// IsAffectsT
 
-	ofstream testFile;
-	testFile.open("results.txt");
 	for (int affecting = 1; affecting <= noOfStmts; affecting++) {
 		for (int affected = 1; affected <= noOfStmts; affected++) {
 			if (!excluded[affecting] && !excluded[affected]) {
-				//testFile << affecting << " " << affected << " " << validResults[affecting][affected] << " " << Affects::IsAffectsT(affecting, affected) << "\n";
 				CPPUNIT_ASSERT_EQUAL(validResults[affecting][affected], Affects::IsAffectsT(affecting, affected));
 			}
 		}
 	}
-	testFile.close();
 
 	// GetStmtsAffectedTBy
 

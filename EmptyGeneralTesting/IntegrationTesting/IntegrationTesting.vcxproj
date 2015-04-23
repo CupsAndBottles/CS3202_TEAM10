@@ -98,6 +98,7 @@
     <ClCompile Include="ParserToPKBTest.cpp" />
     <ClCompile Include="ParserToPKBTest2.cpp" />
     <ClCompile Include="QueryEvaluatorToPKBPatternTest.cpp" />
+    <ClCompile Include="QueryEvaluatorToPKBTest.cpp" />
     <ClCompile Include="UltimateTest.cpp" />
     <ClCompile Include="UltimateTest2.cpp" />
   </ItemGroup>
@@ -111,6 +112,7 @@
     <ClInclude Include="ParserToPKBTest.h" />
     <ClInclude Include="ParserToPKBTest2.h" />
     <ClInclude Include="QueryEvaluatorToPKBPatternTest.h" />
+    <ClInclude Include="QueryEvaluatorToPKBTest.h" />
     <ClInclude Include="UltimateTest.h" />
     <ClInclude Include="UltimateTest2.h" />
   </ItemGroup>

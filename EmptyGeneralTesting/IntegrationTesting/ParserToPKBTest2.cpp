@@ -224,9 +224,9 @@ void ParserToPKBTest2::TestAffects(){
 	validResults[26][26] = true;
 	validResults[26][27] = true;
 
-	excluded[22] = true;
-	excluded[27] = true;
-	excluded[28] = true;
+	//excluded[22] = true;
+	//excluded[27] = true;
+	//excluded[28] = true;
 
 	for (int affecting = 1; affecting <= noOfStmts; affecting++) {
 		for (int affected = 1; affected <= noOfStmts; affected++) {
@@ -258,22 +258,25 @@ void ParserToPKBTest2::TestAffects(){
 
 	for (int affected = 1; affected <= noOfStmts; affected++) {
 		if (!excluded[affected]) {
+			//cout << "\nGet stmts affecting: " << affected;
 			vector<int> results = Affects::GetStmtsAffecting(affected);
 			for (int affecting = 1; affecting <= noOfStmts; affecting++) {
 				//testFile << affecting << " " << affected << " " << validResults[affecting][affected] << " " << IsStmtIn(affecting, results) << "\n";
+				//cout << "\n" << affecting << " " << affected << " " << validResults[affecting][affected] << " " << IsStmtIn(affecting, results);
+				
 				// false negative
-				if (affecting == 11 && affected == 11) continue;
-				if (affecting == 11 && affected == 13) continue;
-				if (affecting == 19 && affected == 22) continue;
-				if (affecting == 21 && affected == 19) continue;
-				if (affecting == 25 && affected == 26) continue;
-				if (affecting == 26 && affected == 26) continue;
-				if (affecting == 26 && affected == 27) continue;
+				//if (affecting == 11 && affected == 11) continue;
+				//if (affecting == 11 && affected == 13) continue;
+				//if (affecting == 19 && affected == 22) continue;
+				//if (affecting == 21 && affected == 19) continue;
+				//if (affecting == 25 && affected == 26) continue;
+				//if (affecting == 26 && affected == 26) continue;
+				//if (affecting == 26 && affected == 27) continue;
 
 				// false positive
-				if (affecting == 2 && affected == 5) continue;
-				if (affecting == 2 && affected == 7) continue;
-				if (affecting == 2 && affected == 9) continue;
+				//if (affecting == 2 && affected == 5) continue;
+				//if (affecting == 2 && affected == 7) continue;
+				//if (affecting == 2 && affected == 9) continue;
 
 				CPPUNIT_ASSERT_EQUAL(validResults[affecting][affected], IsStmtIn(affecting, results));
 			}

@@ -30,7 +30,7 @@ procedure raichu {
 
 	\\ some if
 	ss = 1;					\\ 19
-	if  then {				\\ 20
+	if j then {				\\ 20
 		tt = ss;			\\ 21
 	} else {
 		haha = tt;			\\ 22

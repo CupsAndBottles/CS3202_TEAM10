@@ -1,0 +1,61 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>18.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows, Typed, ImplStmtLine :: Which statement is followed by statement in line 7">1</id><querystr><![CDATA[assign a; Select a such that Follows(a, 7)]]></querystr>
+<stuans>6</stuans>
+<correct>6</correct>
+<time_taken>175.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows, Typed, ImplStmtLine :: Which assign statement follows statement in line 3">2</id><querystr><![CDATA[assign a; Select a such that Follows(3, a)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>153.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows, Typed, ImplStmtLine :: Which statement follows statement in line 4">3</id><querystr><![CDATA[stmt s; Select s such that Follows(4, s)]]></querystr>
+<stuans>5</stuans>
+<correct>5</correct>
+<time_taken>363.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnBoolean="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows, Boolean :: Is Follows(6, 7) true">4</id><querystr><![CDATA[ Select BOOLEAN such that Follows(6, 7)]]></querystr>
+<stuans></stuans>
+<correct>true</correct>
+<time_taken>75.000000</time_taken>
+<failed>
+<missing>true</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnBoolean="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows, Boolean :: Is Follows(5, 6) true">5</id><querystr><![CDATA[ Select BOOLEAN such that Follows(5, 6)]]></querystr>
+<stuans></stuans>
+<correct>false</correct>
+<time_taken>49.000000</time_taken>
+<failed>
+<missing>false</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+</queries>
+</test_results>

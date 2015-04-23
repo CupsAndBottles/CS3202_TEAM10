@@ -1966,3 +1966,42 @@ void UltimateTest::TestAnd() {
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 }
+
+void UltimateTest::TestTuple()
+{
+	QueryData qd;
+	QueryPreProcessor qv;
+	QueryEvaluator qe;
+	std::string query; 
+	std::list<std::string> resultList;
+	std::list<std::string> actualResultList;
+
+	qd.ClearData();
+
+	query = "assign a; while w; variable v;Select <a,w,v> such that Parent(11,a) and Uses(a, v) and Parent(w,a)";
+	cout << "Testing query: " << query << "\n";
+
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+
+	qe.PrintIntermediateResult();
+
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
+
+
+	/*actualResultList.push_back("12 a");
+	actualResultList.push_back("12 x");
+	actualResultList.push_back("13 newVar");
+	actualResultList.push_back("14 z");*/
+	actualResultList.push_back("12 11 a");
+	actualResultList.push_back("12 11 x");
+	actualResultList.push_back("13 11 newVar");
+	actualResultList.push_back("14 11 z");
+	actualResultList.sort();
+	resultList.sort();
+
+	CPPUNIT_ASSERT(resultList == actualResultList);
+	
+
+
+}

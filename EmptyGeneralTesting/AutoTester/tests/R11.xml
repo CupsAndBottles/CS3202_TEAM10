@@ -1,0 +1,49 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>24.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Pattern ::">1</id><querystr><![CDATA[assign a; while w; Select a pattern a ("b", _)]]></querystr>
+<stuans>2</stuans>
+<correct>2</correct>
+<time_taken>133.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Pattern ::">2</id><querystr><![CDATA[assign a; while w; Select a pattern a ("lacie", _)]]></querystr>
+<stuans>8</stuans>
+<correct>8</correct>
+<time_taken>180.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Pattern ::">3</id><querystr><![CDATA[assign a; while w; Select a such that Follows (a, w) pattern a ("d",_)]]></querystr>
+<stuans>6</stuans>
+<correct>6</correct>
+<time_taken>369.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="Pattern ::">4</id><querystr><![CDATA[assign a; while w; Select a pattern a (_ , _)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Pattern ::">5</id><querystr><![CDATA[assign a; while w; Select a pattern a ("f" , _"lacie"_)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Pattern ::">6</id><querystr><![CDATA[assign a; while w; Select a pattern a ("d", _"d+2"_)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Pattern ::">6</id><querystr><![CDATA[assign a; while w; Select a pattern a ("d", _)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="Pattern ::">7</id><querystr><![CDATA[assign a; while w; Select a pattern a (_, _"d"_)]]></querystr>
+<exception/>
+</query>
+</queries>
+</test_results>

@@ -1,0 +1,84 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>47.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Modifies="5" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="9" RelNum="6" comment="ModifiesAssignment::Parent to limit the result">1</id><querystr><![CDATA[call c; assign a; while w; if i; stmt s; Select <a, c, i> such that Modifies (a, "delta") and Modifies (w, "x") and Modifies(c, "bravo") and Modifies(s, _) and Modifies(i, "b4") and Parent*(84, i)]]></querystr>
+<stuans></stuans>
+<correct>51 11 85,51 11 87,51 32 85,51 32 87,51 38 85,51 38 87,51 43 85,51 43 87,51 100 85,51 100 87,51 101 85,51 101 87</correct>
+<time_taken>1387.000000</time_taken>
+<failed>
+<missing>51 100 85,51 100 87,51 101 85,51 101 87,51 11 85,51 11 87,51 32 85,51 32 87,51 38 85,51 38 87,51 43 85,51 43 87</missing>
+<additional></additional>
+<summary>
+<expected>12</expected>
+<matched>0</matched>
+<missing>12</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Modifies="2" SuchThat="1" CondNum="4" RelNum="2" comment="ModifiesProcedure::">2</id><querystr><![CDATA[procedure p, q; Select <p, q> such that Modifies (p, "apparentlyThisDoesNothing") and Modifies(q, "b")]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Uses="3" SuchThat="1" CondNum="5" RelNum="3" comment="UsesAssignment::">3</id><querystr><![CDATA[if i; assign a; Select <a, i> such that Uses(a,"a") and Uses (a, "y") and Uses (i, "yy")]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Uses="2" SuchThat="1" CondNum="4" RelNum="2" comment="UsesProcedure::">4</id><querystr><![CDATA[procedure p; call c; Select <p, c> such that Uses (p, "delta") and Uses(c, "delta")]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnBoolean="1" Calls="2" SuchThat="1" With="1" CondNum="5" RelNum="2" comment="Calls::">5</id><querystr><![CDATA[procedure p, q; Select BOOLEAN such that Calls(p, q) and Calls(q, "DizIzAVeryLongLongProcProcProcName") with q.procName = "B"]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Callsstar="2" UnnamedVar="1" SuchThat="1" With="1" CondNum="6" RelNum="2" comment="CallsStar::">6</id><querystr><![CDATA[procedure p, q; Select p such that Calls*(p, "DizIzAVeryLongLongProcProcProcName") and Calls*(_, q) with q.procName = "E"]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="3" SuchThat="1" With="1" CondNum="6" RelNum="3" comment="Parent::">7</id><querystr><![CDATA[stmt s1, s2, s3; assign a; Select s1 such that Parent(s1, s2) and Parent(s2, s3) and Parent(s3, a) with a.stmt# = 19]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" Parentstar="3" SuchThat="1" CondNum="6" RelNum="4" comment="ParentStar:: Select the 2nd level parent or more of a call statement">8</id><querystr><![CDATA[stmt s1, s2, s3, s4; call c; Select s1 such that Parent*(s1, s2) and Parent*(s3, s4) and Parent*(s4, s2) and Parent(s2, c)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="2" SuchThat="1" CondNum="4" RelNum="2" comment="Follows:: Find a while loop that is followed by at least 2 statements">9</id><querystr><![CDATA[while w; stmt s1, s2; Select w such that Follows(w, s1) and Follows(s1, s2)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Followsstar="2" SuchThat="1" CondNum="4" RelNum="2" comment="FollowsStar:: Find an ordering of stmt --> while --> if in a single level">10</id><querystr><![CDATA[while w; if i; stmt s; Select <w, i, s> such that Follows*(s, w) and Follows*(w, i)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Next="1" Parentstar="1" SuchThat="1" CondNum="4" RelNum="2" comment="Next::Find all if statement that is executed after a while statement, and is a parent of some other if">11</id><querystr><![CDATA[while w; if i, k; call c; Select i such that Next(w, i) and Parent*(i, k)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Nextstar="4" SuchThat="1" CondNum="6" RelNum="4" comment="NextStar::">12</id><querystr><![CDATA[while w1, w2; stmt s1, s2; call c; Select w1 such that Next*(w1, s1) and Next*(s1, w2) and Next*(w2, s2) and Next*(s2, c)]]></querystr>
+<stuans></stuans>
+<correct>4,9,12,17,22,29,33,39,48</correct>
+<time_taken>70.000000</time_taken>
+<failed>
+<missing>12,17,22,29,33,39,4,48,9</missing>
+<additional></additional>
+<summary>
+<expected>9</expected>
+<matched>0</matched>
+<missing>9</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Affects="4" SuchThat="1" CondNum="6" RelNum="4" comment="Affects:: not manually calculated">13</id><querystr><![CDATA[assign a1, a2, a3, a4; Select a1 such that Affects(a1, a2) and Affects(a2, a3) and Affects(a3, a4) and Affects(a4, a4)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Affectsstar="6" SuchThat="1" CondNum="8" RelNum="6" comment="AffectsStar:: not manually calculated">14</id><querystr><![CDATA[assign a1, a2, a3, a4; Select a1 such that Affects*(a1, 31) and Affects*(a2, 31) and Affects*(a2, 27) and Affects*(14, a4) and Affects*(a4, a2) and Affects*(a2, a1)]]></querystr>

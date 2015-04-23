@@ -1,0 +1,103 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>22.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Statement ::">1</id><querystr><![CDATA[stmt s; Select s]]></querystr>
+<stuans>1,2,3,4,5,6,7,8</stuans>
+<correct>1,2,3,4,5,6,7,8</correct>
+<time_taken>114.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Assignment ::">2</id><querystr><![CDATA[assign a; Select a]]></querystr>
+<stuans>1,3,4,6,8</stuans>
+<correct>1,3,4,6,8</correct>
+<time_taken>119.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="While ::">3</id><querystr><![CDATA[while w; Select w]]></querystr>
+<stuans>5</stuans>
+<correct>5</correct>
+<time_taken>101.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="If ::">4</id><querystr><![CDATA[if ifs; Select ifs]]></querystr>
+<stuans>2</stuans>
+<correct>2</correct>
+<time_taken>119.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Call ::">5</id><querystr><![CDATA[call c; Select c]]></querystr>
+<stuans>7</stuans>
+<correct>7</correct>
+<time_taken>97.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Procedure ::">6</id><querystr><![CDATA[procedure p; Select p]]></querystr>
+<stuans>A,B</stuans>
+<correct>A,B</correct>
+<time_taken>119.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Variable ::">7</id><querystr><![CDATA[variable v; Select v]]></querystr>
+<stuans>a,b,d,x</stuans>
+<correct>a,b,d,x</correct>
+<time_taken>109.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Constant ::">8</id><querystr><![CDATA[constant co; Select co]]></querystr>
+<stuans>10,3,5,7,8</stuans>
+<correct>3,5,7,8,10</correct>
+<time_taken>115.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" CondNum="2" RelNum="0" comment="ProgLine ::">9</id><querystr><![CDATA[prog_line n; Select n]]></querystr>
+<stuans>1,2,3,4,5,6,7,8</stuans>
+<correct>1,2,3,4,5,6,7,8</correct>
+<time_taken>133.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnBoolean="1" With="1" CondNum="2" RelNum="0" comment="Boolean ::">10</id><querystr><![CDATA[ Select BOOLEAN with 1=2]]></querystr>
+<stuans></stuans>
+<correct>false</correct>
+<time_taken>50.000000</time_taken>
+<failed>
+<missing>false</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnBoolean="1" With="1" CondNum="2" RelNum="0" comment="Boolean ::">11</id><querystr><![CDATA[ Select BOOLEAN with "abc" = "abc"]]></querystr>
+<stuans></stuans>
+<correct>true</correct>
+<time_taken>56.000000</time_taken>
+<failed>
+<missing>true</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+</queries>
+</test_results>

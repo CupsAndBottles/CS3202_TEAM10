@@ -1,0 +1,71 @@
+procedure Jin {
+	\\ Affecting yourself
+	while I {								\\ 1
+		I  = I + 1;							\\ 2
+		a = 1;								\\ 3
+	}
+
+	\\ Multiple Parents
+	while w {								\\ 4
+		a = 1;								\\ 5
+		while x {							\\ 6
+			b = 1;							\\ 7
+			while y {						\\ 8
+				c = 1;						\\ 9
+				while z {					\\ 10
+					d = 1;					\\ 11
+				}
+			}
+		}
+	}
+
+	\\ Multiple Follows
+	while a {								\\ 12
+		a = 1;								\\ 13
+	}
+	while b {								\\ 14
+		b = 1;								\\ 15
+	}
+	while c {								\\ 16
+		c = 1;								\\ 17
+	}
+	while d {								\\ 18
+		d = 1;								\\ 19
+	}
+	while e {								\\ 20
+		e = 1;								\\ 21
+	}
+
+	\\ Calls
+	while Kim {								\\ 22
+		call CheF;							\\ 23
+	}
+	call Zak;								\\ 24
+	if Jar then {							\\ 25
+		call Za;							\\ 26
+	} else {
+		call Bek;							\\ 27
+	}
+	call Zhao;								\\ 28
+
+}
+
+procedure CheF {
+	x = x;									\\ 29
+}
+
+procedure Zak {
+	y = y;									\\ 30
+}
+
+procedure Za {
+	z = z;									\\ 31
+}
+
+procedure Bek {
+	s = s;									\\ 32
+}
+
+procedure Zhao {
+	t = t;									\\ 33
+}

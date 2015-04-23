@@ -216,9 +216,10 @@ vector<int> Affects::TraverseDownCFG(int stmtAffecting, int varModified) {
 			case CALL: {
 				int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 
-				if (procCalled >= 0 && Uses::IsProcUsingVar(procCalled, varModified)) {
-					affectedStmts.push_back(currStmt);
-				}
+				// the next 3 lines are problematic
+				//if (procCalled >= 0 && Uses::IsProcUsingVar(procCalled, varModified)) {
+				//	affectedStmts.push_back(currStmt);
+				//}
 				
 				if (procCalled >= 0 && Modifies::IsProcModifyingVar(procCalled, varModified)) {
 					// don't check for anything after this stmt
@@ -319,7 +320,7 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 				vector<int>::iterator it = varsUsed.begin();
 				while (it != varsUsed.end()) {
 					if (varModified == *it) {
-						affectedStmts.push_back(currStmt);
+						//affectedStmts.push_back(currStmt); // this stmt is wrong
 						it = varsUsed.erase(it);
 					} else {
 						it++;
@@ -541,7 +542,7 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 
 	// TODO do error checking to check if stmts are in the same procedures.
 	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN) ||
-		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+		!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) return false;
 	// stmtAffecting is guaranteed to be assignment
 	StmtsHelper helper = StmtsHelper(stmtAffected);
 	return helper.findAffectedStmt(stmtAffecting);
@@ -657,7 +658,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 	};
 
 	// guarantee that stmt is assignment.
-	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffecting, SynonymType::ASSIGN)) return vector<int>();
 
 	StmtsHelper helper(stmtAffecting);
 	helper.findAffectedStmts(stmtAffecting);
@@ -760,7 +761,7 @@ vector<int> Affects::GetStmtsAffectingT(int stmtAffected) {
 	};
 
 	// guarantee that stmt is assignment.
-	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) throw (string) "stmt of wrong type";
+	if (!StmtTypeTable::CheckIfStmtOfType(stmtAffected, SynonymType::ASSIGN)) return vector<int>();
 
 	StmtsHelper helper(stmtAffected);
 	helper.findAffectingStmts(stmtAffected);

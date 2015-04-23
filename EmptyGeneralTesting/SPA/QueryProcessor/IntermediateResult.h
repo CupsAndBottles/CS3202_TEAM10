@@ -70,6 +70,7 @@ public:
 	bool Unlink(string synonym_1, string value_1, string synonym_2, string value_2, string skipSynonym = "");
 
 	bool HasLinkBetweenColumns(string synonym_1, string synonym_2);
+	bool HasLinkBetweenColumns(string synonym_1, string synonym_2, string skipSynonym);
 
 	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, int value_2_int, bool& IsDirectLink, string skipSynonym = "");
 	bool HasLinkBetweenColumns(string synonym_1, int value_1_int, string synonym_2, string value_2, bool& IsDirectLink, string skipSynonym = "");
@@ -78,6 +79,7 @@ public:
 	
 	bool HasDirectLinkToColumn(string synonym_1, int value_1_int, string synonym_2);
 	bool HasDirectLinkToColumn(string synonym_1, string value_1, string synonym_2);  //check whether value1 has link to synonym2
+	bool HasDirectLinkToColumn(string synonym_1, string synonym_2);
 
 	bool HasLink(string synonym_1, int value_1_int);
 	bool HasLink(string synonym_1, string value_1="");

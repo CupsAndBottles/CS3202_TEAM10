@@ -14,32 +14,20 @@
 #include "..\SPA\QueryProcessor\QueryPreProcessor.h"
 #include "..\SPA\QueryProcessor\QueryEvaluator.h"
 
-class QueryEvaluatorToPKBTest : public CPPUNIT_NS::TestFixture {
-	CPPUNIT_TEST_SUITE(QueryEvaluatorToPKBTest);
-	CPPUNIT_TEST(TestSelectAll);
-	CPPUNIT_TEST(TestParent);
-	CPPUNIT_TEST(TestParentT);
-	CPPUNIT_TEST(TestFollows);
-	CPPUNIT_TEST(TestUses);
-	CPPUNIT_TEST(TestModifies);
-	CPPUNIT_TEST(TestPattern);
-	CPPUNIT_TEST(TestSuchThatPattern);
+class UltimateWithAndTest : public CPPUNIT_NS::TestFixture {
+	CPPUNIT_TEST_SUITE(UltimateWithAndTest);
+	//CPPUNIT_TEST(WithAndTest1);				has affects
+	//CPPUNIT_TEST(WithAndTest2);				has affects
+	//CPPUNIT_TEST(WithAndTest3);				mostly alr covered in ultimateTest.cpp
+	CPPUNIT_TEST(WithAndTest4);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
 	void setUp();
 	void tearDown();
 
-	void TestSelectAll();
-	void TestParent();
-	void TestParentT();
-	void TestFollows();
-	void TestFollowsT();
-	void TestModifies();
-	void TestUses();
-
-	void TestPattern();
-
-	void TestSuchThatPattern();
+	void WithAndTest1();
+	void WithAndTest2();
+	void WithAndTest3();
+	void WithAndTest4();
 };
-

@@ -31,7 +31,7 @@ void IntermediateResult::Insert(string synonym , int value)
 		}
 	}
 	
-	std::cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_INT \n";
+	cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_INT \n";
 
 	return;
 }
@@ -47,7 +47,7 @@ void IntermediateResult::Insert(string synonym , string value)
 		}
 	}
 
-	std::cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_STR \n";
+	cout << "In IntermediateResult::InsertElement, " << synonym << " " << value << " not found in synonymList_STR \n";
 
 	return;
 }
@@ -486,6 +486,55 @@ bool IntermediateResult::HasLinkBetweenColumns(string synonym_1, string value_1,
 }
 
 
+bool IntermediateResult::HasLinkBetweenColumns(string synonym_1, string synonym_2, string skipSynonym)
+{
+	if(synonym_1 == synonym_2)	return false;
+
+	for(it_synonymList it = synonymList.begin(); it != synonymList.end(); ++it)
+	{
+		//synonym_1 matched
+		if(it->first == synonym_1)
+		{
+			for(vector<Element>::iterator it_elements = it->second.begin(); it_elements != it->second.end(); ++it_elements)
+			{
+				links_iterator it_synonym2_found = it_elements->links.find(synonym_2);
+
+				//synonym_2 found
+				if(it_synonym2_found != it_elements->links.end())
+				{
+					return true;
+				}
+
+				//synonym_2 doesnt exist
+				else
+				{
+					for(links_iterator it_links = it_elements->links.begin(); it_links != it_elements->links.end(); ++ it_links)
+					{
+						if(it_links->first != skipSynonym)
+						{
+							string skipSynonym = synonym_1;
+
+							//cout << "checking haslink " << it_links->first << " " << *it_link_value << " " << synonym_2 << " " << value_2;
+							//cout << " , skipping " << skipSynonym << "\n";
+								
+							if(HasLinkBetweenColumns(it_links->first , synonym_2, skipSynonym))
+							{
+								return true;
+							}
+
+							else return false;
+						}
+					}
+		
+					return false;
+				}	
+			}
+		}
+	}
+
+	return false;
+}
+
 
 bool IntermediateResult::HasDirectLinkToColumn(string synonym_1, int value_1_int, string synonym_2)
 {
@@ -533,7 +582,36 @@ bool IntermediateResult::HasDirectLinkToColumn(string synonym_1, string value_1,
 	return false;
 }
 
+bool IntermediateResult::HasDirectLinkToColumn(string synonym_1, string synonym_2)
+{
+	if(synonym_1 == synonym_2)	return false;
 
+	for(it_synonymList it = synonymList.begin(); it != synonymList.end(); ++it)
+	{
+		//synonym_1 matched
+		if(it->first == synonym_1)
+		{
+			for(vector<Element>::iterator it_elements = it->second.begin(); it_elements != it->second.end(); ++it_elements)
+			{
+				links_iterator it_synonym2_found = it_elements->links.find(synonym_2);
+
+				//synonym_2 found
+				if(it_synonym2_found != it_elements->links.end())
+				{
+					return true;
+				}
+
+				//synonym_2 doesnt exist
+				else
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	return false;
+}
 
 bool IntermediateResult::HasLink(string synonym_1, int value_1_int)
 {
@@ -913,7 +991,7 @@ void IntermediateResult::GetList(std::string synonym, std::vector<int>& list)
 		}
 	}
 
-	std::cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList_INT\n";
+	cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList_INT\n";
 
 	return;
 }
@@ -935,7 +1013,7 @@ void IntermediateResult::GetList(std::string synonym, std::vector<std::string>& 
 		}
 	}
 
-	std::cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList\n";
+	cout << "In IntermediateResult::GetList, " << synonym << " not found in synonymList\n";
 
 	return;
 }
@@ -955,7 +1033,7 @@ bool IntermediateResult::IsListEmpty(Synonym synonym)
 	}
 	
 
-	std::cout << "In IntermediateResult::IsListEmpty, " << synonym.value << " not found in both synonymList\n";
+	cout << "In IntermediateResult::IsListEmpty, " << synonym.value << " not found in both synonymList\n";
 
 	return empty;
 }
@@ -975,7 +1053,7 @@ void IntermediateResult::Print()
 	}
 
 
-	std::cout << "\n";
+	cout << "\n";
 	
 	for(it_synonymList it = synonymList.begin(); it != synonymList.end(); ++it)
 	{
@@ -1039,116 +1117,242 @@ void IntermediateResult::GetResultSingle(string synonym , list<string>& result)
 }
 
 
-void IntermediateResult::GetResultTuple(vector<string> synonym , list<string>& result)
+void IntermediateResult::GetResultTuple(vector<string> synonym , list<string>& resultList)
 {
-	//select <a,w,v,p>
-	//if haslink, there must be a way for any synonym to reach any synonym
-	// get the first syn, 
-	//	for each element of first syn
-	//	check a-w, a-v, a-p, return a vector of result for that element
-	//
+	if(synonym.empty()) return;
 
-	//map<Element , vector<Element>> will be the result
-	/*
+	bool isAllLinked = true;
 
-	vector<string> independentSyn , nonIndependentSyn;
-	//check for independent column
-	for(int i=0; i < synonym.size(); ++i)
+	for(int i=0; i < synonym.size() - 1; ++i)
 	{
-		if(!HasLink(synonym[i]))
-			independentSyn.push_back(synonym[i]);
-
-		else nonIndependentSyn.push_back(synonym[i]);
-	}
-
-	//for each non nonIndependentSyn
-
-	for(int i=0; i < nonIndependentSyn.size(); ++i)
-	{
-
-
-
-
-
-	}
-
-
-
-
-
-
-
-
-	for(it_synonymList it = synonymList.begin(); it != synonymList.end(); ++it)
-	{
-		//synonym_1 matched
-		if(it->first == synonym_1)
+		if(!HasLinkBetweenColumns(synonym[i] , synonym[i+1] , ""))
 		{
-			for(vector<Element>::iterator it_elements = it->second.begin(); it_elements != it->second.end(); ++it_elements)
+			cout << "There is no link between column " << synonym[i] << " and " << synonym[i+1] << "\n";
+			isAllLinked = false;
+			break;
+		}
+	}
+	 
+	if(isAllLinked)
+	{
+		if(synonym.size() == 2)
+		{
+			list<string> first;
+			GetResultSingle(synonym[0] , first);
+			vector<string> firstVec(first.begin(), first.end());
+
+			list<string> second;
+			GetResultSingle(synonym[1] , second);
+			vector<string> secondVec(second.begin() , second.end());
+			string firstSyn = synonym[0];
+			string secondSyn = synonym[1];
+
+			for(int i=0; i < firstVec.size(); i++) 
 			{
-				//value_1 matched
-				if(it_elements->value == value_1)
+				string firstSynElement = firstVec[i];
+
+				for(int j=0; j < secondVec.size(); ++j)
 				{
-					links_iterator it_synonym2_found = it_elements->links.find(synonym_2);
+					string secondSynElement = secondVec[j];
 
-					//synonym_2 found
-					if(it_synonym2_found != it_elements->links.end())
+					bool dummy;
+					if(HasLinkBetweenColumns(firstSyn , firstSynElement, secondSyn, secondSynElement, dummy))
 					{
-						std::vector<string>::iterator it_value2_found = find(it_synonym2_found->second.begin() , it_synonym2_found->second.end() , value_2);
+						cout << "There is a link between " << firstSyn << " " << firstSynElement;
+						cout << " and " << secondSyn << " " << secondSynElement << "\n";
 
-						//value_2 found
-						if(it_value2_found != it_synonym2_found->second.end())
-						{
-							isDirectLink = true;
-							return true;
-						}
-
-						//value_2 doesnt exist
-						else
-						{
-							return false;
-						}
+						resultList.push_back(string(firstSynElement + " " + secondSynElement));
 					}
 
-					//synonym_2 doesnt exist
 					else
 					{
-						//for each link synonym, for each element, call HasLink(dont check current Synonym)
-						//if it return true, set isdirectlink to false
-						//return true
-						bool dummy;
-						for(links_iterator it_links = it_elements->links.begin(); it_links != it_elements->links.end(); ++ it_links)
-						{
-							if(it_links->first != skipSynonym)
-							{
-								for(vector<string>::iterator it_link_value = it_links->second.begin(); it_link_value != it_links->second.end(); ++it_link_value)
-								{
-									string skipSynonym = synonym_1;
-
-									cout << "checking haslink " << it_links->first << " " << *it_link_value << " " << synonym_2 << " " << value_2;
-									cout << " , skipping " << skipSynonym << "\n";
-								
-									if(HasLinkBetweenColumns(it_links->first , *it_link_value , synonym_2, value_2 , dummy , skipSynonym))
-									{
-										isDirectLink = false;
-										return true;
-									}
-								}
-							}
-						}
-		
-						return false;
+						cout << "There is no link between " << firstSyn << " " << firstSynElement;
+						cout << " and " << secondSyn << " " << secondSynElement << "\n";
 					}
 				}
 			}
 		}
+
+		else if(synonym.size() == 3)
+		{
+			list<string> first;
+			GetResultSingle(synonym[0] , first);
+			vector<string> firstVec(first.begin(), first.end());
+
+			list<string> second;
+			GetResultSingle(synonym[1] , second);
+			vector<string> secondVec(second.begin() , second.end());
+
+			list<string> third;
+			GetResultSingle(synonym[2] , third);
+			vector<string> thirdVec(third.begin() , third.end());
+
+			string firstSyn = synonym[0];
+			string secondSyn = synonym[1];
+			string thirdSyn = synonym[2];
+
+			cout << firstSyn << " " << secondSyn << " " << thirdSyn << "\n";
+
+			if(HasDirectLinkToColumn(firstSyn , secondSyn) && HasDirectLinkToColumn(firstSyn , thirdSyn))
+			{
+				cout << "HERE1\n";
+				for(int i=0; i < secondVec.size(); i++) 
+				{
+					string secondSynElement = secondVec[i];
+
+					for(int j=0; j < firstVec.size(); ++j)
+					{
+						string firstSynElement = firstVec[j];
+
+						bool dummy;
+						if(HasLinkBetweenColumns(firstSyn , firstSynElement, secondSyn, secondSynElement, dummy))
+						{
+							//cout << "There is a link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+
+							for(int k=0; k < thirdVec.size(); ++k)
+							{
+								string thirdSynElement = thirdVec[k];
+
+								if(HasLinkBetweenColumns(firstSyn , firstSynElement, thirdSyn, thirdSynElement, dummy))
+								{
+									//cout << "There is a link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+
+									resultList.push_back(string(firstSynElement + " " + secondSynElement + " " + thirdSynElement));
+								}	
+
+								else
+								{
+									//cout << "There is no link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+								}
+							}
+						}
+
+						else
+						{
+							//cout << "There is no link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+						}
+					}
+				}
+			}
+
+			else if(HasDirectLinkToColumn(secondSyn , firstSyn) && HasDirectLinkToColumn(secondSyn , thirdSyn))
+			{
+				cout << "HERE2\n";
+				for(int i=0; i < firstVec.size(); i++) 
+				{
+					string firstSynElement = firstVec[i];
+
+					for(int j=0; j < secondVec.size(); ++j)
+					{
+						string secondSynElement = secondVec[j];
+
+						bool dummy;
+						if(HasLinkBetweenColumns(firstSyn , firstSynElement, secondSyn, secondSynElement, dummy))
+						{
+							//cout << "There is a link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+
+							for(int k=0; k < thirdVec.size(); ++k)
+							{
+								string thirdSynElement = thirdVec[k];
+
+								if(HasLinkBetweenColumns(secondSyn , secondSynElement, thirdSyn, thirdSynElement, dummy))
+								{
+									//cout << "There is a link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+
+									resultList.push_back(string(firstSynElement + " " + secondSynElement + " " + thirdSynElement));
+								}	
+
+								else
+								{
+									//cout << "There is no link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+								}
+							}
+						}
+
+						else
+						{
+							//cout << "There is no link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+						}
+					}
+				}
+			}
+			
+			else if(HasDirectLinkToColumn(thirdSyn , firstSyn) && HasDirectLinkToColumn(thirdSyn , secondSyn))
+			{
+				cout << "HERE3\n";
+				for(int i=0; i < firstVec.size(); i++) 
+				{
+					string firstSynElement = firstVec[i];
+
+					for(int j=0; j < thirdVec.size(); ++j)
+					{
+						string thirdSynElement = thirdVec[j];
+
+						bool dummy;
+						if(HasLinkBetweenColumns(firstSyn , firstSynElement, thirdSyn, thirdSynElement, dummy))
+						{
+							//cout << "There is a link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+
+							for(int k=0; k < secondVec.size(); ++k)
+							{
+								string secondSynElement = secondVec[k];
+
+								if(HasLinkBetweenColumns(secondSyn , secondSynElement, thirdSyn, thirdSynElement, dummy))
+								{
+									//cout << "There is a link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+
+									resultList.push_back(string(firstSynElement + " " + secondSynElement + " " + thirdSynElement));
+								}	
+
+								else
+								{
+									//cout << "There is no link between " << secondSyn << " " << secondSynElement;
+									//cout << " and " << thirdSyn << " " << thirdSynElement << "\n";
+								}
+							}
+						}
+
+						else
+						{
+							//cout << "There is no link between " << firstSyn << " " << firstSynElement;
+							//cout << " and " << secondSyn << " " << secondSynElement << "\n";
+						}
+					}
+				}
+
+			}
+
+
+
+
+			
+		}
+
+		else if(synonym.size() == 4)
+		{
+
+
+		}
 	}
 
+	else {}
 
-
-
-	*/
-
+	cout << "\n";
+	for(list<string>::iterator it = resultList.begin(); it != resultList.end(); ++it)
+	{
+		cout << *it << "\n";		
+	}
+	cout << "\n";
 
 }
 

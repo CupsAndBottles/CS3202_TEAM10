@@ -11,9 +11,9 @@ class QueryPreProcessorTest : public CPPUNIT_NS::TestFixture
 	//CPPUNIT_TEST( ClauseValidationTest );
 	//CPPUNIT_TEST( TokenizeTest );
 	CPPUNIT_TEST( ActualValidationTest );
-	//CPPUNIT_TEST(ValidateWithTest);
-	//CPPUNIT_TEST(ValidateRelationshipTest);
-	//CPPUNIT_TEST(ValidatePatternTest);
+	CPPUNIT_TEST(ValidateWithTest);
+	CPPUNIT_TEST(ValidateRelationshipTest);
+	CPPUNIT_TEST(ValidatePatternTest);
 	//CPPUNIT_TEST(TokenizeExpressionTest);
 	//CPPUNIT_TEST(IsValidExpressionTest);
 	CPPUNIT_TEST(IsExpressionTest);

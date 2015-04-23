@@ -16,9 +16,9 @@
 
 class UltimateWithAndTest : public CPPUNIT_NS::TestFixture {
 	CPPUNIT_TEST_SUITE(UltimateWithAndTest);
-	//CPPUNIT_TEST(WithAndTest1);
-	//CPPUNIT_TEST(WithAndTest2);
-	//CPPUNIT_TEST(WithAndTest3);
+	CPPUNIT_TEST(WithAndTest1);
+	CPPUNIT_TEST(WithAndTest2);
+	CPPUNIT_TEST(WithAndTest3);
 	CPPUNIT_TEST(WithAndTest4);
 	CPPUNIT_TEST_SUITE_END();
 

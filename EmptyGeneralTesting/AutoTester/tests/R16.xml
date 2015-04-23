@@ -1,0 +1,56 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>26.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Callsstar="1" Modifies="1" SuchThat="1" CondNum="4" RelNum="2" comment="multiple, tuple ::">1</id><querystr><![CDATA[procedure p1, p2; stmt s1, s2; Select <p1, p2> such that Calls*(p1, p2) and Modifies(p1, "idx")]]></querystr>
+<stuans></stuans>
+<correct>Fern Orchid</correct>
+<time_taken>341.000000</time_taken>
+<failed>
+<missing>Fern Orchid</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" Modifies="1" SuchThat="1" CondNum="4" RelNum="2" comment="multiple, tuple ::">2</id><querystr><![CDATA[procedure p1, p2; variable v; Select <p1, p2> such that Calls (p1, p2) and Modifies (p1, v)]]></querystr>
+<stuans></stuans>
+<correct>Fern Tulip,Fern Lily,Fern Orchid,Orchid Tulip</correct>
+<time_taken>788.000000</time_taken>
+<failed>
+<missing>Fern Lily,Fern Orchid,Fern Tulip,Orchid Tulip</missing>
+<additional></additional>
+<summary>
+<expected>4</expected>
+<matched>0</matched>
+<missing>4</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" Modifies="1" SuchThat="1" CondNum="4" RelNum="2" comment="multiple, tuple ::">3</id><querystr><![CDATA[procedure p1, p2; stmt s1, s2; variable v; Select <p1, p2, s1, v> such that Calls (p1, p2) and Modifies (s1, v)]]></querystr>
+<stuans></stuans>
+<correct>Fern Tulip 1 y,Fern Lily 1 y,Fern Orchid 1 y,Orchid Tulip 1 y,Fern Tulip 2 x,Fern Lily 2 x,Fern Orchid 2 x,Orchid Tulip 2 x,Fern Tulip 3 z,Fern Lily 3 z,Fern Orchid 3 z,Orchid Tulip 3 z,Fern Tulip 4 v,Fern Lily 4 v,Fern Orchid 4 v,Orchid Tulip 4 v,Fern Tulip 6 v,Fern Lily 6 v,Fern Orchid 6 v,Orchid Tulip 6 v,Fern Tulip 8 t,Fern Lily 8 t,Fern Orchid 8 t,Orchid Tulip 8 t,Fern Tulip 10 t,Fern Lily 10 t,Fern Orchid 10 t,Orchid Tulip 10 t,Fern Tulip 12 z,Fern Lily 12 z,Fern Orchid 12 z,Orchid Tulip 12 z,Fern Tulip 13 idx,Fern Lily 13 idx,Fern Orchid 13 idx,Orchid Tulip 13 idx,Fern Tulip 14 x,Fern Lily 14 x,Fern Orchid 14 x,Orchid Tulip 14 x,Fern Tulip 16 idx,Fern Lily 16 idx,Fern Orchid 16 idx,Orchid Tulip 16 idx,Fern Tulip 17 x,Fern Lily 17 x,Fern Orchid 17 x,Orchid Tulip 17 x,Fern Tulip 20 y,Fern Lily 20 y,Fern Orchid 20 y,Orchid Tulip 20 y,Fern Tulip 22 idx,Fern Lily 22 idx,Fern Orchid 22 idx,Orchid Tulip 22 idx,Fern Tulip 23 z,Fern Lily 23 z,Fern Orchid 23 z,Orchid Tulip 23 z,Fern Tulip 25 y,Fern Lily 25 y,Fern Orchid 25 y,Orchid Tulip 25 y,Fern Tulip 26 x,Fern Lily 26 x,Fern Orchid 26 x,Orchid Tulip 26 x,Fern Tulip 29 x,Fern Lily 29 x,Fern Orchid 29 x,Orchid Tulip 29 x,Fern Tulip 30 y,Fern Lily 30 y,Fern Orchid 30 y,Orchid Tulip 30 y</correct>
+<time_taken>2315.000000</time_taken>
+<failed>
+<missing>Fern Lily 1 y,Fern Lily 10 t,Fern Lily 12 z,Fern Lily 13 idx,Fern Lily 14 x,Fern Lily 16 idx,Fern Lily 17 x,Fern Lily 2 x,Fern Lily 20 y,Fern Lily 22 idx,Fern Lily 23 z,Fern Lily 25 y,Fern Lily 26 x,Fern Lily 29 x,Fern Lily 3 z,Fern Lily 30 y,Fern Lily 4 v,Fern Lily 6 v,Fern Lily 8 t,Fern Orchid 1 y,Fern Orchid 10 t,Fern Orchid 12 z,Fern Orchid 13 idx,Fern Orchid 14 x,Fern Orchid 16 idx,Fern Orchid 17 x,Fern Orchid 2 x,Fern Orchid 20 y,Fern Orchid 22 idx,Fern Orchid 23 z,Fern Orchid 25 y,Fern Orchid 26 x,Fern Orchid 29 x,Fern Orchid 3 z,Fern Orchid 30 y,Fern Orchid 4 v,Fern Orchid 6 v,Fern Orchid 8 t,Fern Tulip 1 y,Fern Tulip 10 t,Fern Tulip 12 z,Fern Tulip 13 idx,Fern Tulip 14 x,Fern Tulip 16 idx,Fern Tulip 17 x,Fern Tulip 2 x,Fern Tulip 20 y,Fern Tulip 22 idx,Fern Tulip 23 z,Fern Tulip 25 y,Fern Tulip 26 x,Fern Tulip 29 x,Fern Tulip 3 z,Fern Tulip 30 y,Fern Tulip 4 v,Fern Tulip 6 v,Fern Tulip 8 t,Orchid Tulip 1 y,Orchid Tulip 10 t,Orchid Tulip 12 z,Orchid Tulip 13 idx,Orchid Tulip 14 x,Orchid Tulip 16 idx,Orchid Tulip 17 x,Orchid Tulip 2 x,Orchid Tulip 20 y,Orchid Tulip 22 idx,Orchid Tulip 23 z,Orchid Tulip 25 y,Orchid Tulip 26 x,Orchid Tulip 29 x,Orchid Tulip 3 z,Orchid Tulip 30 y,Orchid Tulip 4 v,Orchid Tulip 6 v,Orchid Tulip 8 t</missing>
+<additional></additional>
+<summary>
+<expected>76</expected>
+<matched>0</matched>
+<missing>76</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+</queries>
+</test_results>

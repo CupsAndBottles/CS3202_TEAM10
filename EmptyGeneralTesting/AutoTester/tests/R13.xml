@@ -1,0 +1,146 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>22.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Followsstar="2" SuchThat="1" CondNum="4" RelNum="2" comment="FollowsStar ::">1</id><querystr><![CDATA[stmt s, s1; Select s such that Follows* (s, s1) and Follows* (s1, s)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Parentstar="2" SuchThat="1" CondNum="4" RelNum="2" comment="ParentStar ::">2</id><querystr><![CDATA[stmt s, s1, s2; Select s such that Parent* (s, s1) and Parent* (s1, s)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1658.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Modifies="1" Uses="1" SuchThat="1" CondNum="4" RelNum="2" comment="Modifies, Uses ::">3</id><querystr><![CDATA[assign a; Select a such that Modifies (a, "a") and Uses (a, "a")]]></querystr>
+<stuans>7</stuans>
+<correct>7</correct>
+<time_taken>517.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Modifies="1" Parentstar="1" Uses="1" SuchThat="1" With="1" CondNum="6" RelNum="3" comment="Modifies, Uses, ParentStar ::">4</id><querystr><![CDATA[stmt s, s1; if ifstat; Select s1 such that Uses (s, "i") and Modifies (s, "h") and Parent*(s1, s) with s.stmt# = 40]]></querystr>
+<stuans>18,20,23,25,29,31,36,38,6,8</stuans>
+<correct>36,38</correct>
+<time_taken>1163.000000</time_taken>
+<failed>
+<missing></missing>
+<additional>18,20,23,25,29,31,6,8</additional>
+<summary>
+<expected>2</expected>
+<matched>2</matched>
+<missing>0</missing>
+<additional>8</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Next="2" UnnamedVar="1" SuchThat="1" CondNum="5" RelNum="2" comment="Next ::">5</id><querystr><![CDATA[prog_line n, n1; Select n such that Next (n, n1) and Next (n1, n)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="4" SuchThat="1" CondNum="6" RelNum="4" comment="Follows ::">6</id><querystr><![CDATA[stmt s, s1, s2, s3, s4; Select s such that Follows (s, s1) and Follows (s1, s2) and Follows (s2, s3) and Follows (s3, s4)  ]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="2" Modifies="1" SuchThat="1" CondNum="5" RelNum="3" comment="Follows, Modifies ::">7</id><querystr><![CDATA[stmt s, s1, s2; Select s such that Follows (s, s1) and Follows (s1, s2) and Modifies (s, "j")]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Affects="1" Followsstar="1" Modifies="1" SuchThat="1" CondNum="5" RelNum="3" comment="Affects, Modifies, FollowsStar ::">8</id><querystr><![CDATA[assign a, a1; stmt s;  Select a such that Affects (a, a1) and Modifies (a, "i") and Follows*(39, a)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" Modifies="2" Next="1" Parent="1" UnnamedVar="2" Uses="1" SuchThat="2" CondNum="11" RelNum="6" comment="Next, Uses, Modifies, Parent, Follows ::">9</id><querystr><![CDATA[assign a, a1; stmt s, s1, s2;  Select a such that Next (a, a1) and Uses (a, _) and Modifies(a, "c") such that Parent (s, 19) and Follows (s1, s) and Modifies (s1, _)]]></querystr>
+<stuans></stuans>
+<correct>3</correct>
+<time_taken>2146.000000</time_taken>
+<failed>
+<missing>3</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" Callsstar="1" Follows="1" Followsstar="1" Modifies="2" Next="1" Parent="1" Parentstar="1" UnnamedVar="3" Uses="1" SuchThat="2" CondNum="16" RelNum="10" comment="Calls, CallsStar, Uses, Modifies, Parent, ParentsStar, Follows, FollowsStar, Next ::">10</id><querystr><![CDATA[assign a, a1; stmt s, s1, s2, s3, s4, s5; procedure p, p1;  Select a such that Next (a, a1) and Uses (a, _) and Modifies(a, "c") such that Parent (s, 19) and Follows* (s1, s) and Modifies (s1, _) and Calls(p, "Delta") and Calls*("Bravo",p1) and Parent*(s3, s4) and Follows (s4, _)]]></querystr>
+<stuans></stuans>
+<correct>3</correct>
+<time_taken>2628.000000</time_taken>
+<failed>
+<missing>3</missing>
+<additional></additional>
+<summary>
+<expected>1</expected>
+<matched>0</matched>
+<missing>1</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" With="2" CondNum="3" RelNum="0" comment="With ::">11</id><querystr><![CDATA[assign a; stmt s; if ifstat; while w; Select <a,s> with a.stmt# = 1 with s.stmt# = 2]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Followsstar="1" Modifies="2" Next="1" Parent="1" UnnamedVar="2" Uses="1" SuchThat="2" CondNum="11" RelNum="6" comment="Next, Uses, Modifies, Parent, FollowsStar ::">12</id><querystr><![CDATA[assign a, a1; stmt s, s1, s2;  Select <a, s1> such that Next (a, a1) and Uses (a, _) and Modifies(a, "c") such that Parent (s, 19) and Follows* (s1, s) and Modifies (s1, _)]]></querystr>
+<stuans></stuans>
+<correct>3 16,3 17</correct>
+<time_taken>2168.000000</time_taken>
+<failed>
+<missing>3 16,3 17</missing>
+<additional></additional>
+<summary>
+<expected>2</expected>
+<matched>0</matched>
+<missing>2</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" With="6" CondNum="7" RelNum="0" comment="With ::">13</id><querystr><![CDATA[assign a; stmt s; if ifstat; while w; procedure p; variable v; Select <a,s,ifstat,w, p, v> with a.stmt# = 1 with s.stmt# = 2 with ifstat.stmt# = 6 with w.stmt# = 8 with p.procName = "Alpha" with v.varName = "a"]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" Uses="1" SuchThat="1" With="1" CondNum="5" RelNum="2" comment="Parent, Uses ::">14</id><querystr><![CDATA[while w; if ifstat; variable v; Select w such that Parent(w, ifstat) and Uses(ifstat, v) with v.varName = "e"]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnBoolean="1" Next="4" UnnamedVar="1" SuchThat="1" CondNum="7" RelNum="4" comment="Next ::">15</id><querystr><![CDATA[prog_line p, p1; Select BOOLEAN such that Next(20,18) and Next(23,20) and Next(27,23) and Next(31,23)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Affects="7" SuchThat="1" CondNum="9" RelNum="7" comment="Affects ::">16</id><querystr><![CDATA[assign a, a1, a2, a3, a4; Select a such that Affects(a,a1) and Affects(a,a2) and Affects(a1,a2) and Affects(a2,a3) and Affects(a1,a3) and Affects(a,a3) and Affects(a3,a4)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Modifies="1" Parent="1" Uses="2" SuchThat="1" With="1" CondNum="7" RelNum="4" comment="Pattern ::">17</id><querystr><![CDATA[assign a; procedure p; while w; variable v; Select a such that Uses(p, v) and Uses(w, v) and Modifies(a, v) and Parent(w, a) with v.varName = "h"]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Affects="3" Nextstar="4" UnnamedVar="1" SuchThat="1" CondNum="10" RelNum="7" comment="Next, NextStar, Affects ::">18</id><querystr><![CDATA[assign a, a1, a2, a3, a4; prog_line n, n1, n2, n3; Select n such that Next*(n, a) and Affects(a, a1) and Next*(a1,n2) and Affects(a2,a3) and Affects(a3,a4) and Next*(a2,n) and Next*(n,n3)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Nextstar="4" UnnamedVar="1" SuchThat="1" CondNum="7" RelNum="4" comment="NextStar ::">19</id><querystr><![CDATA[prog_line n, n1, n2; assign a, a1, a2; Select a such that Next*(n,n1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Nextstar="5" UnnamedVar="1" SuchThat="1" CondNum="8" RelNum="5" comment="NextStar ::">20</id><querystr><![CDATA[prog_line n, n1, n2; assign a, a1, a2; Select a such that Next*(n,n1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1)]]></querystr>
+<timeout/>
+</query>
+<query>
+<id ReturnTuple="1" Nextstar="273" UnnamedVar="1" SuchThat="1" CondNum="276" RelNum="273" comment="NextStar ::">21</id><querystr><![CDATA[prog_line n, n1, n2; assign a, a1, a2; Select a such that Next*(n,n1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1) and Next*(n1,n2) and Next*(n,a) and Next*(n,a1) and Next*(a,a1)]]></querystr>
+<timeout/>
+</query>
+</queries>
+</test_results>

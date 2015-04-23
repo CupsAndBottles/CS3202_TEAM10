@@ -1,0 +1,32 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>23.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Affectsstar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="2" comment="NoLinks ::">1</id><querystr><![CDATA[assign a1, a2; while w; Select <a1, a2, w> such that Affects*(6,a1) and Uses(a2, "b")]]></querystr>
+<stuans></stuans>
+<correct>5 9 2,10 9 2</correct>
+<time_taken>361.000000</time_taken>
+<failed>
+<missing>10 9 2,5 9 2</missing>
+<additional></additional>
+<summary>
+<expected>2</expected>
+<matched>0</matched>
+<missing>2</missing>
+<additional>0</additional>
+</summary>
+</failed>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="SomeLinks ::">2</id><querystr><![CDATA[stmt s1, s2; assign a; Select <s1, s2, a> such that Parent(s1, s2) pattern a("a", _)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="SomeLinks :: linked component is split">3</id><querystr><![CDATA[stmt s1, s2; assign a; Select <s1, a, s2> such that Parent(s1, s2) pattern a("a", _)]]></querystr>
+<exception/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" Parent="1" SuchThat="1" CondNum="4" RelNum="2" comment="AllLinks ::">4</id><querystr><![CDATA[stmt s1, s2, s3; Select <s1, s2, s3> such that Parent(s1, s2) and Follows(s2, s3)]]></querystr>

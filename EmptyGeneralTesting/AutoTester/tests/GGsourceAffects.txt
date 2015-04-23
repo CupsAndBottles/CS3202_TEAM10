@@ -1,0 +1,39 @@
+procedure pikachu {
+	x = 10;					\\ 1
+	while a {				\\ 2
+		g = x;				\\ 3
+		y = 2; 				\\ 4
+		while b {			\\ 5
+			s = 4;			\\ 6
+			x = x;			\\ 7
+		}
+		z = 3;				\\ 8
+	}
+	g = x;					\\ 9
+}
+
+procedure raichu {
+	\\ assignments only
+	aa = bb;				\\ 10
+	bb = cc;				\\ 11
+	cc = dd;				\\ 12
+	
+	\\ some while
+	ww = 1;					\\ 13
+	while i {				\\ 14
+		xx = ww;			\\ 15
+		while j {			\\ 16
+			yy = xx;		\\ 17
+		}
+	}
+	zz = yy;				\\ 18
+
+	\\ some if
+	ss = 1;					\\ 19
+	if  then {				\\ 20
+		tt = ss;			\\ 21
+	} else {
+		haha = tt;			\\ 22
+	}
+	uu = tt;				\\ 23
+}

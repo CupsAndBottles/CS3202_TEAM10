@@ -90,6 +90,7 @@
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="Source.txt" />
     <None Include="Test.txt" />
+    <None Include="ultimate-source.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>

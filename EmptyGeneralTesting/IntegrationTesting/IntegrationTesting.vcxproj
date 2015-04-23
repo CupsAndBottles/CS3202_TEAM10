@@ -86,6 +86,7 @@
     <None Include="ParserTestFiles\pkbTest.txt" />
     <None Include="ParserTestFiles\Source.txt" />
     <None Include="ParserTestFiles\ultimate-source.txt" />
+    <None Include="ParserTestFiles\ultimateWithAndTest.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AffectsTest.cpp" />

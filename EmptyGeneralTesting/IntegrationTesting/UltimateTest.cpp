@@ -1109,61 +1109,61 @@ void UltimateTest::TestAffects() {
 
 	qd.ClearData();
 
-	//query = "assign a1;Select a1 such that Affects(a1,_)";
+	query = "assign a1;Select a1 such that Affects(a1,_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 15, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 15, int(resultList.size()));
 
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("3");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("12");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("16");
-	//actualResultList.push_back("18");
-	//actualResultList.push_back("19");
-	//actualResultList.push_back("22");
-	//actualResultList.push_back("25");
-	//actualResultList.push_back("26");
-	//actualResultList.push_back("27");
-	//actualResultList.sort();
-	//resultList.sort();
+	actualResultList.push_back("1");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("14");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("22");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
-	//query = "assign a;Select a such that Affects(a,10)";
+	query = "assign a;Select a such that Affects(a,10)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 4, int(resultList.size()));
 
-	//resultList.sort();
+	resultList.sort();
 
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("12");
-	//actualResultList.push_back("13");
-	//actualResultList.sort();
-	//resultList.sort();
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.sort();
+	resultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 }
 
 void UltimateTest::TestAffectsT() {
@@ -1176,58 +1176,67 @@ void UltimateTest::TestAffectsT() {
 
 	qd.ClearData();
 
-	//query = "assign a1,a2;Select a1 such that Affects*(a1,a2)";
+	query = "assign a1;Select a1 such that Affects*(a1,_)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 13, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 15, int(resultList.size()));
 
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("3");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.push_back("7");
-	//actualResultList.push_back("8");
-	//actualResultList.push_back("13");
-	//actualResultList.push_back("16");
-	//actualResultList.push_back("18");
-	//actualResultList.push_back("19");
-	//actualResultList.push_back("25");
-	//actualResultList.push_back("26");
-	//actualResultList.push_back("27");
-	//actualResultList.sort();
-	//resultList.sort();
+	actualResultList.push_back("1");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("7");
+	actualResultList.push_back("8");
+	actualResultList.push_back("12");
+	actualResultList.push_back("13");
+	actualResultList.push_back("14");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("22");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
-	//query = "assign a;Select a such that Affects*(a,7)";
+	query = "assign a;Select a such that Affects*(a,7)";
 
-	//CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
-	//CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
+	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
+	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
-	//CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 3, int(resultList.size()));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 10, int(resultList.size()));
 
-	//resultList.sort();
+	resultList.sort();
 
-	//actualResultList.push_back("1");
-	//actualResultList.push_back("4");
-	//actualResultList.push_back("5");
-	//actualResultList.sort();
-	//resultList.sort();
+	actualResultList.push_back("1");
+	actualResultList.push_back("3");
+	actualResultList.push_back("4");
+	actualResultList.push_back("5");
+	actualResultList.push_back("18");
+	actualResultList.push_back("19");
+	actualResultList.push_back("22");
+	actualResultList.push_back("25");
+	actualResultList.push_back("26");
+	actualResultList.push_back("27");
+	actualResultList.sort();
+	resultList.sort();
 
-	//CPPUNIT_ASSERT(resultList == actualResultList);
+	CPPUNIT_ASSERT(resultList == actualResultList);
 
-	//qd.ClearData();
-	//resultList.clear();
-	//actualResultList.clear();
-	//qe.ClearIntermediateResult();
+	qd.ClearData();
+	resultList.clear();
+	actualResultList.clear();
+	qe.ClearIntermediateResult();
 
 
 	query = "assign a;Select a such that Affects*(1,a)";

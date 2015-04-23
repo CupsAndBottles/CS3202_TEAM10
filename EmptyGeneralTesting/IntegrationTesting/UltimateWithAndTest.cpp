@@ -26,11 +26,17 @@ void UltimateWithAndTest::WithAndTest1() {
 	std::list<std::string> actualResultList;
 	qd.ClearData();
 	
-	query = "assign a;stmt s1; Select a such that Modifies(a,\"x\") and Affects(a,s1)";
+	query = "assign a;stmt s1; Select a such that Modifies(a,\"b\") and Affects(a,s1)";
 	CPPUNIT_ASSERT_MESSAGE("Query is valid", qv.ValidateQuery(query, qd));
 	CPPUNIT_ASSERT_MESSAGE("Query is successfully evaluated", qe.EvaluateQuery(qd, resultList));
 
+	CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of results is correct", 2, int(resultList.size()));
+
 	actualResultList.push_back("2");
+	actualResultList.push_back("13");
+
+	resultList.sort();
+	actualResultList.sort();
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 	qd.ClearData();
@@ -58,6 +64,7 @@ void UltimateWithAndTest::WithAndTest1() {
 	CPPUNIT_ASSERT(resultList == actualResultList);
 
 }
+
 void UltimateWithAndTest::WithAndTest2() {
 	QueryData qd;
 	QueryPreProcessor qv;

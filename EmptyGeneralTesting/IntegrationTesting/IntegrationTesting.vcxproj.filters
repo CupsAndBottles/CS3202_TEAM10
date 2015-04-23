@@ -12,6 +12,7 @@
     <None Include="ParserTestFiles\NextBipCallTwiceTest.txt" />
     <None Include="InteractionsBtwnComponents.txt" />
     <None Include="ModifiesUsesCallsParentText.txt" />
+    <None Include="ParserTestFiles\ultimateWithAndTest.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ParserToPKBTest2.cpp" />

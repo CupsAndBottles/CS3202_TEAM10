@@ -92,7 +92,7 @@ bool Affects::CheckCFG(int stmtAffecting, int stmtAffected, int varModified) {
 				break;
 			case WHILE:
 				nextOfCurrStmt = Next::GetNextAfter(currStmt);
-				if ((int) nextOfCurrStmt.size() > 1 && stmtAffected >= nextOfCurrStmt.at(1)) {
+				if ((int)nextOfCurrStmt.size() > 1 && (stmtAffected >= nextOfCurrStmt.at(1) || stmtAffected < currStmt)) {
 					uncheckedStmts.push(nextOfCurrStmt.at(1));
 				} else if ((int) nextOfCurrStmt.size() > 1 && !Modifies::IsStmtModifyingVar(currStmt, varModified)) {
 					return true;
@@ -466,7 +466,7 @@ bool Affects::IsAffectsT(int stmtAffecting, int stmtAffected) {
 					vector<int> followingStmts = Next::GetNextAfter(currentStmt);
 					if (checkedWhile[currentStmt] || !Uses::IsStmtUsingVar(currentStmt, var)) {
 						for each (int stmt in followingStmts) {
-							if (stmt > currentStmt + 1) { // step out of loop
+							if (stmt != currentStmt + 1) { // step out of loop
 								nextStmts.push_back(stmt);
 							}
 						}
@@ -580,7 +580,7 @@ vector<int> Affects::GetStmtsAffectedTBy(int stmtAffecting) {
 					vector<int> followingStmts = Next::GetNextAfter(currentStmt);
 					if (checkedWhile[currentStmt] || !Uses::IsStmtUsingVar(currentStmt, var)) {
 						for each (int stmt in followingStmts) {
-							if (stmt > currentStmt + 1) { // step out of loop
+							if (stmt != currentStmt + 1) { // step out of loop
 								nextStmts.push_back(stmt);
 							}
 						}

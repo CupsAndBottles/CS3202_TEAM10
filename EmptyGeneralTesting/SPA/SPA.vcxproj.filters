@@ -90,5 +90,6 @@
     <None Include="sample_SIMPLE_source.txt" />
     <None Include="Test.txt" />
     <None Include="Source.txt" />
+    <None Include="ultimate-source.txt" />
   </ItemGroup>
 </Project>

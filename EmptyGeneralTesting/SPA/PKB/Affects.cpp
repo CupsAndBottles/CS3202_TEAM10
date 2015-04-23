@@ -268,7 +268,7 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	vector<int> affectedStmts;
 	vector<int> nextBeforeCurrStmt = Next::GetNextBefore(currStmt);
 
-	//cout << "\n currStmt: " << currStmt << "\n";
+	//cout << "\nRecurTraverseUpCFG currStmt: " << currStmt;
 
 	if (StmtTypeTable::GetStmtTypeOf(currStmt) == ASSIGN) {
 		if (!stmtsIsChecked.at(currStmt)) {
@@ -289,15 +289,8 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == WHILE) {
 		vector<int>::iterator it = nextBeforeCurrStmt.begin();
 		if (!stmtsIsChecked.at(currStmt)) {
-			while (it != nextBeforeCurrStmt.end()) {
-				if (*it > currStmt) {
-					nextBeforeCurrStmt.erase(it, nextBeforeCurrStmt.end());
-					it = nextBeforeCurrStmt.end();
-				} else {
-					it++;
-				}
-			}
 			stmtsIsChecked.at(currStmt) = true;
+
 		} else {
 			nextBeforeCurrStmt.clear();
 		}
@@ -312,19 +305,25 @@ pair<vector<int>, vector<bool>> Affects::RecurTraverseUpCFG(int currStmt, vector
 	} else if (StmtTypeTable::GetStmtTypeOf(currStmt) == CALL) {
 		int procCalled = ProcTable::GetIndexOfProc(Program::GetStmtFromNumber(currStmt).GetContent());
 		if (!stmtsIsChecked.at(currStmt)) {
-			vector<int> varsModifiedByProc = Modifies::GetVarModifiedByProc(procCalled);
-			if (!varsModifiedByProc.empty()) {
-				int varModified = varsModifiedByProc.at(0);
-				vector<int>::iterator it = varsUsed.begin();
-				while (it != varsUsed.end()) {
-					if (varModified == *it) {
-						it = varsUsed.erase(it);
-					} else {
-						it++;
-					}
+			vector<int> varsModifiedByCurr = Modifies::GetVarModifiedByProc(procCalled);
+			sort(varsModifiedByCurr.begin(), varsModifiedByCurr.end());
+			sort(varsUsed.begin(), varsUsed.end());
+
+			vector<int>::iterator varsModifiedIt = varsModifiedByCurr.begin();
+			vector<int>::iterator varsUsedIt = varsUsed.begin();
+
+			while(varsModifiedIt != varsModifiedByCurr.end() && varsUsedIt != varsUsed.end()) {
+				if (*varsModifiedIt == *varsUsedIt) {
+					varsUsedIt = varsUsed.erase(varsUsedIt);
+					varsModifiedIt++;
+				} else if (*varsModifiedIt > *varsUsedIt) {
+					varsUsedIt++;
+				} else {
+					varsModifiedIt++;
 				}
-				stmtsIsChecked.at(currStmt) = true;
 			}
+			stmtsIsChecked.at(currStmt) = true;
+
 		} else {
 			nextBeforeCurrStmt.clear();
 		}
